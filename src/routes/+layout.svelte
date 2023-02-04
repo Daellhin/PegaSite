@@ -3,7 +3,8 @@
   // import NavBar from "../components/NavBar/NavBar.svelte";
   import FaBars from "svelte-icons/fa/FaBars.svelte";
   import PegaIcon from "../components/NavBar/PegaIcon.svelte";
-  import MenuOptions from "../components/NavBar/MenuOptions.svelte";
+  import MenuVertical from "../components/NavBar/MenuVertical.svelte";
+  import MenuHorizontal from "../components/NavBar/MenuHorizontal.svelte";
 </script>
 
 <div class="drawer">
@@ -18,10 +19,7 @@
         </a>
       </div>
       <div class="flex-none hidden lg:block">
-        <ul class="menu menu-horizontal">
-          <!-- Navbar menu content here -->
-          <MenuOptions />
-        </ul>
+        <MenuHorizontal />
       </div>
       <div class="navbar-end">
         <div class="lg:hidden">
@@ -38,9 +36,7 @@
   </div>
   <div class="drawer-side">
     <label for="my-drawer-3" class="drawer-overlay" />
-    <ul class="menu p-4 w-80 bg-base-100">
-      <!-- Sidebar content here -->
-      <MenuOptions />
-    </ul>
+    <!-- Sidebar content here -->
+    <MenuVertical />
   </div>
 </div>
