@@ -14,7 +14,7 @@
     <div class="w-full navbar">
       <div class="navbar-start">
         <!-- Always vissible -->
-        <a class="btn btn-ghost normal-case h-auto">
+        <a class="btn btn-ghost normal-case h-auto" href="/">
           <PegaIcon />
         </a>
       </div>
@@ -32,7 +32,16 @@
       </div>
     </div>
     <!-- Page content here -->
-    <slot />
+    <section class="my-1">
+      <div class="grid md:grid-cols-12 gap-5 p-4 m-2">
+        <main class="md:col-span-9">
+          <slot />
+        </main>
+        <aside class="md:col-span-3 md:pt-0 p-2">
+          <p>Aside</p>
+        </aside>
+      </div>
+    </section>
   </div>
   <div class="drawer-side">
     <label for="my-drawer-3" class="drawer-overlay" />
