@@ -2,16 +2,17 @@
   import "../app.css";
   // import NavBar from "../components/NavBar/NavBar.svelte";
   import FaBars from "svelte-icons/fa/FaBars.svelte";
-  import PegaIcon from "../components/NavBar/PegaIcon.svelte";
-  import MenuVertical from "../components/NavBar/MenuVertical.svelte";
-  import MenuHorizontal from "../components/NavBar/MenuHorizontal.svelte";
+  import PegaIcon from "../components/Layout/PegaIcon.svelte";
+  import MenuVertical from "../components/Layout/MenuVertical.svelte";
+  import MenuHorizontal from "../components/Layout/MenuHorizontal.svelte";
+  import Footer from "../components/Layout/Footer.svelte";
 </script>
 
 <div class="drawer">
   <input id="my-drawer-3" type="checkbox" class="drawer-toggle" />
   <div class="drawer-content flex flex-col">
     <!-- Navbar -->
-    <div class="w-full navbar">
+    <div class="w-full navbar mt-2">
       <div class="navbar-start">
         <!-- Always vissible -->
         <a class="btn btn-ghost normal-case h-auto" href="/">
@@ -42,6 +43,7 @@
         </aside>
       </div>
     </section>
+    <Footer />
   </div>
   <div class="drawer-side">
     <label for="my-drawer-3" class="drawer-overlay" />
