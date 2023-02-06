@@ -3,13 +3,16 @@
   import Time from "svelte-time";
   import FaRegCalendar from "svelte-icons/fa/FaRegCalendar.svelte";
   import FaUser from "svelte-icons/fa/FaUser.svelte";
+  import { clearHTMLTags } from "$lib/utils/utils";
 
   export let article: Article;
 </script>
 
-<a href="">
-  <div class="card w-80 bg-base-100 shadow-xl hover:brightness-90 transition-all duration-200 hover:-translate-y-1">
-    <figure><img src="images/shoe.jpg" alt="Shoes" /></figure>
+<a href="/article/{article.id}">
+  <div
+    class="card w-80 bg-base-100 shadow-xl hover:brightness-90 transition-all duration-200 hover:-translate-y-1"
+  >
+    <figure><img src={article.image} alt="Shoes" /></figure>
     <div class="card-body p-5 gap-0">
       <!-- Title -->
       <h2 class="card-title">
@@ -33,7 +36,9 @@
       </div>
       <!-- Content -->
       <p class="my-2 line-clamp-2">
-        {@html article.content}
+        <!-- Using html results in text overflow flash -->
+        <!-- {@html article.content} -->
+        {clearHTMLTags(article.content)}
       </p>
       <!-- Tags -->
       <div class="card-actions justify-end">
