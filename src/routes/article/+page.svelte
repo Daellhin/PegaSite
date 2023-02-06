@@ -10,6 +10,7 @@
 
 <!-- Title -->
 <h1 class="text-5xl">{article.title}</h1>
+<!-- Article data -->
 <div class="flex flex-row gap-3 ml-1">
   <!-- Time -->
   <div class="flex flex-row gap-1 items-center">
@@ -18,7 +19,7 @@
     </div>
     <Time class="opacity-60 text-md" timestamp={article.timestamp} />
   </div>
-  <!-- Author -->
+  <!-- Metadata -->
   <div class="flex flex-row gap-1 items-center">
     <div class="w-4 h-4">
       <FaUser />

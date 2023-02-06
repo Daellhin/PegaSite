@@ -1,5 +1,7 @@
+import dayjs, { Dayjs } from "dayjs"
+
 export interface ArticleJson {
-    timestamp: Date
+    timestamp: Dayjs
     author: string
     tags: string[]
     title: string
@@ -9,7 +11,7 @@ export interface ArticleJson {
 
 export class Article {
     constructor(
-        public timestamp: Date,
+        public timestamp: Dayjs,
         public author: string,
         public tags: string[],
         public title: string,
@@ -27,5 +29,9 @@ export class Article {
             json.content
         )
     }
+
+    public isRecent(days = 5) {
+        return this.timestamp.isAfter(dayjs().subtract(days, 'day'));
+      }
 
 }

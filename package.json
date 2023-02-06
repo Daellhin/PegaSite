@@ -29,8 +29,10 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@tailwindcss/line-clamp": "^0.4.2",
 		"cl-editor": "^2.3.0",
 		"daisyui": "^2.50.0",
+		"dayjs": "^1.11.7",
 		"svelte-icons": "^2.1.0"
 	}
 }
