@@ -1,0 +1,27 @@
+/* Integrate CL editor with tailwind and dark mode */
+:global(.cl) {
+  :global(.cl-button svg) {
+    display: initial !important;
+  }
+  @media (prefers-color-scheme: light) {
+    :global(.cl-button.active),
+    :global(.cl-button:hover) {
+      background-color: #dcdedf !important;
+    }
+  }
+  @media (prefers-color-scheme: dark) {
+    :global(.cl-content) {
+      @apply bg-base-100 !important;
+    }
+    :global(.cl-button.active),
+    :global(.cl-button:hover) {
+      background-color: #313641 !important;
+    }
+    :global(.cl-button path) {
+      fill: #a6adbb !important;
+    }
+  }
+  :global(.cl-actionbar) {
+    @apply bg-base-200 !important;
+  }
+}

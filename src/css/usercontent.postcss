@@ -1,0 +1,19 @@
+/* Add default styles for user generated content */
+:global(.cl),
+:global(.usercontent) {
+  :global(h1) {
+    @apply text-2xl font-semibold !important;
+  }
+  :global(h2) {
+    @apply text-xl font-semibold !important;
+  }
+  :global(blockquote) {
+    @apply p-4 my-4 border-l-4 border-gray-300 bg-gray-50 dark:border-gray-500 dark:bg-gray-800 !important;
+  }
+  :global(ul) {
+    @apply list-disc list-inside !important;
+  }
+  :global(ol) {
+    @apply list-decimal list-inside !important;
+  }
+}
