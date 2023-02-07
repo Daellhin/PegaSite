@@ -6,6 +6,7 @@
   import MenuVertical from "../components/Layout/MenuVertical.svelte";
   import MenuHorizontal from "../components/Layout/MenuHorizontal.svelte";
   import Footer from "../components/Layout/Footer.svelte";
+  import EventCalendar from "../components/EventCalendar.svelte";
 </script>
 
 <div class="drawer">
@@ -39,7 +40,7 @@
           <slot />
         </main>
         <aside class="md:col-span-3 md:pt-0 p-2">
-          <p>Aside</p>
+          <EventCalendar />
         </aside>
       </div>
     </section>
