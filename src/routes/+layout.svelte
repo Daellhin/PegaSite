@@ -2,37 +2,20 @@
   import "../app.css";
   // import NavBar from "../components/NavBar/NavBar.svelte";
   import FaBars from "svelte-icons/fa/FaBars.svelte";
-  import PegaIcon from "../components/Layout/PegaIcon.svelte";
+  import PegaIcon from "../components/Layout/PegaIconWithText.svelte";
   import MenuVertical from "../components/Layout/MenuVertical.svelte";
   import MenuHorizontal from "../components/Layout/MenuHorizontal.svelte";
   import Footer from "../components/Layout/Footer.svelte";
   import EventCalendar from "../components/EventCalendar.svelte";
+  import Navbar from "../components/Layout/Navbar.svelte";
+
+  const drawerName = "layout-drawer";
 </script>
 
 <div class="drawer">
-  <input id="my-drawer-3" type="checkbox" class="drawer-toggle" />
+  <input id={drawerName} type="checkbox" class="drawer-toggle" />
   <div class="drawer-content flex flex-col">
-    <!-- Navbar -->
-    <div class="w-full navbar mt-2">
-      <div class="navbar-start">
-        <!-- Always vissible -->
-        <a class="btn btn-ghost normal-case h-auto" href="/">
-          <PegaIcon />
-        </a>
-      </div>
-      <div class="flex-none hidden lg:block">
-        <MenuHorizontal />
-      </div>
-      <div class="navbar-end">
-        <div class="lg:hidden">
-          <label for="my-drawer-3" class="btn btn-square btn-ghost">
-            <div class="w-5 h-5">
-              <FaBars />
-            </div>
-          </label>
-        </div>
-      </div>
-    </div>
+    <Navbar {drawerName} />
     <!-- Page content here -->
     <section class="my-1">
       <div class="grid md:grid-cols-12 gap-5 p-4 m-2">

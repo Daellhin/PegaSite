@@ -1,0 +1,41 @@
+<script lang="ts">
+  // import NavBar from "../components/NavBar/NavBar.svelte";
+  import FaBars from "svelte-icons/fa/FaBars.svelte";
+  import PegaIconWithText from "./PegaIconWithText.svelte";
+  import MenuHorizontal from "./MenuHorizontal.svelte";
+  import FaSignInAlt from "svelte-icons/fa/FaSignInAlt.svelte";
+  import LoginModal from "../LoginModal.svelte";
+
+  export let drawerName: string;
+</script>
+
+<div class="w-full navbar mt-2">
+  <div class="navbar-start">
+    <!-- Always shown -->
+    <a class="btn btn-ghost normal-case h-auto" href="/">
+      <PegaIconWithText />
+    </a>
+  </div>
+  <div class="navbar-center">
+    <!-- Desktop menu center -->
+    <div class="flex-none hidden lg:block">
+      <MenuHorizontal />
+    </div>
+  </div>
+  <div class="navbar-end">
+    <!-- Desktop menu end -->
+    <div class="flex-none hidden lg:block">
+      <label for="my-modal" class="btn btn-square btn-ghost">
+        <div class="w-5 h-5"><FaSignInAlt /></div>
+      </label>
+    </div>
+    <!-- Mobile menu end -->
+    <div class="lg:hidden">
+      <label for={drawerName} class="btn btn-square btn-ghost">
+        <div class="w-5 h-5"><FaBars /></div>
+      </label>
+    </div>
+  </div>
+</div>
+
+<LoginModal />
