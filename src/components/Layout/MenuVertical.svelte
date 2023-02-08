@@ -1,6 +1,9 @@
 <script lang="ts">
+  import FaSignInAlt from "svelte-icons/fa/FaSignInAlt.svelte";
   import { combinedLinksFromJson, Link, LinkGroup } from "$lib/link";
   import { LINKS_JSON } from "../../data/linksJson";
+
+  export let loginModalID: string;
 
   const links = combinedLinksFromJson(LINKS_JSON);
 
@@ -26,4 +29,10 @@
 
 <ul class="menu p-4 w-80 bg-base-100">
   {@html links.map(createVerticalListGroupOrItem).join("")}
+  <li class="font-bold">
+    <label for={loginModalID}>
+      <div class="w-5 h-5"><FaSignInAlt /></div>
+      Inloggen
+    </label>
+  </li>
 </ul>

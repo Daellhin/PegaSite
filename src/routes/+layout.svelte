@@ -1,21 +1,19 @@
 <script>
   import "../app.css";
   // import NavBar from "../components/NavBar/NavBar.svelte";
-  import FaBars from "svelte-icons/fa/FaBars.svelte";
-  import PegaIcon from "../components/Layout/PegaIconWithText.svelte";
-  import MenuVertical from "../components/Layout/MenuVertical.svelte";
-  import MenuHorizontal from "../components/Layout/MenuHorizontal.svelte";
-  import Footer from "../components/Layout/Footer.svelte";
   import EventCalendar from "../components/EventCalendar.svelte";
+  import Footer from "../components/Layout/Footer.svelte";
+  import MenuVertical from "../components/Layout/MenuVertical.svelte";
   import Navbar from "../components/Layout/Navbar.svelte";
 
-  const drawerName = "layout-drawer";
+  const drawerID = "layout-drawer";
+  const loginModalID = "login-modal";
 </script>
 
 <div class="drawer">
-  <input id={drawerName} type="checkbox" class="drawer-toggle" />
+  <input id={drawerID} type="checkbox" class="drawer-toggle" />
   <div class="drawer-content flex flex-col">
-    <Navbar {drawerName} />
+    <Navbar {drawerID} {loginModalID} />
     <!-- Page content here -->
     <section class="my-1">
       <div class="grid md:grid-cols-12 gap-5 p-4 m-2">
@@ -30,8 +28,8 @@
     <Footer />
   </div>
   <div class="drawer-side">
-    <label for="my-drawer-3" class="drawer-overlay" />
+    <label for={drawerID} class="drawer-overlay" />
     <!-- Sidebar content here -->
-    <MenuVertical />
+    <MenuVertical {loginModalID} />
   </div>
 </div>

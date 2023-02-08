@@ -1,12 +1,14 @@
-<script>
-  import PegaIcon from "./Layout/PegaIcon.svelte";
+<script lang="ts">
+  import PegaIcon from "./Icons/PegaIcon.svelte";
+
+  export let loginModalID: string;
 </script>
 
-<input type="checkbox" id="my-modal" class="modal-toggle" />
-<label for="my-modal" class="modal cursor-pointer">
+<input type="checkbox" id={loginModalID} class="modal-toggle" />
+<label for={loginModalID} class="modal cursor-pointer">
   <label class="modal-box custom-width w-11/12 max-w-2xl" for="">
     <label
-      for="my-modal"
+      for={loginModalID}
       class="btn btn-sm btn-circle absolute right-2 top-2 btn-ghost">✕</label
     >
     <div class="flex flex-row">
