@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { User } from "$lib/user";
   import { authStore } from "../stores/auth-store";
   import PegaIcon from "./Icons/PegaIcon.svelte";
 
@@ -10,7 +11,7 @@
   let showModal = false;
 
   function submitLogin() {
-    $authStore = true;
+    $authStore = new User(username);
     showModal = false;
   }
 </script>
