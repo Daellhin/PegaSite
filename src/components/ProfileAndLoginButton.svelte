@@ -26,10 +26,10 @@
         <span>{$authStore.username}</span>
       </li>
       <li><a>Profiel</a></li>
-      <li><a>Dashboard</a></li>
+      <li><a href="/dashboard">Dashboard</a></li>
       <li class="flex flex-row gap-1">
         <button on:click={signOut} class="w-full">
-          <div class="w-5 h-5"><FaSignInAlt /></div>
+          <div class="w-5 h-5"><FaSignOutAlt /></div>
           Uitloggen
         </button>
       </li>

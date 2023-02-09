@@ -1,4 +1,5 @@
-import type { User } from '$lib/user';
+import { User } from '$lib/user';
 import { writable } from 'svelte/store';
 
-export const authStore = writable<User | undefined>(undefined);
+const dummy = new User("Lorin");
+export const authStore = writable<User | undefined>(dummy);

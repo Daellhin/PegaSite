@@ -1,0 +1,1 @@
+<a href="/new-article" class="btn btn-primary">Nieuw bericht</a>

@@ -12,12 +12,12 @@
 
 <div class="drawer">
   <input id={drawerID} type="checkbox" class="drawer-toggle" />
-  <div class="drawer-content flex flex-col">
+  <div class="drawer-content flex flex-col h-screen">
     <Navbar {drawerID} {loginModalID} />
     <!-- Page content here -->
-    <section class="my-1">
-      <div class="grid md:grid-cols-12 gap-5 p-4 m-2">
-        <main class="md:col-span-9">
+    <section class="my-1 flex-grow">
+      <div class="grid md:grid-cols-12 gap-5 p-4 m-2 h-full">
+        <main class="md:col-span-9 h-full">
           <slot />
         </main>
         <aside class="md:col-span-3 md:pt-0 p-2">
