@@ -7,7 +7,10 @@
   <div class="items-center grid-flow-col">
     <div class="w-6 h-6"><FaSlackHash /></div>
     <p>
-      Copyright © {new Date().getFullYear()} - AC Pegasus Londerzeel<br />Ontwerp: Lorin Speybrouck
+      Copyright © {new Date().getFullYear()} - AC Pegasus Londerzeel
+      <br />
+      <a href="/" class="link-hover">Versie: 0.1</a>, 
+      <a href="/" class="link-hover">Ontwerp: Lorin Speybrouck</a>
     </p>
   </div>
   <div class="grid-flow-col gap-4 md:place-self-center md:justify-self-end">
