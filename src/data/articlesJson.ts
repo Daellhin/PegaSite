@@ -1,7 +1,7 @@
 import dayjs from "dayjs"
 import type { Article, ArticleJson } from "$lib/article";
 
-const ARTICLE: ArticleJson = {
+export const ARTICLE: ArticleJson = {
     id: -1,
     timestamp: dayjs(),
     author: "Lorin Speybrouck",

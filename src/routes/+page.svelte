@@ -7,7 +7,7 @@
 </script>
 
 <div class="">
-  <h1 class="text-2xl font-bold mb-2 ">Nieuws</h1>
+  <h1 class="text-2xl font-bold mb-2">Nieuws</h1>
   <div class="flex gap-4 flex-wrap">
     {#each articles as article}
       <Card {article} />

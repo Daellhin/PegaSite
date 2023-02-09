@@ -15,7 +15,7 @@
     <h2 class="text-gray-600">De gevraagde pagina bevatte een probleem</h2>
 
     {#if $page.status === 404}
-      <a href="/" class="btn btn-primary">Terug naar de homepagina</a>
+      <a href="/" class="btn btn-primary normal-case">Terug naar de homepagina</a>
     {:else}
       <p style="color: #ff9800; font-size: 1.3em">Probeer het later opnieuw</p>
     {/if}

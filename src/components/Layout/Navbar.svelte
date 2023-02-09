@@ -9,7 +9,7 @@
   export let loginModalID: string;
 </script>
 
-<div class="w-full navbar mt-2">
+<div class="w-full navbar mt-2 h-10">
   <div class="navbar-start">
     <!-- Always shown -->
     <a class="btn btn-ghost normal-case h-auto" href="/">

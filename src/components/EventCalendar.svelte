@@ -10,7 +10,7 @@
     .slice(0, amountOfEvents);
 </script>
 
-<h1 class="text-2xl font-bold mb-2 ">Kalender</h1>
+<h1 class="text-2xl font-bold mb-2">Kalender</h1>
 
 <div class="flex flex-col gap-2">
   {#each events as event}
@@ -30,8 +30,8 @@
           </div>
         </div>
         <div class="flex flex-col">
-          <div class="text-xs font-semibold ">{event.duration}</div>
-          <div class="flex items-center h-full text-lg font-semibold ">
+          <div class="text-xs font-semibold">{event.duration}</div>
+          <div class="flex items-center h-full text-lg font-semibold">
             {event.title}
           </div>
         </div>
