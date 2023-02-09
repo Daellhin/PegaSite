@@ -30,6 +30,6 @@
   <div class="drawer-side">
     <label for={drawerID} class="drawer-overlay" />
     <!-- Sidebar content here -->
-    <MenuVertical {loginModalID} />
+    <MenuVertical {drawerID} {loginModalID} />
   </div>
 </div>
