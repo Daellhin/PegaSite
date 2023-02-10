@@ -39,14 +39,16 @@
 
 <style>
   :root {
+    /* Toast formatting */
     --toastBackground: transparent;
-    --toastBarBackground: #5114b9;
     --toastPadding: 0;
     --toastMsgPadding: 0;
     --toastWidth: fit-content;
+    --toastBoxShadow: none;
 
+    /* Toast layout */
     --toastContainerTop: auto;
     --toastContainerRight: 2rem;
-    --toastContainerBottom: 4rem;
+    --toastContainerBottom: 2.5rem;
   }
 </style>

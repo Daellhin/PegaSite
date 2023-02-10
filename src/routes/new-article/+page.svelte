@@ -6,11 +6,16 @@
   import ArticleComponent from "../../components/Article/Article.svelte";
   import { authStore } from "../../stores/auth-store";
   import { toast } from "@zerodevx/svelte-toast";
+  import CreatedArticleToast from "../../components/Article/CreatedArticleToast.svelte";
+  import { afterNavigate, beforeNavigate } from "$app/navigation";
+  import type { AfterNavigate, BeforeNavigate } from "@sveltejs/kit";
+  import { isPageNavigation } from "$lib/utils/utils";
 
   let html = "";
   let titel = "";
   let article: Article;
   let showPreview = false;
+  let toastId: number;
 
   function togglePreview() {
     showPreview = !showPreview;
@@ -18,7 +23,7 @@
   }
   function refreshArticle() {
     article = new Article(
-      -1,
+      0,
       dayjs(),
       $authStore!.username,
       [],
@@ -29,19 +34,18 @@
   }
   function createArticle() {
     refreshArticle();
-    toast.push(`
-    <div class="alert shadow-lg">
-      <div>
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-info flex-shrink-0 w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-        <span>Artikel aangemaakt</span>
-      </div>
-      <div class="flex-none">
-        <button class="btn btn-sm btn-ghost">Ok</button>
-        <button class="btn btn-sm btn-primary">Bekijken</button>
-      </div>
-    </div>
-    `);
+    // TODO POST article to server
+    toastId = toast.push({
+      component: {
+        src: CreatedArticleToast,
+        props: { articleID: article.id },
+        sendIdTo: "toastId",
+      },
+      dismissable: false,
+      initial: 0,
+    });
   }
+
 </script>
 
 {#if showPreview}
