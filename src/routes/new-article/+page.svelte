@@ -7,15 +7,21 @@
   import { authStore } from "../../stores/auth-store";
   import { toast } from "@zerodevx/svelte-toast";
   import CreatedArticleToast from "../../components/Article/CreatedArticleToast.svelte";
-  import { afterNavigate, beforeNavigate } from "$app/navigation";
-  import type { AfterNavigate, BeforeNavigate } from "@sveltejs/kit";
-  import { isPageNavigation } from "$lib/utils/utils";
+  import MultiSelect from "svelte-multiselect";
 
   let html = "";
   let titel = "";
+  let selectedCategories: string[] = [];
   let article: Article;
   let showPreview = false;
-  let toastId: number;
+
+  const categories = [
+    "Belangrijk",
+    "Eigen organisaties",
+    "Wedstrijden",
+    "Indoor",
+    "Outdoor",
+  ];
 
   function togglePreview() {
     showPreview = !showPreview;
@@ -26,7 +32,7 @@
       0,
       dayjs(),
       $authStore!.username,
-      [],
+      selectedCategories,
       titel,
       "",
       html
@@ -35,7 +41,7 @@
   function createArticle() {
     refreshArticle();
     // TODO POST article to server
-    toastId = toast.push({
+    toast.push({
       component: {
         src: CreatedArticleToast,
         props: { articleID: article.id },
@@ -45,11 +51,10 @@
       initial: 0,
     });
   }
-
 </script>
 
 {#if showPreview}
-  <!-- Preview -->
+  <!-- Article preview -->
   <button class="btn btn-primary btn-xs normal-case" on:click={togglePreview}>
     Sluit preview
   </button>
@@ -63,7 +68,7 @@
     </button>
   </div>
   <form class="flex flex-col gap-2" on:submit={createArticle}>
-    <div class="form-control w-full max-w-xs">
+    <div class="form-control w-full max-w-sm">
       <label class="label" for="title">
         <span class="label-text">Titel van bericht:</span>
       </label>
@@ -71,8 +76,19 @@
         id="title"
         type="text"
         placeholder="Titel"
-        class="input input-bordered w-full max-w-xs"
+        class="input input-bordered w-full max-w-sm"
         bind:value={titel}
+      />
+    </div>
+    <div class="form-control w-full max-w-sm">
+      <label class="label" for="title">
+        <span class="label-text">Categorien:</span>
+      </label>
+      <MultiSelect
+        bind:selected={selectedCategories}
+        options={categories}
+        allowUserOptions={false}
+        placeholder={"Categorien"}
       />
     </div>
     <div class="form-control">
@@ -81,7 +97,7 @@
       </label>
       <Editor {html} on:change={(evt) => (html = evt.detail)} />
     </div>
-    <button class="btn btn-primary btn-md mt-2 max-w-xs"
+    <button class="btn btn-primary btn-md mt-2 max-w-sm"
       >Bericht aanmaken</button
     >
   </form>
@@ -90,4 +106,5 @@
 <style lang="postcss">
   @import "../../css/cl-editor.postcss";
   @import "../../css/usercontent.postcss";
+  @import "../../css/multiselect.postcss";
 </style>

@@ -1,0 +1,31 @@
+/* Integrate svelte-multiselect with Tailwind and dark mode */
+:global(.multiselect) {
+  @apply input input-bordered h-fit min-h-12 !important;
+}
+:global(.multiselect:focus-within) {
+  outline: 2px solid hsla(var(--bc) / 0.2);
+  outline-offset: 2px;
+}
+:global(.multiselect .selected li) {
+  @apply bg-base-200;
+}
+:global(.multiselect .selected .remove:hover path) {
+  @apply fill-primary;
+}
+:global(.multiselect .remove-all:hover path) {
+  @apply fill-primary;
+}
+:global(.multiselect .options) {
+  @apply bg-base-100;
+}
+
+@media (prefers-color-scheme: light) {
+  :global(.multiselect .options li:hover) {
+    background-color: #f2f2f2;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  :global(.multiselect .options li:hover) {
+    background-color: #373d49;
+  }
+}
