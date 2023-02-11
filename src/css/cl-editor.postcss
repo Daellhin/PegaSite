@@ -1,5 +1,6 @@
 /* Integrate CL editor with Tailwind and dark mode */
 :global(.cl) {
+  @apply overflow-hidden;
   :global(.cl-button svg) {
     display: initial !important;
   }
@@ -25,3 +26,32 @@
     @apply bg-base-200 !important;
   }
 }
+
+:global(.cl),
+:global(.cl .cl-actionbar) {
+  @apply rounded-t-lg;
+}
+:global(.cl),
+:global(.cl .cl-content) {
+  @apply rounded-b-lg;
+}
+
+// styles for modal editor but wil probably be unused
+/* :global(.cl-editor-modal .modal-box) {
+  @apply h-48;
+}
+:global(.cl-editor-modal .modal-box), :global(.cl-editor-modal .modal-title) {
+  @apply bg-red-600 border-none !important;
+}
+:global(.cl-editor-modal .modal-button) {
+  @apply btn;
+}
+:global(.cl-editor-modal .modal-submit) {
+  @apply btn-primary !important;
+}
+:global(.cl-editor-modal .modal-reset) {
+  @apply btn-secondary
+}
+:global(.cl-editor-modal .modal-label) {
+  @apply input !important;
+} */
