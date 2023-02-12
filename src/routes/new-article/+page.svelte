@@ -1,16 +1,18 @@
 <script lang="ts">
   import { Article } from "$lib/article";
   // https://github.com/nenadpnc/cl-editor
+  import { toast } from "@zerodevx/svelte-toast";
   import Editor from "cl-editor/src/Editor.svelte";
   import dayjs from "dayjs";
-  import ArticleComponent from "../../components/Article/Article.svelte";
-  import { authStore } from "../../stores/auth-store";
-  import { toast } from "@zerodevx/svelte-toast";
-  import CreatedArticleToast from "../../components/Article/CreatedArticleToast.svelte";
   import MultiSelect from "svelte-multiselect";
+  import ArticleComponent from "../../components/Article/Article.svelte";
+  import CreatedArticleToast from "../../components/Article/CreatedArticleToast.svelte";
+  import Dropzone from "../../components/Dropzone.svelte";
+  import { authStore } from "../../stores/auth-store";
 
   let html = "";
   let titel = "";
+  let uploadedImages: File[] = [];
   let selectedCategories: string[] = [];
   let article: Article;
   let showPreview = false;
@@ -76,10 +78,17 @@
         id="title"
         type="text"
         placeholder="Titel"
-        class="input input-bordered w-full max-w-sm"
+        class="input input-bordered border-2"
         bind:value={titel}
       />
     </div>
+    <div class="form-control w-full max-w-sm">
+      <label class="label" for="dropzone-file">
+        <span class="label-text">Afbeeldingen:</span>
+      </label>
+      <Dropzone bind:files={uploadedImages} accept={"image/*"} />
+    </div>
+
     <div class="form-control w-full max-w-sm">
       <label class="label" for="title">
         <span class="label-text">Categorien:</span>

@@ -1,6 +1,6 @@
 /* Integrate CL editor with Tailwind and dark mode */
 :global(.cl) {
-  @apply overflow-hidden;
+  @apply overflow-hidden shadow-none border-2 !important;
   :global(.cl-button svg) {
     display: initial !important;
   }
@@ -11,6 +11,7 @@
     }
   }
   @media (prefers-color-scheme: dark) {
+    border-color: #434955;
     :global(.cl-content) {
       @apply bg-base-100 !important;
     }
