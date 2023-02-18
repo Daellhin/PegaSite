@@ -11,8 +11,6 @@
   export let accept: string;
   export let dropzoneId = "file-dropzone";
 
-  let imageDataURLs: string[] = [];
-
   function onFileInput(e: Event & { currentTarget: HTMLInputElement }) {
     if (e.currentTarget.files) {
       const newFiles = Array.from(e.currentTarget.files).filter((e) =>
@@ -35,14 +33,6 @@
   function removeFile(toRemove: File) {
     files = files.filter((e) => e != toRemove);
   }
-  function setImages(files: File[]) {
-    imageDataURLs = Array(files.length);
-    files.forEach(async (file, index) => {
-      imageDataURLs[index] = await readFileAsDataURL(file);
-    });
-  }
-
-  $: setImages(files)
 </script>
 
 <div
@@ -84,7 +74,17 @@
         class:border-b-2={i < files.length - 1}
       >
         <div class="flex flex-row gap-2">
-          <img class="w-10 rounded-sm" src={imageDataURLs[i]} />
+          {#await readFileAsDataURL(file) then src}
+            <img class="w-10 rounded-sm" alt={file.name} {src} />
+          {:catch error}
+            <div
+              class="tooltip tooltip-right"
+              data-tip="Bestand kan niet getoond worden"
+            >
+              <Icon icon="fa6-solid:file-circle-exclamation" />
+              <div class="hidden">{error}</div>
+            </div>
+          {/await}
           <div class="my-auto">{file.name}</div>
         </div>
         <div
