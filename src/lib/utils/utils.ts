@@ -18,8 +18,6 @@ export function ignoreDragOver(event: DragEvent) {
 
 /**
  * Source: https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API/File_drag_and_drop
- * @param event 
- * @returns 
  */
 export function getFilesFromDragEvent(event: DragEvent) {
     event.preventDefault();
@@ -39,8 +37,6 @@ export function getFilesFromDragEvent(event: DragEvent) {
 
 /**
  * Source: https://stackoverflow.com/a/66807992
- * @param file 
- * @returns 
  */
 export function readFileAsDataURL(file: File) {
     return new Promise<string>((accept, reject) => {
@@ -55,4 +51,13 @@ export function readFileAsDataURL(file: File) {
         }
         reader.readAsDataURL(file);
     });
+}
+
+/**
+ * Source: https://stackoverflow.com/a/38935544
+ */
+export async function srcToFile(src: string, fileName: string, mimeType: string, fetcher = fetch) {
+    const fetched = await fetcher(src)
+    const buffer = await fetched.arrayBuffer()
+    return new File([buffer], fileName, { type: mimeType })
 }

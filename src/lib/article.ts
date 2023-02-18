@@ -6,7 +6,7 @@ export interface ArticleJson {
     author: string
     tags: string[]
     title: string
-    image: string
+    images: File[]
     content: string
 }
 
@@ -17,7 +17,7 @@ export class Article {
         public author: string,
         public tags: string[],
         public title: string,
-        public image: string,
+        public images: File[],
         public content: string
     ) { }
 
@@ -28,7 +28,7 @@ export class Article {
             json.author,
             json.tags,
             json.title,
-            json.image,
+            json.images,
             json.content
         )
     }

@@ -3,7 +3,7 @@
   import Time from "svelte-time";
   import FaRegCalendar from "svelte-icons/fa/FaRegCalendar.svelte";
   import FaUser from "svelte-icons/fa/FaUser.svelte";
-  import { clearHTMLTags } from "$lib/utils/utils";
+  import { clearHTMLTags, readFileAsDataURL } from "$lib/utils/utils";
 
   export let article: Article;
 </script>
@@ -12,7 +12,11 @@
   <div
     class="card w-80 bg-base-100 shadow-xl hover:brightness-90 transition-all duration-200 hover:-translate-y-1"
   >
-    <figure><img src={article.image} alt="Shoes" /></figure>
+    {#await readFileAsDataURL(article.images[0]) then src}
+      <figure>
+        <img {src} alt={article.images[0].name} />
+      </figure>
+    {/await}
     <div class="card-body p-5 gap-0">
       <!-- Title -->
       <h2 class="card-title">

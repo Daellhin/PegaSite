@@ -2,8 +2,11 @@
   import { Article } from "$lib/article";
   import Card from "../components/Card.svelte";
   import { ARTICLES_JSON } from "../data/articlesJson";
+  import type { PageData } from "./$types";
 
-  const articles = ARTICLES_JSON.map(Article.fromJson);
+  export let data: PageData;
+
+  const articles = data.articles;
 </script>
 
 <div class="">

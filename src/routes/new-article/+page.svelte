@@ -1,6 +1,5 @@
 <script lang="ts">
   import { Article } from "$lib/article";
-  // https://github.com/nenadpnc/cl-editor
   import { toast } from "@zerodevx/svelte-toast";
   import Editor from "cl-editor/src/Editor.svelte";
   import dayjs from "dayjs";
@@ -36,7 +35,7 @@
       $authStore!.username,
       selectedCategories,
       titel,
-      "",
+      [],
       html
     );
   }
