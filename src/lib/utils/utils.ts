@@ -16,8 +16,12 @@ export function ignoreDragOver(event: DragEvent) {
     event.preventDefault();
 }
 
+/**
+ * Source: https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API/File_drag_and_drop
+ * @param event 
+ * @returns 
+ */
 export function getFilesFromDragEvent(event: DragEvent) {
-    // Source: https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API/File_drag_and_drop
     event.preventDefault();
 
     if (!event.dataTransfer)
@@ -31,4 +35,24 @@ export function getFilesFromDragEvent(event: DragEvent) {
     }
     // Use DataTransfer interface to access the file(s)
     return Array.from(event.dataTransfer.files)
+}
+
+/**
+ * Source: https://stackoverflow.com/a/66807992
+ * @param file 
+ * @returns 
+ */
+export function readFileAsDataURL(file: File) {
+    return new Promise<string>((accept, reject) => {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            accept(event.target!.result as string);
+        };
+        /// XXX: rejecting with an event is rather unorthodox
+        reader.onabort = reader.onerror = (ev) => {
+            reject(ev);
+        }
+        reader.readAsDataURL(file);
+    });
 }

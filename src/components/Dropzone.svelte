@@ -1,10 +1,17 @@
+<!-- Component currently only supports previewing images -->
 <script lang="ts">
   import Icon from "@iconify/svelte";
-  import { getFilesFromDragEvent, ignoreDragOver } from "$lib/utils/utils";
+  import {
+    getFilesFromDragEvent,
+    ignoreDragOver,
+    readFileAsDataURL,
+  } from "$lib/utils/utils";
 
   export let files: File[];
   export let accept: string;
   export let dropzoneId = "file-dropzone";
+
+  let imageDataURLs: string[] = [];
 
   function onFileInput(e: Event & { currentTarget: HTMLInputElement }) {
     if (e.currentTarget.files) {
@@ -12,6 +19,7 @@
         e.type.match(accept)
       );
       files.push(...newFiles);
+
       files = files; // trigger update
     }
   }
@@ -20,12 +28,21 @@
     if (droppedFiles) {
       const newFiles = droppedFiles.filter((e) => e.type.match(accept));
       files.push(...newFiles);
+
       files = files; // trigger update
     }
   }
   function removeFile(toRemove: File) {
     files = files.filter((e) => e != toRemove);
   }
+  function setImages(files: File[]) {
+    imageDataURLs = Array(files.length);
+    files.forEach(async (file, index) => {
+      imageDataURLs[index] = await readFileAsDataURL(file);
+    });
+  }
+
+  $: setImages(files)
 </script>
 
 <div
@@ -66,7 +83,10 @@
         class="inline-flex items-center w-full px-4 py-2 text-sm border-color"
         class:border-b-2={i < files.length - 1}
       >
-        {file.name}
+        <div class="flex flex-row gap-2">
+          <img class="w-10 rounded-sm" src={imageDataURLs[i]} />
+          <div class="my-auto">{file.name}</div>
+        </div>
         <div
           class="btn btn-circle btn-xs hover:text-red-500 ml-auto"
           on:click={(e) => removeFile(file)}
