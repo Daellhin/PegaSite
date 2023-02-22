@@ -30,11 +30,15 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@popperjs/core": "^2.11.6",
 		"@tailwindcss/line-clamp": "^0.4.2",
 		"@zerodevx/svelte-toast": "1.0.0-rc.1",
 		"cl-editor": "^2.3.0",
+		"classnames": "^2.3.2",
 		"daisyui": "^2.50.0",
 		"dayjs": "^1.11.7",
+		"flowbite": "^1.6.3",
+		"flowbite-svelte": "^0.30.4",
 		"svelte-icons": "^2.1.0",
 		"svelte-multiselect": "^8.3.0"
 	}

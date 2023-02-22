@@ -3,6 +3,7 @@
   import Card from "../components/Card.svelte";
   import { ARTICLES_JSON } from "../data/articlesJson";
   import type { PageData } from "./$types";
+  import { Alert } from 'flowbite-svelte';
 
   export let data: PageData;
 

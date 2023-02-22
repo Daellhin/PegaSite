@@ -4,16 +4,22 @@
   import FaUser from "svelte-icons/fa/FaUser.svelte";
   import type { Article } from "$lib/article";
   import { readFileAsDataURL } from "$lib/utils/utils";
-  import { goto } from "$app/navigation";
-  import Carousel from "../Carousel.svelte";
+  import { Carousel } from "flowbite-svelte";
+
+  const images = [
+    {
+      id: 0,
+      name: "Cosmic timetraveler",
+      imgurl: "/images/temp.webp",
+    },
+    {
+      id: 1,
+      name: "Cosmic timetraveler",
+      imgurl: "/images/shoe.jpg",
+    },
+  ];
 
   export let article: Article;
-
-  function trigger(event:any) {
-    event.preventDefault();
-    goto("#item4")
-
-  }
 </script>
 
 <!-- Title -->
@@ -35,44 +41,20 @@
     <span class="opacity-60 text-md">{article.author}</span>
   </div>
 </div>
+
 <!-- Tags -->
 <div class="flex flex-row gap-2 mt-2">
   {#each article.tags as tag}
     <div class="badge badge-primary badge-lg">{tag}</div>
   {/each}
 </div>
-<!-- Image -->
-<!-- <div class="carousel w-full">
-  <div id="item1" class="carousel-item w-full">
-    {#await readFileAsDataURL(article.images[0]) then src}
-      <img {src} alt={article.images[0].name} class="w-full" />
-    {:catch error}
-      <div>{error}</div>
-    {/await}
-  </div>
-  <div id="item2" class="carousel-item w-full">
-    {#await readFileAsDataURL(article.images[0]) then src}
-      <img {src} alt={article.images[0].name} class="w-full" />
-    {/await}
-  </div>
-  <div id="item3" class="carousel-item w-full">
-    {#await readFileAsDataURL(article.images[0]) then src}
-      <img {src} alt={article.images[0].name} class="w-full" />
-    {/await}
-  </div>
-  <div id="item4" class="carousel-item w-full">
-    {#await readFileAsDataURL(article.images[0]) then src}
-      <img {src} alt={article.images[0].name} class="w-full" />
-    {/await}
+
+<!-- Carousel -->
+<div class="custom-brackground my-2 rounded-lg">
+  <div class="max-w-xl mx-auto custom-carousel">
+    <Carousel {images} showCaptions={false} showThumbs={false} />
   </div>
 </div>
-<div class="flex justify-center w-full py-2 gap-2">
-  <a href="#item1" class="btn btn-xs" on:click={trigger}>1</a>
-  <a href="#item2" class="btn btn-xs" on:click={trigger}>2</a>
-  <a href="#item3" class="btn btn-xs" on:click={trigger}>3</a>
-  <a href="#item4" class="btn btn-xs" on:click={trigger}>4</a>
-</div> -->
-
 
 <!-- Conent -->
 <div class="usercontent">
@@ -81,4 +63,16 @@
 
 <style lang="postcss">
   @import "../../css/usercontent.postcss";
+
+  .custom-carousel :global(img) {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    border-radius: 0.5em;
+  }
+
+  .custom-brackground {
+    @apply bg-base-200;
+  }
 </style>
