@@ -24,29 +24,31 @@
 
 <!-- Title -->
 <h1 class="text-5xl">{article.title}</h1>
-<!-- Article data -->
-<div class="flex flex-row gap-3 ml-1">
-  <!-- Time -->
-  <div class="flex flex-row gap-1 items-center">
-    <div class="w-4 h-4">
-      <FaRegCalendar />
-    </div>
-    <Time class="opacity-60 text-md" timestamp={article.timestamp} />
-  </div>
-  <!-- Metadata -->
-  <div class="flex flex-row gap-1 items-center">
-    <div class="w-4 h-4">
-      <FaUser />
-    </div>
-    <span class="opacity-60 text-md">{article.author}</span>
-  </div>
-</div>
 
-<!-- Tags -->
-<div class="flex flex-row gap-2 mt-2">
-  {#each article.tags as tag}
-    <div class="badge badge-primary badge-lg">{tag}</div>
-  {/each}
+<div class="flex flex-col sm:flex-row sm:gap-3 ">
+  <!-- Article data -->
+  <div class="flex flex-row gap-3 ml-1 h-auto my-auto">
+    <!-- Time -->
+    <div class="flex flex-row gap-1 items-center">
+      <div class="w-4 h-4">
+        <FaRegCalendar />
+      </div>
+      <Time class="opacity-60 text-md" timestamp={article.timestamp} />
+    </div>
+    <!-- Metadata -->
+    <div class="flex flex-row gap-1 items-center">
+      <div class="w-4 h-4">
+        <FaUser />
+      </div>
+      <span class="opacity-60 text-md">{article.author}</span>
+    </div>
+  </div>
+  <!-- Tags -->
+  <div class="flex flex-row gap-2 mt-2">
+    {#each article.tags as tag}
+      <div class="badge badge-primary badge-lg">{tag}</div>
+    {/each}
+  </div>
 </div>
 
 <!-- Carousel -->
@@ -56,7 +58,7 @@
   </div>
 </div>
 
-<!-- Conent -->
+<!-- Content -->
 <div class="usercontent">
   {@html article.content}
 </div>
