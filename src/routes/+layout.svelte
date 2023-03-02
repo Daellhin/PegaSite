@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import "../app.css";
   // import NavBar from "../components/NavBar/NavBar.svelte";
   import EventCalendar from "../components/EventCalendar.svelte";
@@ -6,9 +6,19 @@
   import MenuVertical from "../components/Layout/MenuVertical.svelte";
   import Navbar from "../components/Layout/Navbar.svelte";
   import { SvelteToast } from "@zerodevx/svelte-toast";
+  import { writable } from "svelte/store";
+  import type { Article } from "$lib/article";
+  import type { LayoutData } from "./$types";
+  import { setContext } from "svelte";
+
+  export let data: LayoutData;
 
   const drawerID = "layout-drawer";
   const loginModalID = "login-modal";
+
+  export const articleStore = writable<Article[]>([]);
+  $: articleStore.set(data.articles);
+  setContext("articleStore", articleStore);
 </script>
 
 <div class="drawer">

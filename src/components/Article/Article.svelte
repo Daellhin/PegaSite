@@ -5,11 +5,11 @@
   import type { Article } from "$lib/article";
   import { Carousel } from "flowbite-svelte";
 
-  export let article: Article;
+  export let articler: Article;
 </script>
 
 <!-- Title -->
-<h1 class="text-4xl font-semibold">{article.title || "Geen titel"}</h1>
+<h1 class="text-4xl font-semibold">{articler.title || "Geen titel"}</h1>
 
 <div class="sm:flex flex-row gap-3 items-center justify">
   <!-- Article data -->
@@ -19,26 +19,26 @@
       <div class="w-4 h-4">
         <FaRegCalendar />
       </div>
-      <Time class="opacity-60 text-md" timestamp={article.timestamp} />
+      <Time class="opacity-60 text-md" timestamp={articler.timestamp} />
     </div>
     <!-- Metadata -->
     <div class="flex flex-row gap-1 items-center">
       <div class="w-4 h-4">
         <FaUser />
       </div>
-      <span class="opacity-60 text-md">{article.author}</span>
+      <span class="opacity-60 text-md">{articler.author}</span>
     </div>
   </div>
   <!-- Tags -->
   <div class="flex flex-row gap-2">
-    {#each article.tags as tag}
+    {#each articler.tags as tag}
       <div class="badge badge-primary badge-lg">{tag}</div>
     {/each}
   </div>
 </div>
 
 <!-- Carousel -->
-{#await Promise.all(article.createCarouselImages()) then images}
+{#await Promise.all(articler.createCarouselImages()) then images}
   {#if images.length > 0}
     <div class="bg-base-200 my-2 rounded-lg">
       <div class="max-w-xl mx-auto custom-carousel">
@@ -56,7 +56,7 @@
 
 <!-- Content -->
 <div class="usercontent">
-  {@html article.content ||"Geen inhoud"}
+  {@html articler.content ||"Geen inhoud"}
 </div>
 
 <style lang="postcss">
