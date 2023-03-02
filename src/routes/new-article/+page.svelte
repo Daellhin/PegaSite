@@ -3,7 +3,9 @@
   import { toast } from "@zerodevx/svelte-toast";
   import Editor from "cl-editor/src/Editor.svelte";
   import dayjs from "dayjs";
+  import { getContext } from "svelte";
   import MultiSelect from "svelte-multiselect";
+  import type { Writable } from "svelte/store";
   import ArticleComponent from "../../components/Article/Article.svelte";
   import CreatedArticleToast from "../../components/Article/CreatedArticleToast.svelte";
   import Dropzone from "../../components/Dropzone.svelte";
@@ -41,6 +43,9 @@
   }
   function createArticle() {
     refreshArticle();
+    article.id = $articles.length;
+    $articles.push(article);
+    $articles =  $articles;
     // TODO POST article to server
     toast.push({
       component: {
@@ -52,6 +57,8 @@
       initial: 0,
     });
   }
+  
+  const articles:  Writable<Article[]> = getContext("articleStore");
 </script>
 
 {#if showPreview}
@@ -59,7 +66,7 @@
   <button class="btn btn-primary btn-xs normal-case" on:click={togglePreview}>
     Sluit preview
   </button>
-  <ArticleComponent articler={article} />
+  <ArticleComponent article={article} />
 {:else}
   <!-- Article editor -->
   <div class="flex flex-row gap-3 items-center mb-1">

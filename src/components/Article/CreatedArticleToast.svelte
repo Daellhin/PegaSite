@@ -12,7 +12,7 @@
     toast.pop(toastId);
   }
   function gotoArticle() {
-    goto("/article/0");
+    goto(`/article/${articleID}`);
   }
   beforeNavigate(async (navigation: BeforeNavigate) => {
     if (isPageNavigation(navigation)) removeToast();

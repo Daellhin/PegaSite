@@ -10,10 +10,10 @@
 
 <a href="/article/{article.id}">
   <div
-    class="card w-80 bg-base-100 shadow-xl hover:brightness-90 transition-all duration-200 hover:-translate-y-1"
+    class="card w-80 h-full bg-base-100 shadow-xl hover:brightness-90 transition-all duration-200 hover:-translate-y-1"
   >
     {#await readFileAsDataURL(article.images[0]) then src}
-      <figure>
+      <figure class="bg-base-200 h-48">
         <img {src} alt={article.images[0].name} />
       </figure>
     {/await}

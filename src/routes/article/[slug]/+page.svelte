@@ -9,4 +9,4 @@
   const articles: Writable<ArticleType[]> = getContext("articleStore");
 </script>
 
-<Article articler={$articles[data.id]} />
+<Article article={$articles[data.id]} />
