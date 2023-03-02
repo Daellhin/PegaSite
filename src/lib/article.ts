@@ -1,4 +1,5 @@
 import dayjs, { Dayjs } from "dayjs"
+import { readFileAsDataURL } from "./utils/utils"
 
 export interface ArticleJson {
     id: number
@@ -35,6 +36,16 @@ export class Article {
 
     public isRecent(days = 5) {
         return this.timestamp.isAfter(dayjs().subtract(days, 'day'));
+    }
+
+    public createCarouselImages() {
+        return this.images.map(async(e, index) => {
+            return {
+                id: index,
+                name: e.name,
+                imgurl:await readFileAsDataURL(e),
+            }
+        });
     }
 
 }

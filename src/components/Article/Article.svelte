@@ -3,31 +3,17 @@
   import FaRegCalendar from "svelte-icons/fa/FaRegCalendar.svelte";
   import FaUser from "svelte-icons/fa/FaUser.svelte";
   import type { Article } from "$lib/article";
-  import { readFileAsDataURL } from "$lib/utils/utils";
   import { Carousel } from "flowbite-svelte";
-
-  const images = [
-    {
-      id: 0,
-      name: "Cosmic timetraveler",
-      imgurl: "/images/temp.webp",
-    },
-    {
-      id: 1,
-      name: "Cosmic timetraveler",
-      imgurl: "/images/shoe.jpg",
-    },
-  ];
 
   export let article: Article;
 </script>
 
 <!-- Title -->
-<h1 class="text-5xl">{article.title}</h1>
+<h1 class="text-4xl font-semibold">{article.title || "Geen titel"}</h1>
 
-<div class="flex flex-col sm:flex-row sm:gap-3 ">
+<div class="sm:flex flex-row gap-3 items-center justify">
   <!-- Article data -->
-  <div class="flex flex-row gap-3 ml-1 h-auto my-auto">
+  <div class="flex flex-row gap-3 ml-1">
     <!-- Time -->
     <div class="flex flex-row gap-1 items-center">
       <div class="w-4 h-4">
@@ -44,7 +30,7 @@
     </div>
   </div>
   <!-- Tags -->
-  <div class="flex flex-row gap-2 mt-2">
+  <div class="flex flex-row gap-2">
     {#each article.tags as tag}
       <div class="badge badge-primary badge-lg">{tag}</div>
     {/each}
@@ -52,15 +38,25 @@
 </div>
 
 <!-- Carousel -->
-<div class="custom-brackground my-2 rounded-lg">
-  <div class="max-w-xl mx-auto custom-carousel">
-    <Carousel {images} showCaptions={false} showThumbs={false} />
-  </div>
-</div>
+{#await Promise.all(article.createCarouselImages()) then images}
+  {#if images.length > 0}
+    <div class="bg-base-200 my-2 rounded-lg">
+      <div class="max-w-xl mx-auto custom-carousel">
+        <Carousel
+          {images}
+          showCaptions={false}
+          showThumbs={false}
+          showIndicators={images.length > 1}
+          slideControls={images.length > 1}
+        />
+      </div>
+    </div>
+  {/if}
+{/await}
 
 <!-- Content -->
 <div class="usercontent">
-  {@html article.content}
+  {@html article.content ||"Geen inhoud"}
 </div>
 
 <style lang="postcss">
@@ -72,9 +68,5 @@
     left: 50% !important;
     transform: translate(-50%, -50%) !important;
     border-radius: 0.5em;
-  }
-
-  .custom-brackground {
-    @apply bg-base-200;
   }
 </style>

@@ -30,12 +30,12 @@
   }
   function refreshArticle() {
     article = new Article(
-      0,
+      -1, // id should be asigned by server
       dayjs(),
       $authStore!.username,
       selectedCategories,
       titel,
-      [],
+      uploadedImages,
       html
     );
   }

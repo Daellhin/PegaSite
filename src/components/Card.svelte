@@ -22,7 +22,7 @@
       <h2 class="card-title">
         {article.title}
         {#if article.isRecent()}
-          <div class="badge badge-secondary">Nieuw</div>
+          <div class="badge badge-primary">Nieuw</div>
         {/if}
       </h2>
       <!-- Metadata -->
@@ -40,7 +40,7 @@
       </div>
       <!-- Content -->
       <p class="my-2 line-clamp-2">
-        <!-- Using html results in text overflow flash -->
+        <!-- Using @html results in text overflow flash -->
         <!-- {@html article.content} -->
         {clearHTMLTags(article.content)}
       </p>
