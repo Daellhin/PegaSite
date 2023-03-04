@@ -1,14 +1,9 @@
 <script lang="ts">
-  import FaSignInAlt from "svelte-icons/fa/FaSignInAlt.svelte";
   import { combinedLinksFromJson, Link, LinkGroup } from "$lib/link";
   import { LINKS_JSON } from "../../data/linksJson";
 
-  export let drawerID: string;
-  export let loginModalID: string;
-
   const links = combinedLinksFromJson(LINKS_JSON);
 
-  // -- Vertical --
   function createVerticalListGroupOrItem(link: Link | LinkGroup) {
     if (link instanceof LinkGroup) {
       return /* html */ `

@@ -2,8 +2,6 @@ import dayjs from "dayjs"
 import type { Article, ArticleJson } from "$lib/article";
 import { srcToFile } from "$lib/utils/utils";
 
-const imageURL = "C:/Users/lorin/git/PegaSite/static/images/shoe.jpg"
-
 export const ARTICLE: ArticleJson = {
     id: -1,
     timestamp: dayjs(),

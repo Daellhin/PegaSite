@@ -14,18 +14,17 @@
 
 {#if $authStore}
   <div title="Profiel" class="dropdown dropdown-end">
-    <label tabindex="0" class="btn btn-ghost gap-2 normal-case">
+    <button tabindex="0" class="btn btn-ghost gap-2 normal-case">
       <div class="w-5 h-5"><FaUser /></div>
       <div class="w-4 h-4 text-gray-500"><FaChevronDown /></div>
-    </label>
+    </button>
     <ul
-      tabindex="0"
       class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
     >
       <li class="menu-title">
         <span>{$authStore.username}</span>
       </li>
-      <li><a>Profiel</a></li>
+      <li><a href="/profiel">Profiel</a></li>
       <li><a href="/dashboard">Dashboard</a></li>
       <li class="flex flex-row gap-1">
         <button on:click={signOut} class="w-full">

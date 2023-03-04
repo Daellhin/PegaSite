@@ -2,6 +2,7 @@
   import Time from "svelte-time";
   import FaRegCalendar from "svelte-icons/fa/FaRegCalendar.svelte";
   import FaUser from "svelte-icons/fa/FaUser.svelte";
+  import FaPen from "svelte-icons/fa/FaPen.svelte";
   import type { Article } from "$lib/article";
   import { Carousel } from "flowbite-svelte";
 
@@ -9,7 +10,12 @@
 </script>
 
 <!-- Title -->
-<h1 class="text-4xl font-semibold">{article.title || "Geen titel"}</h1>
+<div class="flex flex-row items-center">
+  <h1 class="text-4xl font-semibold">{article.title || "Geen titel"}</h1>
+  <a class="ml-auto btn btn-ghost" href="/dashboard">
+    <div class="w-5 h-5"><FaPen /></div>
+  </a>
+</div>
 
 <div class="sm:flex flex-row gap-3 items-center justify">
   <!-- Article data -->
@@ -56,7 +62,7 @@
 
 <!-- Content -->
 <div class="usercontent">
-  {@html article.content ||"Geen inhoud"}
+  {@html article.content || "Geen inhoud"}
 </div>
 
 <style lang="postcss">
