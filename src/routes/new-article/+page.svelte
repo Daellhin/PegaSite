@@ -96,7 +96,7 @@
     </div>
 
     <div class="form-control w-full max-w-sm">
-      <label class="label" for="title">
+      <label class="label" for="multiselect">
         <span class="label-text">Categorien:</span>
       </label>
       <MultiSelect
@@ -107,7 +107,7 @@
       />
     </div>
     <div class="form-control">
-      <label class="label">
+      <label class="label" for="editor">
         <span class="label-text">Inhoud van bericht:</span>
       </label>
       <Editor {html} on:change={(evt) => (html = evt.detail)} />

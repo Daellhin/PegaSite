@@ -87,12 +87,12 @@
           {/await}
           <div class="my-auto">{file.name}</div>
         </div>
-        <div
+        <button
           class="btn btn-circle btn-xs hover:text-red-500 ml-auto"
           on:click={(e) => removeFile(file)}
         >
           <Icon icon="fa6-solid:xmark" />
-        </div>
+        </button>
       </div>
     {/each}
   </div>

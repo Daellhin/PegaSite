@@ -15,7 +15,7 @@
 <div class="flex flex-col gap-2">
   {#each events as event}
     <a
-      href="/events"
+      href="/"
       class="btn btn-ghost px-4 py-1 h-auto text-start normal-case justify-start bg-base-200 hover:bg-base-300 custom-dark-hover"
     >
       <div class="flex flex-row j">
