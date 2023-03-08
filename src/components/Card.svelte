@@ -12,11 +12,13 @@
   <div
     class="card w-80 h-full bg-base-100 shadow-xl hover:brightness-90 transition-all duration-200 hover:-translate-y-1"
   >
-    {#await readFileAsDataURL(article.images[0]) then src}
-      <figure class="bg-base-200 h-48">
-        <img {src} alt={article.images[0].name} />
-      </figure>
-    {/await}
+    {#if article.images.length > 0}
+      {#await readFileAsDataURL(article.images[0]) then src}
+        <figure class="bg-base-200 h-48">
+          <img {src} alt={article.images[0].name} />
+        </figure>
+      {/await}
+    {/if}
     <div class="card-body p-5 gap-0">
       <!-- Title -->
       <h2 class="card-title">

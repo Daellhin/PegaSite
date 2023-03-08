@@ -1,19 +1,20 @@
 import dayjs, { type Dayjs } from "dayjs"
 import { readFileAsDataURL } from "./utils/utils"
+import type { Timestamp } from "@firebase/firestore/lite";
 
 export interface ArticleJson {
-    id: number
-    timestamp: Dayjs
+    id: string
+    timestamp: Timestamp
     author: string
     tags: string[]
     title: string
-    images: File[]
+    // images: File[]
     content: string
 }
 
 export class Article {
     constructor(
-        public id: number,
+        public id: string,
         public timestamp: Dayjs,
         public author: string,
         public tags: string[],
@@ -25,11 +26,12 @@ export class Article {
     static fromJson(json: ArticleJson) {
         return new Article(
             json.id,
-            json.timestamp,
+            dayjs(json.timestamp.toMillis()),
             json.author,
             json.tags,
             json.title,
-            json.images,
+            [],
+            // json.images,
             json.content
         )
     }
@@ -39,11 +41,12 @@ export class Article {
     }
 
     public createCarouselImages() {
-        return this.images.map(async(e, index) => {
+        return this.images.map(async (e, index) => {
             return {
                 id: index,
                 name: e.name,
-                imgurl:await readFileAsDataURL(e),
+                // imgurl:await readFileAsDataURL(e),
+                imgurl: "images/shoe.jpg"
             }
         });
     }

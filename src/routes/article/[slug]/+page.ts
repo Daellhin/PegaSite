@@ -1,9 +1,7 @@
 import type { PageLoad } from './$types';
 
-export const load = (async ({ fetch, params }) => {
-  const result = parseInt(params.slug);
+export const load = (async ({ params }) => {
   return {
-    id: result
+    id: params.slug
   };
-  // throw error(404, 'Not found');
 }) satisfies PageLoad;

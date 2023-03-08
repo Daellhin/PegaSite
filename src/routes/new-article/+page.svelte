@@ -11,6 +11,8 @@
   import Dropzone from "../../components/Dropzone.svelte";
   import { authStore } from "../../stores/auth-store";
 
+  // TODO https://stackoverflow.com/a/66515345 (Generate unique ID)
+
   let html = "";
   let titel = "";
   let uploadedImages: File[] = [];
