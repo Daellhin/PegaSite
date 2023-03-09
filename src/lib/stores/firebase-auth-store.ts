@@ -13,7 +13,7 @@ function createAuth() {
 
     async function init() {
       if (browser) {
-        const { firebaseApp } = await import('$lib/firebase/firebase-app')
+        const { firebaseApp } = await import('$lib/firebase/firebase')
         const { getAuth, onAuthStateChanged } = await import('firebase/auth')
 
         auth = getAuth(firebaseApp)

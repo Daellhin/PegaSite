@@ -1,7 +1,7 @@
 import { Article, type ArticleJson } from '$lib/article';
 import { browser } from '$app/environment'
 import { readable } from 'svelte/store'
-import { Collections } from '$lib/firebase/firestore';
+import { Collections } from '$lib/firebase/firebase';
 
 function createArticleStore() {
   const { subscribe } = readable([] as Article[], set => {
@@ -10,7 +10,7 @@ function createArticleStore() {
 
     async function init() {
       if (browser) {
-        const { firebaseApp } = await import('$lib/firebase/firebase-app')
+        const { firebaseApp } = await import('$lib/firebase/firebase')
         const { getFirestore, collection, query, orderBy, limit, onSnapshot } = await import('firebase/firestore')
         const firestore = getFirestore(firebaseApp)
 

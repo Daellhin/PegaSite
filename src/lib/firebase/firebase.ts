@@ -1,6 +1,6 @@
-import { deleteApp, getApp, getApps, initializeApp } from '@firebase/app';
+import { initializeApp } from 'firebase/app'
 
-const firebaseConfig = {
+export const firebaseApp = initializeApp({
     apiKey: import.meta.env.VITE_APIKEY,
     authDomain: import.meta.env.VITE_AUTHDOMAIN,
     projectId: import.meta.env.VITE_PROJECTID,
@@ -8,12 +8,11 @@ const firebaseConfig = {
     messagingSenderId: import.meta.env.VITE_MESSAGINGSENDERID,
     appId: import.meta.env.VITE_APPID,
     measurementId: import.meta.env.VITE_MEASUREMENTID,
-};
+})
 
-export function initFirebase() {
-    if (!getApps().length) {
-        return initializeApp(firebaseConfig);
-    }
-    deleteApp(getApp());
-    return initializeApp(firebaseConfig)
+/**
+ * Firebase Collection names
+ */
+export class Collections {
+    static ARTICLES = "articles";
 }
