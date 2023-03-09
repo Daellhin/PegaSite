@@ -12,6 +12,8 @@
   import { authStore } from "../../stores/auth-store";
 
   // TODO https://stackoverflow.com/a/66515345 (Generate unique ID)
+  // TODO use svelte stores https://www.captaincodeman.com/lazy-loading-firebase-with-sveltekit
+  // https://www.captaincodeman.com/lazy-loading-and-querying-firestore-with-sveltekit
 
   let html = "";
   let titel = "";

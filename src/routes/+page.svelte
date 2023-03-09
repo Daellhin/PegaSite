@@ -7,7 +7,6 @@
   const articles: Writable<Article[]> = getContext("articleStore");
 </script>
 
-<!--  -->
 <div>
   <h1 class="text-2xl font-bold mb-2">Nieuws</h1>
   <div class="flex gap-4 flex-wrap">
