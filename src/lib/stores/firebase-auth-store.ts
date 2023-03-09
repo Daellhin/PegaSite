@@ -13,15 +13,14 @@ function createAuth() {
 
     async function init() {
       if (browser) {
-        const { app } = await import('$lib/firebase/firebase-app')
+        const { firebaseApp } = await import('$lib/firebase/firebase-app')
         const { getAuth, onAuthStateChanged } = await import('firebase/auth')
 
-        auth = getAuth(app)
+        auth = getAuth(firebaseApp)
 
         unsubscribe = onAuthStateChanged(auth, set)
       }
     }
-
     init()
 
     return unsubscribe

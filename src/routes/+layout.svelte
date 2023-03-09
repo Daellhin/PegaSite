@@ -1,22 +1,16 @@
 <script lang="ts">
-  import "../app.css";
-  import type { Article } from "$lib/article";
+  import { articleStore } from "$lib/stores/firebase-article-store";
   import { SvelteToast } from "@zerodevx/svelte-toast";
   import { setContext } from "svelte";
-  import { writable } from "svelte/store";
+  import "../app.css";
   import EventCalendar from "../components/EventCalendar.svelte";
   import Footer from "../components/Layout/Footer.svelte";
   import MenuVertical from "../components/Layout/MenuVertical.svelte";
   import Navbar from "../components/Layout/Navbar.svelte";
-  import type { LayoutData } from "./$types";
-
-  export let data: LayoutData;
 
   const drawerID = "layout-drawer";
   const loginModalID = "login-modal";
 
-  export const articleStore = writable<Article[]>([]);
-  $: articleStore.set(data.articles);
   setContext("articleStore", articleStore);
 </script>
 

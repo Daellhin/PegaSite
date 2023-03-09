@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import type { EventJson } from './../lib/event';
+import type { EventJson } from '$lib/event';
 
 export const EVENTS_JSON: EventJson[] = [
     {

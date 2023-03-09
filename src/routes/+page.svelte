@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { Article } from "$lib/article";
+  import { articleStore } from "$lib/stores/firebase-article-store";
   import { getContext } from "svelte";
   import type { Writable } from "svelte/store";
   import Card from "../components/Card.svelte";

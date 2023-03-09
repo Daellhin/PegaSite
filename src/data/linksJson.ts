@@ -1,4 +1,4 @@
-import type { LinkJson, LinkGroupJson } from './../lib/link';
+import type { LinkJson, LinkGroupJson } from '$lib/link';
 
 export const LINKS_JSON: (LinkJson | LinkGroupJson)[] = [
     {
