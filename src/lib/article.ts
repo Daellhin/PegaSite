@@ -1,6 +1,5 @@
-import dayjs, { type Dayjs } from "dayjs"
-import { readFileAsDataURL } from "./utils/utils"
 import type { Timestamp } from "@firebase/firestore/lite";
+import dayjs, { type Dayjs } from "dayjs";
 
 export interface ArticleJson {
     id: string
@@ -8,7 +7,7 @@ export interface ArticleJson {
     author: string
     tags: string[]
     title: string
-    // images: File[]
+    images: string[]
     content: string
 }
 
@@ -19,7 +18,7 @@ export class Article {
         public author: string,
         public tags: string[],
         public title: string,
-        public images: File[],
+        public images: string[],
         public content: string
     ) { }
 
@@ -30,8 +29,7 @@ export class Article {
             json.author,
             json.tags,
             json.title,
-            [],
-            // json.images,
+            json.images,
             json.content
         )
     }
@@ -44,9 +42,8 @@ export class Article {
         return this.images.map(async (e, index) => {
             return {
                 id: index,
-                name: e.name,
-                // imgurl:await readFileAsDataURL(e),
-                imgurl: "images/shoe.jpg"
+                name: "name",
+                imgurl: e
             }
         });
     }

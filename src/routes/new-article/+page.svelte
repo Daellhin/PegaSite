@@ -9,7 +9,6 @@
   import ArticleComponent from "../../components/Article/Article.svelte";
   import CreatedArticleToast from "../../components/Article/CreatedArticleToast.svelte";
   import Dropzone from "../../components/Dropzone.svelte";
-  import { authStore } from "../../stores/auth-store";
 
   // TODO https://stackoverflow.com/a/66515345 (Generate unique ID)
   // TODO use svelte stores https://www.captaincodeman.com/lazy-loading-firebase-with-sveltekit
@@ -36,18 +35,18 @@
   }
   function refreshArticle() {
     article = new Article(
-      -1, // id should be asigned by server
+      "-1", // id should be asigned by server
       dayjs(),
-      $authStore!.username,
+      "User",
       selectedCategories,
       titel,
-      uploadedImages,
+      [],
       html
     );
   }
   function createArticle() {
     refreshArticle();
-    article.id = $articles.length;
+    article.id = $articles.length.toString();
     $articles.push(article);
     $articles =  $articles;
     // TODO POST article to server

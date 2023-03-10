@@ -1,10 +1,9 @@
-import dayjs from "dayjs"
-import type { Article, ArticleJson } from "$lib/article";
-import { srcToFile } from "$lib/utils/utils";
+import type { ArticleJson } from "$lib/article";
+import { Timestamp } from "firebase/firestore";
 
 export const ARTICLE: ArticleJson = {
-    id: -1,
-    timestamp: dayjs(),
+    id: "1",
+    timestamp: new Timestamp(Math.round(Date.now() / 1000), 0),
     author: "Lorin Speybrouck",
     tags: ["Belangrijk", "Algemeen"],
     title: "Clubfeest 2023",
@@ -13,7 +12,7 @@ export const ARTICLE: ArticleJson = {
 };
 
 export const ARTICLES_JSON: ArticleJson[] = Array(5).fill(ARTICLE)
-    .map((e: Article) => {
+    .map((e: ArticleJson) => {
         const newObj = Object.assign({}, e);
         newObj.id += 1;
         return newObj;
