@@ -1,26 +1,19 @@
 <script lang="ts">
   import { Article } from "$lib/article";
-  import { authStore } from "$lib/stores/firebase-auth-store";
+  import { articleStore } from "$lib/stores/firebase-article-store";
   import { readFileAsDataURL } from "$lib/utils/utils";
   import { toast } from "@zerodevx/svelte-toast";
   import Editor from "cl-editor/src/Editor.svelte";
   import dayjs from "dayjs";
-  import { getContext } from "svelte";
   import MultiSelect from "svelte-multiselect";
-  import type { Writable } from "svelte/store";
   import ArticleComponent from "../../components/Article/Article.svelte";
   import CreatedArticleToast from "../../components/Article/CreatedArticleToast.svelte";
   import Dropzone from "../../components/Dropzone.svelte";
-
-  // TODO https://stackoverflow.com/a/66515345 (Generate unique ID)
-  // TODO use svelte stores https://www.captaincodeman.com/lazy-loading-firebase-with-sveltekit
-  // https://www.captaincodeman.com/lazy-loading-and-querying-firestore-with-sveltekit
 
   let html = "";
   let titel = "";
   let uploadedImages: File[] = [];
   let selectedCategories: string[] = [];
-  let article: Article;
   let showPreview = false;
 
   const categories = [
@@ -34,23 +27,20 @@
   function togglePreview() {
     showPreview = !showPreview;
   }
-  async function refreshArticle() {
-    return (article = new Article(
-      "-1", // id should be asigned by server
+  async function createPreviewArticle() {
+    return new Article(
+      "-1", // temporary id
       dayjs(),
       "Admin", // TODO give users a display name first
       selectedCategories,
       titel,
       await Promise.all(uploadedImages.map(readFileAsDataURL)),
       html
-    ));
+    );
   }
-  function createArticle() {
-    refreshArticle();
-    article.id = $articles.length.toString();
-    $articles.push(article);
-    $articles = $articles;
-    // TODO POST article to server
+  async function saveArticle() {
+    const article = await createPreviewArticle();
+    await articleStore.addArticle(article);
     toast.push({
       component: {
         src: CreatedArticleToast,
@@ -61,19 +51,17 @@
       initial: 0,
     });
   }
-
-  const articles: Writable<Article[]> = getContext("articleStore");
 </script>
 
 {#if showPreview}
-  {#await refreshArticle()}
+  <!-- Article preview -->
+  {#await createPreviewArticle()}
     <div>Loadig</div>
-  {:then previeww}
-    <!-- Article preview -->
+  {:then article}
     <button class="btn btn-primary btn-xs normal-case" on:click={togglePreview}>
       Sluit preview
     </button>
-    <ArticleComponent article={previeww} />
+    <ArticleComponent {article} />
   {/await}
 {:else}
   <!-- Article editor -->
@@ -83,7 +71,7 @@
       Toon preview
     </button>
   </div>
-  <form class="flex flex-col gap-2" on:submit={createArticle}>
+  <form class="flex flex-col gap-2" on:submit={saveArticle}>
     <div class="form-control w-full max-w-sm">
       <label class="label" for="title">
         <span class="label-text">Titel van bericht:</span>

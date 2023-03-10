@@ -2,6 +2,9 @@ import { browser } from '$app/environment'
 import type { Auth, User } from 'firebase/auth'
 import { readable } from 'svelte/store'
 
+/**
+ * Source: https://www.captaincodeman.com/lazy-loading-firebase-with-sveltekit
+ */
 function createAuth() {
   let auth: Auth
 
