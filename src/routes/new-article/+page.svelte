@@ -1,5 +1,7 @@
 <script lang="ts">
   import { Article } from "$lib/article";
+  import { authStore } from "$lib/stores/firebase-auth-store";
+  import { readFileAsDataURL } from "$lib/utils/utils";
   import { toast } from "@zerodevx/svelte-toast";
   import Editor from "cl-editor/src/Editor.svelte";
   import dayjs from "dayjs";
@@ -31,24 +33,23 @@
 
   function togglePreview() {
     showPreview = !showPreview;
-    if (showPreview) refreshArticle();
   }
-  function refreshArticle() {
-    article = new Article(
+  async function refreshArticle() {
+    return (article = new Article(
       "-1", // id should be asigned by server
       dayjs(),
-      "User",
+      "Admin", // TODO give users a display name first
       selectedCategories,
       titel,
-      [],
+      await Promise.all(uploadedImages.map(readFileAsDataURL)),
       html
-    );
+    ));
   }
   function createArticle() {
     refreshArticle();
     article.id = $articles.length.toString();
     $articles.push(article);
-    $articles =  $articles;
+    $articles = $articles;
     // TODO POST article to server
     toast.push({
       component: {
@@ -60,16 +61,20 @@
       initial: 0,
     });
   }
-  
-  const articles:  Writable<Article[]> = getContext("articleStore");
+
+  const articles: Writable<Article[]> = getContext("articleStore");
 </script>
 
 {#if showPreview}
-  <!-- Article preview -->
-  <button class="btn btn-primary btn-xs normal-case" on:click={togglePreview}>
-    Sluit preview
-  </button>
-  <ArticleComponent article={article} />
+  {#await refreshArticle()}
+    <div>Loadig</div>
+  {:then previeww}
+    <!-- Article preview -->
+    <button class="btn btn-primary btn-xs normal-case" on:click={togglePreview}>
+      Sluit preview
+    </button>
+    <ArticleComponent article={previeww} />
+  {/await}
 {:else}
   <!-- Article editor -->
   <div class="flex flex-row gap-3 items-center mb-1">
