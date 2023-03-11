@@ -1,8 +1,9 @@
-import { browser } from '$app/environment';
-import type { Article } from '$lib/article';
-import { Collections } from '$lib/firebase/firebase';
-import { writable } from 'svelte/store';
-import { articleConverter } from './../article';
+import { browser } from '$app/environment'
+import type { Article } from '$lib/article'
+import { articleConverter } from '$lib/article'
+import { Collections } from '$lib/firebase/firebase'
+import { writable } from 'svelte/store'
+import { v4 as uuidv4 } from 'uuid'
 
 /**
  * Source: https://www.captaincodeman.com/lazy-loading-and-querying-firestore-with-sveltekit
@@ -30,19 +31,33 @@ function createArticleStore() {
     return unsubscribe
   })
 
-  async function addArticle(newArticle: Article) {
+  async function addArticle(newArticle: Article, images: File[]) {
     if (!browser) {
-      console.error("Why are you adding an article fro the server")
-      return;
+      console.error("Why are you adding an article from the server")
+      return
     }
-    console.log(newArticle)
-    const { firebaseApp } = await import('$lib/firebase/firebase')
+    // -- Upload images --
+    const { getStorage, ref, uploadBytes, getDownloadURL } = await import('firebase/storage')
+    const storage = getStorage()
+
+    const uploadedImageLinks = await Promise.all(images.map(async (image) => {
+      const storageRef = ref(storage, `article-images/${uuidv4()}`)
+      const snapshot = await uploadBytes(storageRef, image)
+      return await getDownloadURL(snapshot.ref)
+    }))
+    newArticle.images = uploadedImageLinks
+
+    // -- Upload article --
     const { getFirestore, collection, doc, setDoc } = await import('firebase/firestore')
+    const { firebaseApp } = await import('$lib/firebase/firebase')
+
     const firestore = getFirestore(firebaseApp)
 
     const newDocRef = doc(collection(firestore, Collections.ARTICLES)).withConverter(articleConverter)
     newArticle.id = newDocRef.id
     await setDoc(newDocRef, newArticle)
+
+    // -- Update store --
     update((articles: Article[]) => ([newArticle, ...articles]))
   }
 

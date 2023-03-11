@@ -1,7 +1,7 @@
-import type { Navigation } from "@sveltejs/kit";
+import type { Navigation } from "@sveltejs/kit"
 
 export function clearHTMLTags(string: string) {
-    return string.replace(/(<([^>]+)>)/gi, '')
+    return string.replace(/(<([^>]+)>)/gi, '').replace(/&nbsp;/gi, ' ')
 }
 
 // checks if navigation is not triggered by form or page load
@@ -13,17 +13,17 @@ export function isPageNavigation(navigation: Navigation) {
 }
 
 export function ignoreDragOver(event: DragEvent) {
-    event.preventDefault();
+    event.preventDefault()
 }
 
 /**
  * Source: https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API/File_drag_and_drop
  */
 export function getFilesFromDragEvent(event: DragEvent) {
-    event.preventDefault();
+    event.preventDefault()
 
     if (!event.dataTransfer)
-        return undefined;
+        return undefined
     // Use DataTransferItemList interface to access the file(s)
     if (event.dataTransfer.items) {
         return Array.from(event.dataTransfer.items)
@@ -40,17 +40,17 @@ export function getFilesFromDragEvent(event: DragEvent) {
  */
 export function readFileAsDataURL(file: File) {
     return new Promise<string>((accept, reject) => {
-        const reader = new FileReader();
+        const reader = new FileReader()
         reader.onload = (event) => {
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            accept(event.target!.result as string);
-        };
+            accept(event.target!.result as string)
+        }
         /// XXX: rejecting with an event is rather unorthodox
         reader.onabort = reader.onerror = (ev) => {
-            reject(ev);
+            reject(ev)
         }
-        reader.readAsDataURL(file);
-    });
+        reader.readAsDataURL(file)
+    })
 }
 
 /**

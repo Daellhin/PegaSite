@@ -40,7 +40,7 @@
   }
   async function saveArticle() {
     const article = await createPreviewArticle();
-    await articleStore.addArticle(article);
+    await articleStore.addArticle(article, uploadedImages);
     toast.push({
       component: {
         src: CreatedArticleToast,

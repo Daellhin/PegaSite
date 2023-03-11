@@ -1,5 +1,5 @@
-import dayjs, { type Dayjs } from "dayjs";
-import { Timestamp, type FirestoreDataConverter } from "firebase/firestore";
+import dayjs, { type Dayjs } from "dayjs"
+import { Timestamp, type FirestoreDataConverter } from "firebase/firestore"
 
 export interface ArticleJson {
     id: string
@@ -38,7 +38,7 @@ export class Article {
             author: this.author,
             content: this.content,
             id: this.id,
-            images: [],
+            images: this.images,
             tags: this.tags,
             timestamp: Timestamp.fromDate(this.timestamp.toDate()),
             title: this.title
@@ -46,18 +46,18 @@ export class Article {
     }
 
     public isRecent(days = 5) {
-        return this.timestamp.isAfter(dayjs().subtract(days, 'day'));
+        return this.timestamp.isAfter(dayjs().subtract(days, 'day'))
     }
 
     public createCarouselImages() {
-        if (!this.images) return [];
-        return this.images.map(async (e, index) => {
+        if (!this.images) return []
+        return this.images.map(async (image, index) => {
             return {
                 id: index,
                 name: "name",
-                imgurl: e
+                imgurl: image
             }
-        });
+        })
     }
 }
 
@@ -67,4 +67,4 @@ export class Article {
 export const articleConverter: FirestoreDataConverter<Article> = {
     toFirestore: (article: Article) => article.toJson(),
     fromFirestore: (snapshot, options) => Article.fromJson(snapshot.data(options) as ArticleJson)
-};
+}
