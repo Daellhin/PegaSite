@@ -2,6 +2,7 @@ import { browser } from '$app/environment'
 import type { Article } from '$lib/article'
 import { articleConverter } from '$lib/article'
 import { Collections } from '$lib/firebase/firebase'
+import type { StorageError } from 'firebase/storage'
 import { writable } from 'svelte/store'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -50,7 +51,6 @@ function createArticleStore() {
     // -- Upload article --
     const { getFirestore, collection, doc, setDoc } = await import('firebase/firestore')
     const { firebaseApp } = await import('$lib/firebase/firebase')
-
     const firestore = getFirestore(firebaseApp)
 
     const newDocRef = doc(collection(firestore, Collections.ARTICLES)).withConverter(articleConverter)
@@ -61,7 +61,43 @@ function createArticleStore() {
     update((articles: Article[]) => ([newArticle, ...articles]))
   }
 
-  return { subscribe, addArticle }
+  async function removeArticle(article: Article) {
+    if (!browser) {
+      console.error("Why are you removing an article from the server")
+      return
+    }
+    // -- Remove images --
+    const { getStorage, ref, deleteObject } = await import('firebase/storage')
+    const storage = getStorage()
+
+    await Promise.all(article.images.map(async (image) => {
+      try {
+        const storageRef = ref(storage, image)
+        await deleteObject(storageRef)
+      } catch (error: any) {
+        // Not existing images can be safely ignored
+        if (error.code === 'storage/object-not-found') return
+        throw error
+      }
+    }))
+
+    // -- Remove article --
+    const { getFirestore, doc, deleteDoc } = await import('firebase/firestore')
+    const { firebaseApp } = await import('$lib/firebase/firebase')
+    const firestore = getFirestore(firebaseApp)
+
+    await deleteDoc(doc(firestore, Collections.ARTICLES, article.id))
+
+
+    // -- Remove from store --
+    update((articles: Article[]) => (articles.filter((e) => e.id !== article.id)))
+  }
+
+  return {
+    subscribe,
+    addArticle,
+    removeArticle
+  }
 }
 
 export const articleStore = createArticleStore()

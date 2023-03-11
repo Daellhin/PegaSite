@@ -15,6 +15,9 @@
       failedLogin = false;
       await authStore.sign_in(username, password);
       showModal = false;
+      // TODO only for dev testing
+      // username = "";
+      // password = ""
     } catch (error) {
       failedLogin = true;
     }

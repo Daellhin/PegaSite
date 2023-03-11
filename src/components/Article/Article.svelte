@@ -1,20 +1,44 @@
 <script lang="ts">
-  import Time from "svelte-time";
-  import FaRegCalendar from "svelte-icons/fa/FaRegCalendar.svelte";
-  import FaUser from "svelte-icons/fa/FaUser.svelte";
-  import FaPen from "svelte-icons/fa/FaPen.svelte";
+  import { goto } from "$app/navigation";
   import type { Article } from "$lib/article";
+  import { articleStore } from "$lib/stores/firebase-article-store";
+  import { authStore } from "$lib/stores/firebase-auth-store";
   import { Carousel } from "flowbite-svelte";
+  import FaChevronDown from "svelte-icons/fa/FaChevronDown.svelte";
+  import FaPen from "svelte-icons/fa/FaPen.svelte";
+  import FaRegCalendar from "svelte-icons/fa/FaRegCalendar.svelte";
+  import FaRegTrashAlt from "svelte-icons/fa/FaRegTrashAlt.svelte";
+  import FaUser from "svelte-icons/fa/FaUser.svelte";
+  import Time from "svelte-time";
 
   export let article: Article;
+
+  async function removeArticle() {
+    await articleStore.removeArticle(article);
+    goto("/")
+  }
 </script>
 
 <!-- Title -->
 <div class="flex flex-row items-center">
   <h1 class="text-4xl font-semibold">{article.title || "Geen titel"}</h1>
-  <a class="ml-auto btn btn-ghost" href="/dashboard">
-    <div class="w-5 h-5"><FaPen /></div>
-  </a>
+  {#if $authStore}
+    <div title="Aanpassen" class="dropdown dropdown-end ml-auto">
+      <button tabindex="0" class="btn btn-ghost gap-2 normal-case">
+        <div class="w-5 h-5"><FaPen /></div>
+        <div class="w-4 h-4 text-gray-500"><FaChevronDown /></div>
+      </button>
+      <ul class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+        <li><a href="/dashboard">Aanpassen</a></li>
+        <li class="flex flex-row gap-1">
+          <button on:click={removeArticle} class="w-full">
+            <div class="w-5 h-5"><FaRegTrashAlt /></div>
+            Verwijderen
+          </button>
+        </li>
+      </ul>
+    </div>
+  {/if}
 </div>
 
 <div class="sm:flex flex-row gap-3 items-center justify">
