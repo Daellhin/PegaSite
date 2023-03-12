@@ -14,7 +14,7 @@
   >
     {#if article.images?.length > 0}
       <figure class="bg-base-200 h-48">
-        <img src={article.images[0]} alt="Article image" />
+        <img src={article.images[0]} alt="Article" />
       </figure>
     {/if}
     <div class="card-body p-5 gap-0">

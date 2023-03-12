@@ -1,7 +1,7 @@
 import type { Navigation } from "@sveltejs/kit"
 
 export function clearHTMLTags(string: string) {
-    return string.replace(/(<([^>]+)>)/gi, '').replace(/&nbsp;/gi, ' ')
+    return string.replace(/<br>/gi, ' ').replace(/(<([^>]+)>)/gi, '').replace(/&nbsp;/gi, ' ')
 }
 
 // checks if navigation is not triggered by form or page load

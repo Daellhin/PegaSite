@@ -2,35 +2,51 @@ import { browser } from '$app/environment'
 import type { Article } from '$lib/article'
 import { articleConverter } from '$lib/article'
 import { Collections } from '$lib/firebase/firebase'
-import type { StorageError } from 'firebase/storage'
-import { writable } from 'svelte/store'
+import type { QueryDocumentSnapshot } from 'firebase/firestore'
+import { get, writable } from 'svelte/store'
 import { v4 as uuidv4 } from 'uuid'
+
+/**
+ * Pagination size is used to load articles in batches. 
+ * One article of next batch is always atempted to be loaded. 
+ * This is to check if there are items in the next batch
+ */
+export const paginationSize = 8;
 
 /**
  * Source: https://www.captaincodeman.com/lazy-loading-and-querying-firestore-with-sveltekit
  */
 function createArticleStore() {
-  const { subscribe, update } = writable([] as Article[], set => {
+  let lastRef: QueryDocumentSnapshot<Article>
+
+  const store = writable([] as Article[], set => {
     // eslint-disable-next-line @typescript-eslint/no-empty-function
-    let unsubscribe = () => { }
+    const unsubscribe = () => { }
 
     async function init() {
       if (browser) {
+        // -- Load articles --
         const { firebaseApp } = await import('$lib/firebase/firebase')
-        const { getFirestore, collection, query, orderBy, limit, onSnapshot } = await import('firebase/firestore')
+        const { getFirestore, collection, query, orderBy, limit, getDocs } = await import('firebase/firestore')
         const firestore = getFirestore(firebaseApp)
 
-        let q = query(collection(firestore, Collections.ARTICLES)).withConverter(articleConverter)
-        q = query(q, orderBy('timestamp', 'desc'))
-        q = query(q, limit(10))
+        const q = query(
+          collection(firestore, Collections.ARTICLES),
+          orderBy('timestamp', 'desc'),
+          limit(paginationSize + 1)
+        ).withConverter(articleConverter)
+        const snapshot = await getDocs(q)
 
-        unsubscribe = onSnapshot(q, snap => set(snap.docs.map(e => e.data())))
+        // -- Set store --
+        set(snapshot.docs.map(e => e.data()))
+        lastRef = snapshot.docs.slice(-1)[0]
       }
     }
     init()
 
     return unsubscribe
   })
+  const { subscribe, update } = store;
 
   async function addArticle(newArticle: Article, images: File[]) {
     if (!browser) {
@@ -58,7 +74,7 @@ function createArticleStore() {
     await setDoc(newDocRef, newArticle)
 
     // -- Update store --
-    update((articles: Article[]) => ([newArticle, ...articles]))
+    update((articles) => ([newArticle, ...articles]))
   }
 
   async function removeArticle(article: Article) {
@@ -90,13 +106,43 @@ function createArticleStore() {
 
 
     // -- Remove from store --
-    update((articles: Article[]) => (articles.filter((e) => e.id !== article.id)))
+    update((articles) => (articles.filter((e) => e.id !== article.id)))
+  }
+
+  async function loadMoreArticles() {
+    if (!browser) {
+      console.error("Why are you loading more articles from the server")
+      return
+    }
+    if (hasMoreDocuments()) {
+      // -- Load articles --
+      const { firebaseApp } = await import('$lib/firebase/firebase')
+      const { getFirestore, collection, query, orderBy, limit, getDocs, startAfter } = await import('firebase/firestore')
+      const firestore = getFirestore(firebaseApp)
+
+      const q = query(
+        collection(firestore, Collections.ARTICLES),
+        orderBy('timestamp', 'desc'),
+        startAfter(lastRef),
+        limit(paginationSize)
+      ).withConverter(articleConverter)
+      const snapshot = await getDocs(q)
+
+      // -- Update articles --
+      update((articles) => ([...articles, ...snapshot.docs.map(e => e.data())]))
+      lastRef = snapshot.docs.slice(-1)[0]
+    }
+  }
+
+  function hasMoreDocuments() {
+    return (get(store).length % paginationSize) === 1
   }
 
   return {
     subscribe,
     addArticle,
-    removeArticle
+    removeArticle,
+    loadMoreArticles
   }
 }
 
