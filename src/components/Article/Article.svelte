@@ -12,6 +12,7 @@
   import Time from "svelte-time";
 
   export let article: Article;
+  export let isPreview = false;
 
   async function removeArticle() {
     await articleStore.removeArticle(article);
@@ -22,7 +23,7 @@
 <!-- Title -->
 <div class="flex flex-row items-center">
   <h1 class="text-4xl font-semibold">{article.title || "Geen titel"}</h1>
-  {#if $authStore}
+  {#if !isPreview && $authStore}
     <div title="Aanpassen" class="dropdown dropdown-end ml-auto">
       <button tabindex="0" class="btn btn-ghost gap-2 normal-case">
         <div class="w-5 h-5"><FaPen /></div>

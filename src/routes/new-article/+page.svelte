@@ -61,7 +61,7 @@
     <button class="btn btn-primary btn-xs normal-case" on:click={togglePreview}>
       Sluit preview
     </button>
-    <ArticleComponent {article} />
+    <ArticleComponent {article} isPreview={true} />
   {/await}
 {:else}
   <!-- Article editor -->
