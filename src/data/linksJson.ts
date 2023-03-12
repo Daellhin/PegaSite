@@ -23,6 +23,6 @@ export const LINKS_JSON: (LinkJson | LinkGroupJson)[] = [
             { name: "Pegasusloop", url: "" },
         ]
     },
-    { name: "Kalender", url: "" },
+    { name: "Kalender", url: "/events" },
     { name: "Contact", url: "" },
 ];

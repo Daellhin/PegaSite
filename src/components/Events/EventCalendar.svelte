@@ -1,29 +1,28 @@
 <script lang="ts">
-  import { EVENTS_JSON } from "../data/eventsJson";
-  import { Event } from "./../lib/event";
+  import { eventStore } from "$lib/stores/event-store";
 
   export const amountOfEvents = 4;
-
-  const events = EVENTS_JSON.map(Event.fromJSON)
-    // .sort((e) => e.date.unix())
-    // .reverse()
-    .slice(0, amountOfEvents);
 </script>
 
-<h1 class="text-2xl font-bold mb-2">Kalender</h1>
+<div class="flex">
+  <h1 class="text-2xl font-bold mb-2">Kalender</h1>
+  <a class="ml-auto hover:link h-fit mt-auto mb-3 text-primary" href="/events"
+    >Toon alle events</a
+  >
+</div>
 
 <div class="flex flex-col gap-2">
-  {#each events as event}
+  {#each $eventStore.slice(0, amountOfEvents) as event}
     <a
-      href="/"
+      href="/events#{event.id}"
       class="btn btn-ghost px-4 py-1 h-auto text-start normal-case justify-start bg-base-200 hover:bg-base-300 custom-dark-hover"
     >
-      <div class="flex flex-row j">
+      <div class="flex flex-row">
         <div class="flex flex-col mr-3">
           <div
             class="flex justify-center text-xs font-semibold text-gray-500 uppercase"
           >
-            {event.formatedMonth}
+            {event.abbreviatedMonth}
           </div>
           <div class="flex justify-center text-2xl font-bold">
             {event.date.date()}
