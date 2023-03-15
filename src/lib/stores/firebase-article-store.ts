@@ -3,7 +3,7 @@ import type { Article } from '$lib/article'
 import { articleConverter } from '$lib/article'
 import { Collections } from '$lib/firebase/firebase'
 import type { QueryDocumentSnapshot } from 'firebase/firestore'
-import { get, writable } from 'svelte/store'
+import { writable } from 'svelte/store'
 import { v4 as uuidv4 } from 'uuid'
 
 /**
@@ -18,6 +18,7 @@ export const paginationSize = 8;
  */
 function createArticleStore() {
   let lastRef: QueryDocumentSnapshot<Article>
+  let hasMoreDocuments = true;
 
   const store = writable([] as Article[], set => {
     // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -40,6 +41,7 @@ function createArticleStore() {
         // -- Set store --
         set(snapshot.docs.map(e => e.data()))
         lastRef = snapshot.docs.slice(-1)[0]
+        hasMoreDocuments = snapshot.docs.length === paginationSize + 1;
       }
     }
     init()
@@ -114,7 +116,7 @@ function createArticleStore() {
       console.error("Why are you loading more articles from the server")
       return
     }
-    if (hasMoreDocuments()) {
+    if (hasMoreDocuments) {
       // -- Load articles --
       const { firebaseApp } = await import('$lib/firebase/firebase')
       const { getFirestore, collection, query, orderBy, limit, getDocs, startAfter } = await import('firebase/firestore')
@@ -131,11 +133,8 @@ function createArticleStore() {
       // -- Update articles --
       update((articles) => ([...articles, ...snapshot.docs.map(e => e.data())]))
       lastRef = snapshot.docs.slice(-1)[0]
+      hasMoreDocuments = snapshot.docs.length === paginationSize + 1;
     }
-  }
-
-  function hasMoreDocuments() {
-    return (get(store).length % paginationSize) === 1
   }
 
   return {

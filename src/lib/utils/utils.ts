@@ -89,3 +89,24 @@ export function groupBy<K, V>(
     });
     return map;
 }
+
+/**
+ * Starts from 0. 
+ * Counts the amount of increasing numbers, until the first decreased number
+ * */
+export function sizeOfIncreasingFirstSequence(row: number[]) {
+    if (row.length <= 1) return row.length;
+    for (let index = 1; index <= row.length; index++) {
+        if (row[index] <= row[index - 1]) return index;
+    }
+    return row.length;
+}
+
+/**
+ * Source: https://stackoverflow.com/a/11409944/8807613
+ * 
+ * Returns a number whose value is limited to the given range.
+ */
+export function clamp(number: number, min: number, max: number) {
+    return Math.min(Math.max(number, min), max);
+}

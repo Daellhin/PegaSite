@@ -3,31 +3,54 @@
     articleStore,
     paginationSize,
   } from "$lib/stores/firebase-article-store";
+  import { clamp, sizeOfIncreasingFirstSequence } from "$lib/utils/utils";
   import Card from "../components/Card.svelte";
   import ArrowLeft from "../components/Icons/ArrowLeft.svelte";
   import ArrowRight from "../components/Icons/ArrowRight.svelte";
 
-  let page = 0;
-  $: hasNextPage = $articleStore.length > (page + 1) * paginationSize;
-  $: hasPrevPage = page !== 0;
+  const minArticlesOnPage = 6;
+  let width = 0;
+  let pages: number[] = [];
+  let articleRefs: HTMLElement[] = Array(paginationSize);
+
+  $: amountOfCardsToShow = width && calculateAmountOfCardsToShow(articleRefs);
+  $: hasNextPage =
+    $articleStore.length > pages.length + 1 * amountOfCardsToShow;
+  $: hasPrevPage = pages.length !== 0;
+  $: articlesOnPreviousPages = pages.reduce((sum, a) => sum + a, 0);
 
   async function next() {
     if (hasNextPage) {
-      page++;
+      pages.push(amountOfCardsToShow);
+      pages = pages;
       await articleStore.loadMoreArticles();
     }
   }
   function previous() {
-    if (page > 0) page--;
+    if (pages.length > 0) {
+      pages.pop();
+      pages = pages;
+    }
+  }
+  function calculateAmountOfCardsToShow(articleRefs: any[]) {
+    const distancesFromLeft = articleRefs.map(
+      (e) => e?.getBoundingClientRect().left || 0
+    );
+    const maxArticlesToPlaceInRow =
+      sizeOfIncreasingFirstSequence(distancesFromLeft) * 2;
+    return clamp(maxArticlesToPlaceInRow, minArticlesOnPage, paginationSize);
   }
 </script>
 
 <h1 class="text-2xl font-bold mb-2">Nieuws</h1>
 
+<div />
 <!-- Articles -->
-<div class="flex gap-4 flex-wrap">
-  {#each $articleStore.slice(page * paginationSize, (page + 1) * paginationSize) as article}
-    <Card {article} />
+<div class="flex gap-4 flex-wrap" bind:clientWidth={width}>
+  {#each $articleStore.slice(articlesOnPreviousPages, articlesOnPreviousPages + amountOfCardsToShow) as article, index}
+    <div bind:this={articleRefs[index]}>
+      <Card {article} />
+    </div>
   {:else}
     <div>loading</div>
   {/each}

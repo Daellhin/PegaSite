@@ -20,11 +20,11 @@
     <Navbar {drawerID} {loginModalID} />
     <!-- Page content here -->
     <section class="my-1 flex-grow">
-      <div class="grid md:grid-cols-12 gap-5 p-4 m-2 h-full">
-        <main class="md:col-span-9 h-full">
+      <div class="grid lg:grid-cols-12 gap-4 lg:gap-4 p-2 xl:p-4 m-2 h-full">
+        <main class="lg:col-span-8 xl:col-span-9 h-full">
           <slot />
         </main>
-        <aside class="md:col-span-3 md:pt-0 p-2">
+        <aside class="lg:col-span-4  xl:col-span-3 md:pt-0 py-0 p-2">
           <EventCalendar />
         </aside>
       </div>
