@@ -4,9 +4,9 @@
     paginationSize,
   } from "$lib/stores/firebase-article-store";
   import { clamp, sizeOfIncreasingFirstSequence } from "$lib/utils/utils";
-  import Card from "../components/Card.svelte";
-  import ArrowLeft from "../components/Icons/ArrowLeft.svelte";
-  import ArrowRight from "../components/Icons/ArrowRight.svelte";
+  import Card from "$components/Card.svelte";
+  import ArrowLeft from "$components/Icons/ArrowLeft.svelte";
+  import ArrowRight from "$components/Icons/ArrowRight.svelte";
 
   const minArticlesOnPage = 6;
   let width = 0;

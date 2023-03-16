@@ -5,7 +5,6 @@
   import { toast } from "@zerodevx/svelte-toast";
   import MdInfoOutline from "svelte-icons/md/MdInfoOutline.svelte";
 
-  export let articleID: number;
   export let createdText = "";
   export let gotoUrl = "";
   export let toastId: number;

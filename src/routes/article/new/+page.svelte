@@ -6,9 +6,9 @@
   import Editor from "cl-editor/src/Editor.svelte";
   import dayjs from "dayjs";
   import MultiSelect from "svelte-multiselect";
-  import ArticleComponent from "../../components/Article/Article.svelte";
-  import CreatedToast from "../../components/Article/CreatedToast.svelte";
-  import Dropzone from "../../components/Dropzone.svelte";
+  import ArticleComponent from "$components/Article/Article.svelte";
+  import CreatedToast from "$components/Article/CreatedToast.svelte";
+  import Dropzone from "$components/Dropzone.svelte";
 
   let title = "";
   let content = "";
@@ -121,7 +121,7 @@
 {/if}
 
 <style lang="postcss">
-  @import "../../css/cl-editor.postcss";
-  @import "../../css/usercontent.postcss";
-  @import "../../css/multiselect.postcss";
+  @import "../../../css/cl-editor.postcss";
+  @import "../../../css/usercontent.postcss";
+  @import "../../../css/multiselect.postcss";
 </style>

@@ -3,10 +3,10 @@
   import { SvelteToast } from "@zerodevx/svelte-toast";
   import { setContext } from "svelte";
   import "../app.css";
-  import EventCalendar from "../components/Events/EventCalendar.svelte";
-  import Footer from "../components/Layout/Footer.svelte";
-  import MenuVertical from "../components/Layout/MenuVertical.svelte";
-  import Navbar from "../components/Layout/Navbar.svelte";
+  import EventCalendar from "$components/Events/EventCalendar.svelte";
+  import Footer from "$components/Layout/Footer.svelte";
+  import MenuVertical from "$components/Layout/MenuVertical.svelte";
+  import Navbar from "$components/Layout/Navbar.svelte";
 
   const drawerID = "layout-drawer";
   const loginModalID = "login-modal";

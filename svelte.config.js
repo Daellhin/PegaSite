@@ -20,7 +20,10 @@ const config = {
 			assets: 'public',
 			fallback: 'fallback.html',
 			precompress: false
-		},)
+		}),
+		alias: {
+			$components: 'src/components'
+		}
 	},
 };
 
