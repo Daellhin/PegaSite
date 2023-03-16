@@ -15,7 +15,7 @@
 
   $: amountOfCardsToShow = width && calculateAmountOfCardsToShow(articleRefs);
   $: hasNextPage =
-    $articleStore.length > pages.length + 1 * amountOfCardsToShow;
+    $articleStore.length > articlesOnPreviousPages + amountOfCardsToShow;
   $: hasPrevPage = pages.length !== 0;
   $: articlesOnPreviousPages = pages.reduce((sum, a) => sum + a, 0);
 
