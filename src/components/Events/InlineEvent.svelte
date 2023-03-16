@@ -1,8 +1,8 @@
 <script lang="ts">
-  import type { Event } from "$lib/event";
+  import type { CalendarEvent } from "$lib/calendar-event";
   import MdLocationOn from "svelte-icons/md/MdLocationOn.svelte";
 
-  export let event: Event;
+  export let event: CalendarEvent;
 </script>
 
 <div class="flex flex-col gap-6 sm:ml-5" id={event.id}>
@@ -25,8 +25,12 @@
         </div>
       {/if}
       {#if event.info}
-        <div class="max-w-xl mt-1.5">{event.info}</div>
+        <div class="max-w-xl mt-1.5">{@html event.info}</div>
       {/if}
     </div>
   </div>
 </div>
+
+<style lang="postcss">
+  @import "../../css/usercontent.postcss";
+</style>

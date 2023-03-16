@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { eventStore } from "$lib/stores/event-store";
+  import { calendarEventStore } from "$lib/stores/calendar-event-store";
   import { groupBy } from "$lib/utils/utils";
   import InlineEvent from "../../components/Events/InlineEvent.svelte";
 
   $: groupedEvents = groupBy(
-    $eventStore,
+    $calendarEventStore,
     (event) => `${event.date.year()}${event.date.month()}`
   );
 </script>

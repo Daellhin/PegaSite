@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { eventStore } from "$lib/stores/event-store";
+  import { calendarEventStore } from "$lib/stores/calendar-event-store";
 
   export const amountOfEvents = 4;
 </script>
@@ -12,7 +12,7 @@
 </div>
 
 <div class="flex flex-col gap-2">
-  {#each $eventStore.slice(0, amountOfEvents) as event}
+  {#each $calendarEventStore.slice(0, amountOfEvents) as event}
     <a
       href="/events#{event.id}"
       class="btn btn-ghost px-4 py-1 h-auto text-start normal-case justify-start bg-base-200 hover:bg-base-300 custom-dark-hover"

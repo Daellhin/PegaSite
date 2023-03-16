@@ -1,5 +1,6 @@
 <script lang="ts">
   import { CalendarEvent } from "$lib/calendar-event";
+  import { calendarEventStore } from "$lib/stores/calendar-event-store";
   import Editor from "cl-editor";
   import dayjs from "dayjs";
 
@@ -9,7 +10,7 @@
   let duration = "";
   let location = "";
 
-  function saveEvent() {
+  async function saveEvent() {
     const newCalendarEvent = new CalendarEvent(
       "-1",
       dayjs(date),
@@ -18,6 +19,7 @@
       title,
       info
     );
+    await calendarEventStore.addCalendarEvent(newCalendarEvent)
     console.log(newCalendarEvent);
   }
 </script>
