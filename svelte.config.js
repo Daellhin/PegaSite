@@ -9,7 +9,8 @@ const config = {
 	onwarn: (warning, handler) => {
 		if (
 			warning.code === "css-unused-selector" ||
-			warning.filename.match(/^\/node_modules\/cl-editor/)
+			warning.filename.match(/^\/node_modules\/cl-editor/) ||
+			warning.filename.match(/^\/node_modules\/svelte-multiselect/)
 		) { return }
 		handler(warning)
 	},
