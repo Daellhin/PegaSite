@@ -4,7 +4,7 @@
   import { toast } from "@zerodevx/svelte-toast";
   import Editor from "cl-editor";
   import dayjs from "dayjs";
-  import CreatedToast from "$components/Article/CreatedToast.svelte";
+  import CreatedToast from "$components/CreatedToast.svelte";
 
   let title = "";
   let info = "";

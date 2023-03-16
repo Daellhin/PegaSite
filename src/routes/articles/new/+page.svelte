@@ -7,7 +7,7 @@
   import dayjs from "dayjs";
   import MultiSelect from "svelte-multiselect";
   import ArticleComponent from "$components/Article/Article.svelte";
-  import CreatedToast from "$components/Article/CreatedToast.svelte";
+  import CreatedToast from "$components/CreatedToast.svelte";
   import Dropzone from "$components/Dropzone.svelte";
 
   let title = "";
@@ -46,7 +46,7 @@
         src: CreatedToast,
         props: { 
           createdText: "Artikel aangemaakt",
-          gotoUrl: `/article/${article.id}`
+          gotoUrl: `/articles/${article.id}`
         },
         sendIdTo: "toastId",
       },

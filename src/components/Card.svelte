@@ -8,7 +8,7 @@
   export let article: Article;
 </script>
 
-<a href="/article/{article.id}">
+<a href="/articles/{article.id}">
   <div
     class="card w-80 h-full bg-base-100 shadow-xl hover:brightness-90 transition-all duration-200 hover:-translate-y-1"
   >
