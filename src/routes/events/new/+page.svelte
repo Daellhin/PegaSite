@@ -1,8 +1,10 @@
 <script lang="ts">
   import { CalendarEvent } from "$lib/calendar-event";
   import { calendarEventStore } from "$lib/stores/calendar-event-store";
+  import { toast } from "@zerodevx/svelte-toast";
   import Editor from "cl-editor";
   import dayjs from "dayjs";
+  import CreatedToast from "../../../components/Article/CreatedToast.svelte";
 
   let title = "";
   let info = "";
@@ -19,8 +21,19 @@
       title,
       info
     );
-    await calendarEventStore.addCalendarEvent(newCalendarEvent)
-    console.log(newCalendarEvent);
+    await calendarEventStore.addCalendarEvent(newCalendarEvent);
+    toast.push({
+      component: {
+        src: CreatedToast,
+        props: {
+          createdText: "Artikel aangemaakt",
+          gotoUrl: `/events#${newCalendarEvent.id}`,
+        },
+        sendIdTo: "toastId",
+      },
+      dismissable: false,
+      initial: 0,
+    });
   }
 </script>
 

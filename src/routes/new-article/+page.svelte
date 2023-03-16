@@ -7,7 +7,7 @@
   import dayjs from "dayjs";
   import MultiSelect from "svelte-multiselect";
   import ArticleComponent from "../../components/Article/Article.svelte";
-  import CreatedArticleToast from "../../components/Article/CreatedArticleToast.svelte";
+  import CreatedToast from "../../components/Article/CreatedToast.svelte";
   import Dropzone from "../../components/Dropzone.svelte";
 
   let title = "";
@@ -43,8 +43,11 @@
     await articleStore.addArticle(article, uploadedImages);
     toast.push({
       component: {
-        src: CreatedArticleToast,
-        props: { articleID: article.id },
+        src: CreatedToast,
+        props: { 
+          createdText: "Artikel aangemaakt",
+          gotoUrl: `/article/${article.id}`
+        },
         sendIdTo: "toastId",
       },
       dismissable: false,
