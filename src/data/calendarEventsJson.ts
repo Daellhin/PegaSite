@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
-import type { EventJson } from '$lib/event';
+import type { CalendarEventJson } from '$lib/calendar-event';
 
-export const EVENTS_JSON: EventJson[] = [
+export const EVENTS_JSON: CalendarEventJson[] = [
     {
         id: "0",
         date: dayjs("2023-03-19"),

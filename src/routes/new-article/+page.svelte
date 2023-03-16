@@ -10,8 +10,8 @@
   import CreatedArticleToast from "../../components/Article/CreatedArticleToast.svelte";
   import Dropzone from "../../components/Dropzone.svelte";
 
-  let html = "";
-  let titel = "";
+  let title = "";
+  let content = "";
   let uploadedImages: File[] = [];
   let selectedCategories: string[] = [];
   let showPreview = false;
@@ -33,9 +33,9 @@
       dayjs(),
       "Admin", // TODO give users a display name first
       selectedCategories,
-      titel,
+      title,
       await Promise.all(uploadedImages.map(readFileAsDataURL)),
-      html
+      content
     );
   }
   async function saveArticle() {
@@ -81,9 +81,10 @@
         type="text"
         placeholder="Titel"
         class="input input-bordered border-2"
-        bind:value={titel}
+        bind:value={title}
       />
     </div>
+
     <div class="form-control w-full max-w-sm">
       <label class="label" for="dropzone-file">
         <span class="label-text">Afbeeldingen:</span>
@@ -102,12 +103,14 @@
         placeholder={"Categorien"}
       />
     </div>
+
     <div class="form-control">
       <label class="label" for="editor">
         <span class="label-text">Inhoud van bericht:</span>
       </label>
-      <Editor {html} on:change={(evt) => (html = evt.detail)} />
+      <Editor html={content} on:change={(evt) => (content = evt.detail)} />
     </div>
+    
     <button class="btn btn-primary btn-md mt-2 max-w-sm"
       >Bericht aanmaken</button
     >

@@ -1,7 +1,7 @@
 import type { Dayjs } from 'dayjs';
 import 'dayjs/locale/nl-be';
 
-export interface EventJson {
+export interface CalendarEventJson {
     id: string
     date: Dayjs
     duration: string
@@ -10,7 +10,7 @@ export interface EventJson {
     info: string
 }
 
-export class Event {
+export class CalendarEvent {
     constructor(
         public id: string,
         public date: Dayjs,
@@ -20,8 +20,8 @@ export class Event {
         public info: string
     ) { }
 
-    static fromJSON(json: EventJson) {
-        return new Event(
+    static fromJSON(json: CalendarEventJson) {
+        return new CalendarEvent(
             json.id,
             json.date,
             json.duration,
