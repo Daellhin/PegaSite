@@ -29,20 +29,32 @@ function createAuth() {
     return unsubscribe
   })
 
-  async function sign_in(email: string, password: string) {
+  const known = new Promise<void>(resolve => {
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    let unsub = () => { }
+    unsub = subscribe(user => {
+      if (user !== undefined) {
+        resolve()
+        unsub()
+      }
+    })
+  })
+
+  async function signIn(email: string, password: string) {
     const { signInWithEmailAndPassword } = await import('firebase/auth')
     await signInWithEmailAndPassword(auth, email, password)
   }
 
-  async function sign_out() {
+  async function signOut() {
     const { signOut } = await import('firebase/auth')
     await signOut(auth)
   }
 
   return {
     subscribe,
-    sign_in,
-    sign_out,
+    signIn,
+    signOut,
+    known
   }
 }
 

@@ -13,7 +13,7 @@
   async function submitLogin() {
     try {
       failedLogin = false;
-      await authStore.sign_in(username, password);
+      await authStore.signIn(username, password);
       showModal = false;
       // TODO only for dev testing
       // username = "";

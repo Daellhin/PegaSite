@@ -21,7 +21,7 @@
       <li><a href="/">Profiel</a></li>
       <li><a href="/dashboard">Dashboard</a></li>
       <li class="flex flex-row gap-1">
-        <button on:click={authStore.sign_out} class="w-full">
+        <button on:click={authStore.signOut} class="w-full">
           <div class="w-5 h-5"><FaSignOutAlt /></div>
           Uitloggen
         </button>
