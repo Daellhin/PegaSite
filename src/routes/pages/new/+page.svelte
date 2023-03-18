@@ -1,5 +1,7 @@
 <script lang="ts">
+  import { goto } from "$app/navigation";
   import Dropzone from "$components/Dropzone.svelte";
+  import { authStore } from "$lib/stores/firebase-auth-store";
   import Editor from "cl-editor/src/Editor.svelte";
 
   let title = "";
@@ -12,6 +14,11 @@
   }
   async function createPreviewPage() {}
   async function savePage() {}
+
+  // Authguard
+  $: authStore.known.then(() => {
+    if (!$authStore) goto("/");
+  });
 </script>
 
 {#if showPreview}

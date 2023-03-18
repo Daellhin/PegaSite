@@ -1,3 +1,13 @@
+<script lang="ts">
+  import { goto } from "$app/navigation";
+  import { authStore } from "$lib/stores/firebase-auth-store";
+
+  // Authguard
+  $: authStore.known.then(() => {
+    if (!$authStore) goto("/");
+  });
+</script>
+
 <h1 class="text-2xl font-bold mb-2">Aanpassingen</h1>
 
 <div class="flex w-fit gap-2">

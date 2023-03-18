@@ -9,6 +9,8 @@
   import ArticleComponent from "$components/Article/Article.svelte";
   import CreatedToast from "$components/CreatedToast.svelte";
   import Dropzone from "$components/Dropzone.svelte";
+  import { authStore } from "$lib/stores/firebase-auth-store";
+  import { goto } from "$app/navigation";
 
   let title = "";
   let content = "";
@@ -44,9 +46,9 @@
     toast.push({
       component: {
         src: CreatedToast,
-        props: { 
+        props: {
           createdText: "Artikel aangemaakt",
-          gotoUrl: `/articles/${article.id}`
+          gotoUrl: `/articles/${article.id}`,
         },
         sendIdTo: "toastId",
       },
@@ -54,6 +56,11 @@
       initial: 0,
     });
   }
+
+  // Authguard
+  $: authStore.known.then(() => {
+    if (!$authStore) goto("/");
+  });
 </script>
 
 {#if showPreview}
@@ -113,7 +120,7 @@
       </label>
       <Editor html={content} on:change={(evt) => (content = evt.detail)} />
     </div>
-    
+
     <button class="btn btn-primary btn-md mt-2 max-w-sm"
       >Bericht aanmaken</button
     >

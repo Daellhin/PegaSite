@@ -5,6 +5,8 @@
   import Editor from "cl-editor";
   import dayjs from "dayjs";
   import CreatedToast from "$components/CreatedToast.svelte";
+  import { authStore } from "$lib/stores/firebase-auth-store";
+  import { goto } from "$app/navigation";
 
   let title = "";
   let info = "";
@@ -35,6 +37,11 @@
       initial: 0,
     });
   }
+  
+  // Authguard
+  $: authStore.known.then(() => {
+    if (!$authStore) goto("/");
+  });
 </script>
 
 <h1 class="text-2xl font-bold">Nieuw event</h1>
