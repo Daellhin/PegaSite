@@ -1,12 +1,12 @@
 <script lang="ts">
   import Card from "$components/Card.svelte";
-  import ArrowLeft from "$components/Icons/ArrowLeft.svelte";
-  import ArrowRight from "$components/Icons/ArrowRight.svelte";
+  import ArrowLeft from "$components/icons/ArrowLeft.svelte";
+  import ArrowRight from "$components/icons/ArrowRight.svelte";
   import {
     articleStore,
     paginationSize
-  } from "$lib/stores/firebase-article-store";
-  import { clamp, sizeOfIncreasingFirstSequence } from "$lib/utils/utils";
+  } from "$lib/stores/FirebaseArticleStore";
+  import { clamp, sizeOfIncreasingFirstSequence } from "$lib/utils/Utils";
 
   const minArticlesOnPage = 6;
   let width = 0;

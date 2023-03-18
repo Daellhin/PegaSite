@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { authStore } from "../lib/stores/firebase-auth-store";
-  import PegaIcon from "./Icons/PegaIcon.svelte";
+  import { authStore } from "$lib/stores/FirebaseAuthStore";
+  import PegaIcon from "./icons/PegaIcon.svelte";
 
   export let loginModalID: string;
 

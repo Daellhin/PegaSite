@@ -1,6 +1,6 @@
 <script lang="ts">
   import FaBars from "svelte-icons/fa/FaBars.svelte";
-  import PegaIconWithText from "../Icons/PegaIconWithText.svelte";
+  import PegaIconWithText from "../icons/PegaIconWithText.svelte";
   import MenuHorizontal from "./MenuHorizontal.svelte";
   import LoginModal from "../LoginModal.svelte";
   import UserAvatar from "../ProfileAndLoginButton.svelte";

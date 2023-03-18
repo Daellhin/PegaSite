@@ -5,7 +5,7 @@
     getFilesFromDragEvent,
     ignoreDragOver,
     readFileAsDataURL,
-  } from "$lib/utils/utils";
+  } from "$lib/utils/Utils";
 
   export let files: File[];
   export let accept: string;

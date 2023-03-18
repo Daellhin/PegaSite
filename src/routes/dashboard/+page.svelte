@@ -1,6 +1,6 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
-  import { authStore } from "$lib/stores/firebase-auth-store";
+  import { authStore } from "$lib/stores/FirebaseAuthStore";
 
   // Authguard
   $: authStore.known.then(() => {

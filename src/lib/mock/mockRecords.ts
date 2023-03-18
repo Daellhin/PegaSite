@@ -1,6 +1,6 @@
-import { ClubRecord } from "../classes/ClubRecord";
+import { ClubRecord } from "../domain/ClubRecord";
 
-export let mockedRecords = [
+export const mockedRecords = [
     {
         "Discipline": "60m",
         "Category": "Pupillen",

@@ -1,11 +1,11 @@
 <script lang="ts">
   import { CalendarEvent } from "$lib/calendar-event";
-  import { calendarEventStore } from "$lib/stores/calendar-event-store";
+  import { calendarEventStore } from "$lib/stores/CalendarEventStore";
   import { toast } from "@zerodevx/svelte-toast";
   import Editor from "cl-editor";
   import dayjs from "dayjs";
   import CreatedToast from "$components/CreatedToast.svelte";
-  import { authStore } from "$lib/stores/firebase-auth-store";
+  import { authStore } from "$lib/stores/FirebaseAuthStore";
   import { goto } from "$app/navigation";
 
   let title = "";

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { CalendarEvent } from "$lib/calendar-event";
+  import type { CalendarEvent } from "$lib/domain/calendar-event";
   import MdLocationOn from "svelte-icons/md/MdLocationOn.svelte";
 
   export let event: CalendarEvent;

@@ -3,7 +3,7 @@
   import type { Category } from "$lib/domain/data-classes/Category";
   import { Gender } from "$lib/domain/data-classes/Gender";
   import { DataService } from "../../data/DataService";
-  import { isArrayNotEmpty } from "$lib/utils/array";
+  import { isArrayNotEmpty } from "$lib/utils/Array";
   import CollapsableList from "./CollapsableList.svelte";
   import TabedView from "./TabedView.svelte";
 

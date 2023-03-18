@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Article } from "$lib/article";
-  import { clearHTMLTags } from "$lib/utils/utils";
+  import { clearHTMLTags } from "$lib/utils/Utils";
   import FaRegCalendar from "svelte-icons/fa/FaRegCalendar.svelte";
   import FaUser from "svelte-icons/fa/FaUser.svelte";
   import Time from "svelte-time";

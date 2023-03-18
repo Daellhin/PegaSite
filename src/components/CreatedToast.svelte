@@ -1,6 +1,6 @@
 <script lang="ts">
   import { beforeNavigate, goto } from "$app/navigation";
-  import { isPageNavigation } from "$lib/utils/utils";
+  import { isPageNavigation } from "$lib/utils/Utils";
   import type { BeforeNavigate } from "@sveltejs/kit";
   import { toast } from "@zerodevx/svelte-toast";
   import MdInfoOutline from "svelte-icons/md/MdInfoOutline.svelte";

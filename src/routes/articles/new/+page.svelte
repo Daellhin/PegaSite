@@ -1,15 +1,15 @@
 <script lang="ts">
   import { Article } from "$lib/article";
-  import { articleStore } from "$lib/stores/firebase-article-store";
-  import { readFileAsDataURL } from "$lib/utils/utils";
+  import { articleStore } from "$lib/stores/FirebaseArticleStore";
+  import { readFileAsDataURL } from "$lib/utils/Utils";
   import { toast } from "@zerodevx/svelte-toast";
   import Editor from "cl-editor/src/Editor.svelte";
   import dayjs from "dayjs";
   import MultiSelect from "svelte-multiselect";
-  import ArticleComponent from "$components/Article/Article.svelte";
+  import ArticleComponent from "$components/article/Article.svelte";
   import CreatedToast from "$components/CreatedToast.svelte";
   import Dropzone from "$components/Dropzone.svelte";
-  import { authStore } from "$lib/stores/firebase-auth-store";
+  import { authStore } from "$lib/stores/FirebaseAuthStore";
   import { goto } from "$app/navigation";
 
   let title = "";

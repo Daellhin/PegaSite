@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { calendarEventStore } from "$lib/stores/calendar-event-store";
+  import { calendarEventStore } from "$lib/stores/CalendarEventStore";
 
   export const amountOfEvents = 4;
 </script>

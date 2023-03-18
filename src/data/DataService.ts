@@ -1,8 +1,8 @@
+import { ClubRecord, type ClubRecordJson } from '$lib/domain/ClubRecord';
 import type { AthleticEvent } from '$lib/domain/data-classes/AthleticEvent';
 import type { Category } from '$lib/domain/data-classes/Category';
 import type { Gender } from '$lib/domain/data-classes/Gender';
-import { ClubRecord, type ClubRecordJson } from '$lib/domain/ClubRecord';
-import ClubRecords from '../lib/mock/Clubrecords.json';
+import ClubRecords from '$lib/mock/Clubrecords.json';
 
 export class DataService {
     private static allRecords = this.fetchAllRecords();
