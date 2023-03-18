@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { combinedLinksFromJson, Link, LinkGroup } from "$lib/link";
+  import { combinedLinksFromJson, Link, LinkGroup } from "$lib/domain/Link";
   import { LINKS_JSON } from "../../data/linksJson";
 
   const links = combinedLinksFromJson(LINKS_JSON);

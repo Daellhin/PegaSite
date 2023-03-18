@@ -1,11 +1,11 @@
-import type { LinkJson, LinkGroupJson } from '$lib/link';
+import type { LinkJson, LinkGroupJson } from '$lib/domain/Link';
 
 export const LINKS_JSON: (LinkJson | LinkGroupJson)[] = [
     {
         name: "De Club", links: [
             { name: "Lid worden", url: "" },
             { name: "Werking", url: "" },
-            { name: "Clubrecords", url: "" },
+            { name: "Clubrecords", url: "/records" },
         ]
     },
     { name: "Trainingen", url: "" },

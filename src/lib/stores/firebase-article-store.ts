@@ -1,6 +1,6 @@
 import { browser } from '$app/environment'
-import type { Article } from '$lib/article'
-import { articleConverter } from '$lib/article'
+import type { Article } from '$lib/domain/Article'
+import { articleConverter } from '$lib/domain/Article'
 import { Collections } from '$lib/firebase/firebase'
 import type { QueryDocumentSnapshot } from 'firebase/firestore'
 import { writable } from 'svelte/store'

@@ -1,4 +1,4 @@
-import type { ArticleJson } from "$lib/article";
+import type { ArticleJson } from "$lib/domain/Article";
 import { Timestamp } from "firebase/firestore";
 
 export const ARTICLE: ArticleJson = {

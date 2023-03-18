@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import type { CalendarEventJson } from '$lib/calendar-event';
+import type { CalendarEventJson } from '$lib/domain/CalendarEvent';
 
 export const EVENTS_JSON: CalendarEventJson[] = [
     {

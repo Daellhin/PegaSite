@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { AthleticEvent } from "$lib/classes/dataClasses/AthleticEvent";
-  import type { Category } from "$lib/classes/dataClasses/Category";
-  import { Gender } from "$lib/classes/dataClasses/Gender";
-  import { DataService } from "$lib/data/DataService";
+  import { AthleticEvent } from "$lib/domain/data-classes/AthleticEvent";
+  import type { Category } from "$lib/domain/data-classes/Category";
+  import { Gender } from "$lib/domain/data-classes/Gender";
+  import { DataService } from "../../data/DataService";
   import { isArrayNotEmpty } from "$lib/utils/array";
   import CollapsableList from "./CollapsableList.svelte";
   import TabedView from "./TabedView.svelte";

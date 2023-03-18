@@ -1,7 +1,7 @@
-import { AthleticEvent } from './dataClasses/AthleticEvent';
-import { Category } from './dataClasses/Category';
-import { Discipline } from './dataClasses/Discipline';
-import { Gender } from './dataClasses/Gender';
+import { AthleticEvent } from './data-classes/AthleticEvent';
+import { Category } from './data-classes/Category';
+import { Discipline } from './data-classes/Discipline';
+import { Gender } from './data-classes/Gender';
 import { RecordInstance, type RecordInstanceJson } from './NamedRecord';
 
 export interface ClubRecordJson {

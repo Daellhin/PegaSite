@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { ClubRecord } from "$lib/classes/ClubRecord";
+	import type { ClubRecord } from "$lib/domain/ClubRecord";
 	import {
 		Timeline,
 		TimelineItem,

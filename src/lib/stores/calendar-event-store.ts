@@ -1,8 +1,9 @@
 
 import { browser } from '$app/environment'
-import { CalendarEvent } from "$lib/calendar-event"
+import { CalendarEvent } from "$lib/domain/CalendarEvent"
 import { writable } from 'svelte/store'
-import { EVENTS_JSON } from '../../data/calendarEventsJson'
+import { EVENTS_JSON } from '../../data/CalendarEventsJson'
+
 
 function createCalendarEventStore() {
   const store = writable([] as CalendarEvent[], set => {

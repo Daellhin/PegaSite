@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { AthleticEvent } from "$lib/classes/dataClasses/AthleticEvent";
-  import { Category } from "$lib/classes/dataClasses/Category";
-  import { Discipline } from "$lib/classes/dataClasses/Discipline";
-  import { Gender } from "$lib/classes/dataClasses/Gender";
+  import { AthleticEvent } from "$lib/domain/data-classes/AthleticEvent";
+  import { Category } from "$lib/domain/data-classes/Category";
+  import { Discipline } from "$lib/domain/data-classes/Discipline";
+  import { Gender } from "$lib/domain/data-classes/Gender";
   import FormControlSelect from "./form-components/FormControlSelect.svelte";
   import FormControlCustomSelect from "./form-components/FormControlCustomSelect.svelte";
-  import { ClubRecord } from "$lib/classes/ClubRecord";
-  import { RecordInstance } from "$lib/classes/NamedRecord";
+  import { ClubRecord } from "$lib/domain/ClubRecord";
+  import { RecordInstance } from "$lib/domain/NamedRecord";
   import FormControlText from "./form-components/FormControlText.svelte";
 
   export let hideInputs: () => void;

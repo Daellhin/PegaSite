@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { Category } from "$lib/classes/dataClasses/Category";
   import NewRecordForm from "$components/Records/NewRecordForm.svelte";
   import RecordsTable from "$components/Records/RecordsTable.svelte";
-  import { RECORDS } from "$lib/mock/mockRecords";
+  import { Category } from "$lib/domain/data-classes/Category";
+  import IoMdSearch from "svelte-icons/io/IoIosSearch.svelte";
 
   let searchString = "";
   let showInputs = false;
@@ -15,29 +15,35 @@
   }
 </script>
 
-<div class="">
-  <div class="flex gap-3">
-    <h1 class="text-2xl font-bold">Clubrecords</h1>
-    <button class="btn btn-sm capitalize btn-primary" on:click={toggleShowInputs}
-      >Nieuw Record</button
-    >
-  </div>
-  {#if showInputs}
-    <div class="mt-2">
-      <NewRecordForm {hideInputs} />
-    </div>
-  {/if}
+<!-- Title -->
+<div class="flex gap-3">
+  <h1 class="text-2xl font-bold">Clubrecords</h1>
+  <button class="btn btn-sm capitalize btn-primary" on:click={toggleShowInputs}
+    >Nieuw Record</button
+  >
+</div>
 
+<!-- Create Record -->
+{#if showInputs}
+  <div class="mt-2">
+    <NewRecordForm {hideInputs} />
+  </div>
+{/if}
+
+<!-- Search -->
+<div class="relative">
+  <div class="absolute inset-y-0 left-0 flex items-center pl-3">
+    <div class="w-5 h-5"><IoMdSearch /></div>
+  </div>
   <input
     type="text"
     placeholder="Zoek een clubrecord"
-    class="input input-bordered input-md border-2 w-full max-w-xs mt-2"
+    class="input input-bordered input-md border-2 max-w-sm mt-2 block w-full p-4 pl-9"
     bind:value={searchString}
   />
 </div>
 
-<!-- <button class="btn btn-sm" on:click={hideAll}>Verberg alle</button> -->
-
+<!-- Records -->
 {#each Category.Categories as category}
   <div class="mx-auto my-2">
     <RecordsTable {category} {searchString} />
