@@ -1,6 +1,6 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
-  import type { Article } from "$lib/domain/article";
+  import type { Article } from "$lib/domain/Article";
   import { articleStore } from "$lib/stores/FirebaseArticleStore";
   import { authStore } from "$lib/stores/FirebaseAuthStore";
   import { Carousel } from "flowbite-svelte";
@@ -16,7 +16,7 @@
 
   async function removeArticle() {
     await articleStore.removeArticle(article);
-    goto("/")
+    goto("/");
   }
 </script>
 
@@ -72,8 +72,9 @@
 {#await Promise.all(article.createCarouselImages()) then images}
   {#if images.length > 0}
     <div class="bg-base-200 my-2 rounded-lg">
-      <div class="max-w-xl mx-auto custom-carousel">
+      <div class="mx-auto custom-carousel w-fit">
         <Carousel
+          divClass=""
           {images}
           showCaptions={false}
           showThumbs={false}
@@ -94,10 +95,6 @@
   @import "../../css/usercontent.postcss";
 
   .custom-carousel :global(img) {
-    position: absolute !important;
-    top: 50% !important;
-    left: 50% !important;
-    transform: translate(-50%, -50%) !important;
-    border-radius: 0.5em;
+    @apply h-auto w-auto max-h-[27.5rem] max-w-[27.5rem] rounded-lg my-auto;
   }
 </style>

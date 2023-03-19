@@ -1,6 +1,6 @@
 <script lang="ts">
-  import type { Article } from "$lib/article";
   import ArticleComponent from "$components/article/Article.svelte";
+  import type { Article } from "$lib/domain/Article";
   import { getContext } from "svelte";
   import type { Writable } from "svelte/store";
   import type { PageData } from "./$types";
