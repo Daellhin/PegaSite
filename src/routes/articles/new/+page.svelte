@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Article } from "$lib/article";
+  import { Article } from "$lib/domain/Article";
   import { articleStore } from "$lib/stores/FirebaseArticleStore";
   import { readFileAsDataURL } from "$lib/utils/Utils";
   import { toast } from "@zerodevx/svelte-toast";
@@ -48,7 +48,7 @@
         src: CreatedToast,
         props: {
           createdText: "Artikel aangemaakt",
-          gotoUrl: `/articles/${article.id}`,
+          gotoUrl: `/`,
         },
         sendIdTo: "toastId",
       },

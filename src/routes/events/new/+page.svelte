@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { CalendarEvent } from "$lib/calendar-event";
+  import { CalendarEvent } from "$lib/domain/CalendarEvent";
   import { calendarEventStore } from "$lib/stores/CalendarEventStore";
   import { toast } from "@zerodevx/svelte-toast";
   import Editor from "cl-editor";

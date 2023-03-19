@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Article } from "$lib/article";
+  import type { Article } from "$lib/domain/Article";
   import { clearHTMLTags } from "$lib/utils/Utils";
   import FaRegCalendar from "svelte-icons/fa/FaRegCalendar.svelte";
   import FaUser from "svelte-icons/fa/FaUser.svelte";
