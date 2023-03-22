@@ -43,9 +43,9 @@
 </script>
 
 <h1 class="text-2xl font-bold mb-2">Nieuws</h1>
-
+ 
 <!-- Articles -->
-<div class="flex gap-4 flex-wrap" bind:clientWidth={width}>
+<div class="flex gap-4 flex-wrap justify-center sm:justify-start" bind:clientWidth={width}>
   {#each $articleStore.slice(articlesOnPreviousPages, articlesOnPreviousPages + amountOfCardsToShow) as article, index}
     <div bind:this={articleRefs[index]}>
       <Card {article} />

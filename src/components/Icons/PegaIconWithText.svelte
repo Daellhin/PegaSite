@@ -3,7 +3,7 @@
 </script>
 
 <div class="flex row-auto gap-2">
-  <div class="h-14 w-14">
+  <div class="h-14 w-14 md:h-16 md:w-16">
     <PegaIcon />
   </div>
   <div class="my-auto">
