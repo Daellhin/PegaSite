@@ -3,7 +3,7 @@
   import FaSignInAlt from "svelte-icons/fa/FaSignInAlt.svelte";
   import FaSignOutAlt from "svelte-icons/fa/FaSignOutAlt.svelte";
   import FaUser from "svelte-icons/fa/FaUser.svelte";
-  import { authStore } from "$lib/stores/FirebaseAuthStore";
+  import { authStore } from "$lib/stores/AuthStore";
 
   export let loginModalID: string;
 </script>

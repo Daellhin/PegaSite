@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { articleStore } from "$lib/stores/FirebaseArticleStore";
+  import { articleStore } from "$lib/stores/ArticleStore";
   import { SvelteToast } from "@zerodevx/svelte-toast";
   import { setContext } from "svelte";
   import "../app.css";

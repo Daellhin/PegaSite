@@ -1,8 +1,8 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
   import type { Article } from "$lib/domain/Article";
-  import { articleStore } from "$lib/stores/FirebaseArticleStore";
-  import { authStore } from "$lib/stores/FirebaseAuthStore";
+  import { articleStore } from "$lib/stores/ArticleStore";
+  import { authStore } from "$lib/stores/AuthStore";
   import { Carousel } from "flowbite-svelte";
   import FaChevronDown from "svelte-icons/fa/FaChevronDown.svelte";
   import FaPen from "svelte-icons/fa/FaPen.svelte";

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
   import Dropzone from "$components/Dropzone.svelte";
-  import { authStore } from "$lib/stores/FirebaseAuthStore";
+  import { authStore } from "$lib/stores/AuthStore";
   import Editor from "cl-editor/src/Editor.svelte";
 
   let title = "";

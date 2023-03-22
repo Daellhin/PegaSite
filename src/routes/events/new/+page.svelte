@@ -5,7 +5,7 @@
   import Editor from "cl-editor";
   import dayjs from "dayjs";
   import CreatedToast from "$components/CreatedToast.svelte";
-  import { authStore } from "$lib/stores/FirebaseAuthStore";
+  import { authStore } from "$lib/stores/AuthStore";
   import { goto } from "$app/navigation";
 
   let title = "";

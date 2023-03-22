@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Article } from "$lib/domain/Article";
-  import { articleStore } from "$lib/stores/FirebaseArticleStore";
+  import { articleStore } from "$lib/stores/ArticleStore";
   import { readFileAsDataURL } from "$lib/utils/Utils";
   import { toast } from "@zerodevx/svelte-toast";
   import Editor from "cl-editor/src/Editor.svelte";
@@ -9,7 +9,7 @@
   import ArticleComponent from "$components/article/Article.svelte";
   import CreatedToast from "$components/CreatedToast.svelte";
   import Dropzone from "$components/Dropzone.svelte";
-  import { authStore } from "$lib/stores/FirebaseAuthStore";
+  import { authStore } from "$lib/stores/AuthStore";
   import { goto } from "$app/navigation";
 
   let title = "";

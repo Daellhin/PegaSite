@@ -2,10 +2,7 @@
   import Card from "$components/Card.svelte";
   import ArrowLeft from "$components/icons/ArrowLeft.svelte";
   import ArrowRight from "$components/icons/ArrowRight.svelte";
-  import {
-    articleStore,
-    paginationSize
-  } from "$lib/stores/FirebaseArticleStore";
+  import { articleStore, paginationSize } from "$lib/stores/ArticleStore";
   import { clamp, sizeOfIncreasingFirstSequence } from "$lib/utils/Utils";
 
   const minArticlesOnPage = 6;
@@ -43,9 +40,12 @@
 </script>
 
 <h1 class="text-2xl font-bold mb-2">Nieuws</h1>
- 
+
 <!-- Articles -->
-<div class="flex gap-4 flex-wrap justify-center sm:justify-start" bind:clientWidth={width}>
+<div
+  class="flex gap-4 flex-wrap justify-center sm:justify-start"
+  bind:clientWidth={width}
+>
   {#each $articleStore.slice(articlesOnPreviousPages, articlesOnPreviousPages + amountOfCardsToShow) as article, index}
     <div bind:this={articleRefs[index]}>
       <Card {article} />
