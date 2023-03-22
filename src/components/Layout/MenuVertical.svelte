@@ -1,6 +1,6 @@
 <script lang="ts">
   import { combinedLinksFromJson, LinkGroup } from "$lib/domain/Link";
-  import { LINKS_JSON } from "../../data/LinksJson";
+  import { LINKS_JSON } from "$data/LinksJson";
 
   export let drawerID: string;
 

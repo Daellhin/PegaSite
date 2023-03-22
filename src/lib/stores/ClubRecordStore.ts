@@ -2,7 +2,7 @@
 import { browser } from '$app/environment'
 import { ClubRecord, type ClubRecordJson } from '$lib/domain/ClubRecord'
 import { writable } from 'svelte/store'
-import ClubRecords from '../../data/Clubrecords.json';
+import ClubRecords from '$data/Clubrecords.json';
 
 function createClubRecordStore() {
   const store = writable([] as ClubRecord[], set => {

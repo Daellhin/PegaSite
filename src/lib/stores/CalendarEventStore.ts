@@ -2,7 +2,7 @@
 import { browser } from '$app/environment'
 import { CalendarEvent } from "$lib/domain/CalendarEvent"
 import { writable } from 'svelte/store'
-import { EVENTS_JSON } from '../../data/CalendarEventsJson'
+import { EVENTS_JSON } from '$data/CalendarEventsJson'
 
 
 function createCalendarEventStore() {

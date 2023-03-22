@@ -32,7 +32,8 @@ const config = {
 			precompress: false
 		}),
 		alias: {
-			$components: 'src/components'
+			$components: 'src/components',
+			$data: 'src/data'
 		}
 	},
 };
