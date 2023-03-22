@@ -2,7 +2,7 @@
   import { AthleticEvent } from "$lib/domain/data-classes/AthleticEvent";
   import type { Category } from "$lib/domain/data-classes/Category";
   import { Gender } from "$lib/domain/data-classes/Gender";
-  import { DataService } from "../../data/DataService";
+  import { clubRecordStore } from "$lib/stores/ClubRecordStore";
   import { isArrayNotEmpty } from "$lib/utils/Array";
   import CollapsableList from "./CollapsableList.svelte";
   import TabedView from "./TabedView.svelte";
@@ -12,24 +12,39 @@
 
   let recordComponents: any[] = [];
 
-  const map = new Map([
-    [
-      "Vrouwen indoor",
-      DataService.getRecords(category, Gender.Female, AthleticEvent.Indoor),
-    ],
-    [
-      "Mannen indoor",
-      DataService.getRecords(category, Gender.Male, AthleticEvent.Indoor),
-    ],
-    [
-      "Vrouwen outdoor",
-      DataService.getRecords(category, Gender.Female, AthleticEvent.Outdoor),
-    ],
-    [
-      "Mannen outdoor",
-      DataService.getRecords(category, Gender.Male, AthleticEvent.Outdoor),
-    ],
-  ]);
+  function getRecords(
+    category: Category,
+    gender: Gender,
+    athleticEvent: AthleticEvent
+  ) {
+    return $clubRecordStore.filter(
+      (e) =>
+        e.category === category &&
+        e.gender === gender &&
+        e.athleticEvent === athleticEvent
+    );
+  }
+
+  $: map =
+    $clubRecordStore &&
+    new Map([
+      [
+        "Vrouwen indoor",
+        getRecords(category, Gender.Female, AthleticEvent.Indoor),
+      ],
+      [
+        "Mannen indoor",
+        getRecords(category, Gender.Male, AthleticEvent.Indoor),
+      ],
+      [
+        "Vrouwen outdoor",
+        getRecords(category, Gender.Female, AthleticEvent.Outdoor),
+      ],
+      [
+        "Mannen outdoor",
+        getRecords(category, Gender.Male, AthleticEvent.Outdoor),
+      ],
+    ]);
   // TODO refactor and simplify
   // Now if this isnt a simple statement, have fun trying to understand what it does :)
   $: filteredClubrecords = Array.from(
