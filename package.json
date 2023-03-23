@@ -48,7 +48,7 @@
 		"flowbite-svelte": "^0.34.1",
 		"svelte-icons": "^2.1.0",
 		"svelte-multiselect": "^8.5.0",
-		"svelte-select": "4.4.7",
+		"svelte-select": "5.5.2",
 		"svelte-vertical-timeline": "^1.0.0",
 		"uuid": "^9.0.0"
 	}
