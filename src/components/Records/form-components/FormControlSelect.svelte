@@ -3,7 +3,7 @@
     export let selectValue: string;
     export let required = false;
 
-    $: selectId = selectValue?.replace(/ /g, '')
+    $: selectId = label?.replace(/ /g, '')
 
     function removePlaceholderStyle(event: Event) {
         (event?.target as HTMLElement).classList.remove("placeholder-style");

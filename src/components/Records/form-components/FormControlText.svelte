@@ -4,7 +4,7 @@
     export let textValue: string;
     export let required = false;
 
-    $: inputId = textValue?.replace(/ /g, '')
+    $: inputId = label?.replace(/ /g, '')
 </script>
 
 <div class="form-control w-full max-w-xs">

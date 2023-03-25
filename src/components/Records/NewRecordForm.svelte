@@ -78,16 +78,6 @@
       {/each}
     </FormControlSelect>
 
-    <FormControlSelect
-      label="Disipline"
-      selectValue={discipline}
-      required={true}
-    >
-      {#each Discipline.Disciplines as value}
-        <option>{value.name}</option>
-      {/each}
-    </FormControlSelect>
-
     <FormControlText
       label="Naam"
       placeholder="Voornaam Naam"
