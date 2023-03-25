@@ -13,6 +13,10 @@
   function handleSelect(event: any) {
     selectValue = event.detail;
   }
+  let floatingConfig = {
+    placement: "bottom",
+    middleware: [],
+  };
 </script>
 
 <div class="form-control w-full max-w-xs daisyui-themed">
@@ -32,6 +36,7 @@
     class={"select select-bordered"}
     showChevron
     placeholder={"Kies"}
+    {floatingConfig}
   >
     <div class="w-4 h-4 text-gray-500" slot="chevron-icon">
       <IoIosArrowDown />
@@ -51,16 +56,25 @@
     --border-hover: 1px hsl(var(--bc) / 0.2) solid;
     --list-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
       var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-    --font-size: 0.875rem;
+    --font-size: 0.9rem;
 
     /* Dropdown */
-    --list-background: hsl(var(--b2, var(--b1)) / 1);
+    --list-background: hsl(var(--b1, var(--b1)) / 1);
+    --list-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --list-max-height: 20rem;
+    --list-z-index: 11;
+    --list-border-radius: 0.5rem;
+    --group-title-text-transform: capitalize;
+    --group-item-padding-left: 35px;
     --item-hover-bg: hsl(var(--bc) / 0.1);
     --item-is-active-bg: hsl(var(--p) / 1);
     --item-is-active-color: hsl(var(--pc) / 1);
-    --group-title-text-transform: capitalize;
-    --item-height: 2.1rem;
-    --item-line-height: 2.1rem;
+    --item-height: 2.5rem;
+    --item-line-height: 2.5rem;
+    @media (min-width: 640px) {
+      --item-height: 1.75rem;
+      --item-line-height: 1.75rem;
+    }
   }
   :global {
     .svelte-select.focused {
@@ -70,6 +84,12 @@
     .svelte-select,
     .svelte-select input {
       cursor: pointer !important;
+    }
+    .list-item {
+      font-size: 1rem !important;
+    }
+    .svelte-select-list {
+      margin-top: 0.6rem;
     }
   }
 </style>
