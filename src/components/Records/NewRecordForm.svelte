@@ -3,11 +3,9 @@
   import { Category } from "$lib/domain/data-classes/Category";
   import { Discipline } from "$lib/domain/data-classes/Discipline";
   import { Gender } from "$lib/domain/data-classes/Gender";
-  import FormControlSelect from "./form-components/FormControlSelect.svelte";
   import FormControlCustomSelect from "./form-components/FormControlCustomSelect.svelte";
-  import { ClubRecord } from "$lib/domain/ClubRecord";
-  import { RecordInstance } from "$lib/domain/NamedRecord";
   import FormControlText from "./form-components/FormControlText.svelte";
+  import Icon from "@iconify/svelte";
 
   export let hideInputs: () => void;
 
@@ -40,12 +38,15 @@
   on:submit={createRecord}
   class="relative mb-3 border-base-300 bg-base-200 rounded-tr-box min-h-[6rem] min-w-[18rem] border bg-cover bg-top p-4 rounded-box overflow-visible"
 >
-<div class="">
-  <button
-    class="btn btn-ghost absolute right-2 top-2 font-bold"
-    on:click={hideInputs}>X</button
-  >
-</div>
+  <div class="">
+    <button
+      class="btn btn-ghost absolute right-2 top-2 font-bold"
+      title="sluiten"
+      on:click={hideInputs}
+    >
+      <Icon icon="fa6-solid:xmark"  width={14} />
+    </button>
+  </div>
 
   <div class="flex flex-wrap gap-2">
     <FormControlCustomSelect
@@ -56,27 +57,35 @@
       required={true}
     />
 
-    <FormControlSelect
-      label="Indoor/outdoor"
+    <FormControlCustomSelect
       selectValue={athleticEvent}
+      items={AthleticEvent.AthleticEvents.map((e) => ({
+        value: e,
+        label: e.name,
+      }))}
+      label={"Indoor/outdoor"}
       required={true}
-    >
-      {#each AthleticEvent.AthleticEvents as value}
-        <option>{value.name}</option>
-      {/each}
-    </FormControlSelect>
+    />
 
-    <FormControlSelect label="Categorie" selectValue={category} required={true}>
-      {#each Category.Categories as value}
-        <option>{value.singularName}</option>
-      {/each}
-    </FormControlSelect>
+    <FormControlCustomSelect
+      selectValue={category}
+      items={Category.Categories.map((e) => ({
+        value: e,
+        label: e.singularName,
+      }))}
+      label={"Categorie"}
+      required={true}
+    />
 
-    <FormControlSelect label="Geslacht" selectValue={gender} required={true}>
-      {#each Gender.Genders as value}
-        <option>{value.adultSingularName}</option>
-      {/each}
-    </FormControlSelect>
+    <FormControlCustomSelect
+      selectValue={gender}
+      items={Gender.Genders.map((e) => ({
+        value: e,
+        label: e.adultSingularName,
+      }))}
+      label={"Geslacht"}
+      required={true}
+    />
 
     <FormControlText
       label="Naam"

@@ -6,14 +6,14 @@
   export let selectValue: any;
   export let required = false;
   export let items = Array<any>();
-  export let groupBy: (arg0: any) => any;
+  export let groupBy: ((e: any) => any) | undefined = undefined;
 
   $: selectId = label?.replace(/ /g, "");
 
   function handleSelect(event: any) {
     selectValue = event.detail;
   }
-  let floatingConfig = {
+  const floatingConfig = {
     placement: "bottom",
     middleware: [],
   };
@@ -37,6 +37,7 @@
     showChevron
     placeholder={"Kies"}
     {floatingConfig}
+    {required}
   >
     <div class="w-4 h-4 text-gray-500" slot="chevron-icon">
       <IoIosArrowDown />
@@ -60,8 +61,10 @@
 
     /* Dropdown */
     --list-background: hsl(var(--b1, var(--b1)) / 1);
-    --list-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --list-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -1px rgba(0, 0, 0, 0.06);
     --list-max-height: 20rem;
+    --list-height: auto;
     --list-z-index: 11;
     --list-border-radius: 0.5rem;
     --group-title-text-transform: capitalize;
@@ -77,6 +80,9 @@
     }
   }
   :global {
+    .select {
+      line-height: 1.25rem;
+    }
     .svelte-select.focused {
       outline: 2px solid hsla(var(--bc) / 0.2) !important;
       outline-offset: 2px !important;
