@@ -1,9 +1,8 @@
 <script lang="ts">
+  import { authStore } from "$lib/stores/AuthStore";
   import FaChevronDown from "svelte-icons/fa/FaChevronDown.svelte";
-  import FaSignInAlt from "svelte-icons/fa/FaSignInAlt.svelte";
   import FaSignOutAlt from "svelte-icons/fa/FaSignOutAlt.svelte";
   import FaUser from "svelte-icons/fa/FaUser.svelte";
-  import { authStore } from "$lib/stores/AuthStore";
 
   export let loginModalID: string;
 </script>
@@ -28,8 +27,8 @@
       </li>
     </ul>
   </div>
-{:else}
+<!-- {:else}
   <label for={loginModalID} class="btn btn-square btn-ghost">
     <div class="w-5 h-5"><FaSignInAlt /></div>
-  </label>
+  </label> -->
 {/if}

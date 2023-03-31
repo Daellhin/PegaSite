@@ -29,7 +29,7 @@
         </aside>
       </div>
     </section>
-    <Footer />
+    <Footer {loginModalID} />
   </div>
   <div class="drawer-side">
     <label for={drawerID} class="drawer-overlay" />

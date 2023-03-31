@@ -26,11 +26,10 @@ function createClubRecordStore() {
       console.error("Why are you adding an event from the server")
       return
     }
+    // TODO https://firebase.google.com/docs/firestore/manage-data/add-data#update_elements_in_an_array
 
     // -- Update store --
-    // update((articles) => {
-    //   return [...articles, newCalendarEvent].sort((a, b) => (a.date.isAfter(b.date) ? 1 : -1))
-    // });
+    update((clubRecords) => ([...clubRecords, newClubRecord]))
   }
 
   return {

@@ -25,4 +25,5 @@ export const LINKS_JSON: (LinkJson | LinkGroupJson)[] = [
     },
     { name: "Kalender", url: "/events" },
     { name: "Contact", url: "" },
+    { name: "Facebook", url: "" },
 ];
