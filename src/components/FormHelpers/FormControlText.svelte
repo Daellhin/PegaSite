@@ -23,7 +23,7 @@
     </span>
   </label>
   <input
-    required
+    {required}
     id={inputId}
     type="text"
     {placeholder}
