@@ -39,6 +39,20 @@ export class ClubRecord {
         );
     }
 
+    static fromFirebaseData(toMap: any) {
+        const json = Object.keys(toMap).flatMap((gender) => {
+          return Object.keys(toMap[gender]).flatMap((athleticEvent) => {
+            return Object.keys(toMap[gender][athleticEvent]).flatMap((discipline) => {
+              return Object.keys(toMap[gender][athleticEvent][discipline]).flatMap((category) => {
+                const records = toMap[gender][athleticEvent][discipline][category] as RecordInstanceJson[];
+                return { discipline, category, gender, athleticEvent, records } as ClubRecordJson
+              })
+            })
+          })
+        })
+        return json.map(this.fromJSON);
+      }
+
     // toJSON(): ClubRecordJson {
     //     return {
     //         Discipline: this.discipline,

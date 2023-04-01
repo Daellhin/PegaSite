@@ -1,14 +1,12 @@
-
-import { browser } from '$app/environment'
-import { ClubRecord, type ClubRecordJson } from '$lib/domain/ClubRecord'
-import { writable } from 'svelte/store'
-import ClubRecords from '$data/Clubrecords.json';
-import type { Discipline } from '$lib/domain/data-classes/Discipline';
-import type { Category } from '$lib/domain/data-classes/Category';
-import type { Gender } from '$lib/domain/data-classes/Gender';
-import type { AthleticEvent } from '$lib/domain/data-classes/AthleticEvent';
+import { browser } from '$app/environment';
+import { ClubRecord } from '$lib/domain/ClubRecord';
 import type { RecordInstance } from '$lib/domain/RecordInstance';
+import type { AthleticEvent } from '$lib/domain/data-classes/AthleticEvent';
+import type { Category } from '$lib/domain/data-classes/Category';
+import type { Discipline } from '$lib/domain/data-classes/Discipline';
+import type { Gender } from '$lib/domain/data-classes/Gender';
 import { Collections } from '$lib/firebase/firebase';
+import { writable } from 'svelte/store';
 
 function createClubRecordStore() {
   const store = writable([] as ClubRecord[], set => {
@@ -17,8 +15,19 @@ function createClubRecordStore() {
 
     async function init() {
       if (browser) {
-        const records = (ClubRecords as unknown as ClubRecordJson[]).map(ClubRecord.fromJSON);
-        set(records)
+        // const records = (ClubRecords as unknown as ClubRecordJson[]).map(ClubRecord.fromJSON);
+        
+        // -- Load ClubRecords --
+        const { firebaseApp } = await import('$lib/firebase/firebase')
+        const { getFirestore, doc, getDoc } = await import('firebase/firestore')
+        const firestore = getFirestore(firebaseApp)
+
+        const clubrRecordsRef = doc(firestore, Collections.CLUB_RECORDS, "singleDocument");
+        const clubRecordsSnap = await getDoc(clubrRecordsRef);
+        const clubRecords = ClubRecord.fromFirebaseData(clubRecordsSnap.data())
+
+        // -- Set store --
+        set(clubRecords)
       }
     }
     init()
