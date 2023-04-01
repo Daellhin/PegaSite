@@ -86,7 +86,7 @@
     <FormControlText
       label="Titel van bericht:"
       placeholder="Titel"
-      textValue={title}
+      value={title}
       required
     />
 

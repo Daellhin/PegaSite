@@ -52,23 +52,23 @@
   <FormControlText
     label="Titel van event:"
     placeholder="Titel"
-    textValue={title}
+    value={title}
     required
   />
 
-  <FormControlDate dateValue={date} label="Datum van event:" />
+  <FormControlDate value={date} label="Datum van event:" />
 
   <FormControlText
     label="Duur van event:"
     placeholder="00:00 - 00:00"
-    textValue={duration}
+    value={duration}
     required
   />
 
   <FormControlText
     label="Locatie van event:"
     placeholder="Blauwenhoek 76, 1840 Londerzeel"
-    textValue={location}
+    value={location}
     required
   />
 

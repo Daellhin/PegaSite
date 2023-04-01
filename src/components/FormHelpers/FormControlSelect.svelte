@@ -1,7 +1,8 @@
 <script lang="ts">
   export let label: string;
-  export let selectValue: string;
+  export let value: string;
   export let required = false;
+  export let size: "sm" | "xs" = "sm";
 
   $: selectId = label?.replace(/[ :]/g, "").toLowerCase();
 
@@ -10,7 +11,11 @@
   }
 </script>
 
-<div class="form-control w-full max-w-xs">
+<div
+  class="form-control w-full"
+  class:max-w-sm={size === "sm"}
+  class:max-w-xs={size === "xs"}
+>
   <label class="label" for={selectId}>
     <span class="label-text"
       >{label}
@@ -22,7 +27,7 @@
   <select
     id={selectId}
     class="select select-bordered placeholder-style"
-    bind:value={selectValue}
+    bind:value
     on:change={removePlaceholderStyle}
     {required}
   >

@@ -1,9 +1,10 @@
 <script lang="ts">
   export let label: string;
-  export let placeholder: string;
-  export let textValue: string;
+  export let value: string;
   export let required = false;
   export let size: "sm" | "xs" = "sm";
+
+  export let placeholder: string;
 
   $: inputId = label?.replace(/[ :]/g, "").toLowerCase();
 </script>
@@ -27,6 +28,6 @@
     type="text"
     {placeholder}
     class="input input-bordered border-2 w-full"
-    bind:value={textValue}
+    bind:value
   />
 </div>

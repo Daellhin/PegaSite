@@ -1,12 +1,17 @@
 <script lang="ts">
   export let label: string;
-  export let dateValue: Date;
+  export let value: Date;
   export let required = false;
+  export let size: "sm" | "xs" = "sm";
 
   $: inputId = label?.replace(/[ :]/g, "").toLowerCase();
 </script>
 
-<div class="form-control w-full max-w-sm">
+<div
+  class="form-control w-full"
+  class:max-w-sm={size === "sm"}
+  class:max-w-xs={size === "xs"}
+>
   <label class="label" for={inputId}>
     <span class="label-text">
       {label}
@@ -19,6 +24,6 @@
     id={inputId}
     class="input input-bordered border-2"
     type="date"
-    bind:value={dateValue}
+    bind:value
   />
 </div>

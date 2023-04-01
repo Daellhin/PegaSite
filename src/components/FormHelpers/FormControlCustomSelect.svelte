@@ -3,16 +3,17 @@
   import Select from "svelte-select";
 
   export let label: string;
-  export let selectValue: any;
+  export let value: any;
   export let required = false;
+  export let size: "sm" | "xs" = "sm";
+
   export let items = Array<any>();
   export let groupBy: ((e: any) => any) | undefined = undefined;
-  export let size: "sm" | "xs" = "sm";
 
   $: selectId = label?.replace(/[ :]/g, "").toLowerCase();
 
   function handleSelect(event: any) {
-    selectValue = event.detail;
+    value = event.detail;
   }
   const floatingConfig = {
     placement: "bottom",

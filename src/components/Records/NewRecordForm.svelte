@@ -6,6 +6,7 @@
   import FormControlCustomSelect from "../FormHelpers/FormControlCustomSelect.svelte";
   import FormControlText from "../FormHelpers/FormControlText.svelte";
   import Icon from "@iconify/svelte";
+  import FormControlDate from "$components/FormHelpers/FormControlDate.svelte";
 
   export let hideInputs: () => void;
 
@@ -17,7 +18,7 @@
   let name: string;
   let result: string;
   let location: string;
-  let date: string;
+  let date: Date;
 
   function disciplineOptions() {
     return Discipline.Disciplines.map((e) => ({
@@ -48,7 +49,7 @@
 
   <div class="flex flex-wrap gap-2">
     <FormControlCustomSelect
-      selectValue={discipline}
+      value={discipline}
       items={disciplineOptions()}
       groupBy={groupByDisipline}
       label="Disipline"
@@ -57,7 +58,7 @@
     />
 
     <FormControlCustomSelect
-      selectValue={athleticEvent}
+      value={athleticEvent}
       items={AthleticEvent.AthleticEvents.map((e) => ({
         value: e,
         label: e.name,
@@ -68,7 +69,7 @@
     />
 
     <FormControlCustomSelect
-      selectValue={category}
+      value={category}
       items={Category.Categories.map((e) => ({
         value: e,
         label: e.singularName,
@@ -79,7 +80,7 @@
     />
 
     <FormControlCustomSelect
-      selectValue={gender}
+      value={gender}
       items={Gender.Genders.map((e) => ({
         value: e,
         label: e.adultSingularName,
@@ -92,28 +93,27 @@
     <FormControlText
       label="Naam"
       placeholder="Voornaam Naam"
-      textValue={name}
+      value={name}
       size="xs"
       required
     />
     <FormControlText
       label="Prestatie"
       placeholder="00.00"
-      textValue={result}
+      value={result}
       size="xs"
       required
     />
     <FormControlText
       label="Locatie"
       placeholder="Locatie"
-      textValue={location}
+      value={location}
       size="xs"
       required
     />
-    <FormControlText
+    <FormControlDate
       label="Datum"
-      placeholder="00-00-0000"
-      textValue={date}
+      value={date}
       size="xs"
       required
     />
