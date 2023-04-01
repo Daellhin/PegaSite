@@ -9,6 +9,7 @@
   import { goto } from "$app/navigation";
   import FormControlDate from "$components/FormHelpers/FormControlDate.svelte";
   import FormControlText from "$components/FormHelpers/FormControlText.svelte";
+  import { pushCreatedToast } from "$lib/utils/Toast";
 
   let title = "";
   let info = "";
@@ -26,18 +27,7 @@
       info
     );
     await calendarEventStore.addCalendarEvent(newCalendarEvent);
-    toast.push({
-      component: {
-        src: CreatedToast,
-        props: {
-          createdText: "Artikel aangemaakt",
-          gotoUrl: `/events#${newCalendarEvent.id}`,
-        },
-        sendIdTo: "toastId",
-      },
-      dismissable: false,
-      initial: 0,
-    });
+    pushCreatedToast("Event aangemaakt", `/events#${newCalendarEvent.id}`);
   }
 
   // Authguard
@@ -52,23 +42,23 @@
   <FormControlText
     label="Titel van event:"
     placeholder="Titel"
-    value={title}
+    bind:value={title}
     required
   />
 
-  <FormControlDate value={date} label="Datum van event:" />
+  <FormControlDate bind:value={date} label="Datum van event:" />
 
   <FormControlText
     label="Duur van event:"
     placeholder="00:00 - 00:00"
-    value={duration}
+    bind:value={duration}
     required
   />
 
   <FormControlText
     label="Locatie van event:"
     placeholder="Blauwenhoek 76, 1840 Londerzeel"
-    value={location}
+    bind:value={location}
     required
   />
 

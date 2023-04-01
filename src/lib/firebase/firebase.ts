@@ -16,4 +16,5 @@ export const firebaseApp = initializeApp({
 export class Collections {
     static ARTICLES = "articles";
     static CLUB_RECORDS = "club-records"
+    static CALENDAR_EVENTS = "calendar-events"
 }

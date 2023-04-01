@@ -1,10 +1,10 @@
-import dayjs from 'dayjs';
 import type { CalendarEventJson } from '$lib/domain/CalendarEvent';
+import { Timestamp } from 'firebase/firestore';
 
 export const EVENTS_JSON: CalendarEventJson[] = [
     {
         id: "0",
-        date: dayjs("2023-03-19"),
+        date: Timestamp.fromDate(new Date("2023-03-19")),
         duration: "10:30 - 12:00",
         location: "Blauwenhoek 76, 1840 Londerzeel",
         title: "Thematraining- Spurt",
@@ -12,7 +12,7 @@ export const EVENTS_JSON: CalendarEventJson[] = [
     },
     {
         id: "1",
-        date: dayjs("2023-03-26"),
+        date: Timestamp.fromDate(new Date("2023-03-26")),
         duration: "08:00 - 17:00",
         location: "J. Van Doorslaerstraat 22, 1840 Steenhuffel",
         title: "Pegasusloop",
@@ -20,7 +20,7 @@ export const EVENTS_JSON: CalendarEventJson[] = [
     },
     {
         id: "2",
-        date: dayjs("2023-05-07"),
+        date: Timestamp.fromDate(new Date("2023-05-07")),
         duration: "Gehele dag",
         location: "",
         title: "Interclub AC",
@@ -28,7 +28,7 @@ export const EVENTS_JSON: CalendarEventJson[] = [
     },
     {
         id: "3",
-        date: dayjs("2023-05-13"),
+        date: Timestamp.fromDate(new Date("2023-05-13")),
         duration: "08:00 - 17:00",
         location: "Blauwenhoek 76, 1840 Londerzeel",
         title: "Interclub PUP en MIN",
@@ -36,7 +36,7 @@ export const EVENTS_JSON: CalendarEventJson[] = [
     },
     {
         id: "4",
-        date: dayjs("2023-05-18"),
+        date: Timestamp.fromDate(new Date("2023-05-18")),
         duration: "11:00 - 18:00",
         location: "Blauwenhoek 76, 1840 Londerzeel",
         title: "3de Pegasus jeugdmeeting",
