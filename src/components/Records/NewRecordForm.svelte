@@ -3,8 +3,8 @@
   import { Category } from "$lib/domain/data-classes/Category";
   import { Discipline } from "$lib/domain/data-classes/Discipline";
   import { Gender } from "$lib/domain/data-classes/Gender";
-  import FormControlCustomSelect from "./form-components/FormControlCustomSelect.svelte";
-  import FormControlText from "./form-components/FormControlText.svelte";
+  import FormControlCustomSelect from "../FormHelpers/FormControlCustomSelect.svelte";
+  import FormControlText from "../FormHelpers/FormControlText.svelte";
   import Icon from "@iconify/svelte";
 
   export let hideInputs: () => void;
