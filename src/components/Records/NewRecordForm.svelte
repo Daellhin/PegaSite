@@ -38,15 +38,13 @@
   on:submit={createRecord}
   class="relative mb-3 border-base-300 bg-base-200 rounded-tr-box min-h-[6rem] min-w-[18rem] border bg-cover bg-top p-4 rounded-box overflow-visible"
 >
-  <div class="">
-    <button
-      class="btn btn-ghost absolute right-2 top-2 font-bold"
-      title="sluiten"
-      on:click={hideInputs}
-    >
-      <Icon icon="fa6-solid:xmark" width={14} />
-    </button>
-  </div>
+  <button
+    class="btn btn-ghost btn-sm absolute right-2 top-2 font-bold"
+    title="sluiten"
+    on:click={hideInputs}
+  >
+    <Icon icon="fa6-solid:xmark" width={14} />
+  </button>
 
   <div class="flex flex-wrap gap-2">
     <FormControlCustomSelect
