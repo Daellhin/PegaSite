@@ -8,7 +8,7 @@
   export let items = Array<any>();
   export let groupBy: ((e: any) => any) | undefined = undefined;
 
-  $: selectId = label?.replace(/ /g, "");
+  $: selectId = label?.replace(/[ :]/g, "").toLowerCase();
 
   function handleSelect(event: any) {
     selectValue = event.detail;
