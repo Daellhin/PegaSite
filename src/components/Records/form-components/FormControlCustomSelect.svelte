@@ -33,7 +33,7 @@
     {groupBy}
     id={selectId}
     on:select={handleSelect}
-    class={"select select-bordered"}
+    class={"select select-bordered font-normal"}
     showChevron
     placeholder={"Kies"}
     {floatingConfig}
@@ -57,7 +57,6 @@
     --border-hover: 1px hsl(var(--bc) / 0.2) solid;
     --list-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
       var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-    --font-size: 0.9rem;
 
     /* Dropdown */
     --list-background: hsl(var(--b1, var(--b1)) / 1);
