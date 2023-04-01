@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { authStore } from "$lib/stores/AuthStore";
   import FaFacebookSquare from "svelte-icons/fa/FaFacebookSquare.svelte";
   import FaSignInAlt from "svelte-icons/fa/FaSignInAlt.svelte";
   import FaSlackHash from "svelte-icons/fa/FaSlackHash.svelte";
@@ -18,13 +19,15 @@
   </div>
   <div class="grid-flow-col gap-4 md:place-self-center md:justify-self-end">
     <div class="flex flex-col md:flex-row w-full">
-      <label
-        for={loginModalID}
-        class="flex gap-1 btn btn-sm btn-square btn-ghost w-full md:w-8"
-      >
-        <div class="w-5 h-5"><FaSignInAlt /></div>
-        <span class="md:hidden">Inloggen</span>
-      </label>
+      {#if !$authStore}
+        <label
+          for={loginModalID}
+          class="flex gap-1 btn btn-sm btn-square btn-ghost w-full md:w-8"
+        >
+          <div class="w-5 h-5"><FaSignInAlt /></div>
+          <span class="md:hidden">Inloggen</span>
+        </label>
+      {/if}
       <a
         class="flex gap-1 btn btn-sm btn-square btn-ghost w-full md:w-8"
         href="https://www.facebook.com/PegasusLonderzeel/"
