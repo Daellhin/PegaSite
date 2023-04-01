@@ -27,7 +27,7 @@ function createClubRecordStore() {
   })
   const { subscribe, update } = store
 
-  async function add(discipline: Discipline, category: Category, gender: Gender, athleticEvent: AthleticEvent, newRecord: RecordInstance) {
+  async function add(discipline: Discipline, category: Category, gender: Gender, athleticEvent: AthleticEvent, newRecordInstance: RecordInstance) {
     if (!browser) {
       console.error("Why are you adding an event from the server")
       return
@@ -42,11 +42,25 @@ function createClubRecordStore() {
     const clubrecordsRef = doc(firestore, Collections.CLUB_RECORDS, "singleDocument")
     const objectKey = `${gender.keyName}.${athleticEvent.keyName}.${discipline.name}.${category.keyName}`
     await updateDoc(clubrecordsRef, {
-      [objectKey]: arrayUnion(newRecord.toJSON())
+      [objectKey]: arrayUnion(newRecordInstance.toJSON())
     })
 
     // -- Update store --
-    //update((clubRecords) => ([...clubRecords, newClubRecord]))
+    update((clubRecords) => {
+      const exsistingRecord = clubRecords.filter((e) =>
+        e.discipline === discipline &&
+        e.category === category &&
+        e.gender === gender &&
+        e.athleticEvent === athleticEvent
+      )
+      if (exsistingRecord?.length === 1) {
+        exsistingRecord[0].records.push(newRecordInstance)
+        return [...clubRecords]
+      } else {
+        const newRecord = new ClubRecord(discipline, category, gender, athleticEvent, [newRecordInstance])
+        return [...clubRecords, newRecord]
+      }
+    })
   }
 
   return {
