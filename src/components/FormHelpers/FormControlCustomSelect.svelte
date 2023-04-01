@@ -12,8 +12,8 @@
 
   $: selectId = label?.replace(/[ :]/g, "").toLowerCase();
 
-  function handleSelect(event: any) {
-    value = event.detail;
+  function handleSelect(event: { detail: { label: string; value: any } }) {
+    value = event.detail.value;
   }
   const floatingConfig = {
     placement: "bottom",

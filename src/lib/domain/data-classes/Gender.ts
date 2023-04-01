@@ -22,6 +22,10 @@ export class Gender {
         return [this.adultSingularName,this.adultPluralName, this.childSingularName, this.childPluralName, ...this.aliases]
     }
 
+    get keyName() {
+        return this.adultSingularName.toLowerCase()
+    }
+
     static match(gender: string) {
         const result = this.Genders.find((e) =>
             e.getAllNames().map(f =>

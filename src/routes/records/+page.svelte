@@ -5,28 +5,24 @@
   import IoMdSearch from "svelte-icons/io/IoIosSearch.svelte";
 
   let searchString = "";
-  let showInputs = false;
-
-  function toggleShowInputs() {
-    showInputs = !showInputs;
-  }
-  function hideInputs() {
-    showInputs = false;
-  }
+  let showForm = true;
 </script>
 
 <!-- Title -->
 <div class="flex gap-3">
   <h1 class="text-2xl font-bold">Clubrecords</h1>
-  <button class="btn btn-sm capitalize btn-primary" on:click={toggleShowInputs}
-    >Nieuw Record</button
+  <button
+    class="btn btn-sm capitalize btn-primary"
+    on:click={() => (showForm = !showForm)}
   >
+    Nieuw Record
+  </button>
 </div>
 
 <!-- Create Record -->
-{#if showInputs}
+{#if showForm}
   <div class="mt-2">
-    <NewRecordForm {hideInputs} />
+    <NewRecordForm bind:showForm />
   </div>
 {/if}
 

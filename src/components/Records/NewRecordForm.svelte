@@ -1,37 +1,40 @@
 <script lang="ts">
+  import FormControlDate from "$components/FormHelpers/FormControlDate.svelte";
   import { AthleticEvent } from "$lib/domain/data-classes/AthleticEvent";
   import { Category } from "$lib/domain/data-classes/Category";
   import { Discipline } from "$lib/domain/data-classes/Discipline";
   import { Gender } from "$lib/domain/data-classes/Gender";
+  import { RecordInstance } from "$lib/domain/RecordInstance";
+  import { clubRecordStore } from "$lib/stores/ClubRecordStore";
+  import { pushCreatedToast } from "$lib/utils/Toast";
+  import Icon from "@iconify/svelte";
+  import dayjs from "dayjs";
   import FormControlCustomSelect from "../FormHelpers/FormControlCustomSelect.svelte";
   import FormControlText from "../FormHelpers/FormControlText.svelte";
-  import Icon from "@iconify/svelte";
-  import FormControlDate from "$components/FormHelpers/FormControlDate.svelte";
 
-  export let hideInputs: () => void;
+  export let showForm: boolean;
 
-  let athleticEvent: string;
-  let category: string;
-  let gender: string;
-  let discipline: any;
+  let discipline: Discipline = Discipline.Javelin;
+  let category: Category = Category.Senioren;
+  let gender: Gender = Gender.Female;
+  let athleticEvent: AthleticEvent = AthleticEvent.Indoor;
 
-  let name: string;
-  let result: string;
-  let location: string;
-  let date: Date;
+  let name: string = "Lorin";
+  let result: string = "10";
+  let location: string = "Londerzeel";
+  let date: Date = new Date();
 
-  function disciplineOptions() {
-    return Discipline.Disciplines.map((e) => ({
-      value: e,
-      label: e.name,
-    }));
-  }
-  function groupByDisipline(item: { value: { type: { name: any } } }) {
-    return item.value.type.name;
-  }
-  function createRecord() {
-    // const record = new RecordInstance(name, result, location, date);
-    console.log("created record");
+  async function createRecord() {
+    const record = new RecordInstance(name, result, location, dayjs(date));
+    await clubRecordStore.add(
+      discipline,
+      category,
+      gender,
+      athleticEvent,
+      record
+    );
+    pushCreatedToast("Record aangemaakt");
+    //showForm = false;
   }
 </script>
 
@@ -42,81 +45,75 @@
   <button
     class="btn btn-ghost btn-sm absolute right-2 top-2 font-bold"
     title="sluiten"
-    on:click={hideInputs}
+    on:click={() => (showForm = false)}
   >
     <Icon icon="fa6-solid:xmark" width={14} />
   </button>
 
   <div class="flex flex-wrap gap-2">
     <FormControlCustomSelect
-      value={discipline}
-      items={disciplineOptions()}
-      groupBy={groupByDisipline}
+      bind:value={discipline}
+      items={Discipline.Disciplines.map((e) => ({
+        value: e,
+        label: e.name,
+      }))}
+      groupBy={(e) => e.value.type.name}
       label="Disipline"
       size="xs"
-      required
     />
 
     <FormControlCustomSelect
-      value={athleticEvent}
+      bind:value={athleticEvent}
       items={AthleticEvent.AthleticEvents.map((e) => ({
         value: e,
         label: e.name,
       }))}
       label="Indoor/outdoor"
       size="xs"
-      required
     />
 
     <FormControlCustomSelect
-      value={category}
+      bind:value={category}
       items={Category.Categories.map((e) => ({
         value: e,
         label: e.singularName,
       }))}
       label="Categorie"
       size="xs"
-      required
     />
 
     <FormControlCustomSelect
-      value={gender}
+      bind:value={gender}
       items={Gender.Genders.map((e) => ({
         value: e,
         label: e.adultSingularName,
       }))}
       label="Geslacht"
       size="xs"
-      required
     />
 
     <FormControlText
       label="Naam"
       placeholder="Voornaam Naam"
-      value={name}
+      bind:value={name}
       size="xs"
       required
     />
     <FormControlText
       label="Prestatie"
       placeholder="00.00"
-      value={result}
+      bind:value={result}
       size="xs"
       required
     />
     <FormControlText
       label="Locatie"
       placeholder="Locatie"
-      value={location}
+      bind:value={location}
       size="xs"
       required
     />
-    <FormControlDate
-      label="Datum"
-      value={date}
-      size="xs"
-      required
-    />
+    <FormControlDate label="Datum" bind:value={date} size="xs" required />
   </div>
 
   <button class="btn btn-primary btn-md mt-4">Aanmaken</button>

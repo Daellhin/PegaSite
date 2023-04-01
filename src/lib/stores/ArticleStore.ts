@@ -1,7 +1,7 @@
 import { browser } from '$app/environment'
 import type { Article } from '$lib/domain/Article'
 import { articleConverter } from '$lib/domain/Article'
-import { Collections } from '$lib/firebase/Firebase'
+import { Collections } from '$lib/firebase/firebase'
 import type { QueryDocumentSnapshot } from 'firebase/firestore'
 import { writable } from 'svelte/store'
 import { v4 as uuidv4 } from 'uuid'
@@ -27,7 +27,7 @@ function createArticleStore() {
     async function init() {
       if (browser) {
         // -- Load articles --
-        const { firebaseApp } = await import('$lib/firebase/Firebase')
+        const { firebaseApp } = await import('$lib/firebase/firebase')
         const { getFirestore, collection, query, orderBy, limit, getDocs } = await import('firebase/firestore')
         const firestore = getFirestore(firebaseApp)
 
@@ -68,7 +68,7 @@ function createArticleStore() {
 
     // -- Upload article --
     const { getFirestore, collection, doc, setDoc } = await import('firebase/firestore')
-    const { firebaseApp } = await import('$lib/firebase/Firebase')
+    const { firebaseApp } = await import('$lib/firebase/firebase')
     const firestore = getFirestore(firebaseApp)
 
     const newDocRef = doc(collection(firestore, Collections.ARTICLES)).withConverter(articleConverter)
@@ -101,7 +101,7 @@ function createArticleStore() {
 
     // -- Remove article --
     const { getFirestore, doc, deleteDoc } = await import('firebase/firestore')
-    const { firebaseApp } = await import('$lib/firebase/Firebase')
+    const { firebaseApp } = await import('$lib/firebase/firebase')
     const firestore = getFirestore(firebaseApp)
 
     await deleteDoc(doc(firestore, Collections.ARTICLES, article.id))
@@ -118,7 +118,7 @@ function createArticleStore() {
     }
     if (hasMoreDocuments) {
       // -- Load articles --
-      const { firebaseApp } = await import('$lib/firebase/Firebase')
+      const { firebaseApp } = await import('$lib/firebase/firebase')
       const { getFirestore, collection, query, orderBy, limit, getDocs, startAfter } = await import('firebase/firestore')
       const firestore = getFirestore(firebaseApp)
 

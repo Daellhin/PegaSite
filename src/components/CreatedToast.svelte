@@ -6,14 +6,14 @@
   import MdInfoOutline from "svelte-icons/md/MdInfoOutline.svelte";
 
   export let createdText = "";
-  export let gotoUrl = "";
+  export let gotoUrl: string | undefined;
   export let toastId: number;
 
   function removeToast() {
     toast.pop(toastId);
   }
   function gotoCreated() {
-    goto(gotoUrl);
+    goto(gotoUrl!);
   }
   beforeNavigate(async (navigation: BeforeNavigate) => {
     if (isPageNavigation(navigation)) removeToast();
@@ -28,9 +28,11 @@
     </div>
     <div class="flex-none">
       <button class="btn btn-sm btn-ghost" on:click={removeToast}> Ok </button>
-      <button class="btn btn-sm btn-primary" on:click={gotoCreated}>
-        Bekijken
-      </button>
+      {#if gotoUrl}
+        <button class="btn btn-sm btn-primary" on:click={gotoCreated}>
+          Bekijken
+        </button>
+      {/if}
     </div>
   </div>
 </div>

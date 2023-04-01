@@ -36,6 +36,10 @@ export class Category {
         return [this.singularName, this.pluralName, ...this.aliases]
     }
 
+    get keyName() {
+        return this.singularName.replace(/ /g, "").toLowerCase()
+    }
+
     static match(category: string) {
         const result = this.Categories.find((e) =>
             e.getAllNames().map(f =>
