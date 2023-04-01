@@ -7,6 +7,7 @@
   export let required = false;
   export let items = Array<any>();
   export let groupBy: ((e: any) => any) | undefined = undefined;
+  export let size: "sm" | "xs" = "sm";
 
   $: selectId = label?.replace(/[ :]/g, "").toLowerCase();
 
@@ -19,7 +20,11 @@
   };
 </script>
 
-<div class="form-control w-full max-w-xs daisyui-themed">
+<div
+  class="form-control w-full daisyui-themed"
+  class:max-w-sm={size === "sm"}
+  class:max-w-xs={size === "xs"}
+>
   <label class="label" for={selectId}>
     <span class="label-text"
       >{label}
@@ -33,9 +38,9 @@
     {groupBy}
     id={selectId}
     on:select={handleSelect}
-    class={"select select-bordered font-normal"}
+    class="select select-bordered border-2 font-normal"
     showChevron
-    placeholder={"Kies"}
+    placeholder="Kies"
     {floatingConfig}
     {required}
   >

@@ -44,7 +44,7 @@
       title="sluiten"
       on:click={hideInputs}
     >
-      <Icon icon="fa6-solid:xmark"  width={14} />
+      <Icon icon="fa6-solid:xmark" width={14} />
     </button>
   </div>
 
@@ -53,8 +53,9 @@
       selectValue={discipline}
       items={disciplineOptions()}
       groupBy={groupByDisipline}
-      label={"Disipline"}
-      required={true}
+      label="Disipline"
+      size="xs"
+      required
     />
 
     <FormControlCustomSelect
@@ -63,8 +64,9 @@
         value: e,
         label: e.name,
       }))}
-      label={"Indoor/outdoor"}
-      required={true}
+      label="Indoor/outdoor"
+      size="xs"
+      required
     />
 
     <FormControlCustomSelect
@@ -73,8 +75,9 @@
         value: e,
         label: e.singularName,
       }))}
-      label={"Categorie"}
-      required={true}
+      label="Categorie"
+      size="xs"
+      required
     />
 
     <FormControlCustomSelect
@@ -83,33 +86,38 @@
         value: e,
         label: e.adultSingularName,
       }))}
-      label={"Geslacht"}
-      required={true}
+      label="Geslacht"
+      size="xs"
+      required
     />
 
     <FormControlText
       label="Naam"
       placeholder="Voornaam Naam"
       textValue={name}
-      required={true}
+      size="xs"
+      required
     />
     <FormControlText
       label="Prestatie"
       placeholder="00.00"
       textValue={result}
-      required={true}
+      size="xs"
+      required
     />
     <FormControlText
       label="Locatie"
       placeholder="Locatie"
       textValue={location}
-      required={true}
+      size="xs"
+      required
     />
     <FormControlText
       label="Datum"
       placeholder="00-00-0000"
       textValue={date}
-      required={true}
+      size="xs"
+      required
     />
   </div>
 

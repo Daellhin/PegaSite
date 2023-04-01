@@ -3,11 +3,16 @@
   export let placeholder: string;
   export let textValue: string;
   export let required = false;
+  export let size: "sm" | "xs" = "sm";
 
   $: inputId = label?.replace(/[ :]/g, "").toLowerCase();
 </script>
 
-<div class="form-control w-full max-w-xs">
+<div
+  class="form-control w-full"
+  class:max-w-sm={size === "sm"}
+  class:max-w-xs={size === "xs"}
+>
   <label class="label" for={inputId}>
     <span class="label-text">
       {label}
@@ -21,7 +26,7 @@
     id={inputId}
     type="text"
     {placeholder}
-    class="input input-bordered w-full max-w-xs"
+    class="input input-bordered border-2 w-full"
     bind:value={textValue}
   />
 </div>

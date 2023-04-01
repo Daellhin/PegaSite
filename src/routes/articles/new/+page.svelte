@@ -11,6 +11,7 @@
   import Dropzone from "$components/Dropzone.svelte";
   import { authStore } from "$lib/stores/AuthStore";
   import { goto } from "$app/navigation";
+  import FormControlText from "$components/FormHelpers/FormControlText.svelte";
 
   let title = "";
   let content = "";
@@ -82,18 +83,12 @@
     </button>
   </div>
   <form class="flex flex-col gap-2" on:submit={saveArticle}>
-    <div class="form-control w-full max-w-sm">
-      <label class="label" for="title">
-        <span class="label-text">Titel van bericht:</span>
-      </label>
-      <input
-        id="title"
-        type="text"
-        placeholder="Titel"
-        class="input input-bordered border-2"
-        bind:value={title}
-      />
-    </div>
+    <FormControlText
+      label="Titel van bericht:"
+      placeholder="Titel"
+      textValue={title}
+      required
+    />
 
     <div class="form-control w-full max-w-sm">
       <label class="label" for="dropzone-file">

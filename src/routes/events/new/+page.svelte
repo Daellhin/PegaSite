@@ -7,6 +7,8 @@
   import CreatedToast from "$components/CreatedToast.svelte";
   import { authStore } from "$lib/stores/AuthStore";
   import { goto } from "$app/navigation";
+  import FormControlDate from "$components/FormHelpers/FormControlDate.svelte";
+  import FormControlText from "$components/FormHelpers/FormControlText.svelte";
 
   let title = "";
   let info = "";
@@ -37,7 +39,7 @@
       initial: 0,
     });
   }
-  
+
   // Authguard
   $: authStore.known.then(() => {
     if (!$authStore) goto("/");
@@ -47,56 +49,28 @@
 <h1 class="text-2xl font-bold">Nieuw event</h1>
 
 <form class="flex flex-col gap-2" on:submit={saveEvent}>
-  <div class="form-control w-full max-w-sm">
-    <label class="label" for="title">
-      <span class="label-text">Titel van event:</span>
-    </label>
-    <input
-      id="title"
-      type="text"
-      placeholder="Titel"
-      class="input input-bordered border-2"
-      bind:value={title}
-    />
-  </div>
+  <FormControlText
+    label="Titel van event:"
+    placeholder="Titel"
+    textValue={title}
+    required
+  />
 
-  <div class="form-control w-full max-w-sm">
-    <label class="label" for="date">
-      <span class="label-text">Datum van event:</span>
-    </label>
-    <input
-      id="date"
-      class="input input-bordered border-2"
-      type="date"
-      bind:value={date}
-    />
-  </div>
+  <FormControlDate dateValue={date} label="Datum van event:" />
 
-  <div class="form-control w-full max-w-sm">
-    <label class="label" for="duration">
-      <span class="label-text">Duur van event:</span>
-    </label>
-    <input
-      id="duration"
-      type="text"
-      placeholder="00:00 - 00:00"
-      class="input input-bordered border-2"
-      bind:value={duration}
-    />
-  </div>
+  <FormControlText
+    label="Duur van event:"
+    placeholder="00:00 - 00:00"
+    textValue={duration}
+    required
+  />
 
-  <div class="form-control w-full max-w-sm">
-    <label class="label" for="location">
-      <span class="label-text">Locatie van event:</span>
-    </label>
-    <input
-      id="location"
-      type="text"
-      placeholder="Blauwenhoek 76, 1840 Londerzeel"
-      class="input input-bordered border-2"
-      bind:value={location}
-    />
-  </div>
+  <FormControlText
+    label="Locatie van event:"
+    placeholder="Blauwenhoek 76, 1840 Londerzeel"
+    textValue={location}
+    required
+  />
 
   <div class="form-control">
     <label class="label" for="editor">
