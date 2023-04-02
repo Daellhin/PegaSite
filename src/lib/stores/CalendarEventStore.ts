@@ -38,7 +38,7 @@ function createCalendarEventStore() {
 
   async function addCalendarEvent(newCalendarEvent: CalendarEvent) {
     if (!browser) {
-      console.error("Why are you adding an event from the server")
+      console.error("Why are you adding a calendarEvent from the server")
       return
     }
 
@@ -59,9 +59,26 @@ function createCalendarEventStore() {
     });
   }
 
+  async function removeCalendarEvent(calendarEvent: CalendarEvent) {
+    if (!browser) {
+      console.error("Why are you removing a calendarEvent from the server")
+      return
+    }
+    // -- Remove article --
+    const { getFirestore, doc, deleteDoc } = await import('firebase/firestore')
+    const { firebaseApp } = await import('$lib/firebase/firebase')
+    const firestore = getFirestore(firebaseApp)
+
+    await deleteDoc(doc(firestore, Collections.CALENDAR_EVENTS, calendarEvent.id))
+
+    // -- Remove from store --
+    update((articles) => (articles.filter((e) => e.id !== calendarEvent.id)))
+  }
+
   return {
     subscribe,
-    addCalendarEvent
+    addCalendarEvent,
+    removeCalendarEvent
   }
 }
 

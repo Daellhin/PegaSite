@@ -38,7 +38,7 @@ function createClubRecordStore() {
 
   async function add(discipline: Discipline, category: Category, gender: Gender, athleticEvent: AthleticEvent, newRecordInstance: RecordInstance) {
     if (!browser) {
-      console.error("Why are you adding an event from the server")
+      console.error("Why are you adding a clubRecord from the server")
       return
     }
     // TODO https://firebase.google.com/docs/firestore/manage-data/add-data#update_elements_in_an_array

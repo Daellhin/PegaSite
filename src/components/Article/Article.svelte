@@ -1,13 +1,11 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
+  import EditDropdown from "$components/EditDropdown.svelte";
   import type { Article } from "$lib/domain/Article";
   import { articleStore } from "$lib/stores/ArticleStore";
   import { authStore } from "$lib/stores/AuthStore";
   import { Carousel } from "flowbite-svelte";
-  import FaChevronDown from "svelte-icons/fa/FaChevronDown.svelte";
-  import FaPen from "svelte-icons/fa/FaPen.svelte";
   import FaRegCalendar from "svelte-icons/fa/FaRegCalendar.svelte";
-  import FaRegTrashAlt from "svelte-icons/fa/FaRegTrashAlt.svelte";
   import FaUser from "svelte-icons/fa/FaUser.svelte";
   import Time from "svelte-time";
 
@@ -24,21 +22,7 @@
 <div class="flex flex-row items-center">
   <h1 class="text-4xl font-semibold">{article.title || "Geen titel"}</h1>
   {#if !isPreview && $authStore}
-    <div title="Aanpassen" class="dropdown dropdown-end ml-auto">
-      <button tabindex="0" class="btn btn-ghost gap-2 normal-case">
-        <div class="w-5 h-5"><FaPen /></div>
-        <div class="w-4 h-4 text-gray-500"><FaChevronDown /></div>
-      </button>
-      <ul class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
-        <li><a href="/dashboard">Aanpassen</a></li>
-        <li class="flex flex-row gap-1">
-          <button on:click={removeArticle} class="w-full">
-            <div class="w-5 h-5"><FaRegTrashAlt /></div>
-            Verwijderen
-          </button>
-        </li>
-      </ul>
-    </div>
+    <EditDropdown editUrl="/todo" deleteHandler={removeArticle} />
   {/if}
 </div>
 
