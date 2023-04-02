@@ -2,6 +2,7 @@
   import NewRecordForm from "$components/Records/NewRecordForm.svelte";
   import RecordsTable from "$components/Records/RecordsTable.svelte";
   import { Category } from "$lib/domain/data-classes/Category";
+  import { clubRecordStore } from "$lib/stores/ClubRecordStore";
   import IoMdSearch from "svelte-icons/io/IoIosSearch.svelte";
 
   let searchString = "";
@@ -40,8 +41,16 @@
 </div>
 
 <!-- Records -->
-{#each Category.Categories as category}
-  <div class="mx-auto my-2">
-    <RecordsTable {category} {searchString} />
-  </div>
-{/each}
+{#if $clubRecordStore}
+  {#each Category.Categories as category}
+    <div class="mx-auto my-2">
+      <RecordsTable {category} {searchString} />
+    </div>
+  {/each}{#each Category.Categories as category}
+    <div class="mx-auto my-2">
+      <RecordsTable {category} {searchString} />
+    </div>
+  {/each}
+{:else}
+  loading
+{/if}

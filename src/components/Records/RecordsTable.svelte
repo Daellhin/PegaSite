@@ -1,9 +1,12 @@
 <script lang="ts">
-  import { AthleticEvent } from "$lib/domain/data-classes/AthleticEvent";
+  import { constructMapWithCategory } from "$lib/domain/ClubRecord";
   import type { Category } from "$lib/domain/data-classes/Category";
-  import { Gender } from "$lib/domain/data-classes/Gender";
   import { clubRecordStore } from "$lib/stores/ClubRecordStore";
-  import { isArrayNotEmpty } from "$lib/utils/Array";
+  import {
+    filterValuesInMap,
+    getMapKeys,
+    getMapValues,
+  } from "$lib/utils/Array";
   import CollapsableList from "./CollapsableList.svelte";
   import TabedView from "./TabedView.svelte";
 
@@ -12,74 +15,23 @@
 
   let recordComponents: any[] = [];
 
-  function getRecords(
-    category: Category,
-    gender: Gender,
-    athleticEvent: AthleticEvent
-  ) {
-    return $clubRecordStore.filter(
-      (e) =>
-        e.category === category &&
-        e.gender === gender &&
-        e.athleticEvent === athleticEvent
-    );
-  }
-
-  $: map =
-    $clubRecordStore &&
-    new Map([
-      [
-        "Vrouwen indoor",
-        getRecords(category, Gender.Female, AthleticEvent.Indoor),
-      ],
-      [
-        "Mannen indoor",
-        getRecords(category, Gender.Male, AthleticEvent.Indoor),
-      ],
-      [
-        "Vrouwen outdoor",
-        getRecords(category, Gender.Female, AthleticEvent.Outdoor),
-      ],
-      [
-        "Mannen outdoor",
-        getRecords(category, Gender.Male, AthleticEvent.Outdoor),
-      ],
-    ]);
-  // TODO refactor and simplify
-  // Now if this isnt a simple statement, have fun trying to understand what it does :)
-  $: filteredClubrecords = Array.from(
-    new Map(
-      Array.from(map).map(([key, value]) => [
-        key,
-        value.filter((e) =>
-          searchString
-            ? !searchString
-                .toLowerCase()
-                .split(" ")
-                .map((f) => e.searchableString.includes(f))
-                .includes(false)
-            : true
-        ),
-      ])
-    )
-  ).filter(([key, value]) => isArrayNotEmpty(value));
-  $: keys = filteredClubrecords.map(([key, value]) => key);
-  $: values = filteredClubrecords.map(([key, value]) => value);
+  $: clubRecords = constructMapWithCategory($clubRecordStore, category);
+  $: filteredClubrecords = filterValuesInMap(clubRecords, (e) =>
+    e.matchesSearchString(searchString)
+  );
+  $: keys = getMapKeys(filteredClubrecords);
+  $: values = getMapValues(filteredClubrecords);
   $: isSearching = searchString ? true : false;
-
-  function hideAll() {
-    recordComponents.forEach((e) => e.hide());
-  }
+  $: console.log(filteredClubrecords)
 </script>
 
-{#if isArrayNotEmpty(filteredClubrecords)}
+{#if filteredClubrecords && filteredClubrecords.size}
   <div class="flex mt-3">
     <h2 class="text-2xl text-primary font-bold whitespace-nowrap">
       {category.pluralName}
     </h2>
     <hr class="my-[18px] ml-3 w-full h-[1.6px] bg-gray-200" />
   </div>
-
   <div class="mt-1">
     <TabedView tabs={keys}>
       <!-- Slots can not be dynamicaly asigned so empty arrays are used -->

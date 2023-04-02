@@ -26,12 +26,12 @@ async function addRecordsFromJson() {
 }
 
 function createClubRecordStore() {
-  const store = writable([] as ClubRecord[], set => {
+  const store = writable<ClubRecord[]>(undefined, set => {
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     const unsubscribe = () => { }
 
     async function init() {
-      if (browser) {
+      if (!browser) {
         return
       }
       // const records = (ClubRecords as unknown as ClubRecordJson[]).map(ClubRecord.fromJSON);

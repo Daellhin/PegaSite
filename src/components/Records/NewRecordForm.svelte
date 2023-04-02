@@ -14,15 +14,15 @@
 
   export let showForm: boolean;
 
-  let discipline: Discipline = Discipline.Javelin;
-  let category: Category = Category.Senioren;
-  let gender: Gender = Gender.Female;
-  let athleticEvent: AthleticEvent = AthleticEvent.Indoor;
+  let discipline: Discipline;
+  let category: Category;
+  let gender: Gender;
+  let athleticEvent: AthleticEvent;
 
-  let name: string = "Lorin";
-  let result: string = "10";
-  let location: string = "Londerzeel";
-  let date: Date = new Date();
+  let name: string;
+  let result: string;
+  let location: string;
+  let date: Date;
 
   async function createRecord() {
     const record = new RecordInstance(name, result, location, dayjs(date));

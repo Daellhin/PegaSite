@@ -6,7 +6,7 @@ import dayjs from 'dayjs'
 import { writable } from 'svelte/store'
 
 function createCalendarEventStore() {
-  const store = writable(undefined as CalendarEvent[] | undefined, set => {
+  const store = writable<CalendarEvent[]>(undefined, set => {
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     const unsubscribe = () => { }
 

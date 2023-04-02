@@ -1,8 +1,8 @@
-import { AthleticEvent } from './data-classes/AthleticEvent';
-import { Category } from './data-classes/Category';
-import { Discipline } from './data-classes/Discipline';
-import { Gender } from './data-classes/Gender';
-import { RecordInstance, type RecordInstanceJson } from './RecordInstance';
+import { AthleticEvent } from './data-classes/AthleticEvent'
+import { Category } from './data-classes/Category'
+import { Discipline } from './data-classes/Discipline'
+import { Gender } from './data-classes/Gender'
+import { RecordInstance, type RecordInstanceJson } from './RecordInstance'
 
 export interface ClubRecordJson {
     discipline: string
@@ -13,7 +13,7 @@ export interface ClubRecordJson {
 }
 
 export class ClubRecord {
-    public searchableString: string;
+    public searchableString: string
 
     constructor(
         public discipline: Discipline,
@@ -26,7 +26,22 @@ export class ClubRecord {
     }
 
     hasPreviousRecords() {
-        return this.records.length > 1;
+        return this.records.length > 1
+    }
+
+    /**
+     * Checks if clubrecords matches a search string
+     * - if searchString is undefined, matches all
+     */
+    matchesSearchString(searchString: string) {
+        if (!searchString) {
+            return true
+        }
+        return !searchString
+            .toLowerCase()
+            .split(" ")
+            .map((keyword) => this.searchableString.includes(keyword))
+            .includes(false)
     }
 
     static fromJSON(json: ClubRecordJson): ClubRecord {
@@ -37,10 +52,10 @@ export class ClubRecord {
                 Gender.match(json.gender),
                 AthleticEvent.match(json.athleticEvent),
                 json.records.map(RecordInstance.fromJSON)
-            );
+            )
         } catch (error) {
             console.error("Error while convertering json", json)
-            throw error;
+            throw error
         }
     }
 
@@ -49,12 +64,32 @@ export class ClubRecord {
             return Object.keys(toMap[gender]).flatMap((athleticEvent) => {
                 return Object.keys(toMap[gender][athleticEvent]).flatMap((discipline) => {
                     return Object.keys(toMap[gender][athleticEvent][discipline]).flatMap((category) => {
-                        const records = toMap[gender][athleticEvent][discipline][category] as RecordInstanceJson[];
+                        const records = toMap[gender][athleticEvent][discipline][category] as RecordInstanceJson[]
                         return { discipline, category, gender, athleticEvent, records } as ClubRecordJson
                     })
                 })
             })
         })
-        return json.map(this.fromJSON);
+        return json.map(this.fromJSON)
     }
+}
+
+export function filterRecordsWithType(clubRecords: ClubRecord[], category: Category, gender: Gender, athleticEvent: AthleticEvent) {
+    return clubRecords.filter((e) =>
+        e.category === category &&
+        e.gender === gender &&
+        e.athleticEvent === athleticEvent
+    )
+}
+
+export function constructMapWithCategory(clubRecords: ClubRecord[], category: Category) {
+    if (!clubRecords) {
+        return undefined
+    }
+    return new Map([
+        ["Vrouwen indoor", filterRecordsWithType(clubRecords, category, Gender.Female, AthleticEvent.Indoor)],
+        ["Mannen indoor", filterRecordsWithType(clubRecords, category, Gender.Male, AthleticEvent.Indoor)],
+        ["Vrouwen outdoor", filterRecordsWithType(clubRecords, category, Gender.Female, AthleticEvent.Outdoor)],
+        ["Mannen outdoor", filterRecordsWithType(clubRecords, category, Gender.Male, AthleticEvent.Outdoor)],
+    ])
 }
