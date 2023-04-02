@@ -18,7 +18,7 @@
   <div title="Aanpassen" class="dropdown dropdown-end ml-auto">
     <button tabindex="0" class="btn btn-ghost gap-2 normal-case">
       <div class="w-5 h-5"><FaPen /></div>
-      <div class="w-4 h-4 text-gray-500"><FaChevronDown /></div>
+      <div class="w-4 h-4 text-gray-500 hidden sm:block"><FaChevronDown /></div>
     </button>
     <ul
       bind:this={dropdownList}
