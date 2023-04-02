@@ -13,5 +13,5 @@
 <div class="flex w-fit gap-2">
   <a href="/articles/new" class="btn btn-primary normal-case">Nieuw bericht</a>
   <a href="/events/new" class="btn btn-primary normal-case">Nieuw event</a>
-  <a href="/pages/new" class="btn btn-primary normal-case">Nieuwe pagina</a>
+  <a href="/toolbar" class="btn btn-primary normal-case">Paginas aanpassen</a>
 </div>

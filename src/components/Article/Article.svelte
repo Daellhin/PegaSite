@@ -22,7 +22,9 @@
 <div class="flex flex-row items-center">
   <h1 class="text-4xl font-semibold">{article.title || "Geen titel"}</h1>
   {#if !isPreview && $authStore}
-    <EditDropdown editUrl="/todo" deleteHandler={removeArticle} />
+    <div class="ml-auto">
+      <EditDropdown editUrl="/todo" deleteHandler={removeArticle} />
+    </div>
   {/if}
 </div>
 
