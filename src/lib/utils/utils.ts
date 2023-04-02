@@ -74,10 +74,13 @@ export async function srcToFile(src: string, fileName: string, mimeType: string,
  * @returns Map of the array grouped by the grouping function.
  */
 export function groupBy<K, V>(
-    list: Array<V>,
+    list: V[],
     keyGetter: (input: V) => K
-): Map<K, Array<V>> {
-    const map = new Map<K, Array<V>>();
+) {
+    if(!list) {
+        return undefined
+    }
+    const map = new Map<K, V[]>();
     list.forEach((item) => {
         const key = keyGetter(item);
         const collection = map.get(key);

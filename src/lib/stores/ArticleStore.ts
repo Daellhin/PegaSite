@@ -1,6 +1,5 @@
 import { browser } from '$app/environment'
-import type { Article } from '$lib/domain/Article'
-import { articleConverter } from '$lib/domain/Article'
+import { Article, articleConverter } from '$lib/domain/Article'
 import { Collections } from '$lib/firebase/firebase'
 import type { QueryDocumentSnapshot } from 'firebase/firestore'
 import { writable } from 'svelte/store'
@@ -26,6 +25,8 @@ function createArticleStore() {
 
     async function init() {
       if (browser) {
+        // const articles = ARTICLES_JSON.map(Article.fromJson)
+
         // -- Load articles --
         const { firebaseApp } = await import('$lib/firebase/firebase')
         const { getFirestore, collection, query, orderBy, limit, getDocs } = await import('firebase/firestore')
@@ -39,7 +40,10 @@ function createArticleStore() {
         const snapshot = await getDocs(q)
 
         // -- Set store --
-        set(snapshot.docs.map(e => e.data()))
+        const articles = snapshot.docs.map(e => e.data())
+        set(articles)
+
+        // -- Setup pagination --
         lastRef = snapshot.docs.slice(-1)[0]
         hasMoreDocuments = snapshot.docs.length === paginationSize + 1;
       }

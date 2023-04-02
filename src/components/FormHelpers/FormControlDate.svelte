@@ -21,6 +21,7 @@
     </span>
   </label>
   <input
+    {required}
     id={inputId}
     class="input input-bordered border-2"
     type="date"

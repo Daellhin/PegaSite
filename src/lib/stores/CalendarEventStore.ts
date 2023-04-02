@@ -1,19 +1,33 @@
 
 import { browser } from '$app/environment'
-import { EVENTS_JSON } from '$data/CalendarEventsJson'
-import { CalendarEvent, calendarEventConverter } from "$lib/domain/CalendarEvent"
+import { CalendarEvent, calendarEventConverter } from '$lib/domain/CalendarEvent'
 import { Collections } from '$lib/firebase/firebase'
+import dayjs from 'dayjs'
 import { writable } from 'svelte/store'
 
 function createCalendarEventStore() {
-  const store = writable([] as CalendarEvent[], set => {
+  const store = writable(undefined as CalendarEvent[] | undefined, set => {
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     const unsubscribe = () => { }
 
     async function init() {
       if (browser) {
-        const events = EVENTS_JSON.map(CalendarEvent.fromJson)
-        set(events)
+        // const calendarEvents = EVENTS_JSON.map(CalendarEvent.fromJson)
+
+        // -- Load CalendarEvents --
+        const { firebaseApp } = await import('$lib/firebase/firebase')
+        const { getFirestore, collection, query, where, getDocs } = await import('firebase/firestore')
+        const firestore = getFirestore(firebaseApp)
+
+        const queryResult = query(
+          collection(firestore, Collections.CALENDAR_EVENTS),
+          where("date", ">=", dayjs().startOf('day').toDate())
+        ).withConverter(calendarEventConverter)
+        const snapshot = await getDocs(queryResult)
+
+        // -- Set store --
+        const calendarEvents = snapshot.docs.map(e => e.data())
+        set(calendarEvents)
       }
     }
     init()
@@ -33,7 +47,9 @@ function createCalendarEventStore() {
     const { firebaseApp } = await import('$lib/firebase/firebase')
     const firestore = getFirestore(firebaseApp)
 
-    const newDocRef = doc(collection(firestore, Collections.CALENDAR_EVENTS)).withConverter(calendarEventConverter)
+    const newDocRef = doc(
+      collection(firestore, Collections.CALENDAR_EVENTS)
+    ).withConverter(calendarEventConverter)
     newCalendarEvent.id = newDocRef.id
     await setDoc(newDocRef, newCalendarEvent)
 
