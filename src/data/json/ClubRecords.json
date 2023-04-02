@@ -90,16 +90,16 @@
         "athleticEvent": "indoor",
         "records": [
             {
+                "name": "Flo Van Ongeval",
+                "result": "10.90",
+                "location": "Gent",
+                "date": "05.02.2023"
+            },
+            {
                 "name": "Imke Kempeneers",
                 "result": "12.42",
                 "location": "Hoboken",
                 "date": "23.02.2020"
-            },
-            {
-                "name": "Emma Van Eynde",
-                "result": "13.64",
-                "location": "Gent",
-                "date": "12.02.2017"
             }
         ]
     },
@@ -124,10 +124,16 @@
         "athleticEvent": "indoor",
         "records": [
             {
-                "name": "Anne-Sophie Kino",
-                "result": "1.05",
+                "name": "Flo Van Ongeval",
+                "result": "1.15",
                 "location": "Hoboken",
-                "date": "27.01.2018"
+                "date": "15.01.2023"
+            },
+            {
+                "name": "Elinore Mier y Mier",
+                "result": "1.10",
+                "location": "Hoboken",
+                "date": "20.11.2022"
             }
         ]
     },
@@ -156,6 +162,20 @@
                 "result": "5.90",
                 "location": "Gent",
                 "date": "26.12.2008"
+            }
+        ]
+    },
+    {
+        "discipline": "4x200m",
+        "category": "Pupillen",
+        "gender": "Meisjes",
+        "athleticEvent": "indoor",
+        "records": [
+            {
+                "name": "Elinore Mier y Mier, Lena Rochtus, Emma De Loenen, Flo Van Ongeval",
+                "result": "2.17.37",
+                "location": "Gent",
+                "date": "26.02.2023"
             }
         ]
     },
@@ -290,6 +310,26 @@
         ]
     },
     {
+        "discipline": "60mH (0,762)",
+        "category": "Cadetten",
+        "gender": "Meisjes",
+        "athleticEvent": "indoor",
+        "records": [
+            {
+                "name": "Imke Kempeneers",
+                "result": "9.38",
+                "location": "Gent",
+                "date": "22.01.2023"
+            },
+            {
+                "name": "Imke Kempeneers",
+                "result": "9.48",
+                "location": "Gent",
+                "date": "07.01.2023"
+            }
+        ]
+    },
+    {
         "discipline": "200m",
         "category": "Cadetten",
         "gender": "Meisjes",
@@ -388,6 +428,26 @@
         ]
     },
     {
+        "discipline": "HSS",
+        "category": "Cadetten",
+        "gender": "Meisjes",
+        "athleticEvent": "indoor",
+        "records": [
+            {
+                "name": "Imke Kempeneers",
+                "result": "9m71",
+                "location": "Gent",
+                "date": "26.02.2023"
+            },
+            {
+                "name": "Ruth Van Weverberg",
+                "result": "9m27",
+                "location": "Gent",
+                "date": "22.01.2023"
+            }
+        ]
+    },
+    {
         "discipline": "hoog",
         "category": "Cadetten",
         "gender": "Meisjes",
@@ -442,16 +502,22 @@
         ]
     },
     {
-        "discipline": "60 m H (0,76)",
+        "discipline": "60 m H (0,762)",
         "category": "Scholieren",
         "gender": "Meisjes",
         "athleticEvent": "indoor",
         "records": [
             {
                 "name": "Luca D\u0027hondt",
-                "result": "10.01",
+                "result": "9.15",
                 "location": "Gent",
-                "date": "26.02.2022"
+                "date": "07.01.2023"
+            },
+            {
+                "name": "Luca D\u0027hondt",
+                "result": "9.50",
+                "location": "Gent",
+                "date": "26.12.2022"
             }
         ]
     },
@@ -542,6 +608,20 @@
                 "result": "12.36",
                 "location": "Gent",
                 "date": "02.01.2016"
+            }
+        ]
+    },
+    {
+        "discipline": "4x200m",
+        "category": "Scholieren",
+        "gender": "Meisjes",
+        "athleticEvent": "indoor",
+        "records": [
+            {
+                "name": "Am\u00E9lie Segers, Marie De Boeck, Rosie Van Meel, Emma Van Eynde",
+                "result": "1.58.52",
+                "location": "Gent",
+                "date": "26.02.2023"
             }
         ]
     },
@@ -831,7 +911,7 @@
                 "name": "Jenna Wyns",
                 "result": "4.39.35",
                 "location": "Gent",
-                "date": "1/27/2013"
+                "date": "27.01.2013"
             }
         ]
     },
@@ -878,11 +958,37 @@
         ]
     },
     {
+        "discipline": "HSS",
+        "category": "Alle categori\u00EBn",
+        "gender": "vrouwen",
+        "athleticEvent": "indoor",
+        "records": [
+            {
+                "name": "Imke Kempeneers",
+                "result": "9m71",
+                "location": "Gent",
+                "date": "26.02.2023"
+            },
+            {
+                "name": "Ruth Van Weverberg",
+                "result": "9m27",
+                "location": "Gent",
+                "date": "22.01.2023"
+            }
+        ]
+    },
+    {
         "discipline": "4x200m",
         "category": "Alle categori\u00EBn",
         "gender": "vrouwen",
         "athleticEvent": "indoor",
         "records": [
+            {
+                "name": "Am\u00E9lie Segers, Marie De Boeck, Rosie Van Meel, Emma Van Eynde",
+                "result": "1.58.52",
+                "location": "Gent",
+                "date": "26.02.2023"
+            },
             {
                 "name": "Marthe Van Deuren, Hanne Van Weverberg, Leonie Kinzumbi, Jana Vermeir",
                 "result": "2.00.45",
@@ -899,7 +1005,7 @@
         "records": [
             {
                 "name": "Kyle Cornelissen",
-                "result": "10,57",
+                "result": "10.57",
                 "location": "Gent",
                 "date": "26.12.2005"
             }
@@ -927,7 +1033,7 @@
         "records": [
             {
                 "name": "Xander Snackaert",
-                "result": "3,18",
+                "result": "3.18",
                 "location": "Gent",
                 "date": "21.03.2015"
             },
@@ -947,7 +1053,7 @@
         "records": [
             {
                 "name": "Xander Snackaert",
-                "result": "0,97",
+                "result": "0.97",
                 "location": "Hoboken",
                 "date": "08.02.2015"
             },
@@ -967,7 +1073,7 @@
         "records": [
             {
                 "name": "Quinten Hendrickx",
-                "result": "6,95",
+                "result": "6.95",
                 "location": "Gent",
                 "date": "15.01.2012"
             }
@@ -1009,7 +1115,7 @@
         "records": [
             {
                 "name": "Arne Van Opstal",
-                "result": "9,26",
+                "result": "9.26",
                 "location": "Gent",
                 "date": "29.12.2007"
             }
@@ -1023,7 +1129,7 @@
         "records": [
             {
                 "name": "Stijn Scharlaeken",
-                "result": "13,24",
+                "result": "13.24",
                 "location": "Hoboken",
                 "date": "16.12.2007"
             }
@@ -1051,7 +1157,7 @@
         "records": [
             {
                 "name": "Xander Snackaert",
-                "result": "3,55",
+                "result": "3.55",
                 "location": "Heusden",
                 "date": "30.12.2016"
             },
@@ -1071,7 +1177,7 @@
         "records": [
             {
                 "name": "Arne Van Opstal",
-                "result": "1,15",
+                "result": "1.15",
                 "location": "Hoboken",
                 "date": "20.01.2008"
             }
@@ -1113,7 +1219,7 @@
         "records": [
             {
                 "name": "Arne Van Opstal",
-                "result": "8,14",
+                "result": "8.14",
                 "location": "Gent",
                 "date": "26.12.2009"
             }
@@ -1127,7 +1233,7 @@
         "records": [
             {
                 "name": "Lars Van Looy",
-                "result": "12,19",
+                "result": "12.19",
                 "location": "Hoboken",
                 "date": "19.02.2012"
             },
@@ -1147,7 +1253,7 @@
         "records": [
             {
                 "name": "Arne Van Opstal",
-                "result": "19,83",
+                "result": "19.83",
                 "location": "Gent",
                 "date": "26.12.2009"
             }
@@ -1209,7 +1315,7 @@
         "records": [
             {
                 "name": "Lars Van Looy",
-                "result": "8,41",
+                "result": "8.41",
                 "location": "Hoboken",
                 "date": "19.02.2012"
             },
@@ -1243,7 +1349,7 @@
         "records": [
             {
                 "name": "Sebastien Teugels",
-                "result": "7,94",
+                "result": "7.94",
                 "location": "Gent",
                 "date": "10.01.2016"
             },
@@ -1263,7 +1369,7 @@
         "records": [
             {
                 "name": "Sebastien Teugels",
-                "result": "12,76",
+                "result": "12.76",
                 "location": "Hoboken",
                 "date": "15.02.2015"
             }
@@ -1297,7 +1403,7 @@
         "records": [
             {
                 "name": "Sebastien Teugels",
-                "result": "42,82",
+                "result": "42.82",
                 "location": "Gent",
                 "date": "02.01.2016"
             }
@@ -1310,10 +1416,16 @@
         "athleticEvent": "indoor",
         "records": [
             {
-                "name": "Bob Meert",
-                "result": "56,89",
+                "name": "Xander Faes",
+                "result": "54.41",
+                "location": "Louvain-La-Neuve",
+                "date": "04.03.2023"
+            },
+            {
+                "name": "Xander Faes",
+                "result": "55.55",
                 "location": "Gent",
-                "date": "27.01.2008"
+                "date": "22.01.2023"
             }
         ]
     },
@@ -1387,7 +1499,7 @@
         "records": [
             {
                 "name": "Arne Van Opstal",
-                "result": "5,59",
+                "result": "5.59",
                 "location": "Gent",
                 "date": ""
             }
@@ -1401,7 +1513,7 @@
         "records": [
             {
                 "name": "Lars Van Looy",
-                "result": "11,04",
+                "result": "11.04",
                 "location": "Gent",
                 "date": "26.12.2013"
             }
@@ -1414,7 +1526,13 @@
         "athleticEvent": "indoor",
         "records": [
             {
-                "name": "Arne, Jarne, Glenn, Ruben",
+                "name": "Rune De Bouw, Dietse De Maeyer, Stan De Maeseneer, Xander Faes",
+                "result": "1.49.46",
+                "location": "Gent",
+                "date": "26.02.2023"
+            },
+            {
+                "name": "Arne Van Opstal, Jarne April, Glenn Vereecken, Ruben Demeersseman",
                 "result": "1.59.39",
                 "location": "Gent",
                 "date": "19.12.2011"
@@ -1449,7 +1567,7 @@
         "records": [
             {
                 "name": "Lars Van Looy",
-                "result": "8,66",
+                "result": "8.66",
                 "location": "Gent",
                 "date": "07.02.2016"
             },
@@ -1469,7 +1587,7 @@
         "records": [
             {
                 "name": "Joren Degreef",
-                "result": "24,24",
+                "result": "24.24",
                 "location": "Gent",
                 "date": "23.01.2022"
             },
@@ -1489,7 +1607,7 @@
         "records": [
             {
                 "name": "Bob Meert",
-                "result": "40,12",
+                "result": "40.12",
                 "location": "Gent",
                 "date": "23.01.2010"
             }
@@ -1503,7 +1621,7 @@
         "records": [
             {
                 "name": "Bob Meert",
-                "result": "56,15",
+                "result": "56.15",
                 "location": "Gent",
                 "date": "03.01.2010"
             }
@@ -1579,7 +1697,7 @@
         "records": [
             {
                 "name": "Robin Daelemans",
-                "result": "11,71",
+                "result": "11.71",
                 "location": "Gent",
                 "date": "03.02.2000"
             }
@@ -1593,7 +1711,7 @@
         "records": [
             {
                 "name": "Lars Van Looy",
-                "result": "12,03",
+                "result": "12.03",
                 "location": "Gent",
                 "date": "06.02.2016"
             },
@@ -1613,7 +1731,7 @@
         "records": [
             {
                 "name": "Lars Van Looy",
-                "result": "6,31",
+                "result": "6.31",
                 "location": "Gent",
                 "date": "06.02.2016"
             },
@@ -1687,7 +1805,7 @@
         "records": [
             {
                 "name": "Lorin Speybrouck",
-                "result": "23,76",
+                "result": "23.76",
                 "location": "Gent",
                 "date": "05.01.2020"
             },
@@ -1707,7 +1825,7 @@
         "records": [
             {
                 "name": "Michiel Snackaert",
-                "result": "39,14",
+                "result": "39.14",
                 "location": "Gent",
                 "date": "30.12.2017"
             }
@@ -1721,7 +1839,7 @@
         "records": [
             {
                 "name": "Mathis Drieghe",
-                "result": "58,41",
+                "result": "58.41",
                 "location": "Gent",
                 "date": "05.01.2019"
             },
@@ -1811,7 +1929,7 @@
         "records": [
             {
                 "name": "Lars Van Looy",
-                "result": "6,43",
+                "result": "6.43",
                 "location": "Gent",
                 "date": "14.01.2017"
             },
@@ -1831,7 +1949,7 @@
         "records": [
             {
                 "name": "Lars Van Looy",
-                "result": "10,77",
+                "result": "10.77",
                 "location": "Gent",
                 "date": "26.12.2016"
             }
@@ -1845,7 +1963,7 @@
         "records": [
             {
                 "name": "Lars Van Looy",
-                "result": "2,04",
+                "result": "2.04",
                 "location": "Gent",
                 "date": "18.02.2017"
             },
@@ -1865,7 +1983,7 @@
         "records": [
             {
                 "name": "Lars Van Looy",
-                "result": "3,82",
+                "result": "3.82",
                 "location": "Gent",
                 "date": "14.01.2017"
             }
@@ -1891,6 +2009,12 @@
         "gender": "Heren",
         "athleticEvent": "indoor",
         "records": [
+            {
+                "name": "Maarten Heyvaert",
+                "result": "7.14",
+                "location": "Heusden-Zolder",
+                "date": "11.02.2023"
+            },
             {
                 "name": "Maarten Heyvaert",
                 "result": "7,44",
@@ -1983,9 +2107,15 @@
         "records": [
             {
                 "name": "Robin Daelemans",
+                "result": "1.85",
+                "location": "Hoboken",
+                "date": "19.02.2023"
+            },
+            {
+                "name": "Robin Daelemans",
                 "result": "1.80",
                 "location": "Gent",
-                "date": "04.03.2022"
+                "date": "04,03,2022"
             }
         ]
     },
@@ -1997,7 +2127,7 @@
         "records": [
             {
                 "name": "Michiel Van Assche",
-                "result": "4,54",
+                "result": "4.54",
                 "location": "Heverlee",
                 "date": "14.12.2010"
             }
@@ -2025,7 +2155,7 @@
         "records": [
             {
                 "name": "Geert Teugels",
-                "result": "7,83",
+                "result": "7.83",
                 "location": "Gent",
                 "date": "10.03.2018"
             },
@@ -2045,7 +2175,7 @@
         "records": [
             {
                 "name": "Philip Gillis-D\u0027Hamers",
-                "result": "11,89",
+                "result": "11.89",
                 "location": "Gent",
                 "date": "03.02.2019"
             }
@@ -2059,7 +2189,7 @@
         "records": [
             {
                 "name": "Geert Teugels",
-                "result": "26,28",
+                "result": "26.28",
                 "location": "Gent",
                 "date": "12.03.2016"
             },
@@ -2079,7 +2209,7 @@
         "records": [
             {
                 "name": "Geert Teugels",
-                "result": "43,77",
+                "result": "43.77",
                 "location": "Gent",
                 "date": "02.01.2016"
             }
@@ -2121,7 +2251,7 @@
         "records": [
             {
                 "name": "Geert Teugels",
-                "result": "5,07",
+                "result": "5.07",
                 "location": "Hoboken",
                 "date": "15.01.2017"
             },
@@ -2141,7 +2271,7 @@
         "records": [
             {
                 "name": "Philip Gillis-D\u0027Hamers",
-                "result": "1,55",
+                "result": "1.55",
                 "location": "Gent",
                 "date": "03.02.2019"
             },
@@ -2161,7 +2291,7 @@
         "records": [
             {
                 "name": "Philip Gillis-D\u0027Hamers",
-                "result": "7,12",
+                "result": "7.12",
                 "location": "Gent",
                 "date": "03.02.2019"
             }
@@ -2189,7 +2319,7 @@
         "records": [
             {
                 "name": "Geert Teugels",
-                "result": "8,05",
+                "result": "8.05",
                 "location": "Gent",
                 "date": "08.03.2020"
             },
@@ -2209,7 +2339,7 @@
         "records": [
             {
                 "name": "Geert Teugels",
-                "result": "26,87",
+                "result": "26.87",
                 "location": "Gent",
                 "date": "08.03.2020"
             },
@@ -2229,7 +2359,7 @@
         "records": [
             {
                 "name": "Lieven Gryp",
-                "result": "56,24",
+                "result": "56.24",
                 "location": "Gent",
                 "date": "26.02.2011"
             }
@@ -2285,7 +2415,7 @@
         "records": [
             {
                 "name": "Philip Gillis-D\u0027Hamers",
-                "result": "12,65",
+                "result": "12.65",
                 "location": "Louvain-La-Neuve",
                 "date": "02.02.2020"
             }
@@ -2315,7 +2445,7 @@
                 "name": "Piet De Wachter",
                 "result": "4.69m",
                 "location": "Gent",
-                "date": "2005"
+                "date": ""
             }
         ]
     },
@@ -2327,7 +2457,7 @@
         "records": [
             {
                 "name": "Philip Gillis-D\u0027Hamers",
-                "result": "1,55",
+                "result": "1.55",
                 "location": "Louvain-La-Neuve",
                 "date": "02.02.2020"
             }
@@ -2355,7 +2485,7 @@
         "records": [
             {
                 "name": "Michiel De Munck",
-                "result": "1,45",
+                "result": "1.45",
                 "location": "Gent",
                 "date": "10.03.2018"
             }
@@ -2369,9 +2499,9 @@
         "records": [
             {
                 "name": "Maarten Heyvaert",
-                "result": "7,44",
-                "location": "Gent",
-                "date": "11.12.2021"
+                "result": "7.14",
+                "location": "Heusden-Zolder",
+                "date": "11.02.2023"
             }
         ]
     },
@@ -2383,7 +2513,7 @@
         "records": [
             {
                 "name": "Lorin Speybrouck",
-                "result": "23,76",
+                "result": "23.76",
                 "location": "Gent",
                 "date": "05.01.2020"
             }
@@ -2397,7 +2527,7 @@
         "records": [
             {
                 "name": "Michiel Snackaert",
-                "result": "39,14",
+                "result": "39.14",
                 "location": "Gent",
                 "date": "30.12.2017"
             }
@@ -2410,10 +2540,10 @@
         "athleticEvent": "indoor",
         "records": [
             {
-                "name": "Bob Meert",
-                "result": "56,15",
-                "location": "Gent",
-                "date": "03.01.2010"
+                "name": "Xander Faes",
+                "result": "54.41",
+                "location": "Louvain-La-Neuve",
+                "date": "04.03.2023"
             }
         ]
     },
@@ -2558,16 +2688,16 @@
         ]
     },
     {
-        "discipline": "60 m H (1.067m)",
+        "discipline": "4x200m",
         "category": "Alle categori\u00EBn",
         "gender": "mannen",
         "athleticEvent": "indoor",
         "records": [
             {
-                "name": "",
-                "result": "",
-                "location": "",
-                "date": ""
+                "name": "Rune De Bouw, Dietse De Maeyer, Stan De Maeseneer, Xander Faes",
+                "result": "1.49.46",
+                "location": "Gent",
+                "date": "26.02.2023"
             }
         ]
     },
@@ -2579,7 +2709,7 @@
         "records": [
             {
                 "name": "Eve Willems",
-                "result": "9,44",
+                "result": "9.44",
                 "location": "Nijvel",
                 "date": "26.09.2009"
             }
@@ -2621,7 +2751,7 @@
         "records": [
             {
                 "name": "Eve Willems",
-                "result": "3,74",
+                "result": "3.74",
                 "location": "Ninove",
                 "date": "06.09.2009"
             }
@@ -2649,7 +2779,7 @@
         "records": [
             {
                 "name": "Eve Willems",
-                "result": "7,15",
+                "result": "7.15",
                 "location": "Lebbeke",
                 "date": "16.08.2009"
             }
@@ -2663,9 +2793,9 @@
         "records": [
             {
                 "name": "Marlisse Commers",
-                "result": "24,93",
-                "location": "???",
-                "date": "??? (2007)"
+                "result": "24.93",
+                "location": "",
+                "date": ""
             }
         ]
     },
@@ -2691,7 +2821,7 @@
         "records": [
             {
                 "name": "Jorinde, Linde, Jana, Lisa",
-                "result": "43,12",
+                "result": "43.12",
                 "location": "Duffel",
                 "date": "01.05.2010"
             }
@@ -2719,7 +2849,7 @@
         "records": [
             {
                 "name": "Eve Willems",
-                "result": "8,71",
+                "result": "8.71",
                 "location": "Machelen",
                 "date": "02.07.2011"
             }
@@ -2733,7 +2863,7 @@
         "records": [
             {
                 "name": "Eve Willems",
-                "result": "11,04",
+                "result": "11.04",
                 "location": "Lokeren",
                 "date": "17.07.2011"
             }
@@ -2761,7 +2891,7 @@
         "records": [
             {
                 "name": "Eve Willems",
-                "result": "4,41",
+                "result": "4.41",
                 "location": "Lokeren",
                 "date": "17.07.2011"
             }
@@ -2775,7 +2905,7 @@
         "records": [
             {
                 "name": "Eve Willems",
-                "result": "1,38",
+                "result": "1.38",
                 "location": "Huizingen",
                 "date": "04.06.2011"
             }
@@ -2789,7 +2919,7 @@
         "records": [
             {
                 "name": "Eve Willems",
-                "result": "9,36",
+                "result": "9.36",
                 "location": "Mechelen",
                 "date": "18.09.2011"
             }
@@ -2803,7 +2933,7 @@
         "records": [
             {
                 "name": "Eve Willems",
-                "result": "19,21",
+                "result": "19.21",
                 "location": "Lokeren",
                 "date": "17.07.2011"
             }
@@ -2845,7 +2975,7 @@
         "records": [
             {
                 "name": "Eve, Laura, Maaike, Nel",
-                "result": "36,24",
+                "result": "36.24",
                 "location": "Duffel",
                 "date": "01.05.2010"
             }
@@ -2873,15 +3003,15 @@
         "records": [
             {
                 "name": "Imke Kempeneers",
-                "result": "10,07",
-                "location": "Gooik",
-                "date": "18.09.2021"
+                "result": "9.93",
+                "location": "Kessel-Lo",
+                "date": "21.05.2022"
             },
             {
                 "name": "Imke Kempeneers",
-                "result": "10,19",
-                "location": "Huizingen",
-                "date": "11.09.2021"
+                "result": "10.07",
+                "location": "Gooik",
+                "date": "18.09.2021"
             }
         ]
     },
@@ -2893,13 +3023,13 @@
         "records": [
             {
                 "name": "Eve Willems",
-                "result": "10,73",
+                "result": "10.73",
                 "location": "Ninove",
                 "date": "08.09.2013"
             },
             {
                 "name": "Melissa Piessens",
-                "result": "10,74",
+                "result": "10.74",
                 "location": "Lebbeke",
                 "date": "25.06.2000"
             }
@@ -2913,7 +3043,7 @@
         "records": [
             {
                 "name": "Melissa Piessens",
-                "result": "19,95",
+                "result": "19.95",
                 "location": "Lebbeke",
                 "date": "25.06.2000"
             }
@@ -2927,13 +3057,13 @@
         "records": [
             {
                 "name": "Eve Willems",
-                "result": "22,03",
+                "result": "22.03",
                 "location": "Ninove",
                 "date": "08.09.2013"
             },
             {
                 "name": "Jana De Kinder",
-                "result": "28,61",
+                "result": "28.61",
                 "location": "",
                 "date": "31.08.2013"
             }
@@ -2947,7 +3077,7 @@
         "records": [
             {
                 "name": "Jana Van Campenhout",
-                "result": "44,95",
+                "result": "44.95",
                 "location": "Nijvel",
                 "date": "23.09.2006"
             }
@@ -2981,7 +3111,7 @@
             },
             {
                 "name": "Amina Vermeulen",
-                "result": "4,81",
+                "result": "4.81",
                 "location": "Vilvoorde",
                 "date": "26.06.2004"
             }
@@ -2995,13 +3125,13 @@
         "records": [
             {
                 "name": "Eve Willems",
-                "result": "1,48",
+                "result": "1.48",
                 "location": "Vilvoorde",
                 "date": "01.06.2013"
             },
             {
                 "name": "Hannelore De Wachter",
-                "result": "1,42",
+                "result": "1.42",
                 "location": "Stabroek",
                 "date": "16.05.2005"
             }
@@ -3021,7 +3151,7 @@
             },
             {
                 "name": "Maaike Potums",
-                "result": "10,58",
+                "result": "10.58",
                 "location": "Lier",
                 "date": "08.09.2012"
             }
@@ -3035,7 +3165,7 @@
         "records": [
             {
                 "name": "Maaike Potums",
-                "result": "25,62",
+                "result": "25.62",
                 "location": "Vilvoorde",
                 "date": "01.09.2012"
             }
@@ -3049,7 +3179,7 @@
         "records": [
             {
                 "name": "Maaike Potums",
-                "result": "27,99",
+                "result": "27.99",
                 "location": "Tienen",
                 "date": "21.04.2012"
             }
@@ -3097,13 +3227,13 @@
         "records": [
             {
                 "name": "Imke Kempeneers, Louise Naessens, Juliette Naessens,Marthe Castenmiller",
-                "result": "44,2",
+                "result": "44.2",
                 "location": "Vilvoorde",
                 "date": "27.08.2022"
             },
             {
                 "name": "Louise Naessens, Trude Van Ingelgem, Ruth Van Weverberg, Imke Kempeneers",
-                "result": "45,41",
+                "result": "45.41",
                 "location": "Kessel-Lo",
                 "date": "28.08.2021"
             }
@@ -3131,7 +3261,7 @@
         "records": [
             {
                 "name": "Amina Vermeulen",
-                "result": "13,09",
+                "result": "13.09",
                 "location": "Beveren",
                 "date": "21.05.2005"
             }
@@ -3145,7 +3275,7 @@
         "records": [
             {
                 "name": "Sterre De Maeyer",
-                "result": "20,28",
+                "result": "20.28",
                 "location": "Bornem",
                 "date": "20.08.2021"
             }
@@ -3159,7 +3289,7 @@
         "records": [
             {
                 "name": "Amina Vermeulen",
-                "result": "27,23",
+                "result": "27.23",
                 "location": "Duffel",
                 "date": "28.05.2005"
             }
@@ -3173,7 +3303,7 @@
         "records": [
             {
                 "name": "Jana De Kinder",
-                "result": "38,11",
+                "result": "38.11",
                 "location": "Bornem",
                 "date": "31.07.2015"
             }
@@ -3193,7 +3323,7 @@
             },
             {
                 "name": "Melissa Piessens",
-                "result": "45,09",
+                "result": "45.09",
                 "location": "Anderlecht",
                 "date": "11.07.2001"
             }
@@ -3207,13 +3337,13 @@
         "records": [
             {
                 "name": "Luca D\u2019hondt",
-                "result": "48,88",
+                "result": "48.88",
                 "location": "Lier",
                 "date": "11.09.2021"
             },
             {
                 "name": "Luca D\u0027hondt",
-                "result": "49,87",
+                "result": "49.87",
                 "location": "Deinze",
                 "date": "15.08.2021"
             }
@@ -3227,7 +3357,7 @@
         "records": [
             {
                 "name": "Jenna Wyns",
-                "result": "58,81",
+                "result": "58.81",
                 "location": "Gent",
                 "date": "13.07.2008"
             }
@@ -3379,7 +3509,7 @@
         "records": [
             {
                 "name": "Maaike Potums",
-                "result": "11,19",
+                "result": "11.19",
                 "location": "Aartselaar",
                 "date": "03.05.2014"
             },
@@ -3399,7 +3529,7 @@
         "records": [
             {
                 "name": "Maaike Potums",
-                "result": "33,45",
+                "result": "33.45",
                 "location": "Leuven",
                 "date": "18.05.2014"
             },
@@ -3419,7 +3549,7 @@
         "records": [
             {
                 "name": "Maaike Potums",
-                "result": "37,07",
+                "result": "37.07",
                 "location": "Vilvoorde",
                 "date": "24.06.2014"
             },
@@ -3439,7 +3569,7 @@
         "records": [
             {
                 "name": "Vermeir Jana, Kerwyn Margot, Van Doren Hanne, Kinzumbi Leonie",
-                "result": "54,68",
+                "result": "54.68",
                 "location": "Lier",
                 "date": "05.05.2018"
             }
@@ -3481,13 +3611,13 @@
         "records": [
             {
                 "name": "Sterre De Maeyer",
-                "result": "13,08",
+                "result": "13.08",
                 "location": "Kessel-Lo",
                 "date": "24.04.2022"
             },
             {
                 "name": "Amina Vermeulen",
-                "result": "13,14",
+                "result": "13.14",
                 "location": "Lebbeke",
                 "date": "25.02.2007"
             }
@@ -3501,7 +3631,7 @@
         "records": [
             {
                 "name": "Amina Vermeulen",
-                "result": "27,19",
+                "result": "27.19",
                 "location": "Machelen",
                 "date": "18.07.2007"
             }
@@ -3515,13 +3645,13 @@
         "records": [
             {
                 "name": "Luca D\u0027Hondt",
-                "result": "43,83",
+                "result": "43.83",
                 "location": "Kessel-Lo",
                 "date": "06.08.2022"
             },
             {
                 "name": "Hannelore De Wachter",
-                "result": "43,91",
+                "result": "43.91",
                 "location": "Vilvoorde",
                 "date": "26.06.2009"
             }
@@ -3535,7 +3665,7 @@
         "records": [
             {
                 "name": "Jenna Wyns",
-                "result": "58,92",
+                "result": "58.92",
                 "location": "Oordegem",
                 "date": "03.07.2010"
             }
@@ -3549,13 +3679,13 @@
         "records": [
             {
                 "name": "Luca D\u0027Hondt",
-                "result": "69,03",
+                "result": "69.03",
                 "location": "Ninove",
                 "date": "10.08.2022"
             },
             {
                 "name": "Lies Manghelinckx",
-                "result": "72,61",
+                "result": "72.61",
                 "location": "Lier",
                 "date": "05.05.2018"
             }
@@ -3639,7 +3769,7 @@
         "records": [
             {
                 "name": "Amina Vermeulen",
-                "result": "5,27",
+                "result": "5.27",
                 "location": "Tongeren",
                 "date": "08.09.2007"
             }
@@ -3653,7 +3783,7 @@
         "records": [
             {
                 "name": "Marthe Van Deuren",
-                "result": "1,45",
+                "result": "1.45",
                 "location": "Lier",
                 "date": "05.05.2018"
             },
@@ -3673,13 +3803,13 @@
         "records": [
             {
                 "name": "Maaike Potums",
-                "result": "13,43",
+                "result": "13.43",
                 "location": "Stekene",
                 "date": "18.09.2016"
             },
             {
                 "name": "Maaike Potums",
-                "result": "12,98",
+                "result": "12.98",
                 "location": "Bornem",
                 "date": "05.08.2016"
             }
@@ -3693,13 +3823,13 @@
         "records": [
             {
                 "name": "Maaike Potums",
-                "result": "35,78",
+                "result": "35.78",
                 "location": "Kessel-Lo",
                 "date": "15.08.2016"
             },
             {
                 "name": "Maaike Potums",
-                "result": "34,39",
+                "result": "34.39",
                 "location": "Stekene",
                 "date": "20.09.2015"
             }
@@ -3713,7 +3843,7 @@
         "records": [
             {
                 "name": "Amina Vermeulen",
-                "result": "10,37",
+                "result": "10.37",
                 "location": "Zele",
                 "date": "18.08.2007"
             }
@@ -3727,13 +3857,13 @@
         "records": [
             {
                 "name": "Maaike Potums",
-                "result": "40,53",
+                "result": "40.53",
                 "location": "St-Lambrechts-Woluwe",
                 "date": "10.09.2016"
             },
             {
                 "name": "Maaike Potums",
-                "result": "40,43",
+                "result": "40.43",
                 "location": "Kessel-Lo",
                 "date": "15.08.2016"
             }
@@ -3747,7 +3877,7 @@
         "records": [
             {
                 "name": "Helsen Sara, Manghelinckx Lies, Van Deuren Esther, Van Deuren Marthe",
-                "result": "54,34",
+                "result": "54.34",
                 "location": "Lier",
                 "date": "05.05.2018"
             }
@@ -3775,7 +3905,7 @@
         "records": [
             {
                 "name": "Hannelore De Wachter",
-                "result": "29,78",
+                "result": "29.78",
                 "location": "Ninove",
                 "date": "06.08.2011"
             }
@@ -3803,7 +3933,7 @@
         "records": [
             {
                 "name": "Jenna Wyns",
-                "result": "59,69",
+                "result": "59.69",
                 "location": "Lier",
                 "date": "30.06.2012"
             }
@@ -3817,7 +3947,7 @@
         "records": [
             {
                 "name": "Lies Manghelinckx",
-                "result": "71,52",
+                "result": "71.52",
                 "location": "Kessel-Lo",
                 "date": "20.04.2019"
             }
@@ -3921,7 +4051,7 @@
         "records": [
             {
                 "name": "Amina Vermeulen",
-                "result": "14,22",
+                "result": "14.22",
                 "location": "Kessel-lo",
                 "date": "28.04.2012"
             }
@@ -3935,7 +4065,7 @@
         "records": [
             {
                 "name": "Hannelore De Wachter",
-                "result": "30,11",
+                "result": "30.11",
                 "location": "Vilvoorde",
                 "date": "11.08.2012"
             }
@@ -3949,7 +4079,7 @@
         "records": [
             {
                 "name": "Hannelore De Wachter",
-                "result": "48,56",
+                "result": "48.56",
                 "location": "Schaerbeek",
                 "date": "14.04.2012"
             }
@@ -4139,7 +4269,7 @@
         "records": [
             {
                 "name": "Amina Vermeulen",
-                "result": "4,51",
+                "result": "4.51",
                 "location": "Kessel-Lo",
                 "date": "28.04.2012"
             }
@@ -4221,13 +4351,13 @@
         "records": [
             {
                 "name": "Sterre De Maeyer",
-                "result": "13,08",
+                "result": "13.08",
                 "location": "Kessel-lo",
                 "date": "24.04.2022"
             },
             {
                 "name": "Amina Vermeulen",
-                "result": "13,09",
+                "result": "13.09",
                 "location": "Beveren",
                 "date": "21.05.2005"
             }
@@ -4241,7 +4371,7 @@
         "records": [
             {
                 "name": "Amina Vermeulen",
-                "result": "27,19",
+                "result": "27.19",
                 "location": "Machelen",
                 "date": "18.07.2007"
             }
@@ -4255,13 +4385,13 @@
         "records": [
             {
                 "name": "Luca D\u0027Hondt",
-                "result": "43,83",
+                "result": "43.83",
                 "location": "Kessel-lo",
                 "date": "06.08.2022"
             },
             {
                 "name": "Hannelore De Wachter",
-                "result": "43,91",
+                "result": "43.91",
                 "location": "Vilvoorde",
                 "date": "26.06.2006"
             }
@@ -4275,13 +4405,13 @@
         "records": [
             {
                 "name": "Luca D\u0027Hondt",
-                "result": "69,03",
+                "result": "69.03",
                 "location": "Ninove",
                 "date": "10.08.2022"
             },
             {
                 "name": "Lies Manghelinckx",
-                "result": "71,52",
+                "result": "71.52",
                 "location": "Kessel-lo",
                 "date": "20.04.2019"
             }
@@ -4295,7 +4425,7 @@
         "records": [
             {
                 "name": "Jenna Wyns",
-                "result": "58,81",
+                "result": "58.81",
                 "location": "Gent",
                 "date": "13.07.2008"
             }
@@ -4387,7 +4517,7 @@
                 "name": "Jenna Wyns",
                 "result": "6.40.51",
                 "location": "Tielt",
-                "date": "9/14/2008"
+                "date": "09.14.2008"
             }
         ]
     },
@@ -4442,6 +4572,20 @@
                 "result": "19.29.28",
                 "location": "Oudenaarde",
                 "date": "07.08.2018"
+            }
+        ]
+    },
+    {
+        "discipline": "marathon",
+        "category": "Alle categori\u00EBn",
+        "gender": "vrouwen",
+        "athleticEvent": "outdoor",
+        "records": [
+            {
+                "name": "Lies De Vleminck",
+                "result": "",
+                "location": "Eindhoven",
+                "date": ""
             }
         ]
     },
@@ -4529,7 +4673,7 @@
         "records": [
             {
                 "name": "Maaike Potums",
-                "result": "35,78",
+                "result": "35.78",
                 "location": "Kessel-lo",
                 "date": "15.08.2016"
             }
@@ -4563,7 +4707,7 @@
         "records": [
             {
                 "name": "Sara Helsen, Lies Mangelinckx, Marthe Van Deuren en Leonie Kinzumbi",
-                "result": "52,97",
+                "result": "52.97",
                 "location": "Bornem",
                 "date": "12.05.2018"
             }
@@ -4584,6 +4728,34 @@
         ]
     },
     {
+        "discipline": "4x400 m",
+        "category": "Alle categori\u00EBn",
+        "gender": "vrouwen",
+        "athleticEvent": "outdoor",
+        "records": [
+            {
+                "name": "Lies Manghelinckx, Matisse Boogmans, Marthe Van Deuren, Tine Gryp",
+                "result": "4.29.83",
+                "location": "Huizingen",
+                "date": "25.08.2019"
+            }
+        ]
+    },
+    {
+        "discipline": "4x800m",
+        "category": "Alle categori\u00EBn",
+        "gender": "vrouwen",
+        "athleticEvent": "outdoor",
+        "records": [
+            {
+                "name": "Lies Manghelinckx, Ines Boll\u00E9, Hannelore De Wachter, Tine Gryp",
+                "result": "10.24.01",
+                "location": "Kessel-Lo",
+                "date": "28.08.2021"
+            }
+        ]
+    },
+    {
         "discipline": "60m",
         "category": "Benjamins",
         "gender": "Jongens",
@@ -4597,7 +4769,7 @@
             },
             {
                 "name": "Ruben De Meersman",
-                "result": "9,56",
+                "result": "9.56",
                 "location": "Duffel",
                 "date": "28.05.2005"
             }
@@ -4639,13 +4811,13 @@
         "records": [
             {
                 "name": "Xander Faes",
-                "result": "3,81",
+                "result": "3.81",
                 "location": "Huizingen",
                 "date": "23.06.2018"
             },
             {
                 "name": "Tom Van Der Donckt",
-                "result": "3,66",
+                "result": "3.66",
                 "location": "Bornem",
                 "date": "23.09.2001"
             }
@@ -4659,7 +4831,7 @@
         "records": [
             {
                 "name": "Stijn Scharlaeken",
-                "result": "1,03",
+                "result": "1.03",
                 "location": "Lebbeke",
                 "date": "09.09.2006"
             }
@@ -4673,7 +4845,7 @@
         "records": [
             {
                 "name": "Lars Van Looy",
-                "result": "9,44",
+                "result": "9.44",
                 "location": "Tienen",
                 "date": "28.06.2008"
             }
@@ -4687,7 +4859,7 @@
         "records": [
             {
                 "name": "Glenn Vereecken",
-                "result": "31,45",
+                "result": "31.45",
                 "location": "Vilvoorde",
                 "date": "02.09.2006"
             }
@@ -4701,7 +4873,7 @@
         "records": [
             {
                 "name": "Brent De Wachter, Stijn Scharlaecken, Kyle Cornelissen, Arne Van Opstal",
-                "result": "41,99",
+                "result": "41.99",
                 "location": "Bornem",
                 "date": "07.08.2005"
             }
@@ -4749,7 +4921,7 @@
         "records": [
             {
                 "name": "Arne Van Opstal",
-                "result": "8,91",
+                "result": "8.91",
                 "location": "Tienen",
                 "date": "28.06.2008"
             }
@@ -4763,7 +4935,7 @@
         "records": [
             {
                 "name": "Lars Van Looy",
-                "result": "12,65",
+                "result": "12.65",
                 "location": "Kessel-Lo",
                 "date": "19.09.2010"
             }
@@ -4819,7 +4991,7 @@
         "records": [
             {
                 "name": "Stijn Scharlaeken",
-                "result": "8,97",
+                "result": "8.97",
                 "location": "Duffel",
                 "date": "01.05.2008"
             }
@@ -4847,7 +5019,7 @@
         "records": [
             {
                 "name": "Lukas Van Assche",
-                "result": "40,15",
+                "result": "40.15",
                 "location": "Vilvoorde",
                 "date": "01.07.2000"
             }
@@ -4875,7 +5047,7 @@
         "records": [
             {
                 "name": "Bert Van Stichel, Michiel Van Assche, Sven De Wachter, Lukas Van Assche",
-                "result": "36,69",
+                "result": "36.69",
                 "location": "Vilvoorde",
                 "date": "01.07.2000"
             }
@@ -4902,10 +5074,16 @@
         "athleticEvent": "Outdoor",
         "records": [
             {
-                "name": "Arne Van Opstal",
-                "result": "10.30",
-                "location": "Ninove",
-                "date": "22.05.2010"
+                "name": "Xander Faes",
+                "result": "10.22",
+                "location": "Nijvel",
+                "date": "24.09.2022"
+            },
+            {
+                "name": "Xander Faes",
+                "result": "10.29",
+                "location": "Machelen",
+                "date": "17.09.2022"
             }
         ]
     },
@@ -4917,13 +5095,13 @@
         "records": [
             {
                 "name": "Toon Van Esbroeck",
-                "result": "13,42",
+                "result": "13.42",
                 "location": "Tienen",
                 "date": "29.06.2019"
             },
             {
                 "name": "Toon Van Esbroeck",
-                "result": "13,49",
+                "result": "13.49",
                 "location": "Ninove",
                 "date": "28.04.2019"
             }
@@ -4937,13 +5115,13 @@
         "records": [
             {
                 "name": "Xander Faes",
-                "result": "19,24",
+                "result": "19.24",
                 "location": "Londerzeel",
                 "date": "03.09.2022"
             },
             {
                 "name": "Toon Van Esbroeck",
-                "result": "19,47",
+                "result": "19.47",
                 "location": "Lebbeke",
                 "date": "30.05.2019"
             }
@@ -4957,13 +5135,13 @@
         "records": [
             {
                 "name": "Toon Van Esbroeck",
-                "result": "21,12",
+                "result": "21.12",
                 "location": "Nieuwpoort",
                 "date": "22.09.2019"
             },
             {
                 "name": "Lars Van Looy",
-                "result": "23,32",
+                "result": "23.32",
                 "location": "Sint-Niklaas",
                 "date": "29.09.2012"
             }
@@ -4976,8 +5154,14 @@
         "athleticEvent": "Outdoor",
         "records": [
             {
+                "name": "Xander Faes",
+                "result": "39.89",
+                "location": "Nijvel",
+                "date": "24.09.2022"
+            },
+            {
                 "name": "Arne Van Opstal",
-                "result": "40,89",
+                "result": "40.89",
                 "location": "Vilvoorde",
                 "date": "28.08.2010"
             }
@@ -5019,7 +5203,7 @@
         "records": [
             {
                 "name": "Lars Van Looy",
-                "result": "1,52",
+                "result": "1.52",
                 "location": "Kortessem",
                 "date": "15.07.2012"
             }
@@ -5061,7 +5245,7 @@
         "records": [
             {
                 "name": "Lars Van Looy",
-                "result": "30,37",
+                "result": "30.37",
                 "location": "Vilvoorde",
                 "date": "03.09.2011"
             }
@@ -5089,7 +5273,7 @@
         "records": [
             {
                 "name": "Lars, Glenn, Niels, Arne",
-                "result": "44,84",
+                "result": "44.84",
                 "location": "Duffel",
                 "date": "01.05.2010"
             }
@@ -5131,13 +5315,13 @@
         "records": [
             {
                 "name": "Xander Snackaert",
-                "result": "12,04",
+                "result": "12.04",
                 "location": "Vilvoorde",
                 "date": "03.10.2021"
             },
             {
                 "name": "Xander Snackaert",
-                "result": "12,16",
+                "result": "12.16",
                 "location": "Bornem",
                 "date": "23.06.2021"
             }
@@ -5157,7 +5341,7 @@
             },
             {
                 "name": "Robin Daelemans",
-                "result": "16,27",
+                "result": "16.27",
                 "location": "Schaarbeek",
                 "date": "29.09.2007"
             }
@@ -5171,13 +5355,13 @@
         "records": [
             {
                 "name": "Xander Snackaert",
-                "result": "25,03",
+                "result": "25.03",
                 "location": "Vilvoorde",
                 "date": "03.10.2021"
             },
             {
                 "name": "Glenn Vereecken",
-                "result": "25,07",
+                "result": "25.07",
                 "location": "Braine",
                 "date": "08.09.2012"
             }
@@ -5205,13 +5389,13 @@
         "records": [
             {
                 "name": "Toon Van Esbroeck",
-                "result": "39,35",
+                "result": "39.35",
                 "location": "Londerzeel",
                 "date": "25.09.2021"
             },
             {
                 "name": "Xander Snackaert",
-                "result": "40,66",
+                "result": "40.66",
                 "location": "Mol",
                 "date": "21.07.2021"
             }
@@ -5225,13 +5409,13 @@
         "records": [
             {
                 "name": "Lars Van Looy",
-                "result": "42,69",
+                "result": "42.69",
                 "location": "Tienen",
                 "date": "27.04.2014"
             },
             {
                 "name": "Robin Daelemans",
-                "result": "44,54",
+                "result": "44.54",
                 "location": "Ninove",
                 "date": "11.07.2007"
             }
@@ -5245,7 +5429,7 @@
         "records": [
             {
                 "name": "Arne Van Opstal",
-                "result": "53,18",
+                "result": "53.18",
                 "location": "Kessel-Lo",
                 "date": "29.04.2012"
             }
@@ -5343,13 +5527,13 @@
         "records": [
             {
                 "name": "Lars Van Looy",
-                "result": "6,05",
+                "result": "6.05",
                 "location": "Vilvoorde",
                 "date": "09.06.2014"
             },
             {
                 "name": "Arne Van Opstal",
-                "result": "5,69",
+                "result": "5.69",
                 "location": "Brasschaat",
                 "date": "08.05.2011"
             }
@@ -5363,13 +5547,13 @@
         "records": [
             {
                 "name": "Lars Van Looy",
-                "result": "1,87",
+                "result": "1.87",
                 "location": "Moeskroen",
                 "date": "13.09.2014"
             },
             {
                 "name": "Robin Daelemans",
-                "result": "1,82",
+                "result": "1.82",
                 "location": "Nijvel",
                 "date": "02.09.2007"
             }
@@ -5383,7 +5567,7 @@
         "records": [
             {
                 "name": "Lars Van Looy",
-                "result": "11,95",
+                "result": "11.95",
                 "location": "Vilvoorde",
                 "date": "09.06.2014"
             },
@@ -5403,7 +5587,7 @@
         "records": [
             {
                 "name": "Michiel Snackaert",
-                "result": "31,31",
+                "result": "31.31",
                 "location": "Beveren",
                 "date": "02.07.2015"
             },
@@ -5423,13 +5607,13 @@
         "records": [
             {
                 "name": "Lars Van Looy",
-                "result": "46,06",
+                "result": "46.06",
                 "location": "Lier",
                 "date": "21.06.2014"
             },
             {
                 "name": "Thomas Vermeulen",
-                "result": "39,33",
+                "result": "39.33",
                 "location": "Vilvoorde",
                 "date": "12.08.2007"
             }
@@ -5443,13 +5627,13 @@
         "records": [
             {
                 "name": "Lars Van Looy",
-                "result": "3,26",
+                "result": "3.26",
                 "location": "Herentals",
                 "date": "31.05.2014"
             },
             {
                 "name": "Robin Daelemans",
-                "result": "2,67",
+                "result": "2.67",
                 "location": "Schaarbeek",
                 "date": "29.09.2007"
             }
@@ -5463,7 +5647,7 @@
         "records": [
             {
                 "name": "Robin Daelemans",
-                "result": "11,79",
+                "result": "11.79",
                 "location": "Tongeren",
                 "date": "08.09.2007"
             }
@@ -5517,7 +5701,7 @@
         "records": [
             {
                 "name": "R.Noens, X. Snackaert, M. Andersen, T. Van Esbroeck",
-                "result": "49,64",
+                "result": "49.64",
                 "location": "Kessel-Lo",
                 "date": "28.08.2021"
             }
@@ -5545,13 +5729,13 @@
         "records": [
             {
                 "name": "Xander Snackaert",
-                "result": "11,77",
+                "result": "11.77",
                 "location": "Sint-Niklaas",
                 "date": "15.08.2022"
             },
             {
                 "name": "Xander Snackaert",
-                "result": "11,78",
+                "result": "11.78",
                 "location": "Gent",
                 "date": "02.07.2022"
             }
@@ -5565,7 +5749,7 @@
         "records": [
             {
                 "name": "Robin Daelemans",
-                "result": "15,33",
+                "result": "15.33",
                 "location": "Brugge",
                 "date": "15.08.2009"
             }
@@ -5579,13 +5763,13 @@
         "records": [
             {
                 "name": "Xander Snackaert",
-                "result": "23,44",
+                "result": "23.44",
                 "location": "Ninove",
                 "date": "16.07.2022"
             },
             {
                 "name": "Xander Snackaert",
-                "result": "24,12",
+                "result": "24.12",
                 "location": "Gent",
                 "date": "02.07.2022"
             }
@@ -5599,13 +5783,13 @@
         "records": [
             {
                 "name": "Arne Van Opstal",
-                "result": "38,34",
+                "result": "38.34",
                 "location": "Maldegem",
                 "date": "11.07.2013"
             },
             {
                 "name": "Ruben De Meersseman",
-                "result": "39,97",
+                "result": "39.97",
                 "location": "Lebbeke",
                 "date": "08.05.2013"
             }
@@ -5619,7 +5803,7 @@
         "records": [
             {
                 "name": "Bob Meert",
-                "result": "54,34",
+                "result": "54.34",
                 "location": "Ninove",
                 "date": "24.07.2010"
             }
@@ -5633,7 +5817,7 @@
         "records": [
             {
                 "name": "Robin Daelemans",
-                "result": "61,51",
+                "result": "61.51",
                 "location": "Oordegem",
                 "date": "04.08.2009"
             }
@@ -5763,7 +5947,7 @@
             },
             {
                 "name": "Lars Van Looy",
-                "result": "6,18",
+                "result": "6.18",
                 "location": "Dilbeek",
                 "date": "01.08.2015"
             }
@@ -5777,13 +5961,13 @@
         "records": [
             {
                 "name": "Lars Van Looy",
-                "result": "2,01",
+                "result": "2.01",
                 "location": "Oordegem",
                 "date": "21.05.2016"
             },
             {
                 "name": "Lars Van Looy",
-                "result": "1,97",
+                "result": "1.97",
                 "location": "Moeskroen",
                 "date": "06.09.2015"
             }
@@ -5797,13 +5981,13 @@
         "records": [
             {
                 "name": "Lars Van Looy",
-                "result": "12,57",
+                "result": "12.57",
                 "location": "Vilvoorde",
                 "date": "08.05.2016"
             },
             {
                 "name": "Lars Van Looy",
-                "result": "12,09",
+                "result": "12.09",
                 "location": "Dilbeek",
                 "date": "01.08.2015"
             }
@@ -5817,13 +6001,13 @@
         "records": [
             {
                 "name": "Michiel Snackaert",
-                "result": "47,99",
+                "result": "47.99",
                 "location": "Mol",
                 "date": "03.07.2016"
             },
             {
                 "name": "Lars Van Looy",
-                "result": "47,41",
+                "result": "47.41",
                 "location": "Betekom",
                 "date": "24.04.2016"
             }
@@ -5857,7 +6041,7 @@
         "records": [
             {
                 "name": "Robin Daelemans",
-                "result": "12,01",
+                "result": "12.01",
                 "location": "Oordegem",
                 "date": "26.09.2009"
             }
@@ -5871,13 +6055,13 @@
         "records": [
             {
                 "name": "Lars Van Looy",
-                "result": "39,29",
+                "result": "39.29",
                 "location": "Betekom",
                 "date": "23.04.2016"
             },
             {
                 "name": "Lars Van Looy",
-                "result": "33,88",
+                "result": "33.88",
                 "location": "Aartselaar",
                 "date": "19.07.2015"
             }
@@ -5947,13 +6131,13 @@
         "records": [
             {
                 "name": "Lorin Speybrouck",
-                "result": "11,64",
+                "result": "11.64",
                 "location": "Oordegem",
                 "date": "08.05.2019"
             },
             {
                 "name": "Michiel Snackaert",
-                "result": "11,75",
+                "result": "11.75",
                 "location": "Humbeek",
                 "date": "02.06.2018"
             }
@@ -5967,13 +6151,13 @@
         "records": [
             {
                 "name": "Lorin Speybrouck",
-                "result": "23,12",
+                "result": "23.12",
                 "location": "Vilvoorde",
                 "date": "20.09.2020"
             },
             {
                 "name": "Michiel Snackaert",
-                "result": "24,27",
+                "result": "24.27",
                 "location": "Aalter",
                 "date": "13.05.2018"
             }
@@ -6001,13 +6185,13 @@
         "records": [
             {
                 "name": "Ruben Demeersseman",
-                "result": "55,06",
+                "result": "55.06",
                 "location": "Tienen",
                 "date": "27.04.2014"
             },
             {
                 "name": "Jeroen Daelemans",
-                "result": "55,48",
+                "result": "55.48",
                 "location": "Brussel",
                 "date": "08.05.2010"
             }
@@ -6181,7 +6365,7 @@
         "records": [
             {
                 "name": "Lars Van Looy",
-                "result": "2,09",
+                "result": "2.09",
                 "location": "Huizingen",
                 "date": "20.05.2017"
             }
@@ -6195,7 +6379,7 @@
         "records": [
             {
                 "name": "Lukas Van Assche",
-                "result": "5,95",
+                "result": "5.95",
                 "location": "Vilvoorde",
                 "date": "12.08.2007"
             }
@@ -6209,13 +6393,13 @@
         "records": [
             {
                 "name": "Lars Van Looy",
-                "result": "44,45",
+                "result": "44.45",
                 "location": "Vilvoorde",
                 "date": "23.04.2017"
             },
             {
                 "name": "Jeroen Daelemans",
-                "result": "15,73",
+                "result": "15.73",
                 "location": "Burcht",
                 "date": "03.10.2010"
             }
@@ -6229,13 +6413,13 @@
         "records": [
             {
                 "name": "Lars Van Looy",
-                "result": "34,82",
+                "result": "34.82",
                 "location": "Vilvoorde",
                 "date": "22.04.2017"
             },
             {
                 "name": "Jeroen Daelemans",
-                "result": "12,59",
+                "result": "12.59",
                 "location": "Burcht",
                 "date": "03.10.2010"
             }
@@ -6249,7 +6433,7 @@
         "records": [
             {
                 "name": "Michiel Snackaert",
-                "result": "10,15",
+                "result": "10.15",
                 "location": "Kessel-Lo",
                 "date": "20.04.2019"
             }
@@ -6263,7 +6447,7 @@
         "records": [
             {
                 "name": "Lars Van Looy",
-                "result": "13,22",
+                "result": "13.22",
                 "location": "Vilvoorde",
                 "date": "23.04.2017"
             }
@@ -6305,13 +6489,13 @@
         "records": [
             {
                 "name": "Robin Daelemans",
-                "result": "16,85",
+                "result": "16.85",
                 "location": "Vilvoorde",
                 "date": "02.10.2021"
             },
             {
                 "name": "Robin Daelemans",
-                "result": "17,19",
+                "result": "17.19",
                 "location": "Aalst",
                 "date": "04.07.2021"
             }
@@ -6325,13 +6509,13 @@
         "records": [
             {
                 "name": "Maarten Heyvaert",
-                "result": "11,51",
+                "result": "11.51",
                 "location": "Vorst",
                 "date": "15.05.2022"
             },
             {
                 "name": "Lorin Speybrouck",
-                "result": "11,52",
+                "result": "11.52",
                 "location": "Herve",
                 "date": "18.09.2021"
             }
@@ -6345,13 +6529,13 @@
         "records": [
             {
                 "name": "Lorin Speybrouck",
-                "result": "17,13",
+                "result": "17.13",
                 "location": "Bornem",
                 "date": "20.08.2021"
             },
             {
                 "name": "Robin Daelemans",
-                "result": "18,36",
+                "result": "18.36",
                 "location": "Bornem",
                 "date": "20.08.2021"
             }
@@ -6371,7 +6555,7 @@
             },
             {
                 "name": "Mathis Drieghe",
-                "result": "24,57",
+                "result": "24.57",
                 "location": "Vilvoorde",
                 "date": "20.09.2020"
             }
@@ -6385,13 +6569,13 @@
         "records": [
             {
                 "name": "Michiel Snackaert",
-                "result": "38,25",
+                "result": "38.25",
                 "location": "Londerzeel",
                 "date": "25.09.2021"
             },
             {
                 "name": "Jeroen Daelemans",
-                "result": "38,73",
+                "result": "38.73",
                 "location": "Vilvoorde",
                 "date": "09.06.2014"
             }
@@ -6405,13 +6589,13 @@
         "records": [
             {
                 "name": "Jeroen Daelemans",
-                "result": "53,94",
+                "result": "53.94",
                 "location": "Huizingen",
                 "date": "28.04.2013"
             },
             {
                 "name": "Jeroen Daelemans",
-                "result": "54,59",
+                "result": "54.59",
                 "location": "Vilvoorde",
                 "date": "06.05.2011"
             }
@@ -6425,7 +6609,7 @@
         "records": [
             {
                 "name": "Sven De Wachter",
-                "result": "60,17",
+                "result": "60.17",
                 "location": "Aalter",
                 "date": "17.05.2009"
             }
@@ -6616,6 +6800,20 @@
         ]
     },
     {
+        "discipline": "marathon",
+        "category": "Seniors",
+        "gender": "Heren",
+        "athleticEvent": "Outdoor",
+        "records": [
+            {
+                "name": "Jeroen Speybrouck",
+                "result": "3.00.32",
+                "location": "Amsterdam",
+                "date": "16.10.2022"
+            }
+        ]
+    },
+    {
         "discipline": "speer (800 g)",
         "category": "Seniors",
         "gender": "Heren",
@@ -6723,7 +6921,7 @@
         "records": [
             {
                 "name": "Gregory Segers",
-                "result": "24,63",
+                "result": "24.63",
                 "location": "Tampere",
                 "date": "02.07.2022"
             }
@@ -6737,13 +6935,13 @@
         "records": [
             {
                 "name": "Gregory Segers",
-                "result": "53,28",
+                "result": "53.28",
                 "location": "Huizingen",
                 "date": "23.07.2022"
             },
             {
                 "name": "Gregory Segers",
-                "result": "53,72",
+                "result": "53.72",
                 "location": "Aalst",
                 "date": "08.08.2021"
             }
@@ -6833,7 +7031,7 @@
         "records": [
             {
                 "name": "Geert Teugels",
-                "result": "12,61",
+                "result": "12.61",
                 "location": "Aartselaar",
                 "date": "21.07.2018"
             },
@@ -6853,13 +7051,13 @@
         "records": [
             {
                 "name": "Geert Teugels",
-                "result": "26,25",
+                "result": "26.25",
                 "location": "Kessel-Lo",
                 "date": "23.09.2017"
             },
             {
                 "name": "Geert Teugels",
-                "result": "26,31",
+                "result": "26.31",
                 "location": "Maldegem",
                 "date": "05.06.2016"
             }
@@ -6873,7 +7071,7 @@
         "records": [
             {
                 "name": "Geert Teugels",
-                "result": "42,65",
+                "result": "42.65",
                 "location": "Beveren",
                 "date": "29.07.2015"
             }
@@ -6887,15 +7085,15 @@
         "records": [
             {
                 "name": "Lieven Gryp",
-                "result": "55,38",
+                "result": "55.38",
                 "location": "Lier",
                 "date": "08.06.2008"
             },
             {
                 "name": "Lieven Gryp",
-                "result": "56,27",
+                "result": "56.27",
                 "location": "Zwevegem",
-                "date": "11-6-2006 00:00:00"
+                "date": "11-06-2006"
             }
         ]
     },
@@ -6915,7 +7113,7 @@
                 "name": "Lieven Gryp",
                 "result": "2.06.72",
                 "location": "Tienen",
-                "date": "22-9-2007 00:00:00"
+                "date": "22-09-2007"
             }
         ]
     },
@@ -6969,7 +7167,7 @@
         "records": [
             {
                 "name": "Geert Teugels",
-                "result": "1,54",
+                "result": "1.54",
                 "location": "Oudenaarde",
                 "date": "11.06.2017"
             }
@@ -6983,7 +7181,7 @@
         "records": [
             {
                 "name": "Piet De Wachter",
-                "result": "4,82",
+                "result": "4.82",
                 "location": "Lebbeke",
                 "date": "09.06.2000"
             }
@@ -6997,13 +7195,13 @@
         "records": [
             {
                 "name": "Philip Gillis-D\u0027Hamers",
-                "result": "23,54",
+                "result": "23.54",
                 "location": "Lommel",
                 "date": "19.05.2019"
             },
             {
                 "name": "Philip Gillis-D\u0027Hamers",
-                "result": "22,84",
+                "result": "22.84",
                 "location": "Herentals",
                 "date": "11.05.2019"
             }
@@ -7017,7 +7215,7 @@
         "records": [
             {
                 "name": "Philip Gillis-D\u0027Hamers",
-                "result": "23,03",
+                "result": "23.03",
                 "location": "Herentals",
                 "date": "11.05.2019"
             }
@@ -7031,7 +7229,7 @@
         "records": [
             {
                 "name": "Philip Gillis-D\u0027Hamers",
-                "result": "7,22",
+                "result": "7.22",
                 "location": "Lommel",
                 "date": "19.05.2019"
             }
@@ -7058,9 +7256,15 @@
         "athleticEvent": "Outdoor",
         "records": [
             {
-                "name": "Commers Luc, Muyshondt Gunter, Gillis-d\u0027hamers Philip, Van Weverberg Tommy",
-                "result": "20.42.40",
-                "location": "Huizingen",
+                "name": "Gillis-D\u0027Hamers Philip, Muyshondt Gunter, De Rycke Kristof, Saerens Kristof",
+                "result": "20.00.2",
+                "location": "Vilvoorde",
+                "date": "27.08.2022"
+            },
+            {
+                "name": "4x1500 m",
+                "result": "Commers L, Muyshondt G, Gillis-D\u0027Hamers P, Van Weverbergh T",
+                "location": "20.42.40",
                 "date": "25.08.2019"
             }
         ]
@@ -7267,7 +7471,7 @@
         "records": [
             {
                 "name": "Piet De Wachter",
-                "result": "6,21",
+                "result": "6.21",
                 "location": "Aalter",
                 "date": "13.05.2018"
             }
@@ -7281,7 +7485,7 @@
         "records": [
             {
                 "name": "Maarten Heyvaert",
-                "result": "11,51",
+                "result": "11.51",
                 "location": "Vorst",
                 "date": "15.05.2022"
             }
@@ -7295,7 +7499,7 @@
         "records": [
             {
                 "name": "Lorin Speybrouck",
-                "result": "17,13",
+                "result": "17.13",
                 "location": "Bornem",
                 "date": "20.08.2021"
             }
@@ -7323,13 +7527,13 @@
         "records": [
             {
                 "name": "Michiel Snackaert",
-                "result": "38,25",
+                "result": "38.25",
                 "location": "Londerzeel",
                 "date": "25.09.2021"
             },
             {
                 "name": "Arne Van Opstal",
-                "result": "38,34",
+                "result": "38.34",
                 "location": "",
                 "date": ""
             }
@@ -7343,7 +7547,7 @@
         "records": [
             {
                 "name": "Arne Van Opstal",
-                "result": "53,18",
+                "result": "53.18",
                 "location": "Kessel-lo",
                 "date": "29.04.2012"
             }
@@ -7435,7 +7639,7 @@
                 "name": "Lukas Van Assche",
                 "result": "5.30.05",
                 "location": "Oudenaarde",
-                "date": "6/19/2010"
+                "date": "19.06.2010"
             }
         ]
     },
@@ -7450,12 +7654,6 @@
                 "result": "8.10.61",
                 "location": "Herentals",
                 "date": "01.05.2017"
-            },
-            {
-                "name": "Lukas Van Assche",
-                "result": "",
-                "location": "",
-                "date": ""
             }
         ]
     },
@@ -7507,7 +7705,7 @@
         "records": [
             {
                 "name": "Robin Daelemans",
-                "result": "16,85",
+                "result": "16.85",
                 "location": "Vilvoorde",
                 "date": "02.10.2021"
             }
@@ -7521,7 +7719,7 @@
         "records": [
             {
                 "name": "Sven de Wachter",
-                "result": "60,17",
+                "result": "60.17",
                 "location": "Aalter",
                 "date": "17.05.2009"
             }
@@ -7687,7 +7885,7 @@
         "records": [
             {
                 "name": "Robin Daelemans, Mathis Drieghe, Michiel Snackaert, Lorin Speybrouck",
-                "result": "46,33",
+                "result": "46.33",
                 "location": "Huizingen",
                 "date": "20.08.2019"
             }

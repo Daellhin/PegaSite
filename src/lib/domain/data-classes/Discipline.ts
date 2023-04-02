@@ -24,6 +24,7 @@ export class DisciplineType {
  */
 export class Discipline {
     // Are ordered on specificity, from least specific (e.g. 60 is less specific than 60m or 60mh) (order is reversed during matching)
+    // !!! Name property can not contain a dot(.), as this is seen as a firebase nested property
     public static D60 = new Discipline("60m", [], DisciplineType.Distance)
     public static D80 = new Discipline("80m", [], DisciplineType.Distance)
     public static D100 = new Discipline("100m", [], DisciplineType.Distance)
@@ -34,7 +35,7 @@ export class Discipline {
     public static D600 = new Discipline("600m", [], DisciplineType.Distance)
     public static D800 = new Discipline("800m", [], DisciplineType.Distance)
     public static D1000 = new Discipline("1K", ["1000m", "1.000m"], DisciplineType.Distance)
-    public static D1500 = new Discipline("1.5K", ["1500m", "1.500m"], DisciplineType.Distance)
+    public static D1500 = new Discipline("1,5K", ["1.5K", "1500m", "1.500m"], DisciplineType.Distance)
     public static D1Mile = new Discipline("1mijl", ["mijl"], DisciplineType.Distance)
     public static D2Mile = new Discipline("2mijl", [], DisciplineType.Distance)
     public static D2000 = new Discipline("2K", ["2000m", "2.000m"], DisciplineType.Distance)

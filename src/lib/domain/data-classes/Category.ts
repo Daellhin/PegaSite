@@ -40,15 +40,15 @@ export class Category {
         return this.singularName.replace(/ /g, "").toLowerCase()
     }
 
-    static match(category: string) {
-        const result = this.Categories.find((e) =>
-            e.getAllNames().map(f =>
-                f.toLowerCase()
-            ).includes(category.toLowerCase())
+    static match(categoryToMatch: string) {
+        const result = this.Categories.find((category) =>
+            category.getAllNames().map(names =>
+                names.replace(/ /g, "").toLowerCase()
+            ).includes(categoryToMatch.replace(/ /g, "").toLowerCase())
         )
 
         if (!result)
-            throw new Error(`Category (${category}) not found`)
+            throw new Error(`Category (${categoryToMatch}) not found`)
         return result
     }
 }
