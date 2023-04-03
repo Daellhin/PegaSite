@@ -1,25 +1,36 @@
 <script lang="ts">
   import { authStore } from "$lib/stores/AuthStore";
+  import { logFirebaseError } from "$lib/utils/Firebase";
+  import type { FirebaseError } from "firebase/app";
   import PegaIcon from "./icons/PegaIcon.svelte";
 
   export let loginModalID: string;
 
   let username: string;
   let password: string;
-  let failedLogin = false;
+  let loginError: string | undefined;
 
   let showModal = false;
 
   async function submitLogin() {
     try {
-      failedLogin = false;
+      loginError = undefined;
       await authStore.signIn(username, password);
       showModal = false;
       // TODO only for dev testing
       // username = "";
       // password = ""
     } catch (error) {
-      failedLogin = true;
+      if (error as FirebaseError) {
+        const firebaseEror = error as FirebaseError;
+        logFirebaseError(firebaseEror);
+        if ((firebaseEror.customData as any)?.message.includes("NetworkError"))
+          loginError = "Probleem met het netwerk";
+        else loginError = "Ongeldige login gegevens";
+      } else {
+        console.error(error);
+        loginError = "Ongekend probleem";
+      }
     }
   }
 </script>
@@ -51,18 +62,18 @@
             placeholder="Gebruikersnaam"
             bind:value={username}
             class="input input-bordered w-full"
-            class:input-error={failedLogin}
+            class:input-error={loginError}
           />
           <input
             type="password"
             placeholder="Wachtwoord"
             bind:value={password}
             class="input input-bordered w-full"
-            class:input-error={failedLogin}
+            class:input-error={loginError}
           />
           <button class="btn btn-primary mt-2">Inloggen</button>
-          {#if failedLogin}
-            <div class="text-center">Ongeldige login gegevens</div>
+          {#if loginError}
+            <div class="text-center text-error">{loginError}</div>
           {/if}
         </form>
         <div class="text-sm text-gray-400 mx-3 text-center">

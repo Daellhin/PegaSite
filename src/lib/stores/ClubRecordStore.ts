@@ -1,6 +1,6 @@
 import { browser } from '$app/environment';
 import { CLUB_RECORDS_JSON } from '$data/ClubRecordsJson';
-import { ClubRecord } from '$lib/domain/ClubRecord';
+import { ClubRecord, type ClubRecordJson } from '$lib/domain/ClubRecord';
 import type { RecordInstance } from '$lib/domain/RecordInstance';
 import type { AthleticEvent } from '$lib/domain/data-classes/AthleticEvent';
 import type { Category } from '$lib/domain/data-classes/Category';
@@ -8,6 +8,8 @@ import type { Discipline } from '$lib/domain/data-classes/Discipline';
 import type { Gender } from '$lib/domain/data-classes/Gender';
 import { Collections } from '$lib/firebase/firebase';
 import { writable } from 'svelte/store';
+
+const useMock = true;
 
 async function addRecordsFromJson() {
   const records = CLUB_RECORDS_JSON.map(ClubRecord.fromJSON);
@@ -23,6 +25,27 @@ async function addRecordsFromJson() {
       [objectKey]: arrayUnion(...e.records.map(e => e.toJSON()))
     })
   }))
+}
+
+function createMockClubRecordStore() {
+  const store = writable<ClubRecord[]>(undefined, set => {
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    const unsubscribe = () => { }
+
+    async function init() {
+      const clubRecords = CLUB_RECORDS_JSON.map(ClubRecord.fromJSON);
+      set(clubRecords)
+    }
+    init()
+    return unsubscribe
+  })
+  const { subscribe, update } = store
+
+  async function add(discipline: Discipline, category: Category, gender: Gender, athleticEvent: AthleticEvent, newRecordInstance: RecordInstance) {
+    console.log("added")
+  }
+
+  return { subscribe, add }
 }
 
 function createClubRecordStore() {
@@ -47,7 +70,6 @@ function createClubRecordStore() {
 
       // -- Set store --
       set(clubRecords)
-
     }
     init()
 
@@ -96,4 +118,6 @@ function createClubRecordStore() {
   }
 }
 
-export const clubRecordStore = createClubRecordStore()
+export const clubRecordStore = useMock ?
+  createMockClubRecordStore() :
+  createClubRecordStore()

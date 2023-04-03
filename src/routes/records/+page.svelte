@@ -6,7 +6,7 @@
   import IoMdSearch from "svelte-icons/io/IoIosSearch.svelte";
 
   let searchString = "";
-  let showForm = true;
+  let showForm = false;
 </script>
 
 <!-- Title -->
@@ -46,7 +46,8 @@
     <div class="mx-auto my-2">
       <RecordsTable {category} {searchString} />
     </div>
-  {/each}{#each Category.Categories as category}
+  {/each}
+  {#each Category.Categories as category}
     <div class="mx-auto my-2">
       <RecordsTable {category} {searchString} />
     </div>

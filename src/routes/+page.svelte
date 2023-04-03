@@ -11,8 +11,9 @@
   let articleRefs: HTMLElement[] = Array(paginationSize);
 
   $: amountOfCardsToShow = width && calculateAmountOfCardsToShow(articleRefs);
-  $: hasNextPage =
-    $articleStore.length > articlesOnPreviousPages + amountOfCardsToShow;
+  $: hasNextPage = $articleStore
+    ? $articleStore.length > articlesOnPreviousPages + amountOfCardsToShow
+    : false;
   $: hasPrevPage = pages.length !== 0;
   $: articlesOnPreviousPages = pages.reduce((sum, a) => sum + a, 0);
 
@@ -46,13 +47,17 @@
   class="flex gap-4 flex-wrap justify-center sm:justify-start"
   bind:clientWidth={width}
 >
-  {#each $articleStore.slice(articlesOnPreviousPages, articlesOnPreviousPages + amountOfCardsToShow) as article, index}
-    <div bind:this={articleRefs[index]}>
-      <Card {article} />
-    </div>
+  {#if $articleStore}
+    {#each $articleStore.slice(articlesOnPreviousPages, articlesOnPreviousPages + amountOfCardsToShow) as article, index}
+      <div bind:this={articleRefs[index]}>
+        <Card {article} />
+      </div>
+    {:else}
+      <div>Geen berichten gevonden</div>
+    {/each}
   {:else}
     <div>loading</div>
-  {/each}
+  {/if}
 </div>
 
 <!-- Pagiation -->

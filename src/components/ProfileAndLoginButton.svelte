@@ -4,7 +4,7 @@
   import FaSignOutAlt from "svelte-icons/fa/FaSignOutAlt.svelte";
   import FaUser from "svelte-icons/fa/FaUser.svelte";
 
-  export let loginModalID: string;
+  // export let loginModalID: string;
 </script>
 
 {#if $authStore}

@@ -19,7 +19,7 @@ function createArticleStore() {
   let lastRef: QueryDocumentSnapshot<Article>
   let hasMoreDocuments = true;
 
-  const store = writable<Article[]>([], set => {
+  const store = writable<Article[]>(undefined, set => {
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     const unsubscribe = () => { }
 
