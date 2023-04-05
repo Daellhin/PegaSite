@@ -113,3 +113,7 @@ export function sizeOfIncreasingFirstSequence(row: number[]) {
 export function clamp(number: number, min: number, max: number) {
     return Math.min(Math.max(number, min), max);
 }
+
+export function convertStringToBool(string: any) {
+    return String(string).toLowerCase() == "true";
+}

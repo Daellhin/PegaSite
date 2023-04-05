@@ -1,11 +1,37 @@
 import { browser } from '$app/environment'
+import { convertStringToBool } from '$lib/utils/Utils'
 import type { Auth, User } from 'firebase/auth'
-import { readable } from 'svelte/store'
+import { readable, writable } from 'svelte/store'
+
+function createMockAuthStore() {
+  const store = writable<User | null>(undefined, set => {
+    set({} as User)
+  })
+  const { subscribe, update } = store;
+
+  const known = new Promise<void>(resolve => {
+    resolve();
+  })
+
+  async function signIn(email: string, password: string) {
+    update(() => ({}) as User)
+  }
+  async function signOut() {
+    update(() => null)
+  }
+
+  return {
+    subscribe,
+    signIn,
+    signOut,
+    known
+  }
+}
 
 /**
  * Source: https://www.captaincodeman.com/lazy-loading-firebase-with-sveltekit
  */
-function createAuth() {
+function createAuthStore() {
   let auth: Auth
 
   // Is run anytime the first subscriber attaches to the store
@@ -58,4 +84,8 @@ function createAuth() {
   }
 }
 
-export const authStore = createAuth()
+
+const useMock: boolean = convertStringToBool(import.meta.env.VITE_USEMOCKING);
+export const authStore = useMock ?
+  createMockAuthStore() :
+  createAuthStore()

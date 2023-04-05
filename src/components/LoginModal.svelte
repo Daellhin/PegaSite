@@ -23,8 +23,8 @@
     } catch (error) {
       if (error as FirebaseError) {
         const firebaseEror = error as FirebaseError;
-        logFirebaseError(firebaseEror);
-        if ((firebaseEror.customData as any)?.message.includes("NetworkError"))
+        // logFirebaseError(firebaseEror);
+        if ((firebaseEror.customData as any)?.message?.includes("NetworkError"))
           loginError = "Probleem met het netwerk";
         else loginError = "Ongeldige login gegevens";
       } else {
