@@ -166,7 +166,8 @@ function createArticleStore() {
   }
 }
 
-const useMock: boolean = convertStringToBool(import.meta.env.VITE_USEMOCKING);
+const useMock: boolean = convertStringToBool(import.meta.env.VITE_USEMOCKING)
+if(useMock) console.warn("Mocking is on")
 export const articleStore = useMock ?
   createMockArticleStore() :
   createArticleStore()
