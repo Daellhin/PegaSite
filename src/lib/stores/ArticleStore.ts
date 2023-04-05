@@ -1,6 +1,8 @@
 import { browser } from '$app/environment'
+import { ARTICLES_JSON } from '$data/ArticlesJson'
 import { Article, articleConverter } from '$lib/domain/Article'
 import { Collections } from '$lib/firebase/firebase'
+import { convertStringToBool } from '$lib/utils/Utils'
 import type { QueryDocumentSnapshot } from 'firebase/firestore'
 import { writable } from 'svelte/store'
 import { v4 as uuidv4 } from 'uuid'
@@ -12,6 +14,32 @@ import { v4 as uuidv4 } from 'uuid'
  */
 export const paginationSize = 8;
 
+function createMockArticleStore() {
+  const store = writable<Article[]>(undefined, set => {
+    const articles = ARTICLES_JSON.map(Article.fromJson)
+    set(articles)
+  })
+  const { subscribe, update } = store;
+
+  async function addArticle(newArticle: Article, images: File[]) {
+    update((articles) => ([newArticle, ...articles]))
+  }
+  async function removeArticle(article: Article) {
+    update((articles) => (articles.filter((e) => e.id !== article.id)))
+  }
+  async function loadMoreArticles() {
+    console.log("no more articles")
+    return
+  }
+
+  return {
+    subscribe,
+    addArticle,
+    removeArticle,
+    loadMoreArticles
+  }
+}
+
 /**
  * Source: https://www.captaincodeman.com/lazy-loading-and-querying-firestore-with-sveltekit
  */
@@ -20,45 +48,38 @@ function createArticleStore() {
   let hasMoreDocuments = true;
 
   const store = writable<Article[]>(undefined, set => {
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    const unsubscribe = () => { }
-
     async function init() {
-      if (browser) {
-        // const articles = ARTICLES_JSON.map(Article.fromJson)
+      if (!browser) return
 
-        // -- Load articles --
-        const { firebaseApp } = await import('$lib/firebase/firebase')
-        const { getFirestore, collection, query, orderBy, limit, getDocs } = await import('firebase/firestore')
-        const firestore = getFirestore(firebaseApp)
+      // const articles = ARTICLES_JSON.map(Article.fromJson)
 
-        const q = query(
-          collection(firestore, Collections.ARTICLES),
-          orderBy('timestamp', 'desc'),
-          limit(paginationSize + 1)
-        ).withConverter(articleConverter)
-        const snapshot = await getDocs(q)
+      // -- Load articles --
+      const { firebaseApp } = await import('$lib/firebase/firebase')
+      const { getFirestore, collection, query, orderBy, limit, getDocs } = await import('firebase/firestore')
+      const firestore = getFirestore(firebaseApp)
 
-        // -- Set store --
-        const articles = snapshot.docs.map(e => e.data())
-        set(articles)
+      const q = query(
+        collection(firestore, Collections.ARTICLES),
+        orderBy('timestamp', 'desc'),
+        limit(paginationSize + 1)
+      ).withConverter(articleConverter)
+      const snapshot = await getDocs(q)
 
-        // -- Setup pagination --
-        lastRef = snapshot.docs.slice(-1)[0]
-        hasMoreDocuments = snapshot.docs.length === paginationSize + 1;
-      }
+      // -- Set store --
+      const articles = snapshot.docs.map(e => e.data())
+      set(articles)
+
+      // -- Setup pagination --
+      lastRef = snapshot.docs.slice(-1)[0]
+      hasMoreDocuments = snapshot.docs.length === paginationSize + 1;
     }
     init()
-
-    return unsubscribe
   })
   const { subscribe, update } = store;
 
   async function addArticle(newArticle: Article, images: File[]) {
-    if (!browser) {
-      console.error("Why are you adding an article from the server")
-      return
-    }
+    if (!browser) return
+
     // -- Upload images --
     const { getStorage, ref, uploadBytes, getDownloadURL } = await import('firebase/storage')
     const storage = getStorage()
@@ -84,10 +105,8 @@ function createArticleStore() {
   }
 
   async function removeArticle(article: Article) {
-    if (!browser) {
-      console.error("Why are you removing an article from the server")
-      return
-    }
+    if (!browser) return
+
     // -- Remove images --
     const { getStorage, ref, deleteObject } = await import('firebase/storage')
     const storage = getStorage()
@@ -116,29 +135,27 @@ function createArticleStore() {
   }
 
   async function loadMoreArticles() {
-    if (!browser) {
-      console.error("Why are you loading more articles from the server")
-      return
-    }
-    if (hasMoreDocuments) {
-      // -- Load articles --
-      const { firebaseApp } = await import('$lib/firebase/firebase')
-      const { getFirestore, collection, query, orderBy, limit, getDocs, startAfter } = await import('firebase/firestore')
-      const firestore = getFirestore(firebaseApp)
+    if (!browser) return
+    if (!hasMoreDocuments) return
 
-      const q = query(
-        collection(firestore, Collections.ARTICLES),
-        orderBy('timestamp', 'desc'),
-        startAfter(lastRef),
-        limit(paginationSize)
-      ).withConverter(articleConverter)
-      const snapshot = await getDocs(q)
+    // -- Load articles --
+    const { firebaseApp } = await import('$lib/firebase/firebase')
+    const { getFirestore, collection, query, orderBy, limit, getDocs, startAfter } = await import('firebase/firestore')
+    const firestore = getFirestore(firebaseApp)
 
-      // -- Update articles --
-      update((articles) => ([...articles, ...snapshot.docs.map(e => e.data())]))
-      lastRef = snapshot.docs.slice(-1)[0]
-      hasMoreDocuments = snapshot.docs.length === paginationSize + 1;
-    }
+    const q = query(
+      collection(firestore, Collections.ARTICLES),
+      orderBy('timestamp', 'desc'),
+      startAfter(lastRef),
+      limit(paginationSize)
+    ).withConverter(articleConverter)
+    const snapshot = await getDocs(q)
+
+    // -- Update articles --
+    update((articles) => ([...articles, ...snapshot.docs.map(e => e.data())]))
+    lastRef = snapshot.docs.slice(-1)[0]
+    hasMoreDocuments = snapshot.docs.length === paginationSize + 1;
+
   }
 
   return {
@@ -149,4 +166,7 @@ function createArticleStore() {
   }
 }
 
-export const articleStore = createArticleStore()
+const useMock: boolean = convertStringToBool(import.meta.env.VITE_USEMOCKING);
+export const articleStore = useMock ?
+  createMockArticleStore() :
+  createArticleStore()

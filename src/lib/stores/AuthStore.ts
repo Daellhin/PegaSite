@@ -37,26 +37,23 @@ function createAuthStore() {
   // Is run anytime the first subscriber attaches to the store
   // returns a function that is called whenever the last subscriber disconnects
   const { subscribe } = readable<User | null>(undefined, set => {
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
     let unsubscribe = () => { }
 
     async function init() {
-      if (browser) {
-        const { firebaseApp } = await import('$lib/firebase/firebase')
-        const { getAuth, onAuthStateChanged } = await import('firebase/auth')
+      if (!browser) return
 
-        auth = getAuth(firebaseApp)
+      const { firebaseApp } = await import('$lib/firebase/firebase')
+      const { getAuth, onAuthStateChanged } = await import('firebase/auth')
 
-        unsubscribe = onAuthStateChanged(auth, set)
-      }
+      auth = getAuth(firebaseApp)
+      unsubscribe = onAuthStateChanged(auth, set)
     }
     init()
-
+    
     return unsubscribe
   })
 
   const known = new Promise<void>(resolve => {
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
     let unsub = () => { }
     unsub = subscribe(user => {
       if (user !== undefined) {

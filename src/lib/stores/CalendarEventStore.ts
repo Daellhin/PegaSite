@@ -1,46 +1,60 @@
-
 import { browser } from '$app/environment'
+import { EVENTS_JSON } from '$data/CalendarEventsJson'
 import { CalendarEvent, calendarEventConverter } from '$lib/domain/CalendarEvent'
 import { Collections } from '$lib/firebase/firebase'
+import { convertStringToBool } from '$lib/utils/Utils'
 import dayjs from 'dayjs'
 import { writable } from 'svelte/store'
 
-function createCalendarEventStore() {
+function createMockCalendarEventStore() {
   const store = writable<CalendarEvent[]>(undefined, set => {
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    const unsubscribe = () => { }
-
-    async function init() {
-      if (browser) {
-        // const calendarEvents = EVENTS_JSON.map(CalendarEvent.fromJson)
-
-        // -- Load CalendarEvents --
-        const { firebaseApp } = await import('$lib/firebase/firebase')
-        const { getFirestore, collection, query, where, getDocs } = await import('firebase/firestore')
-        const firestore = getFirestore(firebaseApp)
-
-        const queryResult = query(
-          collection(firestore, Collections.CALENDAR_EVENTS),
-          where("date", ">=", dayjs().startOf('day').toDate())
-        ).withConverter(calendarEventConverter)
-        const snapshot = await getDocs(queryResult)
-
-        // -- Set store --
-        const calendarEvents = snapshot.docs.map(e => e.data())
-        set(calendarEvents)
-      }
-    }
-    init()
-
-    return unsubscribe
+    const calendarEvents = EVENTS_JSON.map(CalendarEvent.fromJson)
+    set(calendarEvents)
   })
   const { subscribe, update } = store
 
   async function addCalendarEvent(newCalendarEvent: CalendarEvent) {
-    if (!browser) {
-      console.error("Why are you adding a calendarEvent from the server")
-      return
+    update((calendarEvents) => {
+      return [...calendarEvents, newCalendarEvent].sort((a, b) => (a.date.isAfter(b.date) ? 1 : -1))
+    });
+  }
+  async function removeCalendarEvent(calendarEvent: CalendarEvent) {
+    update((calendarEvents) => (calendarEvents.filter((e) => e.id !== calendarEvent.id)))
+  }
+
+  return {
+    subscribe,
+    addCalendarEvent,
+    removeCalendarEvent
+  }
+}
+
+function createCalendarEventStore() {
+  const store = writable<CalendarEvent[]>(undefined, set => {
+    async function init() {
+      if (!browser) return
+
+      // -- Load CalendarEvents --
+      const { firebaseApp } = await import('$lib/firebase/firebase')
+      const { getFirestore, collection, query, where, getDocs } = await import('firebase/firestore')
+      const firestore = getFirestore(firebaseApp)
+
+      const queryResult = query(
+        collection(firestore, Collections.CALENDAR_EVENTS),
+        where("date", ">=", dayjs().startOf('day').toDate())
+      ).withConverter(calendarEventConverter)
+      const snapshot = await getDocs(queryResult)
+
+      // -- Set store --
+      const calendarEvents = snapshot.docs.map(e => e.data())
+      set(calendarEvents)
     }
+    init()
+  })
+  const { subscribe, update } = store
+
+  async function addCalendarEvent(newCalendarEvent: CalendarEvent) {
+      if (!browser) return
 
     // -- Update event --
     const { getFirestore, collection, doc, setDoc } = await import('firebase/firestore')
@@ -54,16 +68,14 @@ function createCalendarEventStore() {
     await setDoc(newDocRef, newCalendarEvent)
 
     // -- Update store --
-    update((articles) => {
-      return [...articles, newCalendarEvent].sort((a, b) => (a.date.isAfter(b.date) ? 1 : -1))
+    update((calendarEvents) => {
+      return [...calendarEvents, newCalendarEvent].sort((a, b) => (a.date.isAfter(b.date) ? 1 : -1))
     });
   }
 
   async function removeCalendarEvent(calendarEvent: CalendarEvent) {
-    if (!browser) {
-      console.error("Why are you removing a calendarEvent from the server")
-      return
-    }
+    if (!browser) return
+
     // -- Remove article --
     const { getFirestore, doc, deleteDoc } = await import('firebase/firestore')
     const { firebaseApp } = await import('$lib/firebase/firebase')
@@ -72,7 +84,7 @@ function createCalendarEventStore() {
     await deleteDoc(doc(firestore, Collections.CALENDAR_EVENTS, calendarEvent.id))
 
     // -- Remove from store --
-    update((articles) => (articles.filter((e) => e.id !== calendarEvent.id)))
+    update((calendarEvents) => (calendarEvents.filter((e) => e.id !== calendarEvent.id)))
   }
 
   return {
@@ -82,4 +94,7 @@ function createCalendarEventStore() {
   }
 }
 
-export const calendarEventStore = createCalendarEventStore()
+const useMock: boolean = convertStringToBool(import.meta.env.VITE_USEMOCKING);
+export const calendarEventStore = useMock ?
+  createMockCalendarEventStore :
+  createCalendarEventStore()

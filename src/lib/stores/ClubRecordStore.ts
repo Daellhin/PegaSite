@@ -1,15 +1,14 @@
 import { browser } from '$app/environment';
 import { CLUB_RECORDS_JSON } from '$data/ClubRecordsJson';
-import { ClubRecord, type ClubRecordJson } from '$lib/domain/ClubRecord';
+import { ClubRecord } from '$lib/domain/ClubRecord';
 import type { RecordInstance } from '$lib/domain/RecordInstance';
 import type { AthleticEvent } from '$lib/domain/data-classes/AthleticEvent';
 import type { Category } from '$lib/domain/data-classes/Category';
 import type { Discipline } from '$lib/domain/data-classes/Discipline';
 import type { Gender } from '$lib/domain/data-classes/Gender';
 import { Collections } from '$lib/firebase/firebase';
+import { convertStringToBool } from '$lib/utils/Utils';
 import { writable } from 'svelte/store';
-
-const useMock = true;
 
 async function addRecordsFromJson() {
   const records = CLUB_RECORDS_JSON.map(ClubRecord.fromJSON);
@@ -29,35 +28,33 @@ async function addRecordsFromJson() {
 
 function createMockClubRecordStore() {
   const store = writable<ClubRecord[]>(undefined, set => {
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    const unsubscribe = () => { }
-
-    async function init() {
-      const clubRecords = CLUB_RECORDS_JSON.map(ClubRecord.fromJSON);
-      set(clubRecords)
-    }
-    init()
-    return unsubscribe
+    const clubRecords = CLUB_RECORDS_JSON.map(ClubRecord.fromJSON);
+    set(clubRecords)
   })
   const { subscribe, update } = store
 
   async function add(discipline: Discipline, category: Category, gender: Gender, athleticEvent: AthleticEvent, newRecordInstance: RecordInstance) {
-    console.log("added")
+    update((clubRecords) => {
+      const existingRecord = clubRecords.find((e) => e.isOfType(discipline, category, gender, athleticEvent))
+      if (!existingRecord) {
+        const newRecord = new ClubRecord(discipline, category, gender, athleticEvent, [newRecordInstance])
+        return [...clubRecords, newRecord]
+      }
+      existingRecord.records.push(newRecordInstance)
+      return [...clubRecords]
+    })
   }
 
-  return { subscribe, add }
+  return {
+    subscribe,
+    add
+  }
 }
 
 function createClubRecordStore() {
   const store = writable<ClubRecord[]>(undefined, set => {
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    const unsubscribe = () => { }
-
     async function init() {
-      if (!browser) {
-        return
-      }
-      // const records = (ClubRecords as unknown as ClubRecordJson[]).map(ClubRecord.fromJSON);
+      if (!browser) return
 
       // -- Load ClubRecords --
       const { firebaseApp } = await import('$lib/firebase/firebase')
@@ -72,16 +69,11 @@ function createClubRecordStore() {
       set(clubRecords)
     }
     init()
-
-    return unsubscribe
   })
   const { subscribe, update } = store
 
   async function add(discipline: Discipline, category: Category, gender: Gender, athleticEvent: AthleticEvent, newRecordInstance: RecordInstance) {
-    if (!browser) {
-      console.error("Why are you adding a clubRecord from the server")
-      return
-    }
+    if (!browser) return
 
     // -- Upload record --
     const { getFirestore, doc, updateDoc, arrayUnion } = await import('firebase/firestore')
@@ -96,19 +88,13 @@ function createClubRecordStore() {
 
     // -- Update store --
     update((clubRecords) => {
-      const exsistingRecord = clubRecords.filter((e) =>
-        e.discipline === discipline &&
-        e.category === category &&
-        e.gender === gender &&
-        e.athleticEvent === athleticEvent
-      )
-      if (exsistingRecord?.length === 1) {
-        exsistingRecord[0].records.push(newRecordInstance)
-        return [...clubRecords]
-      } else {
+      const existingRecord = clubRecords.find((e) => e.isOfType(discipline, category, gender, athleticEvent))
+      if (!existingRecord) {
         const newRecord = new ClubRecord(discipline, category, gender, athleticEvent, [newRecordInstance])
         return [...clubRecords, newRecord]
       }
+      existingRecord.records.push(newRecordInstance)
+      return [...clubRecords]
     })
   }
 
@@ -118,6 +104,7 @@ function createClubRecordStore() {
   }
 }
 
+const useMock: boolean = convertStringToBool(import.meta.env.VITE_USEMOCKING);
 export const clubRecordStore = useMock ?
   createMockClubRecordStore() :
   createClubRecordStore()

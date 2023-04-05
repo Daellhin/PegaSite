@@ -44,6 +44,13 @@ export class ClubRecord {
             .includes(false)
     }
 
+    isOfType(discipline: Discipline, category: Category, gender: Gender, athleticEvent: AthleticEvent) {
+        return this.discipline === discipline &&
+            this.category === category &&
+            this.gender === gender &&
+            this.athleticEvent === athleticEvent
+    }
+
     static fromJSON(json: ClubRecordJson): ClubRecord {
         try {
             return new ClubRecord(
