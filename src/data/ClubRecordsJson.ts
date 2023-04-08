@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import ClubRecords from '$data/json/Clubrecords.json';
-import type { ClubRecordJson } from '$lib/domain/ClubRecord';
-import dayjs from 'dayjs';
-import customParseFormat from "dayjs/plugin/customParseFormat";
-import { Timestamp } from 'firebase/firestore';
+import ClubRecords from '$data/json/Clubrecords.json'
+import type { ClubRecordJson } from '$lib/domain/ClubRecord'
+import dayjs from 'dayjs'
+import customParseFormat from "dayjs/plugin/customParseFormat"
+import { Timestamp } from 'firebase/firestore'
 
 dayjs.extend(customParseFormat)
 

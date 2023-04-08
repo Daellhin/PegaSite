@@ -1,7 +1,7 @@
-import type { Dayjs } from 'dayjs';
-import dayjs from 'dayjs';
-import 'dayjs/locale/nl-be';
-import { Timestamp, type FirestoreDataConverter } from 'firebase/firestore';
+import type { Dayjs } from 'dayjs'
+import dayjs from 'dayjs'
+import 'dayjs/locale/nl-be'
+import { Timestamp, type FirestoreDataConverter } from 'firebase/firestore'
 
 export interface CalendarEventJson {
     id: string
@@ -26,17 +26,17 @@ export class CalendarEvent {
     get abbreviatedMonth() {
         return this.date.locale("nl-be")
             .format("MMM")
-            .replace('.', '');
+            .replace('.', '')
     }
     get fullMonth() {
         return this.date.locale("nl-be")
             .format("MMMM")
-            .replace('.', '');
+            .replace('.', '')
     }
     get shortDay() {
         return this.date.locale("nl-be")
             .format("ddd")
-            .replace('.', '');
+            .replace('.', '')
     }
 
     static fromJson(json: CalendarEventJson) {

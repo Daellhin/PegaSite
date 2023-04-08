@@ -12,14 +12,14 @@ import { v4 as uuidv4 } from 'uuid'
  * One article of next batch is always atempted to be loaded. 
  * This is to check if there are items in the next batch
  */
-export const paginationSize = 8;
+export const paginationSize = 8
 
 function createMockArticleStore() {
   const store = writable<Article[]>(undefined, set => {
     const articles = ARTICLES_JSON.map(Article.fromJson)
     set(articles)
   })
-  const { subscribe, update } = store;
+  const { subscribe, update } = store
 
   async function addArticle(newArticle: Article, images: File[]) {
     update((articles) => ([newArticle, ...articles]))
@@ -44,7 +44,7 @@ function createMockArticleStore() {
  */
 function createArticleStore() {
   let lastRef: QueryDocumentSnapshot<Article>
-  let hasMoreDocuments = true;
+  let hasMoreDocuments = true
 
   const store = writable<Article[]>(undefined, set => {
     async function init() {
@@ -70,11 +70,11 @@ function createArticleStore() {
 
       // -- Setup pagination --
       lastRef = snapshot.docs.slice(-1)[0]
-      hasMoreDocuments = snapshot.docs.length === paginationSize + 1;
+      hasMoreDocuments = snapshot.docs.length === paginationSize + 1
     }
     init()
   })
-  const { subscribe, update } = store;
+  const { subscribe, update } = store
 
   async function addArticle(newArticle: Article, images: File[]) {
     if (!browser) return
@@ -153,7 +153,7 @@ function createArticleStore() {
     // -- Update articles --
     update((articles) => ([...articles, ...snapshot.docs.map(e => e.data())]))
     lastRef = snapshot.docs.slice(-1)[0]
-    hasMoreDocuments = snapshot.docs.length === paginationSize + 1;
+    hasMoreDocuments = snapshot.docs.length === paginationSize + 1
 
   }
 

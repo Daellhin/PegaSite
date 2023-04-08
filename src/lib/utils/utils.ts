@@ -80,17 +80,17 @@ export function groupBy<K, V>(
     if (!list) {
         return undefined
     }
-    const map = new Map<K, V[]>();
+    const map = new Map<K, V[]>()
     list.forEach((item) => {
-        const key = keyGetter(item);
-        const collection = map.get(key);
+        const key = keyGetter(item)
+        const collection = map.get(key)
         if (!collection) {
-            map.set(key, [item]);
+            map.set(key, [item])
         } else {
-            collection.push(item);
+            collection.push(item)
         }
-    });
-    return map;
+    })
+    return map
 }
 
 /**
@@ -98,11 +98,11 @@ export function groupBy<K, V>(
  * Counts the amount of increasing numbers, until the first decreased number
  * */
 export function sizeOfIncreasingFirstSequence(row: number[]) {
-    if (row.length <= 1) return row.length;
+    if (row.length <= 1) return row.length
     for (let index = 1; index <= row.length; index++) {
-        if (row[index] <= row[index - 1]) return index;
+        if (row[index] <= row[index - 1]) return index
     }
-    return row.length;
+    return row.length
 }
 
 /**
@@ -111,19 +111,19 @@ export function sizeOfIncreasingFirstSequence(row: number[]) {
  * Returns a number whose value is limited to the given range.
  */
 export function clamp(number: number, min: number, max: number) {
-    return Math.min(Math.max(number, min), max);
+    return Math.min(Math.max(number, min), max)
 }
 
 export function convertStringToBool(string: any) {
-    return String(string).toLowerCase() == "true";
+    return String(string).toLowerCase() == "true"
 }
 
 export function sleep(time: number | undefined) {
     return new Promise<void>(resolve => {
         setTimeout(() => {
-            resolve();
-        }, time);
-    });
+            resolve()
+        }, time)
+    })
 }
 
 export function isChild(obj: any, parentObj: any) {
@@ -133,9 +133,9 @@ export function isChild(obj: any, parentObj: any) {
       obj.tagName.toUpperCase() != "BODY"
     ) {
       if (obj == parentObj) {
-        return true;
+        return true
       }
-      obj = obj.parentNode;
+      obj = obj.parentNode
     }
-    return false;
+    return false
   }

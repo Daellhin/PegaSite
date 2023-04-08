@@ -7,10 +7,10 @@ function createMockAuthStore() {
   const store = writable<User | null>(undefined, set => {
     set({} as User)
   })
-  const { subscribe, update } = store;
+  const { subscribe, update } = store
 
   const known = new Promise<void>(resolve => {
-    resolve();
+    resolve()
   })
 
   async function signIn(email: string, password: string) {
@@ -82,7 +82,7 @@ function createAuthStore() {
 }
 
 
-const useMock: boolean = convertStringToBool(import.meta.env.VITE_USEMOCKING);
+const useMock: boolean = convertStringToBool(import.meta.env.VITE_USEMOCKING)
 export const authStore = useMock ?
   createMockAuthStore() :
   createAuthStore()

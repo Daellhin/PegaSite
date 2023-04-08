@@ -30,7 +30,7 @@ export class RecordInstance {
             json.location,
             json.date ? dayjs(json.date.toMillis()) : undefined,
             json.checked
-        );
+        )
     }
 
     toJSON(): RecordInstanceJson {
@@ -40,6 +40,6 @@ export class RecordInstance {
             location: this.location,
             date: this.date ? Timestamp.fromDate(this.date.toDate()) : null,
             checked: this.checked
-        } as RecordInstanceJson;
+        } as RecordInstanceJson
     }
 }

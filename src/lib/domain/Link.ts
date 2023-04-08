@@ -46,5 +46,5 @@ export class LinkGroup {
 }
 
 export function isLinkGroupJson(json: LinkJson | LinkGroupJson): json is LinkGroupJson {
-    return (json as LinkGroupJson).links !== undefined;
+    return (json as LinkGroupJson).links !== undefined
 }

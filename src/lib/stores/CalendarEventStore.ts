@@ -16,7 +16,7 @@ function createMockCalendarEventStore() {
   async function addCalendarEvent(newCalendarEvent: CalendarEvent) {
     update((calendarEvents) => {
       return [...calendarEvents, newCalendarEvent].sort((a, b) => (a.date.isAfter(b.date) ? 1 : -1))
-    });
+    })
   }
   async function removeCalendarEvent(calendarEvent: CalendarEvent) {
     update((calendarEvents) => (calendarEvents.filter((e) => e.id !== calendarEvent.id)))
@@ -70,7 +70,7 @@ function createCalendarEventStore() {
     // -- Update store --
     update((calendarEvents) => {
       return [...calendarEvents, newCalendarEvent].sort((a, b) => (a.date.isAfter(b.date) ? 1 : -1))
-    });
+    })
   }
 
   async function removeCalendarEvent(calendarEvent: CalendarEvent) {
@@ -94,7 +94,7 @@ function createCalendarEventStore() {
   }
 }
 
-const useMock: boolean = convertStringToBool(import.meta.env.VITE_USEMOCKING);
+const useMock: boolean = convertStringToBool(import.meta.env.VITE_USEMOCKING)
 export const calendarEventStore = useMock ?
   createMockCalendarEventStore() :
   createCalendarEventStore()

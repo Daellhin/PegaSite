@@ -1,5 +1,5 @@
-import type { CalendarEventJson } from '$lib/domain/CalendarEvent';
-import { Timestamp } from 'firebase/firestore';
+import type { CalendarEventJson } from '$lib/domain/CalendarEvent'
+import { Timestamp } from 'firebase/firestore'
 
 export const EVENTS_JSON: CalendarEventJson[] = [
     {

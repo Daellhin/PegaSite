@@ -1,4 +1,4 @@
-import type { LinkGroupJson } from '$lib/domain/Link';
+import type { LinkGroupJson } from '$lib/domain/Link'
 
 export const LINKS_JSON: (LinkGroupJson)[] = [
     {
@@ -42,4 +42,4 @@ export const LINKS_JSON: (LinkGroupJson)[] = [
             { title: "Facebook", customUrl: "fb.com/PegasusLonderzeel" },
         ]
     }
-];
+]
