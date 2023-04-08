@@ -6,6 +6,7 @@
   export let editUrl: string;
   export let deleteHandler: () => Promise<void> | any;
   export let size: "md" | "sm" | "xs" = "md";
+  export let disabled = false;
 
   let dropdownList: HTMLUListElement;
 
@@ -15,13 +16,18 @@
   }
 </script>
 
-<div title="Aanpassen" class="dropdown dropdown-end min-w-fit">
+<div
+  title={disabled ? "Uitgeschakeld" : "Aanpassen"}
+  class="dropdown dropdown-end min-w-fit"
+>
   <button
+    {disabled}
     tabindex="0"
     class="btn btn-ghost gap-2 normal-case flex flex-row"
     class:btn-xs={size === "xs"}
     class:btn-sm={size === "sm"}
     class:btn-md={size === "md"}
+    class:bg-transparent={disabled}
   >
     <div class="w-5 h-5"><FaPen /></div>
     <div class="w-4 h-4 text-gray-500 hidden sm:block"><FaChevronDown /></div>

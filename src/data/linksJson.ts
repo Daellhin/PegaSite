@@ -5,7 +5,7 @@ export const LINKS_JSON: (LinkGroupJson)[] = [
         name: "De Club", links: [
             { name: "Lid worden", url: "" },
             { name: "Werking", url: "" },
-            { name: "Clubrecords", url: "/records" },
+            { name: "Clubrecords", url: "/records", customPage: true },
         ]
     },
     {

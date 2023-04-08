@@ -2,11 +2,11 @@
   import EditDropdown from "$components/EditDropdown.svelte";
   import FormControlSavableText from "$components/FormHelpers/FormControlSavableText.svelte";
   import type { Link } from "$lib/domain/Link";
-  import { sleep } from "$lib/utils/Utils";
 
   export let link: Link;
   export let isEditable = true;
-  export let deleteLink: (link: Link) => Promise<void>;
+  export let deleteLink: (link: Link) => Promise<void> | any;
+  export let saveLink: (link: Link) => Promise<void>;
 
   const confirmModelID = "";
   let showModal = false;
@@ -14,28 +14,32 @@
   let linkTitle = link.name;
   $: linkUrl = `/${linkTitle.trim().replace(/ /g, "-").toLowerCase()}`;
 
-  async function saveLinkTitle() {
+  async function saveLinkWrapper() {
     linkTitle = linkTitle.trim();
-    await sleep(1000);
+    link.name = linkTitle;
+    link.url = linkUrl;
+    await saveLink(link);
   }
   async function deleteLinkAndPageWrapper() {
     showModal = false;
-    console.log("removing", link.name);
     await deleteLink(link);
-    console.log("removed", link.name);
   }
 </script>
 
-<div class="ml-3 flex flex-col sm:flex-row gap-2 sm:items-center">
+<div class="flex flex-col sm:flex-row gap-2 sm:items-center">
   <div class="italic w-40">{linkUrl}</div>
-  <div class="flex w-full max-w-lg">
+  <div class="flex gap-2 w-full max-w-lg">
     <FormControlSavableText
       bind:value={linkTitle}
       placeholder="Titel"
-      save={saveLinkTitle}
-      disabled={!isEditable}
+      save={saveLinkWrapper}
+      disabled={!isEditable || link.customPage}
     />
-    <EditDropdown editUrl="/todo" deleteHandler={() => (showModal = true)} />
+    <EditDropdown
+      editUrl="/todo"
+      deleteHandler={() => (showModal = true)}
+      disabled={link.customPage}
+    />
   </div>
 </div>
 

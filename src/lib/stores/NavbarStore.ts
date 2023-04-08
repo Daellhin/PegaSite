@@ -24,9 +24,25 @@ function createNavbarStore() {
     update((linkGroups) => [...linkGroups])
   }
 
+  async function addLink(link: Link, group: LinkGroup) {
+    if (!browser) return
+    group.links.push(link)
+
+    update((linkGroups) => [...linkGroups])
+  }
+
+  async function updateGroupTitle(title:string, group: LinkGroup) {
+    if (!browser) return
+    group.name = title;
+
+    update((linkGroups) => [...linkGroups])
+  }
+
   return {
     subscribe,
-    removeLink
+    removeLink,
+    addLink,
+    updateGroupTitle
   }
 }
 

@@ -1,18 +1,21 @@
 export interface LinkJson {
     name: string
     url: string
+    customPage?: boolean
 }
 export class Link {
     constructor(
         public name: string,
-        public url: string
+        public url: string,
+        public customPage: boolean = false
     ) {
     }
 
     static fromJson(json: LinkJson) {
         return new Link(
             json.name,
-            json.url
+            json.url,
+            json.customPage
         )
     }
 }

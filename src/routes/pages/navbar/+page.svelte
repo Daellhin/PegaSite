@@ -24,6 +24,7 @@
       Geen links
     {/each}
   </div>
+  <button class="btn btn-primary mt-3">Categorie toevoegen</button>
 {:else}
   loading
 {/if}
