@@ -16,11 +16,9 @@
     await navbarStore.removeLink(link, linkGroup);
   }
   async function updateLink(link: Link) {
-    await sleep(600);
     navbarStore.updateLink(link, linkGroup);
   }
   async function addLink(link: Link) {
-    await sleep(600);
     navbarStore.addLink(link, linkGroup);
     tempLink = undefined;
   }
@@ -32,7 +30,6 @@
     tempLink = undefined;
   }
   async function updateGroupTitle() {
-    await sleep(600);
     navbarStore.updateGroupTitle(title, linkGroup);
   }
 </script>
