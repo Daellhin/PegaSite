@@ -4,7 +4,7 @@
 
 <div>
   <h2 class="text-2xl font-bold">De club</h2>
-  <div class="flex flex-col gap-3">
+  <div class="flex flex-col gap-2">
     <ToolbarDropdownEditorRow />
     <ToolbarDropdownEditorRow />
     <ToolbarDropdownEditorRow />

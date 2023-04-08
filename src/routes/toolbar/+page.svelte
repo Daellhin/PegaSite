@@ -9,7 +9,3 @@
   <ToolbarDropdownEditor />
   <ToolbarDropdownEditor />
 </div>
-
-<button class="btn btn-primary mt-8 max-w-sm" disabled={true}>
-  Wijzigingen opslaan
-</button>

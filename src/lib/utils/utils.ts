@@ -77,7 +77,7 @@ export function groupBy<K, V>(
     list: V[],
     keyGetter: (input: V) => K
 ) {
-    if(!list) {
+    if (!list) {
         return undefined
     }
     const map = new Map<K, V[]>();
@@ -117,3 +117,25 @@ export function clamp(number: number, min: number, max: number) {
 export function convertStringToBool(string: any) {
     return String(string).toLowerCase() == "true";
 }
+
+export function sleep(time: number | undefined) {
+    return new Promise<void>(resolve => {
+        setTimeout(() => {
+            resolve();
+        }, time);
+    });
+}
+
+export function isChild(obj: any, parentObj: any) {
+    while (
+      obj != undefined &&
+      obj != null &&
+      obj.tagName.toUpperCase() != "BODY"
+    ) {
+      if (obj == parentObj) {
+        return true;
+      }
+      obj = obj.parentNode;
+    }
+    return false;
+  }
