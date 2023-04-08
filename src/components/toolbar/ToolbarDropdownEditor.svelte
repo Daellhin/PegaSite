@@ -6,16 +6,18 @@
   import ToolbarDropdownEditorRow from "./ToolbarDropdownEditorRow.svelte";
 
   export let linkGroup: LinkGroup;
-  let title = linkGroup.name;
-  $: links = linkGroup.links;
 
+  let title = linkGroup.name;
   let tempLink: Link | undefined;
+
+  $: links = linkGroup.links;
 
   async function deleteLink(link: Link) {
     await navbarStore.removeLink(link, linkGroup);
   }
-  async function updateLink(_link: Link) {
+  async function updateLink(link: Link) {
     await sleep(600);
+    navbarStore.updateLink(link, linkGroup);
   }
   async function addLink(link: Link) {
     await sleep(600);
@@ -27,7 +29,6 @@
     tempLink = new Link("", "");
   }
   function deleteTempLink() {
-    console.log("removed");
     tempLink = undefined;
   }
   async function updateGroupTitle() {
@@ -73,9 +74,6 @@
       on:click={addTempLink}
     >
       Link toevoegen
-    </button>
-    <button class="btn btn-primary btn-sm mt-2 max-w-sm normal-case">
-      Categorie verwijderen
     </button>
   </div>
 </div>

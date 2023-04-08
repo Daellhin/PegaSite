@@ -29,7 +29,7 @@ export const LINKS_JSON: (LinkGroupJson)[] = [
     },
     {
         name: "Kalender", links: [
-            { name: "Kalender", url: "/events" },
+            { name: "Kalender", url: "/events", customPage: true },
         ]
     },
     {
@@ -39,7 +39,7 @@ export const LINKS_JSON: (LinkGroupJson)[] = [
     },
     {
         name: "Facebook", links: [
-            { name: "Facebook", url: "" },
+            { name: "Facebook", url: "fb.com/PegasusLonderzeel", customPage: true },
         ]
     }
 ];
