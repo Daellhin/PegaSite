@@ -1,5 +1,5 @@
 <script lang="ts">
-  import ToolbarDropdownEditor from "$components/toolbar/ToolbarDropdownEditor.svelte";
+  import ToolbarDropdownEditor from "$components/Toolbar/ToolbarDropdownEditor.svelte";
   import { navbarStore } from "$lib/stores/NavbarStore";
   import MdInfoOutline from "svelte-icons/md/MdInfoOutline.svelte";
 </script>

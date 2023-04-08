@@ -10,7 +10,7 @@
           <a href={linkGroup.links[0].url}>{linkGroup.links[0].name}</a>
         </li>
       {:else}
-        <li tabindex="0" class="z-10">
+        <li class="z-10">
           <span>{linkGroup.name}</span>
           <ul class="rounded-box bg-base-100 p-2 shadow-2xl">
             {#each linkGroup.links as linkInner}

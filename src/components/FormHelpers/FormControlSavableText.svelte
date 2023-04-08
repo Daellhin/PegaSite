@@ -2,6 +2,7 @@
   import { isChild } from "$lib/utils/Utils";
   import { faCheck, faPen, faXmark } from "@fortawesome/free-solid-svg-icons";
   import Fa from "svelte-fa/src/fa.svelte";
+  import { v4 as uuidv4 } from "uuid";
 
   export let value: string;
   export let placeholder: string;
@@ -15,6 +16,7 @@
   let divParent: HTMLElement;
   let saving = false;
   const pattern = /^[a-zA-Z0-9- ]*$/g;
+  const id = uuidv4();
 
   $: dirty = value != oldValue;
   $: error = validate(value);
@@ -62,10 +64,10 @@
       </div>
     {/if}
     <input
+      {id}
       class:pl-9={transparent}
       class:bg-base-200={!transparent}
       class:input-error={error}
-      
       class={"input pr-20 w-full hover:bg-base-300 focus:bg-base-300 " +
         inputStyling}
       type="text"
@@ -98,7 +100,7 @@
   </div>
 
   {#if error}
-    <label class="label">
+    <label class="label" for={id}>
       <span class="label-text-alt text-error">{error}</span>
     </label>
   {/if}

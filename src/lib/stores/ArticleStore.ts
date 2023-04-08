@@ -28,7 +28,6 @@ function createMockArticleStore() {
     update((articles) => (articles.filter((e) => e.id !== article.id)))
   }
   async function loadMoreArticles() {
-    console.log("no more articles")
     return
   }
 

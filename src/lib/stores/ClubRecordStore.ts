@@ -19,7 +19,6 @@ async function addRecordsFromJson() {
 
     const clubrecordsRef = doc(firestore, Collections.CLUB_RECORDS, "singleDocument")
     const objectKey = `${e.gender.keyName}.${e.athleticEvent.keyName}.${e.discipline.name}.${e.category.keyName}`
-    console.log(e)
     await updateDoc(clubrecordsRef, {
       [objectKey]: arrayUnion(...e.records.map(e => e.toJSON()))
     })

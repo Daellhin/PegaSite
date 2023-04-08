@@ -22,7 +22,6 @@
   $: keys = getMapKeys(filteredClubrecords);
   $: values = getMapValues(filteredClubrecords);
   $: isSearching = searchString ? true : false;
-  $: console.log(filteredClubrecords)
 </script>
 
 {#if filteredClubrecords && filteredClubrecords.size}
