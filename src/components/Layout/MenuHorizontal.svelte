@@ -7,14 +7,14 @@
     {#each $navbarStore as linkGroup}
       {#if linkGroup.links.length === 1}
         <li>
-          <a href={linkGroup.links[0].url}>{linkGroup.links[0].name}</a>
+          <a href={linkGroup.links[0].getUrl()}>{linkGroup.links[0].title}</a>
         </li>
       {:else}
         <li class="z-10">
           <span>{linkGroup.name}</span>
           <ul class="rounded-box bg-base-100 p-2 shadow-2xl">
             {#each linkGroup.links as linkInner}
-              <li><a href={linkInner.url}>{linkInner.name}</a></li>
+              <li><a href={linkInner.getUrl()}>{linkInner.title}</a></li>
             {/each}
           </ul>
         </li>

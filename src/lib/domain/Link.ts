@@ -1,21 +1,25 @@
 export interface LinkJson {
-    name: string
-    url: string
-    customPage?: boolean
+    title: string
+    customUrl?: string
 }
 export class Link {
     constructor(
-        public name: string,
-        public url: string,
-        public customPage: boolean = false
-    ) {
+        public title: string,
+        public customUrl?: string,
+    ) { }
+
+    getUrl() {
+        return this.customUrl || Link.normaliseUrl(this.title)
+    }
+
+    static normaliseUrl(url: string) {
+        return `/pages/${url.trim().replace(/ /g, "-").toLowerCase()}`
     }
 
     static fromJson(json: LinkJson) {
         return new Link(
-            json.name,
-            json.url,
-            json.customPage
+            json.title,
+            json.customUrl
         )
     }
 }

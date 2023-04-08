@@ -23,7 +23,7 @@
       <div class="font-bold ml-4 pl-2 border-l-2">
         {#each linkOrGroup.links as linkInner}
           <li class="font-bold">
-            <a href={linkInner.url} on:click={closeDrawer}>{linkInner.name}</a>
+            <a href={linkInner.getUrl()} on:click={closeDrawer}>{linkInner.title}</a>
           </li>
         {/each}
       </div>

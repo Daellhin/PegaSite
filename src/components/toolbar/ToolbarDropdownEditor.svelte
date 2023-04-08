@@ -57,7 +57,7 @@
           saveLink={updateLink}
         />
       {:else}
-        {#each links as link (link.name)}
+        {#each links as link (link.title)}
           <ToolbarDropdownEditorRow {link} {deleteLink} saveLink={updateLink} />
         {/each}
       {/if}

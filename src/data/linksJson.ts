@@ -3,43 +3,43 @@ import type { LinkGroupJson } from '$lib/domain/Link';
 export const LINKS_JSON: (LinkGroupJson)[] = [
     {
         name: "De Club", links: [
-            { name: "Lid worden", url: "" },
-            { name: "Werking", url: "" },
-            { name: "Clubrecords", url: "/records", customPage: true },
+            { title: "Lid worden" },
+            { title: "Werking" },
+            { title: "Clubrecords", customUrl: "/records" },
         ]
     },
     {
         name: "Trainingen", links: [
-            { name: "Trainingen", url: "" },
+            { title: "Trainingen" },
         ]
     },
     {
         name: "Wedstrijden", links: [
-            { name: "Criterium", url: "" },
-            { name: "Veldlopen", url: "" },
-            { name: "Joggings", url: "" },
+            { title: "Criterium" },
+            { title: "Veldlopen" },
+            { title: "Joggings" },
         ]
     },
     {
         name: "Activiteiten", links: [
-            { name: "Clubweekend", url: "" },
-            { name: "Atletiekstage", url: "" },
-            { name: "Pegasusloop", url: "" },
+            { title: "Clubweekend" },
+            { title: "Atletiekstage" },
+            { title: "Pegasusloop" },
         ]
     },
     {
         name: "Kalender", links: [
-            { name: "Kalender", url: "/events", customPage: true },
+            { title: "Kalender", customUrl: "/events" },
         ]
     },
     {
         name: "Contact", links: [
-            { name: "Contact", url: "" }
+            { title: "Contact" }
         ]
     },
     {
         name: "Facebook", links: [
-            { name: "Facebook", url: "fb.com/PegasusLonderzeel", customPage: true },
+            { title: "Facebook", customUrl: "fb.com/PegasusLonderzeel" },
         ]
     }
 ];

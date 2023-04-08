@@ -2,7 +2,7 @@
   import ConfirmModal from "$components/ConfirmModal.svelte";
   import EditDropdown from "$components/EditDropdown.svelte";
   import FormControlSavableText from "$components/FormHelpers/FormControlSavableText.svelte";
-  import type { Link } from "$lib/domain/Link";
+  import { Link } from "$lib/domain/Link";
 
   export let link: Link;
   export let isEditable = true;
@@ -12,13 +12,12 @@
   const confirmModalID = "confirmLinkDelete";
   let showModal = false;
 
-  let linkTitle = link.name;
-  $: linkUrl = `/pages/${linkTitle.trim().replace(/ /g, "-").toLowerCase()}`;
+  let linkTitle = link.title;
+  $: linkUrl = Link.normaliseUrl(linkTitle);
 
   async function saveLinkWrapper() {
     linkTitle = linkTitle.trim();
-    link.name = linkTitle;
-    link.url = linkUrl;
+    link.title = linkTitle;
     await saveLink(link);
   }
   async function deleteLinkAndPageWrapper() {
@@ -29,8 +28,8 @@
 
 <div class="flex flex-col sm:flex-row sm:items-center">
   <div class="italic w-72 overflow-hidden text-ellipsis">
-    {#if link.customPage}
-      {link.url}
+    {#if link.customUrl}
+      {link.customUrl}
     {:else}
       {linkUrl}
     {/if}
@@ -40,12 +39,12 @@
       bind:value={linkTitle}
       placeholder="Titel"
       save={saveLinkWrapper}
-      disabled={!isEditable || link.customPage}
+      disabled={!isEditable || link.customUrl != undefined}
     />
     <EditDropdown
       editUrl="/todo"
       deleteHandler={() => (showModal = true)}
-      disabled={link.customPage}
+      disabled={link.customUrl != undefined}
     />
   </div>
 </div>
@@ -55,7 +54,7 @@
   onConfirm={deleteLinkAndPageWrapper}
   bind:showModal
 >
-  Bent u zeker dat u de <span class="font-semibold">"{link.name}"</span>
+  Bent u zeker dat u de <span class="font-semibold">"{link.title}"</span>
   navigatie link en geasocierde
   <span class="font-semibold">"{linkUrl}"</span> pagina wilt verwijderen?
 </ConfirmModal>
