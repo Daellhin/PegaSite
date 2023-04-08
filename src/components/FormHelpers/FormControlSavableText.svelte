@@ -12,19 +12,30 @@
 
   let oldValue = value;
   let focused = false;
-  let divParent: HTMLDivElement;
+  let divParent: HTMLElement;
   let saving = false;
-  $: dirty = value != oldValue;
+  const pattern = /^[a-zA-Z0-9- ]*$/g;
 
+  $: dirty = value != oldValue;
+  $: error = validate(value);
+
+  function validate(inner_value: string) {
+    if (!value || !value.trim()) return "Titel moet ingevuld zijn";
+    if (!inner_value.match(pattern))
+      return "Titel mag enkel cijfers, letters, spaties, - bevatten";
+    return undefined;
+  }
   async function saveWrapper() {
-    if (dirty) {
-      saving = true;
-      await save();
-      oldValue = value;
-      dirty = false;
-      saving = false;
+    if (!error) {
+      if (dirty) {
+        saving = true;
+        await save();
+        oldValue = value;
+        dirty = false;
+        saving = false;
+      }
+      focused = false;
     }
-    focused = false;
   }
   function cancel() {
     value = oldValue;
@@ -36,47 +47,58 @@
   }
 </script>
 
-<div
-  class="relative w-full col-span-2"
+<form
+  class="w-full col-span-2"
   on:focusin={() => (focused = true)}
   on:focusout={unfocus}
   bind:this={divParent}
 >
-  {#if transparent}
-    <div class="flex items-center absolute inset-y-0 left-0 pl-3">
-      <Fa icon={faPen} />
+  <div class="relative">
+    {#if transparent}
+      <div
+        class="flex items-center absolute inset-y-0 left-0 pl-3 pointer-events-none"
+      >
+        <Fa icon={faPen} />
+      </div>
+    {/if}
+    <input
+      class:pl-9={transparent}
+      class:bg-base-200={!transparent}
+      class:input-error={error}
+      class={"input pr-20 w-full hover:bg-base-300 focus:bg-base-300 " +
+        inputStyling}
+      type="text"
+      {placeholder}
+      bind:value
+      {disabled}
+    />
+    <div
+      class:hidden={!(focused || dirty) || disabled}
+      class="flex items-center absolute inset-y-0 right-0 pr-2 gap-1"
+    >
+      <button
+        class:loading={saving}
+        class="btn btn-sm btn-outline btn-square btn-success"
+        title="Opslaan"
+        on:click={saveWrapper}
+      >
+        {#if !saving}
+          <Fa icon={faCheck} />
+        {/if}
+      </button>
+      <button
+        class="btn btn-sm btn-outline btn-square btn-error"
+        title="Annuleren"
+        on:click={cancel}
+      >
+        <Fa icon={faXmark} />
+      </button>
     </div>
-  {/if}
-  <input
-    class:pl-9={transparent}
-    class:bg-base-200={!transparent}
-    class={"input pr-20 w-full hover:bg-base-300 focus:bg-base-300 " +
-      inputStyling}
-    type="text"
-    {placeholder}
-    bind:value
-    {disabled}
-  />
-  <div
-    class:hidden={!(focused || dirty)}
-    class="flex items-center absolute inset-y-0 right-0 pr-2 gap-1"
-  >
-    <button
-      class:loading={saving}
-      class="btn btn-sm btn-outline btn-square btn-success"
-      title="Opslaan"
-      on:click={saveWrapper}
-    >
-      {#if !saving}
-        <Fa icon={faCheck} />
-      {/if}
-    </button>
-    <button
-      class="btn btn-sm btn-outline btn-square btn-error"
-      title="Annuleren"
-      on:click={cancel}
-    >
-      <Fa icon={faXmark} />
-    </button>
   </div>
-</div>
+
+  {#if error}
+    <label class="label">
+      <span class="label-text-alt text-error">{error}</span>
+    </label>
+  {/if}
+</form>

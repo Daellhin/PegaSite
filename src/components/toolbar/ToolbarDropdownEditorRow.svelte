@@ -6,11 +6,12 @@
 
   export let link: Link;
   export let isEditable = true;
-
-  let linkTitle: string = link?.name;
-  $: linkUrl = `/${linkTitle?.replace(/ /g, "-").toLowerCase()}`;
+  export let linkTitle: string = link?.name;
+  
+  $: linkUrl = `/${linkTitle?.trim().replace(/ /g, "-").toLowerCase()}`;
 
   async function saveLinkTitle() {
+    linkTitle = linkTitle.trim();
     await sleep(1000);
   }
 </script>

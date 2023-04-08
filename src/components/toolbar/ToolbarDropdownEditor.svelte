@@ -4,7 +4,7 @@
   import ToolbarDropdownEditorRow from "./ToolbarDropdownEditorRow.svelte";
 
   export let linkGroup: LinkGroup;
-  let title:string = linkGroup.name;
+  let title: string = linkGroup.name;
 </script>
 
 <div>
@@ -20,12 +20,13 @@
     </div>
   </div>
   <div class="flex flex-col gap-2">
-    {#each linkGroup.links as link}
-      <ToolbarDropdownEditorRow
-        {link}
-        isEditable={linkGroup.links.length > 1}
-      />
-    {/each}
+    {#if linkGroup.links.length === 1}
+      <ToolbarDropdownEditorRow link={linkGroup.links[0]} isEditable={false} bind:linkTitle={title} />
+    {:else}
+      {#each linkGroup.links as link}
+        <ToolbarDropdownEditorRow {link} />
+      {/each}
+    {/if}
   </div>
   <button class="btn btn-primary btn-sm mt-2 max-w-sm normal-case ml-3">
     Link toevoegen
