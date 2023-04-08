@@ -1,6 +1,6 @@
 import { browser } from '$app/environment';
 import { LINKS_JSON } from '$data/LinksJson';
-import { LinkGroup } from '$lib/domain/Link';
+import { Link, LinkGroup } from '$lib/domain/Link';
 import { writable } from 'svelte/store';
 
 function createNavbarStore() {
@@ -17,8 +17,16 @@ function createNavbarStore() {
   })
   const { subscribe, update } = store
 
+  async function removeLink(link: Link, group: LinkGroup) {
+    if (!browser) return
+    group.links = group.links.filter((e) => e !== link);
+
+    update((linkGroups) => [...linkGroups])
+  }
+
   return {
-    subscribe
+    subscribe,
+    removeLink
   }
 }
 

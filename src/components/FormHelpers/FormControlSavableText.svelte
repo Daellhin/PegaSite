@@ -48,7 +48,7 @@
 </script>
 
 <form
-  class="w-full col-span-2"
+  class="w-full"
   on:focusin={() => (focused = true)}
   on:focusout={unfocus}
   bind:this={divParent}
@@ -65,6 +65,7 @@
       class:pl-9={transparent}
       class:bg-base-200={!transparent}
       class:input-error={error}
+      
       class={"input pr-20 w-full hover:bg-base-300 focus:bg-base-300 " +
         inputStyling}
       type="text"

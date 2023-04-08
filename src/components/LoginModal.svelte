@@ -1,6 +1,5 @@
 <script lang="ts">
   import { authStore } from "$lib/stores/AuthStore";
-  import { logFirebaseError } from "$lib/utils/Firebase";
   import type { FirebaseError } from "firebase/app";
   import PegaIcon from "./icons/PegaIcon.svelte";
 

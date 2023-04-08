@@ -76,7 +76,7 @@ function createCalendarEventStore() {
   async function removeCalendarEvent(calendarEvent: CalendarEvent) {
     if (!browser) return
 
-    // -- Remove article --
+    // -- Remove event --
     const { getFirestore, doc, deleteDoc } = await import('firebase/firestore')
     const { firebaseApp } = await import('$lib/firebase/firebase')
     const firestore = getFirestore(firebaseApp)

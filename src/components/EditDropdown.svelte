@@ -4,21 +4,21 @@
   import FaRegTrashAlt from "svelte-icons/fa/FaRegTrashAlt.svelte";
 
   export let editUrl: string;
-  export let deleteHandler: () => Promise<void> | void;
+  export let deleteHandler: () => Promise<void> | any;
   export let size: "md" | "sm" | "xs" = "md";
 
   let dropdownList: HTMLUListElement;
 
   async function deleteWrapper() {
     await deleteHandler();
-    dropdownList.remove();
+    dropdownList.hidden = true;
   }
 </script>
 
-<div title="Aanpassen" class="dropdown dropdown-end">
+<div title="Aanpassen" class="dropdown dropdown-end min-w-fit">
   <button
     tabindex="0"
-    class="btn btn-ghost gap-2 normal-case"
+    class="btn btn-ghost gap-2 normal-case flex flex-row"
     class:btn-xs={size === "xs"}
     class:btn-sm={size === "sm"}
     class:btn-md={size === "md"}

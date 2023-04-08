@@ -10,8 +10,8 @@
   <div>
     <div class="text-info flex-shrink-0 w-6 h-6"><MdInfoOutline /></div>
     <span>
-      Categoriën met 1 link worden samengevouwen, en de link titel word dan
-      overgenomen van de categorie
+      Categoriën met 1 link worden samengevouwen. De link titel is dan niet
+      aanpasbaar, maar word overgenomen van de categorie.
     </span>
   </div>
 </div>
