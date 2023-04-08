@@ -1,6 +1,6 @@
-import type { LinkJson, LinkGroupJson } from '$lib/domain/Link';
+import type { LinkGroupJson } from '$lib/domain/Link';
 
-export const LINKS_JSON: (LinkJson | LinkGroupJson)[] = [
+export const LINKS_JSON: (LinkGroupJson)[] = [
     {
         name: "De Club", links: [
             { name: "Lid worden", url: "" },
@@ -8,7 +8,11 @@ export const LINKS_JSON: (LinkJson | LinkGroupJson)[] = [
             { name: "Clubrecords", url: "/records" },
         ]
     },
-    { name: "Trainingen", url: "" },
+    {
+        name: "Trainingen", links: [
+            { name: "Trainingen", url: "" },
+        ]
+    },
     {
         name: "Wedstrijden", links: [
             { name: "Criterium", url: "" },
@@ -23,7 +27,19 @@ export const LINKS_JSON: (LinkJson | LinkGroupJson)[] = [
             { name: "Pegasusloop", url: "" },
         ]
     },
-    { name: "Kalender", url: "/events" },
-    { name: "Contact", url: "" },
-    { name: "Facebook", url: "" },
+    {
+        name: "Kalender", links: [
+            { name: "Kalender", url: "/events" },
+        ]
+    },
+    {
+        name: "Contact", links: [
+            { name: "Contact", url: "" }
+        ]
+    },
+    {
+        name: "Facebook", links: [
+            { name: "Facebook", url: "" },
+        ]
+    }
 ];

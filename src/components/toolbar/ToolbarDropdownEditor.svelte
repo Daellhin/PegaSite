@@ -1,15 +1,33 @@
 <script lang="ts">
+  import FormControlSavableText from "$components/FormHelpers/FormControlSavableText.svelte";
+  import type { LinkGroup } from "$lib/domain/Link";
   import ToolbarDropdownEditorRow from "./ToolbarDropdownEditorRow.svelte";
+
+  export let linkGroup: LinkGroup;
+  let title:string = linkGroup.name;
 </script>
 
 <div>
-  <h2 class="text-2xl font-bold">De club</h2>
-  <div class="flex flex-col gap-2">
-    <ToolbarDropdownEditorRow />
-    <ToolbarDropdownEditorRow />
-    <ToolbarDropdownEditorRow />
+  <div class="max-w-xs mb-2">
+    <div class="flex items-center">
+      <FormControlSavableText
+        bind:value={title}
+        placeholder="Titel"
+        save={async () => {}}
+        inputStyling="text-2xl font-bold"
+        transparent
+      />
+    </div>
   </div>
-  <button class="btn btn-primary btn-sm mt-2 max-w-sm normal-case ml-3"
-    >Link toevoegen</button
-  >
+  <div class="flex flex-col gap-2">
+    {#each linkGroup.links as link}
+      <ToolbarDropdownEditorRow
+        {link}
+        isEditable={linkGroup.links.length > 1}
+      />
+    {/each}
+  </div>
+  <button class="btn btn-primary btn-sm mt-2 max-w-sm normal-case ml-3">
+    Link toevoegen
+  </button>
 </div>

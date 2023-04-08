@@ -1,28 +1,24 @@
 <script lang="ts">
-  import { combinedLinksFromJson, Link, LinkGroup } from "$lib/domain/Link";
-  import { LINKS_JSON } from "$data/LinksJson";
-
-  const links = combinedLinksFromJson(LINKS_JSON);
-
-  function createHorizontalListGroupOrItem(link: Link | LinkGroup) {
-    if (link instanceof LinkGroup) {
-      return /* html */ `
-          <li tabindex="0" class="z-10">
-            <span>${link.name}</span>
-            <ul class="rounded-box bg-base-100 p-2 shadow-2xl">
-              ${link.links.map(createHorizontalListItem).join("")}
-            </ul>
-          </li>
-        `;
-    } else {
-      return createHorizontalListItem(link);
-    }
-  }
-  function createHorizontalListItem(link: Link) {
-    return /* html */ `<li class=""><a href="${link.url}">${link.name}</a></li>`;
-  }
+  import { LinkGroup } from "$lib/domain/Link";
+  import { navbarStore } from "$lib/stores/NavbarStore";
 </script>
 
-<ul class="menu menu-horizontal rounded-box p-2 bg-base-200">
-  {@html links.map(createHorizontalListGroupOrItem).join("")}
-</ul>
+{#if $navbarStore}
+  <ul class="menu menu-horizontal rounded-box p-2 bg-base-200">
+    <!-- Can only handle linkGroups 1 deep -->
+    {#each $navbarStore as linkOrGroup}
+      {#if linkOrGroup instanceof LinkGroup}
+        <li tabindex="0" class="z-10">
+          <span>{linkOrGroup.name}</span>
+          <ul class="rounded-box bg-base-100 p-2 shadow-2xl">
+            {#each linkOrGroup.links as linkInner}
+              <li><a href={linkInner.url}>{linkInner.name}</a></li>
+            {/each}
+          </ul>
+        </li>
+      {:else}
+        <li><a href={linkOrGroup.url}>{linkOrGroup.name}</a></li>
+      {/if}
+    {/each}
+  </ul>
+{/if}

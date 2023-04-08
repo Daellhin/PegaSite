@@ -2,7 +2,6 @@ export interface LinkJson {
     name: string
     url: string
 }
-
 export class Link {
     constructor(
         public name: string,
@@ -22,10 +21,6 @@ export interface LinkGroupJson {
     name: string
     links: LinkJson[]
 }
-export function isLinkGroupJson(json: LinkJson | LinkGroupJson): json is LinkGroupJson {
-    return (<LinkGroupJson>json).links !== undefined;
-}
-
 export class LinkGroup {
     public name: string
     public links: Link[]
@@ -43,6 +38,6 @@ export class LinkGroup {
     }
 }
 
-export function combinedLinksFromJson(json: (LinkJson | LinkGroupJson)[]) {
-    return json.map(e => isLinkGroupJson(e) ? LinkGroup.fromJson(e) : Link.fromJson(e));
+export function isLinkGroupJson(json: LinkJson | LinkGroupJson): json is LinkGroupJson {
+    return (json as LinkGroupJson).links !== undefined;
 }

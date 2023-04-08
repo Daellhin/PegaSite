@@ -31,7 +31,7 @@
     </div>
     <!-- Always shown -->
     <div class="flex-none">
-      <UserAvatar {loginModalID} />
+      <UserAvatar />
     </div>
   </div>
 </div>

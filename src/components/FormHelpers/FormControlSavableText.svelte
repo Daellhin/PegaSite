@@ -1,11 +1,14 @@
 <script lang="ts">
   import { isChild } from "$lib/utils/Utils";
-  import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
+  import { faCheck, faPen, faXmark } from "@fortawesome/free-solid-svg-icons";
   import Fa from "svelte-fa/src/fa.svelte";
 
   export let value: string;
   export let placeholder: string;
   export let save: () => Promise<void>;
+  export let disabled = false;
+  export let inputStyling = "";
+  export let transparent = false;
 
   let oldValue = value;
   let focused = false;
@@ -39,15 +42,24 @@
   on:focusout={unfocus}
   bind:this={divParent}
 >
+  {#if transparent}
+    <div class="flex items-center absolute inset-y-0 left-0 pl-3">
+      <Fa icon={faPen} />
+    </div>
+  {/if}
   <input
-    class="input w-full bg-base-200 hover:bg-base-300"
+    class:pl-9={transparent}
+    class:bg-base-200={!transparent}
+    class={"input pr-20 w-full hover:bg-base-300 focus:bg-base-300 " +
+      inputStyling}
     type="text"
     {placeholder}
     bind:value
+    {disabled}
   />
   <div
     class:hidden={!(focused || dirty)}
-    class="flex absolute inset-y-0 items-center right-0 pr-2 gap-1"
+    class="flex items-center absolute inset-y-0 right-0 pr-2 gap-1"
   >
     <button
       class:loading={saving}
