@@ -13,8 +13,8 @@ async function addLinksFromJson() {
     const { firebaseApp } = await import('$lib/firebase/firebase')
     const firestore = getFirestore(firebaseApp)
 
-    const clubrecordsRef = doc(firestore, Collections.PAGES, "overview")
-    await updateDoc(clubrecordsRef, {
+    const linksRef = doc(firestore, Collections.PAGES, "overview")
+    await updateDoc(linksRef, {
       [linkGroup.name]: {
         order: linkGroup.order,
         links: Object.fromEntries(linkMap)
@@ -35,9 +35,9 @@ function createNavbarStore() {
       const { getFirestore, doc, getDoc } = await import('firebase/firestore')
       const firestore = getFirestore(firebaseApp)
 
-      const clubrRecordsRef = doc(firestore, Collections.PAGES, "overview")
-      const clubRecordsSnap = await getDoc(clubrRecordsRef)
-      const links = LinkGroup.fromFirebaseData(clubRecordsSnap.data())
+      const linksRef = doc(firestore, Collections.PAGES, "overview")
+      const linksSnap = await getDoc(linksRef)
+      const links = LinkGroup.fromFirebaseData(linksSnap.data())
 
       // -- Set store --
       set(links)
@@ -54,9 +54,9 @@ function createNavbarStore() {
     const { firebaseApp } = await import('$lib/firebase/firebase')
     const firestore = getFirestore(firebaseApp)
 
-    const clubrecordsRef = doc(firestore, Collections.PAGES, "overview")
+    const linksRef = doc(firestore, Collections.PAGES, "overview")
     const objectKey = `${group.name}.links.${link.title}`
-    await updateDoc(clubrecordsRef, {
+    await updateDoc(linksRef, {
       [objectKey]: link.toJson()
     })
 
@@ -65,12 +65,29 @@ function createNavbarStore() {
     update((linkGroups) => [...linkGroups])
   }
 
-  async function updateLink(link: Link, group: LinkGroup) {
+  async function updateLinkTitle(link: Link, group: LinkGroup, oldLinkTitle: string) {
     if (!browser) return
 
-    await addLinksFromJson()
-    console.log("finished")
+    // -- Delete link --
+    const { getFirestore, doc, updateDoc, deleteField } = await import('firebase/firestore')
+    const { firebaseApp } = await import('$lib/firebase/firebase')
+    const firestore = getFirestore(firebaseApp)
 
+    const linksRef = doc(firestore, Collections.PAGES, "overview")
+    const oldObjectKey = `${group.name}.links.${oldLinkTitle}`
+    const deleteLinkPromise = updateDoc(linksRef, {
+      [oldObjectKey]: deleteField()
+    })
+
+    // -- create link --
+    const newObjectKey = `${group.name}.links.${link.title}`
+    const createLinkPromise = updateDoc(linksRef, {
+      [newObjectKey]: link.toJson()
+    })
+
+    await Promise.all([deleteLinkPromise, createLinkPromise])
+
+    // -- Update store --
     update((linkGroups) => [...linkGroups])
   }
 
@@ -78,14 +95,14 @@ function createNavbarStore() {
     if (!browser) return
     if (link.customUrl) return
 
-    // -- delete link --
+    // -- Delete link --
     const { getFirestore, doc, updateDoc, deleteField } = await import('firebase/firestore')
     const { firebaseApp } = await import('$lib/firebase/firebase')
     const firestore = getFirestore(firebaseApp)
 
-    const clubrecordsRef = doc(firestore, Collections.PAGES, "overview")
+    const linksRef = doc(firestore, Collections.PAGES, "overview")
     const objectKey = `${group.name}.links.${link.title}`
-    await updateDoc(clubrecordsRef, {
+    await updateDoc(linksRef, {
       [objectKey]: deleteField()
     })
 
@@ -104,7 +121,7 @@ function createNavbarStore() {
   return {
     subscribe,
     createLink,
-    updateLink,
+    updateLink: updateLinkTitle,
     deleteLink,
     updateGroupTitle
   }

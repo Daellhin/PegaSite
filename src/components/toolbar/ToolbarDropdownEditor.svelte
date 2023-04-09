@@ -14,8 +14,8 @@
   async function deleteLink(link: Link) {
     await navbarStore.deleteLink(link, linkGroup);
   }
-  async function updateLink(link: Link) {
-    navbarStore.updateLink(link, linkGroup);
+  async function updateLink(link: Link, oldLinkName: string) {
+    navbarStore.updateLink(link, linkGroup, oldLinkName);
   }
   async function createLink(link: Link) {
     navbarStore.createLink(link, linkGroup);

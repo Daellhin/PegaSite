@@ -60,8 +60,8 @@ function createClubRecordStore() {
       const { getFirestore, doc, getDoc } = await import('firebase/firestore')
       const firestore = getFirestore(firebaseApp)
 
-      const clubrRecordsRef = doc(firestore, Collections.CLUB_RECORDS, "singleDocument")
-      const clubRecordsSnap = await getDoc(clubrRecordsRef)
+      const clubRecordsRef = doc(firestore, Collections.CLUB_RECORDS, "singleDocument")
+      const clubRecordsSnap = await getDoc(clubRecordsRef)
       const clubRecords = ClubRecord.fromFirebaseData(clubRecordsSnap.data())
 
       // -- Set store --
