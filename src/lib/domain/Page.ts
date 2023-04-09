@@ -1,5 +1,6 @@
 import dayjs, { type Dayjs } from "dayjs"
 import { Timestamp, type FirestoreDataConverter } from "firebase/firestore"
+import { Link } from "./Link"
 
 export interface PageJson {
     id: string
@@ -18,6 +19,10 @@ export class Page {
         public content: string
     ) { }
 
+    getUrl(edit = false) {
+        return Link.normaliseUrl(this.id, edit)
+    }
+
     static fromJson(json: PageJson) {
         return new Page(
             json.id,
@@ -27,6 +32,7 @@ export class Page {
             json.content
         )
     }
+
     toJson() {
         return {
             content: this.content,

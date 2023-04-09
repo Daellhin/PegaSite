@@ -9,6 +9,7 @@
   import PageComponent from "$components/page/Page.svelte";
   import dayjs from "dayjs";
   import { readFileAsDataURL } from "$lib/utils/Utils";
+  import { pushCreatedToast } from "$lib/utils/Toast";
 
   export let data: PageData;
 
@@ -55,6 +56,7 @@
     );
     haveValuesBeenSet = false;
     uploadedImages = [];
+    pushCreatedToast("Pagina bijgewerkt", page!.getUrl());
   }
 
   // Authguard
@@ -113,9 +115,9 @@
       <Editor html={content} on:change={(evt) => (content = evt.detail)} />
     </div>
 
-    <button class="btn btn-primary btn-md mt-2 max-w-sm"
-      >Bericht aanmaken</button
-    >
+    <button class="btn btn-primary btn-md mt-2 max-w-sm">
+      Pagina bijwerken
+    </button>
   </form>
 {:else}
   <div>"{data.id}": not found</div>

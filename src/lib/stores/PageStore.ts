@@ -2,8 +2,11 @@ import { browser } from '$app/environment'
 import { PAGES_JSON } from '$data/PagesJson'
 import { Page, pageConverter } from '$lib/domain/Page'
 import { Collections } from '$lib/firebase/firebase'
+import { arrayDifference, containArraysSameElements } from '$lib/utils/Array'
 import { convertStringToBool, readFileAsDataURL } from '$lib/utils/Utils'
+import { Timestamp } from 'firebase/firestore'
 import { get, writable } from 'svelte/store'
+import { v4 as uuidv4 } from "uuid"
 
 async function addPagesFromJson() {
     const pages = PAGES_JSON.map(Page.fromJson)
@@ -48,12 +51,48 @@ function createPageStore() {
 
     async function updatePage(newTitle: string, newContent: string, uploadedImages: File[], newExcistingImages: string[], page: Page) {
         if (!browser) return
-        
-        // const newImages = await Promise.all(uploadedImages.map(readFileAsDataURL))
-        // page.title = newTitle
-        // page.content = newContent
-        // page.images = [...newExcistingImages, ...newImages]
 
+        let newImages:string[] = [];
+        const { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } = await import('firebase/storage')
+        const storage = getStorage()
+
+        // -- Remove images --
+        if (!containArraysSameElements(page.images, newExcistingImages)) {
+            const imagesToRemove = arrayDifference(page.images, newExcistingImages)
+            console.log("imagesToRemove", imagesToRemove)
+            await Promise.all(imagesToRemove.map(async (image) => {
+                const refff = ref(storage, image);
+                await deleteObject(refff);
+            }))
+        }
+        newImages = newExcistingImages
+        // -- Upload images --
+        if (uploadedImages) {
+            const uploadedImageLinks = await Promise.all(uploadedImages.map(async (image) => {
+                const storageRef = ref(storage, `page-images/${uuidv4()}`)
+                const snapshot = await uploadBytes(storageRef, image)
+                return await getDownloadURL(snapshot.ref)
+            }))
+            newImages.push(...uploadedImageLinks)
+        }
+
+        // -- Update page --
+        const { getFirestore, doc, updateDoc } = await import('firebase/firestore')
+        const { firebaseApp } = await import('$lib/firebase/firebase')
+        const firestore = getFirestore(firebaseApp)
+
+        const linksRef = doc(firestore, Collections.PAGES, page.id)
+        await updateDoc(linksRef, {
+            title: newTitle,
+            content: newContent,
+            lastEdited: new Timestamp(Math.round(Date.now() / 1000), 0),
+            images: newImages
+        })
+
+        // -- Update store --
+        page.title = newTitle
+        page.content = newContent
+        page.images = newImages
         update((pages) => [...pages])
     }
 
