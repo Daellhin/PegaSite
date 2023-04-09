@@ -94,7 +94,7 @@
       <label class="label" for="dropzone-file">
         <span class="label-text">Afbeeldingen:</span>
       </label>
-      <Dropzone bind:files={uploadedImages} accept={"image/*"} />
+      <Dropzone bind:uploadedImages={uploadedImages} accept={"image/*"} />
     </div>
 
     <div class="form-control w-full max-w-sm">

@@ -2,6 +2,7 @@
   import EditDropdown from "$components/EditDropdown.svelte";
   import type { Page } from "$lib/domain/Page";
   import { authStore } from "$lib/stores/AuthStore";
+  import { Carousel } from "flowbite-svelte";
 
   export let isPreview = false;
 
@@ -23,3 +24,36 @@
     </div>
   {/if}
 </div>
+
+
+<!-- Carousel -->
+{#await Promise.all(page.createCarouselImages()) then images}
+  {#if images.length > 0}
+    <div class="bg-base-200 my-2 rounded-lg">
+      <div class="mx-auto custom-carousel w-fit">
+        <Carousel
+          divClass=""
+          {images}
+          showCaptions={false}
+          showThumbs={false}
+          showIndicators={images.length > 1}
+          slideControls={images.length > 1}
+        />
+      </div>
+    </div>
+  {/if}
+{/await}
+
+<!-- Content -->
+<div class="usercontent">
+  {@html page.content || "Geen inhoud"}
+</div>
+
+<style lang="postcss">
+  @import "../../css/usercontent.postcss";
+
+  .custom-carousel :global(img) {
+    @apply h-auto w-auto max-h-[27.5rem] max-w-[27.5rem] rounded-lg my-auto;
+  }
+</style>
+

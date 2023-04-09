@@ -4,18 +4,54 @@
   import { authStore } from "$lib/stores/AuthStore";
   import Editor from "cl-editor/src/Editor.svelte";
   import type { PageData } from "./$types";
+  import { pageStore } from "$lib/stores/PageStore";
+  import { Page } from "$lib/domain/Page";
+  import PageComponent from "$components/page/Page.svelte";
+  import dayjs from "dayjs";
+  import { readFileAsDataURL } from "$lib/utils/Utils";
 
   export let data: PageData;
+
+  let haveValuesBeenSet = false;
   let title = "";
   let content = "";
   let uploadedImages: File[] = [];
-  let showPreview = false;
+  let existingImages: string[];
+  let showPreview = true;
 
+  $: page = $pageStore?.find((e) => e.id === data.id);
+  $: if (!haveValuesBeenSet && page) setValues(page);
+
+  function setValues(page: Page) {
+    title = page.title;
+    content = page.content;
+    existingImages = page.images;
+    haveValuesBeenSet = true;
+  }
   function togglePreview() {
     showPreview = !showPreview;
   }
-  async function createPreviewPage() {}
-  async function savePage() {}
+  async function createPreviewPage() {
+    const newImages = await Promise.all(uploadedImages.map(readFileAsDataURL));
+    return new Page(
+      page!.id,
+      dayjs(),
+      title,
+      [...existingImages, ...newImages],
+      content
+    );
+  }
+  async function saveUpdatedPage() {
+    await pageStore.updatePage(
+      title,
+      content,
+      uploadedImages,
+      existingImages,
+      page!
+    );
+    haveValuesBeenSet = false;
+    uploadedImages = [];
+  }
 
   // Authguard
   $: authStore.known.then(() => {
@@ -24,23 +60,26 @@
 </script>
 
 {#if showPreview}
-  <!-- Article preview -->
+  <!-- Page preview -->
   {#await createPreviewPage()}
     <div>Loadig</div>
-  {:then article}phone link
+  {:then previewPage}
     <button class="btn btn-primary btn-xs normal-case" on:click={togglePreview}>
       Sluit preview
     </button>
+    <div class="md:mx-2 mb-4 sm:mb-10">
+      <PageComponent page={previewPage} isPreview={true} />
+    </div>
   {/await}
 {:else}
-  <!-- Article editor -->
+  <!-- Page editor -->
   <div class="flex flex-row gap-3 items-center mb-1">
     <h1 class="text-2xl font-bold">Pagina aanpassen</h1>
     <button class="btn btn-primary btn-xs normal-case" on:click={togglePreview}>
       Toon preview
     </button>
   </div>
-  <form class="flex flex-col gap-2" on:submit={savePage}>
+  <form class="flex flex-col gap-2" on:submit={saveUpdatedPage}>
     <div class="form-control w-full max-w-sm">
       <label class="label" for="title">
         <span class="label-text">Titel van pagina:</span>
@@ -58,7 +97,7 @@
       <label class="label" for="dropzone-file">
         <span class="label-text">Afbeeldingen:</span>
       </label>
-      <Dropzone bind:files={uploadedImages} accept={"image/*"} />
+      <Dropzone bind:uploadedImages bind:existingImages accept={"image/*"} />
     </div>
 
     <div class="form-control">

@@ -11,7 +11,9 @@
 {#if !$pageStore}
   Loading
 {:else if page}
-  <PageComponent {page} />
+  <div class="md:mx-2 mb-2">
+    <PageComponent {page} />
+  </div>
 {:else}
   <div>"{data.id}": not found</div>
 {/if}

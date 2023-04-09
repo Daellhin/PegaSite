@@ -7,36 +7,36 @@
   } from "$lib/utils/Utils";
   import {
     faFileCircleExclamation,
-    faXmark
+    faXmark,
   } from "@fortawesome/free-solid-svg-icons";
   import Fa from "svelte-fa/src/fa.svelte";
   import CloudIcon from "./icons/CloudIcon.svelte";
 
-  export let files: File[];
+  export let uploadedImages: File[];
+  export let existingImages: string[] = [];
   export let accept: string;
   export let dropzoneId = "file-dropzone";
 
   function onFileInput(e: Event & { currentTarget: HTMLInputElement }) {
-    if (e.currentTarget.files) {
-      const newFiles = Array.from(e.currentTarget.files).filter((e) =>
-        e.type.match(accept)
-      );
-      files.push(...newFiles);
-
-      files = files; // trigger update
-    }
+    if (!e.currentTarget.files) return;
+    const newFiles = Array.from(e.currentTarget.files).filter((e) =>
+      e.type.match(accept)
+    );
+    uploadedImages.push(...newFiles);
+    uploadedImages = uploadedImages;
   }
   function handleDrop(event: DragEvent) {
     const droppedFiles = getFilesFromDragEvent(event);
-    if (droppedFiles) {
-      const newFiles = droppedFiles.filter((e) => e.type.match(accept));
-      files.push(...newFiles);
-
-      files = files; // trigger update
-    }
+    if (!droppedFiles) return;
+    const newFiles = droppedFiles.filter((e) => e.type.match(accept));
+    uploadedImages.push(...newFiles);
+    uploadedImages = uploadedImages;
   }
   function removeFile(toRemove: File) {
-    files = files.filter((e) => e != toRemove);
+    uploadedImages = uploadedImages.filter((e) => e != toRemove);
+  }
+  function removeExistingImage(toRemove: string) {
+    existingImages = existingImages.filter((e) => e != toRemove);
   }
 </script>
 
@@ -71,12 +71,29 @@
   </label>
 </div>
 
-{#if files.length}
+{#if uploadedImages.length || existingImages.length}
   <div class="border-2 border-color rounded-lg input-bordered mt-2">
-    {#each files as file, i}
+    {#each existingImages as image, i}
       <div
         class="inline-flex items-center w-full px-4 py-2 text-sm border-color"
-        class:border-b-2={i < files.length - 1}
+        class:border-b-2={i < existingImages.length + uploadedImages.length - 1}
+      >
+        <div class="flex flex-row gap-2">
+          <img class="w-10 rounded-sm" alt="Upload" src={image} />
+          <div class="my-auto font-semibold">Geüpload bestand</div>
+        </div>
+        <button
+          class="btn btn-circle btn-xs hover:text-red-500 ml-auto"
+          on:click={() => removeExistingImage(image)}
+        >
+          <Fa icon={faXmark} />
+        </button>
+      </div>
+    {/each}
+    {#each uploadedImages as file, i}
+      <div
+        class="inline-flex items-center w-full px-4 py-2 text-sm border-color"
+        class:border-b-2={i < uploadedImages.length - 1}
       >
         <div class="flex flex-row gap-2">
           {#await readFileAsDataURL(file) then src}
@@ -90,11 +107,11 @@
               <div class="hidden">{error}</div>
             </div>
           {/await}
-          <div class="my-auto">{file.name}</div>
+          <div class="my-auto font-semibold">{file.name}</div>
         </div>
         <button
           class="btn btn-circle btn-xs hover:text-red-500 ml-auto"
-          on:click={(e) => removeFile(file)}
+          on:click={() => removeFile(file)}
         >
           <Fa icon={faXmark} />
         </button>
