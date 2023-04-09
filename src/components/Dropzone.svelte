@@ -1,11 +1,16 @@
 <!-- Component currently only supports previewing images -->
 <script lang="ts">
-  import Icon from "@iconify/svelte";
   import {
     getFilesFromDragEvent,
     ignoreDragOver,
     readFileAsDataURL,
   } from "$lib/utils/Utils";
+  import {
+    faFileCircleExclamation,
+    faXmark
+  } from "@fortawesome/free-solid-svg-icons";
+  import Fa from "svelte-fa/src/fa.svelte";
+  import CloudIcon from "./icons/CloudIcon.svelte";
 
   export let files: File[];
   export let accept: string;
@@ -46,7 +51,7 @@
   >
     <div class="flex flex-col items-center justify-center pt-5 pb-6">
       <div class="text-gray-700 dark:text-gray-400">
-        <Icon icon="tabler:cloud-upload" width={40} />
+        <CloudIcon />
       </div>
       <p class="mb-2 text-sm font-semibold">
         Sleep hier of klik om afbeelding up te loaden
@@ -81,7 +86,7 @@
               class="tooltip tooltip-right"
               data-tip="Bestand kan niet getoond worden"
             >
-              <Icon icon="fa6-solid:file-circle-exclamation" />
+              <Fa icon={faFileCircleExclamation} />
               <div class="hidden">{error}</div>
             </div>
           {/await}
@@ -91,7 +96,7 @@
           class="btn btn-circle btn-xs hover:text-red-500 ml-auto"
           on:click={(e) => removeFile(file)}
         >
-          <Icon icon="fa6-solid:xmark" />
+          <Fa icon={faXmark} />
         </button>
       </div>
     {/each}

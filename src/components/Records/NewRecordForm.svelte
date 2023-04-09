@@ -1,14 +1,15 @@
 <script lang="ts">
   import FormControlDate from "$components/FormHelpers/FormControlDate.svelte";
+  import { RecordInstance } from "$lib/domain/RecordInstance";
   import { AthleticEvent } from "$lib/domain/data-classes/AthleticEvent";
   import { Category } from "$lib/domain/data-classes/Category";
   import { Discipline } from "$lib/domain/data-classes/Discipline";
   import { Gender } from "$lib/domain/data-classes/Gender";
-  import { RecordInstance } from "$lib/domain/RecordInstance";
   import { clubRecordStore } from "$lib/stores/ClubRecordStore";
   import { pushCreatedToast } from "$lib/utils/Toast";
-  import Icon from "@iconify/svelte";
+  import { faXmark } from "@fortawesome/free-solid-svg-icons";
   import dayjs from "dayjs";
+  import Fa from "svelte-fa/src/fa.svelte";
   import FormControlCustomSelect from "../FormHelpers/FormControlCustomSelect.svelte";
   import FormControlText from "../FormHelpers/FormControlText.svelte";
 
@@ -43,11 +44,11 @@
   class="relative mb-3 border-base-300 bg-base-200 rounded-tr-box min-h-[6rem] min-w-[18rem] border bg-cover bg-top p-4 rounded-box overflow-visible"
 >
   <button
-    class="btn btn-ghost btn-sm absolute right-2 top-2 font-bold"
+    class="btn btn-ghost btn-sm absolute right-2 top-2 font-bold btn-square"
     title="sluiten"
     on:click={() => (showForm = false)}
   >
-    <Icon icon="fa6-solid:xmark" width={14} />
+    <Fa icon={faXmark} size="lg" />
   </button>
 
   <div class="flex flex-wrap gap-2">
