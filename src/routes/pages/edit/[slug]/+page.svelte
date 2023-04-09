@@ -17,11 +17,15 @@
   let content = "";
   let uploadedImages: File[] = [];
   let existingImages: string[];
-  let showPreview = true;
+  let showPreview = false;
+  let page: Page | undefined | null;
 
-  $: page = $pageStore?.find((e) => e.id === data.id);
   $: if (!haveValuesBeenSet && page) setValues(page);
+  $: $pageStore && loadPage(data);
 
+  async function loadPage(data: PageData) {
+    page = await pageStore.getPageById(data.id);
+  }
   function setValues(page: Page) {
     title = page.title;
     content = page.content;
@@ -71,7 +75,9 @@
       <PageComponent page={previewPage} isPreview={true} />
     </div>
   {/await}
-{:else}
+{:else if page === undefined}
+  Loading
+{:else if page}
   <!-- Page editor -->
   <div class="flex flex-row gap-3 items-center mb-1">
     <h1 class="text-2xl font-bold">Pagina aanpassen</h1>
@@ -111,6 +117,8 @@
       >Bericht aanmaken</button
     >
   </form>
+{:else}
+  <div>"{data.id}": not found</div>
 {/if}
 
 <style lang="postcss">

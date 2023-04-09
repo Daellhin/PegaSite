@@ -56,7 +56,7 @@ export class Page {
 /**
  * Firestore data converter
  * */
-export const articleConverter: FirestoreDataConverter<Page> = {
-    toFirestore: (article: Page) => article.toJson(),
+export const pageConverter: FirestoreDataConverter<Page> = {
+    toFirestore: (page: Page) => page.toJson(),
     fromFirestore: (snapshot, options) => Page.fromJson(snapshot.data(options) as PageJson)
 }
