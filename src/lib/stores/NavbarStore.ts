@@ -46,14 +46,7 @@ function createNavbarStore() {
   })
   const { subscribe, update } = store
 
-  async function removeLink(link: Link, group: LinkGroup) {
-    if (!browser) return
-    group.links = group.links.filter((e) => e !== link)
-
-    update((linkGroups) => [...linkGroups])
-  }
-
-  async function addLink(link: Link, group: LinkGroup) {
+  async function createLink(link: Link, group: LinkGroup) {
     if (!browser) return
 
     // -- Upload link --
@@ -81,20 +74,38 @@ function createNavbarStore() {
     update((linkGroups) => [...linkGroups])
   }
 
+  async function deleteLink(link: Link, group: LinkGroup) {
+    if (!browser) return
+    if (link.customUrl) return
+
+    // -- delete link --
+    const { getFirestore, doc, updateDoc, deleteField } = await import('firebase/firestore')
+    const { firebaseApp } = await import('$lib/firebase/firebase')
+    const firestore = getFirestore(firebaseApp)
+
+    const clubrecordsRef = doc(firestore, Collections.PAGES, "overview")
+    const objectKey = `${group.name}.links.${link.title}`
+    await updateDoc(clubrecordsRef, {
+      [objectKey]: deleteField()
+    })
+
+    // -- Update store --
+    group.links = group.links.filter((e) => e !== link)
+    update((linkGroups) => [...linkGroups])
+  }
+
   async function updateGroupTitle(title: string, group: LinkGroup) {
     if (!browser) return
     group.name = title
-
-
 
     update((linkGroups) => [...linkGroups])
   }
 
   return {
     subscribe,
-    removeLink,
-    addLink,
+    createLink,
     updateLink,
+    deleteLink,
     updateGroupTitle
   }
 }

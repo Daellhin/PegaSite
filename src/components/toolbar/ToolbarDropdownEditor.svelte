@@ -12,13 +12,13 @@
   $: links = linkGroup.links;
 
   async function deleteLink(link: Link) {
-    await navbarStore.removeLink(link, linkGroup);
+    await navbarStore.deleteLink(link, linkGroup);
   }
   async function updateLink(link: Link) {
     navbarStore.updateLink(link, linkGroup);
   }
-  async function addLink(link: Link) {
-    navbarStore.addLink(link, linkGroup);
+  async function createLink(link: Link) {
+    navbarStore.createLink(link, linkGroup);
     tempLink = undefined;
   }
   async function addTempLink() {
@@ -61,7 +61,7 @@
         <ToolbarDropdownEditorRow
           link={tempLink}
           deleteLink={deleteTempLink}
-          saveLink={addLink}
+          saveLink={createLink}
         />
       {/if}
     </div>
