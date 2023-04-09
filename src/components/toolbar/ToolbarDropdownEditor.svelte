@@ -11,17 +11,17 @@
 
   $: links = linkGroup.links;
 
+  async function createLink(link: Link) {
+    await navbarStore.createLink(link, linkGroup);
+    tempLink = undefined;
+  }
+  async function updateLinkTitle(link: Link, oldLinkName: string) {
+    await navbarStore.updateLinkTitle(link, linkGroup, oldLinkName);
+  }
   async function deleteLink(link: Link) {
     await navbarStore.deleteLink(link, linkGroup);
   }
-  async function updateLink(link: Link, oldLinkName: string) {
-    navbarStore.updateLink(link, linkGroup, oldLinkName);
-  }
-  async function createLink(link: Link) {
-    navbarStore.createLink(link, linkGroup);
-    tempLink = undefined;
-  }
-  async function addTempLink() {
+  async function createTempLink() {
     if (tempLink) return;
     tempLink = new Link("", links.length);
   }
@@ -29,7 +29,7 @@
     tempLink = undefined;
   }
   async function updateGroupTitle() {
-    navbarStore.updateGroupTitle(title, linkGroup);
+    await navbarStore.updateGroupTitle(title, linkGroup);
   }
 </script>
 
@@ -50,11 +50,11 @@
           link={linkGroup.links[0]}
           isEditable={false}
           {deleteLink}
-          saveLink={updateLink}
+          saveLink={updateLinkTitle}
         />
       {:else}
         {#each links as link (link.title)}
-          <ToolbarDropdownEditorRow {link} {deleteLink} saveLink={updateLink} />
+          <ToolbarDropdownEditorRow {link} {deleteLink} saveLink={updateLinkTitle} />
         {/each}
       {/if}
       {#if tempLink}
@@ -67,7 +67,7 @@
     </div>
     <button
       class="btn btn-primary btn-sm mt-2 max-w-sm normal-case"
-      on:click={addTempLink}
+      on:click={createTempLink}
     >
       Link toevoegen
     </button>

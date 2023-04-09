@@ -7,19 +7,12 @@ import { writable } from 'svelte/store'
 async function addLinksFromJson() {
   const links = LINKS_JSON.map(LinkGroup.fromJson)
   await Promise.all(links.map(async (linkGroup) => {
-    const linkMap = linkGroup.links.map(link => [link.title, link.toJson()])
-
     const { getFirestore, doc, updateDoc } = await import('firebase/firestore')
     const { firebaseApp } = await import('$lib/firebase/firebase')
     const firestore = getFirestore(firebaseApp)
 
     const linksRef = doc(firestore, Collections.PAGES, "overview")
-    await updateDoc(linksRef, {
-      [linkGroup.name]: {
-        order: linkGroup.order,
-        links: Object.fromEntries(linkMap)
-      }
-    })
+    await updateDoc(linksRef, linkGroup.toFirebaseJson())
   }))
 }
 
@@ -57,7 +50,7 @@ function createNavbarStore() {
     const linksRef = doc(firestore, Collections.PAGES, "overview")
     const objectKey = `${group.name}.links.${link.title}`
     await updateDoc(linksRef, {
-      [objectKey]: link.toJson()
+      [objectKey]: link.toFirebaseJson()
     })
 
     // -- Update store --
@@ -67,6 +60,7 @@ function createNavbarStore() {
 
   async function updateLinkTitle(link: Link, group: LinkGroup, oldLinkTitle: string) {
     if (!browser) return
+    if (link.title === oldLinkTitle) return
 
     // -- Delete link --
     const { getFirestore, doc, updateDoc, deleteField } = await import('firebase/firestore')
@@ -79,12 +73,13 @@ function createNavbarStore() {
       [oldObjectKey]: deleteField()
     })
 
-    // -- create link --
+    // -- Create link --
     const newObjectKey = `${group.name}.links.${link.title}`
     const createLinkPromise = updateDoc(linksRef, {
-      [newObjectKey]: link.toJson()
+      [newObjectKey]: link.toFirebaseJson()
     })
 
+    // TODO add transaction
     await Promise.all([deleteLinkPromise, createLinkPromise])
 
     // -- Update store --
@@ -111,17 +106,36 @@ function createNavbarStore() {
     update((linkGroups) => [...linkGroups])
   }
 
-  async function updateGroupTitle(title: string, group: LinkGroup) {
+  async function updateGroupTitle(title: string, linkGroup: LinkGroup) {
     if (!browser) return
-    group.name = title
+    if (linkGroup.name === title) return
 
+    // -- Delete group --
+    const { getFirestore, doc, updateDoc, deleteField } = await import('firebase/firestore')
+    const { firebaseApp } = await import('$lib/firebase/firebase')
+    const firestore = getFirestore(firebaseApp)
+
+    const linksRef = doc(firestore, Collections.PAGES, "overview")
+    const oldObjectKey = `${linkGroup.name}`
+    const deleteGroupPromise = updateDoc(linksRef, {
+      [oldObjectKey]: deleteField()
+    })
+
+    linkGroup.name = title
+    // -- Create link --
+    const createGroupPromise = updateDoc(linksRef, linkGroup.toFirebaseJson())
+
+    // TODO add transaction
+    await Promise.all([deleteGroupPromise, createGroupPromise])
+
+    // -- Update store --
     update((linkGroups) => [...linkGroups])
   }
 
   return {
     subscribe,
     createLink,
-    updateLink: updateLinkTitle,
+    updateLinkTitle,
     deleteLink,
     updateGroupTitle
   }

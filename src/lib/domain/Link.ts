@@ -14,7 +14,7 @@ export class Link {
         return this.customUrl || Link.normaliseUrl(this.title)
     }
 
-    toJson() {
+    toFirebaseJson() {
         return {
             order: this.order, ...this.customUrl && { customUrl: this.customUrl }
         }
@@ -51,6 +51,16 @@ export class LinkGroup {
             json.links.map(Link.fromJson),
             json.order
         )
+    }
+
+    toFirebaseJson() {
+        const linkMap = this.links.map(link => [link.title, link.toFirebaseJson()])
+        return {
+            [this.name]: {
+                order: this.order,
+                links: Object.fromEntries(linkMap)
+            }
+        }
     }
 
     static fromFirebaseData(toMap: any) {
