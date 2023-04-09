@@ -24,8 +24,7 @@ module.exports = {
   },
   plugins: [
     require('flowbite/plugin'),
-    require("daisyui"),
-    require('@tailwindcss/line-clamp'),
+    require("daisyui")
   ],
   darkMode: 'media',
 }

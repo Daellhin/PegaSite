@@ -39,7 +39,7 @@ export const LINKS_JSON: (LinkGroupJson)[] = [
     },
     {
         name: "Facebook", order: 6, links: [
-            { title: "Facebook", order: 0, customUrl: "fb.com/PegasusLonderzeel" },
+            { title: "Facebook", order: 0, customUrl: "https://fb.com/PegasusLonderzeel" },
         ]
     }
 ]
