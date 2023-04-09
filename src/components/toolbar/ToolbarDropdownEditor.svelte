@@ -11,12 +11,13 @@
 
   $: links = linkGroup.links;
 
-  async function createLink(link: Link) {
+  async function createLink(newTitle: string, link: Link) {
+    link.title = newTitle;
     await navbarStore.createLink(link, linkGroup);
     tempLink = undefined;
   }
-  async function updateLinkTitle(link: Link, oldLinkName: string) {
-    await navbarStore.updateLinkTitle(link, linkGroup, oldLinkName);
+  async function updateLinkTitle(newTitle: string, link: Link) {
+    await navbarStore.updateLinkTitle(newTitle, link, linkGroup);
   }
   async function deleteLink(link: Link) {
     await navbarStore.deleteLink(link, linkGroup);
@@ -54,7 +55,11 @@
         />
       {:else}
         {#each links as link (link.title)}
-          <ToolbarDropdownEditorRow {link} {deleteLink} saveLink={updateLinkTitle} />
+          <ToolbarDropdownEditorRow
+            {link}
+            {deleteLink}
+            saveLink={updateLinkTitle}
+          />
         {/each}
       {/if}
       {#if tempLink}

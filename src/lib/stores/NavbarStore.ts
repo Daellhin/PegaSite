@@ -28,7 +28,8 @@ function createMockNavbarStore() {
     group.links.push(link)
     update((linkGroups) => [...linkGroups])
   }
-  async function updateLinkTitle(link: Link, group: LinkGroup, oldLinkTitle: string) {
+  async function updateLinkTitle(newTitle: string, link: Link, _group: LinkGroup) {
+    link.title = newTitle
     update((linkGroups) => [...linkGroups])
   }
   async function deleteLink(link: Link, group: LinkGroup) {
@@ -91,9 +92,9 @@ function createNavbarStore() {
     update((linkGroups) => [...linkGroups])
   }
 
-  async function updateLinkTitle(link: Link, group: LinkGroup, oldLinkTitle: string) {
+  async function updateLinkTitle(newTitle: string, link: Link, group: LinkGroup) {
     if (!browser) return
-    if (link.title === oldLinkTitle) return
+    if (link.title === newTitle) return
 
     // -- Delete link --
     const { getFirestore, doc, updateDoc, deleteField } = await import('firebase/firestore')
@@ -101,11 +102,12 @@ function createNavbarStore() {
     const firestore = getFirestore(firebaseApp)
 
     const linksRef = doc(firestore, Collections.PAGES, "overview")
-    const oldObjectKey = `${group.name}.links.${oldLinkTitle}`
+    const oldObjectKey = `${group.name}.links.${link.title}`
     const deleteLinkPromise = updateDoc(linksRef, {
       [oldObjectKey]: deleteField()
     })
 
+    link.title = newTitle
     // -- Create link --
     const newObjectKey = `${group.name}.links.${link.title}`
     const createLinkPromise = updateDoc(linksRef, {

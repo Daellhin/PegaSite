@@ -7,7 +7,7 @@
   export let link: Link;
   export let isEditable = true;
   export let deleteLink: (link: Link) => Promise<void> | any;
-  export let saveLink: (link: Link, oldLinkName:string) => Promise<void>;
+  export let saveLink: (newTitle:string, link: Link) => Promise<void>;
 
   const confirmModalID = "confirmLinkDelete";
   let showModal = false;
@@ -16,10 +16,8 @@
   $: linkUrl = Link.normaliseUrl(linkTitle);
 
   async function saveLinkWrapper() {
-    const oldLinkName = link.title;
     linkTitle = linkTitle.trim();
-    link.title = linkTitle;
-    await saveLink(link, oldLinkName);
+    await saveLink(linkTitle, link);
   }
   async function deleteLinkAndPageWrapper() {
     showModal = false;
