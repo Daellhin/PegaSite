@@ -14,6 +14,10 @@
       {
         "source": "/pages/**",
         "destination": "/fallback.html"
+      },
+      {
+        "source": "/pages/edit/**",
+        "destination": "/fallback.html"
       }
     ],
     "cleanUrls": true

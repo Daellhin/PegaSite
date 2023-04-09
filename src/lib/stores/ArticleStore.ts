@@ -49,9 +49,7 @@ function createArticleStore() {
   const store = writable<Article[]>(undefined, set => {
     async function init() {
       if (!browser) return
-
-      // const articles = ARTICLES_JSON.map(Article.fromJson)
-
+      
       // -- Load articles --
       const { firebaseApp } = await import('$lib/firebase/firebase')
       const { getFirestore, collection, query, orderBy, limit, getDocs } = await import('firebase/firestore')

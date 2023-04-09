@@ -10,8 +10,8 @@ export class Link {
         public customUrl?: string
     ) { }
 
-    getUrl() {
-        return this.customUrl || Link.normaliseUrl(this.title)
+    getUrl(edit = false) {
+        return this.customUrl || Link.normaliseUrl(this.title, edit)
     }
 
     toFirebaseJson() {
@@ -20,8 +20,8 @@ export class Link {
         }
     }
 
-    static normaliseUrl(url: string) {
-        return `/pages/${url.trim().replace(/ /g, "-").toLowerCase()}`
+    static normaliseUrl(url: string, edit = false) {
+        return `/pages/${edit ? "edit/" : ""}${url.trim().replace(/ /g, "-").toLowerCase()}`
     }
 
     static fromJson(json: LinkJson) {

@@ -4,9 +4,12 @@
   import FaRegTrashAlt from "svelte-icons/fa/FaRegTrashAlt.svelte";
 
   export let editUrl: string;
-  export let deleteHandler: () => Promise<void> | any;
+  export let deleteHandler: () => Promise<void> | any = () => {};
   export let size: "md" | "sm" | "xs" = "md";
   export let disabled = false;
+  export let hasDelete = true;
+  export let width = "w-52";
+  export let editPrompt = "Aanpassen"
 
   let dropdownList: HTMLUListElement;
 
@@ -34,14 +37,17 @@
   </button>
   <ul
     bind:this={dropdownList}
-    class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
+    class={"dropdown-content menu p-2 shadow bg-base-100 rounded-box " + width}
   >
-    <li><a href={editUrl}>Aanpassen</a></li>
-    <li class="flex flex-row gap-1">
-      <button on:click={deleteWrapper} class="w-full">
-        <div class="w-5 h-5"><FaRegTrashAlt /></div>
-        Verwijderen
-      </button>
-    </li>
+    <li><a href={editUrl}>{editPrompt}</a></li>
+    {#if hasDelete}
+      <li class="flex flex-row gap-1">
+        <button on:click={deleteWrapper} class="w-full">
+          <div class="w-5 h-5"><FaRegTrashAlt /></div>
+          Verwijderen
+        </button>
+      </li>
+    {/if}
+    <slot />
   </ul>
 </div>

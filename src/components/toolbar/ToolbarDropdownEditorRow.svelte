@@ -41,9 +41,10 @@
       disabled={!isEditable || link.customUrl != undefined}
     />
     <EditDropdown
-      editUrl="/todo"
+      editUrl={link.getUrl(true)}
       deleteHandler={() => (showModal = true)}
       disabled={link.customUrl != undefined}
+      editPrompt="Pagina aanpassen"
     />
   </div>
 </div>
