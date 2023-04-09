@@ -14,6 +14,12 @@ export class Link {
         return this.customUrl || Link.normaliseUrl(this.title)
     }
 
+    toJson() {
+        return {
+            order: this.order, ...this.customUrl && { customUrl: this.customUrl }
+        }
+    }
+
     static normaliseUrl(url: string) {
         return `/pages/${url.trim().replace(/ /g, "-").toLowerCase()}`
     }

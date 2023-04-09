@@ -2,7 +2,6 @@
   import FormControlSavableText from "$components/FormHelpers/FormControlSavableText.svelte";
   import { Link, type LinkGroup } from "$lib/domain/Link";
   import { navbarStore } from "$lib/stores/NavbarStore";
-  import { sleep } from "$lib/utils/Utils";
   import ToolbarDropdownEditorRow from "./ToolbarDropdownEditorRow.svelte";
 
   export let linkGroup: LinkGroup;
@@ -24,7 +23,7 @@
   }
   async function addTempLink() {
     if (tempLink) return;
-    tempLink = new Link("", "");
+    tempLink = new Link("", links.length);
   }
   function deleteTempLink() {
     tempLink = undefined;
