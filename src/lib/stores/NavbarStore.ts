@@ -2,6 +2,7 @@ import { browser } from '$app/environment'
 import { LINKS_JSON } from '$data/LinksJson'
 import { Link, LinkGroup } from '$lib/domain/Link'
 import { Collections } from '$lib/firebase/firebase'
+import { convertStringToBool } from '$lib/utils/Utils'
 import { writable } from 'svelte/store'
 
 async function addLinksFromJson() {
@@ -14,6 +15,38 @@ async function addLinksFromJson() {
     const linksRef = doc(firestore, Collections.PAGES, "overview")
     await updateDoc(linksRef, linkGroup.toFirebaseJson())
   }))
+}
+
+function createMockNavbarStore() {
+  const store = writable<(LinkGroup)[]>(undefined, set => {
+    const links = LINKS_JSON.map(LinkGroup.fromJson)
+    set(links)
+  })
+  const { subscribe, update } = store
+
+  async function createLink(link: Link, group: LinkGroup) {
+    group.links.push(link)
+    update((linkGroups) => [...linkGroups])
+  }
+  async function updateLinkTitle(link: Link, group: LinkGroup, oldLinkTitle: string) {
+    update((linkGroups) => [...linkGroups])
+  }
+  async function deleteLink(link: Link, group: LinkGroup) {
+    group.links = group.links.filter((e) => e !== link)
+    update((linkGroups) => [...linkGroups])
+  }
+  async function updateGroupTitle(title: string, linkGroup: LinkGroup) {
+    linkGroup.name = title
+    update((linkGroups) => [...linkGroups])
+  }
+
+  return {
+    subscribe,
+    createLink,
+    updateLinkTitle,
+    deleteLink,
+    updateGroupTitle
+  }
 }
 
 function createNavbarStore() {
@@ -141,4 +174,7 @@ function createNavbarStore() {
   }
 }
 
-export const navbarStore = createNavbarStore()
+const useMock: boolean = convertStringToBool(import.meta.env.VITE_USEMOCKING)
+export const navbarStore = useMock ?
+  createMockNavbarStore() :
+  createNavbarStore()
