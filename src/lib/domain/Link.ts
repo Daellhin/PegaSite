@@ -1,11 +1,13 @@
 export interface LinkJson {
     title: string
+    order: number
     customUrl?: string
 }
 export class Link {
     constructor(
         public title: string,
-        public customUrl?: string,
+        public order: number,
+        public customUrl?: string
     ) { }
 
     getUrl() {
@@ -19,6 +21,7 @@ export class Link {
     static fromJson(json: LinkJson) {
         return new Link(
             json.title,
+            json.order,
             json.customUrl
         )
     }
@@ -27,21 +30,32 @@ export class Link {
 export interface LinkGroupJson {
     name: string
     links: LinkJson[]
+    order: number
 }
 export class LinkGroup {
-    public name: string
-    public links: Link[]
-
-    constructor(name: string, links: Link[]) {
-        this.name = name
-        this.links = links
-    }
+    constructor(
+        public name: string,
+        public links: Link[],
+        public order: number
+    ) { }
 
     static fromJson(json: LinkGroupJson) {
         return new LinkGroup(
             json.name,
-            json.links.map(Link.fromJson)
+            json.links.map(Link.fromJson),
+            json.order
         )
+    }
+
+    static fromFirebaseData(toMap: any) {
+        const links = Object.keys(toMap).flatMap((groupName) => {
+            const links = Object.keys(toMap[groupName].links).map((linkTitle) => {
+                const linkJson = toMap[groupName].links[linkTitle];
+                return new Link(linkTitle, linkJson.order, linkJson.customUrl);
+            }).sort((a, b) => a.order - b.order)
+            return new LinkGroup(groupName, links, toMap[groupName].order)
+        })
+        return links.sort((a, b) => a.order - b.order);
     }
 }
 

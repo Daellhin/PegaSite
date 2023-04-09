@@ -1,7 +1,29 @@
 import { browser } from '$app/environment'
+import { LINKS_JSON } from '$data/LinksJson'
 import { Link, LinkGroup } from '$lib/domain/Link'
 import { Collections } from '$lib/firebase/firebase'
 import { writable } from 'svelte/store'
+
+async function addLinksFromJson() {
+  const links = LINKS_JSON.map(LinkGroup.fromJson)
+  await Promise.all(links.map(async (linkGroup) => {
+    const linkMap = linkGroup.links.map(link => [link.title, {
+      order: link.order, ...link.customUrl && { customUrl: link.customUrl }
+    }])
+
+    const { getFirestore, doc, updateDoc } = await import('firebase/firestore')
+    const { firebaseApp } = await import('$lib/firebase/firebase')
+    const firestore = getFirestore(firebaseApp)
+
+    const clubrecordsRef = doc(firestore, Collections.PAGES, "overview")
+    await updateDoc(clubrecordsRef, {
+      [linkGroup.name]: {
+        order: linkGroup.order,
+        links: Object.fromEntries(linkMap)
+      }
+    })
+  }))
+}
 
 function createNavbarStore() {
   const store = writable<(LinkGroup)[]>(undefined, set => {
@@ -17,7 +39,7 @@ function createNavbarStore() {
 
       const clubrRecordsRef = doc(firestore, Collections.PAGES, "overview")
       const clubRecordsSnap = await getDoc(clubrRecordsRef)
-      const links = clubRecordsSnap.data()?.linkGroups.map(LinkGroup.fromJson)
+      const links = LinkGroup.fromFirebaseData(clubRecordsSnap.data())
 
       // -- Set store --
       set(links)
@@ -42,6 +64,10 @@ function createNavbarStore() {
 
   async function updateLink(link: Link, group: LinkGroup) {
     if (!browser) return
+
+    await addLinksFromJson()
+    console.log("finished")
+
     update((linkGroups) => [...linkGroups])
   }
 
