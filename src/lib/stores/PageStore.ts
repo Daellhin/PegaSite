@@ -218,7 +218,7 @@ function createPageStore() {
     }
 }
 
-const useMock = convertStringToBool(import.meta.env.VITE_USEMOCKING) && true
+const useMock = convertStringToBool(import.meta.env.VITE_USEMOCKING)
 export const pageStore = useMock ?
     createMockPageStore() :
     createPageStore()

@@ -206,7 +206,7 @@ function createNavbarStore() {
   }
 }
 
-const useMock = convertStringToBool(import.meta.env.VITE_USEMOCKING) && true
+const useMock = convertStringToBool(import.meta.env.VITE_USEMOCKING)
 export const navbarStore = useMock ?
   createMockNavbarStore() :
   createNavbarStore()
