@@ -14,6 +14,10 @@ export class Link {
         return this.customUrl || Link.normaliseUrl(this.title, edit)
     }
 
+    getId() {
+        return Link.normaliseId(this.title)
+    }
+
     toFirebaseJson() {
         return {
             order: this.order, ...this.customUrl && { customUrl: this.customUrl }
@@ -21,7 +25,11 @@ export class Link {
     }
 
     static normaliseUrl(url: string, edit = false) {
-        return `/pages/${edit ? "edit/" : ""}${url.trim().replace(/ /g, "-").toLowerCase()}`
+        return `/pages/${edit ? "edit/" : ""}${Link.normaliseId(url)}`
+    }
+
+    static normaliseId(id: string) {
+        return id.trim().replace(/ /g, "-").toLowerCase()
     }
 
     static fromJson(json: LinkJson) {
@@ -66,12 +74,12 @@ export class LinkGroup {
     static fromFirebaseData(toMap: any) {
         const links = Object.keys(toMap).flatMap((groupName) => {
             const links = Object.keys(toMap[groupName].links).map((linkTitle) => {
-                const linkJson = toMap[groupName].links[linkTitle];
-                return new Link(linkTitle, linkJson.order, linkJson.customUrl);
+                const linkJson = toMap[groupName].links[linkTitle]
+                return new Link(linkTitle, linkJson.order, linkJson.customUrl)
             }).sort((a, b) => a.order - b.order)
             return new LinkGroup(groupName, links, toMap[groupName].order)
         })
-        return links.sort((a, b) => a.order - b.order);
+        return links.sort((a, b) => a.order - b.order)
     }
 }
 

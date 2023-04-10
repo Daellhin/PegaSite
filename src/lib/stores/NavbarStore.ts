@@ -4,6 +4,7 @@ import { Link, LinkGroup } from '$lib/domain/Link'
 import { Collections } from '$lib/firebase/firebase'
 import { convertStringToBool } from '$lib/utils/Utils'
 import { writable } from 'svelte/store'
+import { pageStore } from './PageStore'
 
 async function addLinksFromJson() {
   const links = LINKS_JSON.map(LinkGroup.fromJson)
@@ -23,8 +24,11 @@ function createMockNavbarStore() {
     set(links)
   })
   const { subscribe, update } = store
-
+  /**
+   * Also creates apropriate page
+   */
   async function createLink(link: Link, group: LinkGroup) {
+    //pageStore.createBlankPage(link)
     group.links.push(link)
     update((linkGroups) => [...linkGroups])
   }
@@ -32,7 +36,11 @@ function createMockNavbarStore() {
     link.title = newTitle
     update((linkGroups) => [...linkGroups])
   }
+  /**
+   * Also deletes apropriate page
+   */
   async function deleteLink(link: Link, group: LinkGroup) {
+    pageStore.deletePage(link.getId())
     group.links = group.links.filter((e) => e !== link)
     update((linkGroups) => [...linkGroups])
   }
@@ -55,8 +63,6 @@ function createNavbarStore() {
     async function init() {
       if (!browser) return
 
-      // const links = LINKS_JSON.map(LinkGroup.fromJson)
-
       // -- Load Navbar --
       const { firebaseApp } = await import('$lib/firebase/firebase')
       const { getFirestore, doc, getDoc } = await import('firebase/firestore')
@@ -73,19 +79,28 @@ function createNavbarStore() {
   })
   const { subscribe, update } = store
 
+  /**
+   * Also creates apropriate page
+   */
   async function createLink(link: Link, group: LinkGroup) {
     if (!browser) return
 
-    // -- Upload link --
+    // -- Create link --
     const { getFirestore, doc, updateDoc } = await import('firebase/firestore')
     const { firebaseApp } = await import('$lib/firebase/firebase')
     const firestore = getFirestore(firebaseApp)
 
     const linksRef = doc(firestore, Collections.PAGES, "overview")
     const objectKey = `${group.name}.links.${link.title}`
-    await updateDoc(linksRef, {
+    const createLinkPromise = updateDoc(linksRef, {
       [objectKey]: link.toFirebaseJson()
     })
+
+    // -- Create page --
+    const createPagePromise = pageStore.createBlankPage(link)
+
+    // TODO add transaction
+    await Promise.all([createLinkPromise, createPagePromise])
 
     // -- Update store --
     group.links.push(link)
@@ -121,6 +136,9 @@ function createNavbarStore() {
     update((linkGroups) => [...linkGroups])
   }
 
+  /**
+   * Also deletes apropriate page
+   */
   async function deleteLink(link: Link, group: LinkGroup) {
     if (!browser) return
     if (link.customUrl) return
@@ -132,9 +150,15 @@ function createNavbarStore() {
 
     const linksRef = doc(firestore, Collections.PAGES, "overview")
     const objectKey = `${group.name}.links.${link.title}`
-    await updateDoc(linksRef, {
+    const deleteLinkPromise = updateDoc(linksRef, {
       [objectKey]: deleteField()
     })
+
+    // -- Delete page --
+    const deletePagePromise = pageStore.deletePage(link.getId())
+
+    // TODO add transaction
+    await Promise.all([deleteLinkPromise, deletePagePromise])
 
     // -- Update store --
     group.links = group.links.filter((e) => e !== link)
@@ -176,7 +200,8 @@ function createNavbarStore() {
   }
 }
 
-const useMock: boolean = convertStringToBool(import.meta.env.VITE_USEMOCKING)
+// const useMock = convertStringToBool(import.meta.env.VITE_USEMOCKING)
+const useMock = false;
 export const navbarStore = useMock ?
   createMockNavbarStore() :
   createNavbarStore()
