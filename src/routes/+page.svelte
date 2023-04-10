@@ -3,6 +3,7 @@
   import ArrowLeft from "$components/icons/ArrowLeft.svelte";
   import ArrowRight from "$components/icons/ArrowRight.svelte";
   import { articleStore, paginationSize } from "$lib/stores/ArticleStore";
+  import { pageHeadStore } from "$lib/stores/PageHeadStore";
   import { clamp, sizeOfIncreasingFirstSequence } from "$lib/utils/Utils";
 
   const minArticlesOnPage = 6;
@@ -38,6 +39,9 @@
       sizeOfIncreasingFirstSequence(distancesFromLeft) * 2;
     return clamp(maxArticlesToPlaceInRow, minArticlesOnPage, paginationSize);
   }
+
+  // Page title
+  pageHeadStore.updatePageTitle("");
 </script>
 
 <h1 class="text-2xl font-bold mb-2">Nieuws</h1>

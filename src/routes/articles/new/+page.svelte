@@ -12,6 +12,7 @@
   import { authStore } from "$lib/stores/AuthStore";
   import { goto } from "$app/navigation";
   import FormControlText from "$components/FormHelpers/FormControlText.svelte";
+  import { pageHeadStore } from "$lib/stores/PageHeadStore";
 
   let title = "";
   let content = "";
@@ -62,6 +63,8 @@
   $: authStore.known.then(() => {
     if (!$authStore) goto("/");
   });
+  // Page title
+  pageHeadStore.updatePageTitle("Nieuw bericht")
 </script>
 
 {#if showPreview}

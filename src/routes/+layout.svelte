@@ -1,18 +1,19 @@
 <script lang="ts">
-  import { articleStore } from "$lib/stores/ArticleStore";
-  import { SvelteToast } from "@zerodevx/svelte-toast";
-  import { setContext } from "svelte";
-  import "../app.css";
   import EventCalendar from "$components/Events/EventCalendar.svelte";
   import Footer from "$components/Layout/Footer.svelte";
   import MenuVertical from "$components/Layout/MenuVertical.svelte";
   import Navbar from "$components/Layout/Navbar.svelte";
+  import { pageHeadStore } from "$lib/stores/PageHeadStore";
+  import { SvelteToast } from "@zerodevx/svelte-toast";
+  import "../app.css";
 
   const drawerID = "layout-drawer";
   const loginModalID = "login-modal";
-
-  setContext("articleStore", articleStore);
 </script>
+
+<svelte:head>
+  <title>{$pageHeadStore.getFullTitle()}</title>
+</svelte:head>
 
 <div class="drawer">
   <input id={drawerID} type="checkbox" class="drawer-toggle" />
@@ -24,7 +25,7 @@
         <main class="lg:col-span-8 xl:col-span-9 h-full">
           <slot />
         </main>
-        <aside class="lg:col-span-4  xl:col-span-3 md:pt-0 py-0 p-2">
+        <aside class="lg:col-span-4 xl:col-span-3 md:pt-0 py-0 p-2">
           <EventCalendar />
         </aside>
       </div>

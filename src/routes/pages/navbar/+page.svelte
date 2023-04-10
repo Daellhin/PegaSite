@@ -1,7 +1,17 @@
 <script lang="ts">
+  import { goto } from "$app/navigation";
   import ToolbarDropdownEditor from "$components/Toolbar/ToolbarDropdownEditor.svelte";
+  import { authStore } from "$lib/stores/AuthStore";
   import { navbarStore } from "$lib/stores/NavbarStore";
+  import { pageHeadStore } from "$lib/stores/PageHeadStore";
   import MdInfoOutline from "svelte-icons/md/MdInfoOutline.svelte";
+
+  // Authguard
+  $: authStore.known.then(() => {
+    if (!$authStore) goto("/");
+  });
+  // Page title
+  pageHeadStore.updatePageTitle("Navigatiebalk wijzigen");
 </script>
 
 <h1 class="text-2xl font-bold mb-1">Navigatiebalk wijzigen</h1>

@@ -3,10 +3,13 @@
   import RecordsTable from "$components/Records/RecordsTable.svelte";
   import { Category } from "$lib/domain/data-classes/Category";
   import { clubRecordStore } from "$lib/stores/ClubRecordStore";
+  import { pageHeadStore } from "$lib/stores/PageHeadStore";
   import IoMdSearch from "svelte-icons/io/IoIosSearch.svelte";
 
   let searchString = "";
   let showForm = false;
+
+  pageHeadStore.updatePageTitle("Clubrecords")
 </script>
 
 <!-- Title -->

@@ -1,16 +1,17 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
   import Dropzone from "$components/Dropzone.svelte";
-  import { authStore } from "$lib/stores/AuthStore";
-  import Editor from "cl-editor/src/Editor.svelte";
-  import type { PageData } from "./$types";
-  import { pageStore } from "$lib/stores/PageStore";
-  import { Page } from "$lib/domain/Page";
   import PageComponent from "$components/page/Page.svelte";
-  import dayjs from "dayjs";
-  import { readFileAsDataURL } from "$lib/utils/Utils";
-  import { pushCreatedToast } from "$lib/utils/Toast";
   import { Link } from "$lib/domain/Link";
+  import { Page } from "$lib/domain/Page";
+  import { authStore } from "$lib/stores/AuthStore";
+  import { pageHeadStore } from "$lib/stores/PageHeadStore";
+  import { pageStore } from "$lib/stores/PageStore";
+  import { pushCreatedToast } from "$lib/utils/Toast";
+  import { readFileAsDataURL } from "$lib/utils/Utils";
+  import Editor from "cl-editor/src/Editor.svelte";
+  import dayjs from "dayjs";
+  import type { PageData } from "./$types";
 
   export let data: PageData;
 
@@ -64,6 +65,8 @@
   $: authStore.known.then(() => {
     if (!$authStore) goto("/");
   });
+  // Page title
+  pageHeadStore.updatePageTitle("Pagina aanpassen");
 </script>
 
 {#if showPreview}

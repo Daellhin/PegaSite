@@ -2,11 +2,15 @@
   import { calendarEventStore } from "$lib/stores/CalendarEventStore";
   import { groupBy } from "$lib/utils/Utils";
   import InlineEvent from "$components/Events/InlineEvent.svelte";
+  import { pageHeadStore } from "$lib/stores/PageHeadStore";
 
   $: groupedEvents = groupBy(
     $calendarEventStore,
     (event) => `${event.date.year()}${event.date.month()}`
   );
+
+  // Page title
+  pageHeadStore.updatePageTitle("Events");
 </script>
 
 <h1 class="text-2xl font-bold mb-2">Events</h1>
