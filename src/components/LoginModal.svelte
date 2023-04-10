@@ -16,9 +16,8 @@
       loginError = undefined;
       await authStore.signIn(username, password);
       showModal = false;
-      // TODO only for dev testing
-      // username = "";
-      // password = ""
+      username = "";
+      password = "";
     } catch (error) {
       if (error as FirebaseError) {
         const firebaseEror = error as FirebaseError;
