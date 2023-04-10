@@ -4,7 +4,7 @@ import { Article, articleConverter } from '$lib/domain/Article'
 import { Collections } from '$lib/firebase/firebase'
 import { convertStringToBool } from '$lib/utils/Utils'
 import type { QueryDocumentSnapshot } from 'firebase/firestore'
-import { writable } from 'svelte/store'
+import { get, writable } from 'svelte/store'
 import { v4 as uuidv4 } from 'uuid'
 
 /**
@@ -15,11 +15,11 @@ import { v4 as uuidv4 } from 'uuid'
 export const paginationSize = 8
 
 function createMockArticleStore() {
-  const store = writable<Article[]>(undefined, set => {
+  const innerStore = writable<Article[]>(undefined, set => {
     const articles = ARTICLES_JSON.map(Article.fromJson)
     set(articles)
   })
-  const { subscribe, update } = store
+  const { subscribe, update } = innerStore
 
   async function addArticle(newArticle: Article, images: File[]) {
     update((articles) => ([newArticle, ...articles]))
@@ -30,12 +30,18 @@ function createMockArticleStore() {
   async function loadMoreArticles() {
     return
   }
+  async function getArticleById(id: string) {
+    const exsistingArticle = get(innerStore).find((e) => e.id === id)
+    return exsistingArticle || null
+}
+
 
   return {
     subscribe,
     addArticle,
     removeArticle,
-    loadMoreArticles
+    loadMoreArticles,
+    getArticleById
   }
 }
 
@@ -46,10 +52,10 @@ function createArticleStore() {
   let lastRef: QueryDocumentSnapshot<Article>
   let hasMoreDocuments = true
 
-  const store = writable<Article[]>(undefined, set => {
+  const innerStore = writable<Article[]>(undefined, set => {
     async function init() {
       if (!browser) return
-      
+
       // -- Load articles --
       const { firebaseApp } = await import('$lib/firebase/firebase')
       const { getFirestore, collection, query, orderBy, limit, getDocs } = await import('firebase/firestore')
@@ -72,7 +78,7 @@ function createArticleStore() {
     }
     init()
   })
-  const { subscribe, update } = store
+  const { subscribe, update } = innerStore
 
   async function addArticle(newArticle: Article, images: File[]) {
     if (!browser) return
@@ -126,7 +132,6 @@ function createArticleStore() {
 
     await deleteDoc(doc(firestore, Collections.ARTICLES, article.id))
 
-
     // -- Remove from store --
     update((articles) => (articles.filter((e) => e.id !== article.id)))
   }
@@ -152,19 +157,38 @@ function createArticleStore() {
     update((articles) => ([...articles, ...snapshot.docs.map(e => e.data())]))
     lastRef = snapshot.docs.slice(-1)[0]
     hasMoreDocuments = snapshot.docs.length === paginationSize + 1
+  }
 
+  async function getArticleById(id: string) {
+    if (!browser) return
+
+    const exsistingArticle = get(innerStore).find((e) => e.id === id)
+    if (exsistingArticle) return exsistingArticle
+
+    // -- Load page --
+    const { firebaseApp } = await import('$lib/firebase/firebase')
+    const { getFirestore, doc, getDoc } = await import('firebase/firestore')
+    const firestore = getFirestore(firebaseApp)
+
+    const articleRef = doc(firestore, Collections.ARTICLES, id).withConverter(articleConverter)
+    const articleSnap = await getDoc(articleRef)
+    const article = articleSnap.data()
+
+    if (article) update((articles) => [...articles, article])
+    return article || null
   }
 
   return {
     subscribe,
     addArticle,
     removeArticle,
-    loadMoreArticles
+    loadMoreArticles,
+    getArticleById
   }
 }
 
 const useMock = convertStringToBool(import.meta.env.VITE_USEMOCKING)
-if(useMock) console.warn("Mocking is on")
+if (useMock) console.warn("Mocking is on")
 export const articleStore = useMock ?
   createMockArticleStore() :
   createArticleStore()

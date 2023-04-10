@@ -1,19 +1,26 @@
 <script lang="ts">
   import ArticleComponent from "$components/article/Article.svelte";
+  import type { Article } from "$lib/domain/Article";
   import { articleStore } from "$lib/stores/ArticleStore";
   import { pageHeadStore } from "$lib/stores/PageHeadStore";
   import type { PageData } from "./$types";
 
   export let data: PageData;
 
-  // TODO test does this work
-  $: article = $articleStore.find((e) => e.id === data.id);
+  let article: Article | undefined | null;
+  $: $articleStore && loadArticle(data);
+
+  async function loadArticle(data: PageData) {
+    article = await articleStore.getArticleById(data.id);
+  }
 
   // Page title
   $: article && pageHeadStore.updatePageTitle(article.title);
 </script>
 
-{#if article}
+{#if article === undefined}
+  Loading
+{:else if article}
   <ArticleComponent {article} />
 {:else}
   <div>"{data.id}": not found</div>
