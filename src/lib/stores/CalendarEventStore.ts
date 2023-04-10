@@ -94,7 +94,7 @@ function createCalendarEventStore() {
   }
 }
 
-const useMock: boolean = convertStringToBool(import.meta.env.VITE_USEMOCKING)
+const useMock = convertStringToBool(import.meta.env.VITE_USEMOCKING)
 export const calendarEventStore = useMock ?
   createMockCalendarEventStore() :
   createCalendarEventStore()

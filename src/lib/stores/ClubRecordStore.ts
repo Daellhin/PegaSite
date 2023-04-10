@@ -103,7 +103,7 @@ function createClubRecordStore() {
   }
 }
 
-const useMock: boolean = convertStringToBool(import.meta.env.VITE_USEMOCKING)
+const useMock = convertStringToBool(import.meta.env.VITE_USEMOCKING)
 export const clubRecordStore = useMock ?
   createMockClubRecordStore() :
   createClubRecordStore()
