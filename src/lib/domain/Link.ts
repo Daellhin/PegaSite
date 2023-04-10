@@ -1,3 +1,5 @@
+import { capitalizeFirstLetter } from "$lib/utils/String"
+
 export interface LinkJson {
     title: string
     order: number
@@ -30,6 +32,9 @@ export class Link {
 
     static normaliseId(id: string) {
         return id.trim().replace(/ /g, "-").toLowerCase()
+    }
+    static titleFromId(id:string) {
+        return capitalizeFirstLetter(id.replace(/-/g, ""));
     }
 
     static fromJson(json: LinkJson) {

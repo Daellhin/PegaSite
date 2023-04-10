@@ -10,6 +10,7 @@
   import dayjs from "dayjs";
   import { readFileAsDataURL } from "$lib/utils/Utils";
   import { pushCreatedToast } from "$lib/utils/Toast";
+  import { Link } from "$lib/domain/Link";
 
   export let data: PageData;
 
@@ -121,6 +122,12 @@
   </form>
 {:else}
   <div>"{data.id}": not found</div>
+  <button
+    class="btn btn-primary"
+    on:click={() =>
+      pageStore.createBlankPage(data.id, Link.titleFromId(data.id))}
+    >Create page</button
+  >
 {/if}
 
 <style lang="postcss">

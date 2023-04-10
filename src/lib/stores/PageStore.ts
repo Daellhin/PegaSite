@@ -98,11 +98,10 @@ function createPageStore() {
         update((pages) => [...pages])
     }
 
-    async function createBlankPage(link: Link) {
+    async function createBlankPage(id: string, title: string) {
         if (!browser) return
-        if (link.customUrl) return
 
-        const page = new Page(link.getId(), dayjs(), link.title, [], "")
+        const page = new Page(id, dayjs(), title, [], "")
 
         // -- Create page --
         const { getFirestore, doc, setDoc } = await import('firebase/firestore')

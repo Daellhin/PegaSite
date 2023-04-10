@@ -97,7 +97,7 @@ function createNavbarStore() {
     })
 
     // -- Create page --
-    const createPagePromise = pageStore.createBlankPage(link)
+    const createPagePromise = pageStore.createBlankPage(link.getId(), link.title)
 
     // TODO add transaction
     await Promise.all([createLinkPromise, createPagePromise])
