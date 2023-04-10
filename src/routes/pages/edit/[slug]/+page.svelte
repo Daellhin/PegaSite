@@ -12,6 +12,7 @@
   import Editor from "cl-editor/src/Editor.svelte";
   import dayjs from "dayjs";
   import type { PageData } from "./$types";
+  import FormControlText from "$components/FormHelpers/FormControlText.svelte";
 
   export let data: PageData;
 
@@ -92,18 +93,12 @@
     </button>
   </div>
   <form class="flex flex-col gap-2" on:submit={saveUpdatedPage}>
-    <div class="form-control w-full max-w-sm">
-      <label class="label" for="title">
-        <span class="label-text">Titel van pagina:</span>
-      </label>
-      <input
-        id="title"
-        type="text"
-        placeholder="Titel"
-        class="input input-bordered border-2"
-        bind:value={title}
-      />
-    </div>
+    <FormControlText
+      label="Titel van pagina:"
+      placeholder="Titel"
+      value={title}
+      required
+    />
 
     <div class="form-control w-full max-w-sm">
       <label class="label" for="dropzone-file">
