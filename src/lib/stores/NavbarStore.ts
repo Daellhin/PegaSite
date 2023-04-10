@@ -107,6 +107,9 @@ function createNavbarStore() {
     update((linkGroups) => [...linkGroups])
   }
 
+  /**
+   * Also updates page id
+   */
   async function updateLinkTitle(newTitle: string, link: Link, group: LinkGroup) {
     if (!browser) return
     if (link.title === newTitle) return
@@ -122,6 +125,9 @@ function createNavbarStore() {
       [oldObjectKey]: deleteField()
     })
 
+    // -- Update page id --
+   const updatePagePromise = pageStore.updatePageId(Link.normaliseId(newTitle), link.getId())
+
     link.title = newTitle
     // -- Create link --
     const newObjectKey = `${group.name}.links.${link.title}`
@@ -130,7 +136,7 @@ function createNavbarStore() {
     })
 
     // TODO add transaction
-    await Promise.all([deleteLinkPromise, createLinkPromise])
+    await Promise.all([deleteLinkPromise, createLinkPromise, updatePagePromise])
 
     // -- Update store --
     update((linkGroups) => [...linkGroups])

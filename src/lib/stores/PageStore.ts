@@ -102,6 +102,11 @@ function createPageStore() {
         if (!browser) return
 
         const page = new Page(id, dayjs(), title, [], "")
+        await createPage(page);
+    }
+
+    async function createPage(page: Page) {
+        if (!browser) return
 
         // -- Create page --
         const { getFirestore, doc, setDoc } = await import('firebase/firestore')
@@ -115,7 +120,7 @@ function createPageStore() {
         update((pages) => [...pages, page])
     }
 
-    async function deletePage(id: string) {
+    async function deletePage(id: string, deleteImages = true) {
         if (!browser) return
 
         // -- Get page --
@@ -123,7 +128,7 @@ function createPageStore() {
         if (!page) throw new Error(`No page to delete at id:${id}`)
 
         // -- Delete images --
-        if (page.images) {
+        if (deleteImages && page.images) {
             const { getStorage, ref, deleteObject } = await import('firebase/storage')
             const storage = getStorage()
 
@@ -143,6 +148,24 @@ function createPageStore() {
 
         // -- Update store --
         update((pages) => pages.filter(e => e.id === id))
+    }
+
+    async function updatePageId(newId: string, oldId: string) {
+        if (!browser) return
+        if (newId === oldId) return
+
+        // -- Get page --
+        const page = await getPageById(oldId)
+        if (!page) throw new Error(`No page to update at id:${oldId}`)
+
+        // -- Delete page --
+        const deletePagePromise = deletePage(oldId, false)
+
+        // -- Create page --
+        page.id = newId
+        const createPagePromise = createPage(page)
+
+        await Promise.all([deletePagePromise, createPagePromise])
     }
 
     async function getPageById(id: string) {
@@ -169,7 +192,8 @@ function createPageStore() {
         updatePage,
         getPageById,
         createBlankPage,
-        deletePage
+        deletePage,
+        updatePageId
     }
 }
 
