@@ -1,6 +1,5 @@
 import { browser } from '$app/environment'
 import { PAGES_JSON } from '$data/PagesJson'
-import type { Link } from '$lib/domain/Link'
 import { Page, pageConverter } from '$lib/domain/Page'
 import { Collections } from '$lib/firebase/firebase'
 import { arrayDifference, containArraysSameElements } from '$lib/utils/Array'
@@ -23,11 +22,11 @@ async function addPagesFromJson() {
 }
 
 function createMockPageStore() {
-    const store = writable<Page[]>(undefined, set => {
+    const innerStore = writable<Page[]>(undefined, set => {
         const pages = PAGES_JSON.map(Page.fromJson)
         set(pages)
     })
-    const { subscribe, update } = store
+    const { subscribe, update } = innerStore
 
     async function updatePage(newTitle: string, newContent: string, uploadedImages: File[], newExcistingImages: string[], page: Page) {
         const newImages = await Promise.all(uploadedImages.map(readFileAsDataURL))
@@ -37,19 +36,41 @@ function createMockPageStore() {
         update((pages) => [...pages])
     }
     async function getPageById(id: string) {
-        return get(pageStore).find((e) => e.id === id)
+        return get(innerStore).find((e) => e.id === id)
+    }
+
+    async function createBlankPage(id: string, title: string) {
+        const page = new Page(id, dayjs(), title, [], "")
+        await createPage(page);
+    }
+
+    async function createPage(page: Page) {
+        update((pages) => [...pages, page])
+    }
+
+    async function deletePage(id: string, _deleteImages = true) {
+        update((pages) => pages.filter(e => e.id === id))
+    }
+
+    async function updatePageId(newId: string, oldId: string) {
+        const page = await getPageById(oldId)
+        if (!page) throw new Error(`No page to update at id:${oldId}`)
+        page.id = newId
     }
 
     return {
         subscribe,
         updatePage,
-        getPageById
+        getPageById,
+        createBlankPage,
+        deletePage,
+        updatePageId
     }
 }
 
 function createPageStore() {
-    const store = writable<Page[]>([])
-    const { subscribe, update } = store
+    const innerStore = writable<Page[]>([])
+    const { subscribe, update } = innerStore
 
     async function updatePage(newTitle: string, newContent: string, uploadedImages: File[], newExcistingImages: string[], page: Page) {
         if (!browser) return
@@ -171,7 +192,7 @@ function createPageStore() {
     async function getPageById(id: string) {
         if (!browser) return
 
-        const exsistingPage = get(pageStore).find((e) => e.id === id)
+        const exsistingPage = get(innerStore).find((e) => e.id === id)
         if (exsistingPage) return exsistingPage
 
         // -- Load page --
@@ -197,8 +218,7 @@ function createPageStore() {
     }
 }
 
-// const useMock = convertStringToBool(import.meta.env.VITE_USEMOCKING)
-const useMock = false
+const useMock = convertStringToBool(import.meta.env.VITE_USEMOCKING) && true
 export const pageStore = useMock ?
-    createPageStore() :
+    createMockPageStore() :
     createPageStore()

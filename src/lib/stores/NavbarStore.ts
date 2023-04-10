@@ -126,7 +126,7 @@ function createNavbarStore() {
     })
 
     // -- Update page id --
-   const updatePagePromise = pageStore.updatePageId(Link.normaliseId(newTitle), link.getId())
+    const updatePagePromise = pageStore.updatePageId(Link.normaliseId(newTitle), link.getId())
 
     link.title = newTitle
     // -- Create link --
@@ -206,8 +206,7 @@ function createNavbarStore() {
   }
 }
 
-// const useMock = convertStringToBool(import.meta.env.VITE_USEMOCKING)
-const useMock = false;
+const useMock = convertStringToBool(import.meta.env.VITE_USEMOCKING) && true
 export const navbarStore = useMock ?
   createMockNavbarStore() :
   createNavbarStore()
