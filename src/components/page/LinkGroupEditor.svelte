@@ -2,7 +2,7 @@
   import FormControlSavableText from "$components/FormHelpers/FormControlSavableText.svelte";
   import { Link, type LinkGroup } from "$lib/domain/Link";
   import { navbarStore } from "$lib/stores/NavbarStore";
-  import ToolbarDropdownEditorRow from "./ToolbarDropdownEditorRow.svelte";
+  import LinkEditor from "./LinkEditor.svelte";
 
   export let linkGroup: LinkGroup;
 
@@ -47,7 +47,7 @@
   <div class="ml-2">
     <div class="flex flex-col gap-2">
       {#if linkGroup.links.length === 1}
-        <ToolbarDropdownEditorRow
+        <LinkEditor
           link={linkGroup.links[0]}
           isEditable={false}
           {deleteLink}
@@ -55,7 +55,7 @@
         />
       {:else}
         {#each links as link (link.title)}
-          <ToolbarDropdownEditorRow
+          <LinkEditor
             {link}
             {deleteLink}
             saveLink={updateLinkTitle}
@@ -63,7 +63,7 @@
         {/each}
       {/if}
       {#if tempLink}
-        <ToolbarDropdownEditorRow
+        <LinkEditor
           link={tempLink}
           deleteLink={deleteTempLink}
           saveLink={createLink}

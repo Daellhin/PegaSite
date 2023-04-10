@@ -1,6 +1,6 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
-  import ToolbarDropdownEditor from "$components/Toolbar/ToolbarDropdownEditor.svelte";
+  import LinkGroupEditor from "$components/page/LinkGroupEditor.svelte";
   import { authStore } from "$lib/stores/AuthStore";
   import { navbarStore } from "$lib/stores/NavbarStore";
   import { pageHeadStore } from "$lib/stores/PageHeadStore";
@@ -29,7 +29,7 @@
 {#if $navbarStore}
   <div class="sm:ml-4 flex flex-col mt-3 gap-5">
     {#each $navbarStore as linkGroup}
-      <ToolbarDropdownEditor {linkGroup} />
+      <LinkGroupEditor {linkGroup} />
     {:else}
       Geen links
     {/each}
