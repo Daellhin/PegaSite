@@ -11,7 +11,7 @@
 
 <!-- Title -->
 <div class="flex flex-row items-center">
-  <h1 class="text-4xl font-semibold">{page.title || "Geen titel"}</h1>
+  <h1 class="text-4xl font-semibold">Hi {page.title || "Geen titel"}</h1>
   {#if !isPreview && $authStore}
     <div class="ml-auto">
       <EditDropdown
