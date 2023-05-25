@@ -1,7 +1,7 @@
 import { browser } from '$app/environment'
 import { EVENTS_JSON } from '$data/CalendarEventsJson'
 import { CalendarEvent, calendarEventConverter } from '$lib/domain/CalendarEvent'
-import { Collections } from '$lib/firebase/firebase'
+import { Collections } from '$lib/firebase/Firebase'
 import { convertStringToBool } from '$lib/utils/Utils'
 import dayjs from 'dayjs'
 import { writable } from 'svelte/store'
@@ -35,7 +35,7 @@ function createCalendarEventStore() {
       if (!browser) return
 
       // -- Load CalendarEvents --
-      const { firebaseApp } = await import('$lib/firebase/firebase')
+      const { firebaseApp } = await import('$lib/firebase/Firebase')
       const { getFirestore, collection, query, where, getDocs } = await import('firebase/firestore')
       const firestore = getFirestore(firebaseApp)
 
@@ -58,7 +58,7 @@ function createCalendarEventStore() {
 
     // -- Update event --
     const { getFirestore, collection, doc, setDoc } = await import('firebase/firestore')
-    const { firebaseApp } = await import('$lib/firebase/firebase')
+    const { firebaseApp } = await import('$lib/firebase/Firebase')
     const firestore = getFirestore(firebaseApp)
 
     const newDocRef = doc(
@@ -78,7 +78,7 @@ function createCalendarEventStore() {
 
     // -- Remove event --
     const { getFirestore, doc, deleteDoc } = await import('firebase/firestore')
-    const { firebaseApp } = await import('$lib/firebase/firebase')
+    const { firebaseApp } = await import('$lib/firebase/Firebase')
     const firestore = getFirestore(firebaseApp)
 
     await deleteDoc(doc(firestore, Collections.CALENDAR_EVENTS, calendarEvent.id))

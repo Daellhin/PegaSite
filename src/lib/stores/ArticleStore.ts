@@ -1,7 +1,7 @@
 import { browser } from '$app/environment'
 import { ARTICLES_JSON } from '$data/ArticlesJson'
 import { Article, articleConverter } from '$lib/domain/Article'
-import { Collections } from '$lib/firebase/firebase'
+import { Collections } from '$lib/firebase/Firebase'
 import { convertStringToBool } from '$lib/utils/Utils'
 import type { QueryDocumentSnapshot } from 'firebase/firestore'
 import { get, writable } from 'svelte/store'
@@ -57,7 +57,7 @@ function createArticleStore() {
       if (!browser) return
 
       // -- Load articles --
-      const { firebaseApp } = await import('$lib/firebase/firebase')
+      const { firebaseApp } = await import('$lib/firebase/Firebase')
       const { getFirestore, collection, query, orderBy, limit, getDocs } = await import('firebase/firestore')
       const firestore = getFirestore(firebaseApp)
 
@@ -96,7 +96,7 @@ function createArticleStore() {
 
     // -- Upload article --
     const { getFirestore, collection, doc, setDoc } = await import('firebase/firestore')
-    const { firebaseApp } = await import('$lib/firebase/firebase')
+    const { firebaseApp } = await import('$lib/firebase/Firebase')
     const firestore = getFirestore(firebaseApp)
 
     const newDocRef = doc(collection(firestore, Collections.ARTICLES)).withConverter(articleConverter)
@@ -127,7 +127,7 @@ function createArticleStore() {
 
     // -- Remove article --
     const { getFirestore, doc, deleteDoc } = await import('firebase/firestore')
-    const { firebaseApp } = await import('$lib/firebase/firebase')
+    const { firebaseApp } = await import('$lib/firebase/Firebase')
     const firestore = getFirestore(firebaseApp)
 
     await deleteDoc(doc(firestore, Collections.ARTICLES, article.id))
@@ -141,7 +141,7 @@ function createArticleStore() {
     if (!hasMoreDocuments) return
 
     // -- Load articles --
-    const { firebaseApp } = await import('$lib/firebase/firebase')
+    const { firebaseApp } = await import('$lib/firebase/Firebase')
     const { getFirestore, collection, query, orderBy, limit, getDocs, startAfter } = await import('firebase/firestore')
     const firestore = getFirestore(firebaseApp)
 
@@ -166,7 +166,7 @@ function createArticleStore() {
     if (exsistingArticle) return exsistingArticle
 
     // -- Load page --
-    const { firebaseApp } = await import('$lib/firebase/firebase')
+    const { firebaseApp } = await import('$lib/firebase/Firebase')
     const { getFirestore, doc, getDoc } = await import('firebase/firestore')
     const firestore = getFirestore(firebaseApp)
 

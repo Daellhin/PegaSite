@@ -1,7 +1,7 @@
 import { browser } from '$app/environment'
 import { PAGES_JSON } from '$data/PagesJson'
 import { Page, pageConverter } from '$lib/domain/Page'
-import { Collections } from '$lib/firebase/firebase'
+import { Collections } from '$lib/firebase/Firebase'
 import { arrayDifference, containArraysSameElements } from '$lib/utils/Array'
 import { convertStringToBool, readFileAsDataURL } from '$lib/utils/Utils'
 import dayjs from 'dayjs'
@@ -13,7 +13,7 @@ async function addPagesFromJson() {
     const pages = PAGES_JSON.map(Page.fromJson)
     await Promise.all(pages.map(async (page) => {
         const { getFirestore, doc, setDoc } = await import('firebase/firestore')
-        const { firebaseApp } = await import('$lib/firebase/firebase')
+        const { firebaseApp } = await import('$lib/firebase/Firebase')
         const firestore = getFirestore(firebaseApp)
 
         const pagesRef = doc(firestore, Collections.PAGES, page.id).withConverter(pageConverter)
@@ -101,7 +101,7 @@ function createPageStore() {
 
         // -- Update page --
         const { getFirestore, doc, updateDoc } = await import('firebase/firestore')
-        const { firebaseApp } = await import('$lib/firebase/firebase')
+        const { firebaseApp } = await import('$lib/firebase/Firebase')
         const firestore = getFirestore(firebaseApp)
 
         const linksRef = doc(firestore, Collections.PAGES, page.id)
@@ -131,7 +131,7 @@ function createPageStore() {
 
         // -- Create page --
         const { getFirestore, doc, setDoc } = await import('firebase/firestore')
-        const { firebaseApp } = await import('$lib/firebase/firebase')
+        const { firebaseApp } = await import('$lib/firebase/Firebase')
         const firestore = getFirestore(firebaseApp)
 
         const pageRef = doc(firestore, Collections.PAGES, page.id).withConverter(pageConverter)
@@ -161,7 +161,7 @@ function createPageStore() {
 
         // -- Delete page --
         const { getFirestore, doc, deleteDoc } = await import('firebase/firestore')
-        const { firebaseApp } = await import('$lib/firebase/firebase')
+        const { firebaseApp } = await import('$lib/firebase/Firebase')
         const firestore = getFirestore(firebaseApp)
 
         const pageRef = doc(firestore, Collections.PAGES, id).withConverter(pageConverter)
@@ -196,7 +196,7 @@ function createPageStore() {
         if (exsistingPage) return exsistingPage
 
         // -- Load page --
-        const { firebaseApp } = await import('$lib/firebase/firebase')
+        const { firebaseApp } = await import('$lib/firebase/Firebase')
         const { getFirestore, doc, getDoc } = await import('firebase/firestore')
         const firestore = getFirestore(firebaseApp)
 

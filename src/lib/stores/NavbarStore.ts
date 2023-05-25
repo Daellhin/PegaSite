@@ -1,7 +1,7 @@
 import { browser } from '$app/environment'
 import { LINKS_JSON } from '$data/LinksJson'
 import { Link, LinkGroup } from '$lib/domain/Link'
-import { Collections } from '$lib/firebase/firebase'
+import { Collections } from '$lib/firebase/Firebase'
 import { convertStringToBool } from '$lib/utils/Utils'
 import { writable } from 'svelte/store'
 import { pageStore } from './PageStore'
@@ -10,7 +10,7 @@ async function addLinksFromJson() {
   const links = LINKS_JSON.map(LinkGroup.fromJson)
   await Promise.all(links.map(async (linkGroup) => {
     const { getFirestore, doc, updateDoc } = await import('firebase/firestore')
-    const { firebaseApp } = await import('$lib/firebase/firebase')
+    const { firebaseApp } = await import('$lib/firebase/Firebase')
     const firestore = getFirestore(firebaseApp)
 
     const linksRef = doc(firestore, Collections.PAGES, "overview")
@@ -64,7 +64,7 @@ function createNavbarStore() {
       if (!browser) return
 
       // -- Load Navbar --
-      const { firebaseApp } = await import('$lib/firebase/firebase')
+      const { firebaseApp } = await import('$lib/firebase/Firebase')
       const { getFirestore, doc, getDoc } = await import('firebase/firestore')
       const firestore = getFirestore(firebaseApp)
 
@@ -87,7 +87,7 @@ function createNavbarStore() {
 
     // -- Create link --
     const { getFirestore, doc, updateDoc } = await import('firebase/firestore')
-    const { firebaseApp } = await import('$lib/firebase/firebase')
+    const { firebaseApp } = await import('$lib/firebase/Firebase')
     const firestore = getFirestore(firebaseApp)
 
     const linksRef = doc(firestore, Collections.PAGES, "overview")
@@ -116,7 +116,7 @@ function createNavbarStore() {
 
     // -- Delete link --
     const { getFirestore, doc, updateDoc, deleteField } = await import('firebase/firestore')
-    const { firebaseApp } = await import('$lib/firebase/firebase')
+    const { firebaseApp } = await import('$lib/firebase/Firebase')
     const firestore = getFirestore(firebaseApp)
 
     const linksRef = doc(firestore, Collections.PAGES, "overview")
@@ -151,7 +151,7 @@ function createNavbarStore() {
 
     // -- Delete link --
     const { getFirestore, doc, updateDoc, deleteField } = await import('firebase/firestore')
-    const { firebaseApp } = await import('$lib/firebase/firebase')
+    const { firebaseApp } = await import('$lib/firebase/Firebase')
     const firestore = getFirestore(firebaseApp)
 
     const linksRef = doc(firestore, Collections.PAGES, "overview")
@@ -177,7 +177,7 @@ function createNavbarStore() {
 
     // -- Delete group --
     const { getFirestore, doc, updateDoc, deleteField } = await import('firebase/firestore')
-    const { firebaseApp } = await import('$lib/firebase/firebase')
+    const { firebaseApp } = await import('$lib/firebase/Firebase')
     const firestore = getFirestore(firebaseApp)
 
     const linksRef = doc(firestore, Collections.PAGES, "overview")

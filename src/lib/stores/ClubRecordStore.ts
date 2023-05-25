@@ -6,7 +6,7 @@ import type { AthleticEvent } from '$lib/domain/data-classes/AthleticEvent'
 import type { Category } from '$lib/domain/data-classes/Category'
 import type { Discipline } from '$lib/domain/data-classes/Discipline'
 import type { Gender } from '$lib/domain/data-classes/Gender'
-import { Collections } from '$lib/firebase/firebase'
+import { Collections } from '$lib/firebase/Firebase'
 import { convertStringToBool } from '$lib/utils/Utils'
 import { writable } from 'svelte/store'
 
@@ -14,7 +14,7 @@ async function addRecordsFromJson() {
   const records = CLUB_RECORDS_JSON.map(ClubRecord.fromJSON)
   await Promise.all(records.map(async (e) => {
     const { getFirestore, doc, updateDoc, arrayUnion } = await import('firebase/firestore')
-    const { firebaseApp } = await import('$lib/firebase/firebase')
+    const { firebaseApp } = await import('$lib/firebase/Firebase')
     const firestore = getFirestore(firebaseApp)
 
     const clubrecordsRef = doc(firestore, Collections.CLUB_RECORDS, "singleDocument")
@@ -56,7 +56,7 @@ function createClubRecordStore() {
       if (!browser) return
 
       // -- Load ClubRecords --
-      const { firebaseApp } = await import('$lib/firebase/firebase')
+      const { firebaseApp } = await import('$lib/firebase/Firebase')
       const { getFirestore, doc, getDoc } = await import('firebase/firestore')
       const firestore = getFirestore(firebaseApp)
 
@@ -76,7 +76,7 @@ function createClubRecordStore() {
 
     // -- Upload record --
     const { getFirestore, doc, updateDoc, arrayUnion } = await import('firebase/firestore')
-    const { firebaseApp } = await import('$lib/firebase/firebase')
+    const { firebaseApp } = await import('$lib/firebase/Firebase')
     const firestore = getFirestore(firebaseApp)
 
     const clubrecordsRef = doc(firestore, Collections.CLUB_RECORDS, "singleDocument")
