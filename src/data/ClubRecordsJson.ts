@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import ClubRecords from '$data/json/Clubrecords.json'
+import ClubRecords from '$data/json/ClubRecords.json'
 import type { ClubRecordJson } from '$lib/domain/ClubRecord'
 import dayjs from 'dayjs'
 import customParseFormat from "dayjs/plugin/customParseFormat"
