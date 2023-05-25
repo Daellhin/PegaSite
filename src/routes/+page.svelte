@@ -44,7 +44,7 @@
   pageHeadStore.updatePageTitle("");
 </script>
 
-<h1 class="text-2xl font-bold mb-2">Hi Nieuws</h1>
+<h1 class="text-2xl font-bold mb-2">Nieuws</h1>
 
 <!-- Articles -->
 <div
