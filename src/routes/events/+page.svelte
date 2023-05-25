@@ -1,7 +1,7 @@
 <script lang="ts">
   import { calendarEventStore } from "$lib/stores/CalendarEventStore";
   import { groupBy } from "$lib/utils/Utils";
-  import InlineEvent from "$components/Events/InlineEvent.svelte";
+  import InlineEvent from "$components/events/InlineEvent.svelte";
   import { pageHeadStore } from "$lib/stores/PageHeadStore";
 
   $: groupedEvents = groupBy(

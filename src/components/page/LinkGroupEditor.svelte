@@ -1,5 +1,5 @@
 <script lang="ts">
-  import FormControlSavableText from "$components/FormHelpers/FormControlSavableText.svelte";
+  import FormControlSavableText from "$components/formHelpers/FormControlSavableText.svelte";
   import { Link, type LinkGroup } from "$lib/domain/Link";
   import { navbarStore } from "$lib/stores/NavbarStore";
   import LinkEditor from "./LinkEditor.svelte";

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
-  import FormControlDate from "$components/FormHelpers/FormControlDate.svelte";
-  import FormControlText from "$components/FormHelpers/FormControlText.svelte";
+  import FormControlDate from "$components/formHelpers/FormControlDate.svelte";
+  import FormControlText from "$components/formHelpers/FormControlText.svelte";
   import { CalendarEvent } from "$lib/domain/CalendarEvent";
   import { authStore } from "$lib/stores/AuthStore";
   import { calendarEventStore } from "$lib/stores/CalendarEventStore";

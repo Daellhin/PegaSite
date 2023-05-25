@@ -1,6 +1,6 @@
 <script lang="ts">
-  import NewRecordForm from "$components/Records/NewRecordForm.svelte";
-  import RecordsTable from "$components/Records/RecordsTable.svelte";
+  import NewRecordForm from "$components/records/NewRecordForm.svelte";
+  import RecordsTable from "$components/records/RecordsTable.svelte";
   import { Category } from "$lib/domain/data-classes/Category";
   import { clubRecordStore } from "$lib/stores/ClubRecordStore";
   import { pageHeadStore } from "$lib/stores/PageHeadStore";

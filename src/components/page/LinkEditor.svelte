@@ -1,7 +1,7 @@
 <script lang="ts">
   import ConfirmModal from "$components/ConfirmModal.svelte";
   import EditDropdown from "$components/EditDropdown.svelte";
-  import FormControlSavableText from "$components/FormHelpers/FormControlSavableText.svelte";
+  import FormControlSavableText from "$components/formHelpers/FormControlSavableText.svelte";
   import { Link } from "$lib/domain/Link";
 
   export let link: Link;

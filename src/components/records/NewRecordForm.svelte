@@ -1,5 +1,5 @@
 <script lang="ts">
-  import FormControlDate from "$components/FormHelpers/FormControlDate.svelte";
+  import FormControlDate from "$components/formHelpers/FormControlDate.svelte";
   import { RecordInstance } from "$lib/domain/RecordInstance";
   import { AthleticEvent } from "$lib/domain/data-classes/AthleticEvent";
   import { Category } from "$lib/domain/data-classes/Category";
@@ -10,8 +10,8 @@
   import { faXmark } from "@fortawesome/free-solid-svg-icons";
   import dayjs from "dayjs";
   import Fa from "svelte-fa/src/fa.svelte";
-  import FormControlCustomSelect from "../FormHelpers/FormControlCustomSelect.svelte";
-  import FormControlText from "../FormHelpers/FormControlText.svelte";
+  import FormControlCustomSelect from "../formHelpers/FormControlCustomSelect.svelte";
+  import FormControlText from "../formHelpers/FormControlText.svelte";
 
   export let showForm: boolean;
 

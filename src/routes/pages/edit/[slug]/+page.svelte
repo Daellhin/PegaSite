@@ -12,7 +12,7 @@
   import Editor from "cl-editor/src/Editor.svelte";
   import dayjs from "dayjs";
   import type { PageData } from "./$types";
-  import FormControlText from "$components/FormHelpers/FormControlText.svelte";
+  import FormControlText from "$components/formHelpers/FormControlText.svelte";
 
   export let data: PageData;
 

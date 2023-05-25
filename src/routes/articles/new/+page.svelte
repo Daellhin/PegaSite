@@ -1,7 +1,7 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
   import Dropzone from "$components/Dropzone.svelte";
-  import FormControlText from "$components/FormHelpers/FormControlText.svelte";
+  import FormControlText from "$components/formHelpers/FormControlText.svelte";
   import ArticleComponent from "$components/article/Article.svelte";
   import { Article } from "$lib/domain/Article";
   import { articleStore } from "$lib/stores/ArticleStore";
