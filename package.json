@@ -20,7 +20,7 @@
 		"@typescript-eslint/parser": "^5.61.0",
 		"autoprefixer": "^10.4.14",
 		"eslint": "^8.44.0",
-		"eslint-plugin-svelte3": "^4.0.0",
+		"eslint-plugin-svelte": "^2.32.2",
 		"firebase-tools": "^12.4.3",
 		"postcss": "^8.4.25",
 		"postcss-nesting": "^12.0.0",
