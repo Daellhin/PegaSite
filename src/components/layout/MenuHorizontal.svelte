@@ -6,18 +6,27 @@
   <ul class="menu menu-horizontal rounded-box p-2 bg-base-200">
     {#each $navbarStore as linkGroup}
       {#if linkGroup.links.length === 1}
-        <li>
-          <a href={linkGroup.links[0].getUrl()}>{linkGroup.links[0].title}</a>
-        </li>
+        <a
+          class="btn normal-case text-[1.1em]"
+          href={linkGroup.links[0].getUrl()}
+        >
+          {linkGroup.links[0].title}
+        </a>
       {:else}
-        <li class="z-10">
-          <span>{linkGroup.name}</span>
-          <ul class="rounded-box bg-base-100 p-2 shadow-2xl">
+        <div class="dropdown dropdown-hover z-10">
+          <label tabindex="0" class="btn normal-case text-[1.1em]">
+            {linkGroup.name}
+          </label>
+          <ul class="dropdown-content rounded-box bg-base-100 p-2 shadow-2xl">
             {#each linkGroup.links as linkInner}
-              <li><a href={linkInner.getUrl()}>{linkInner.title}</a></li>
+              <li>
+                <a class="text-[15px]" href={linkInner.getUrl()}>
+                  {linkInner.title}
+                </a>
+              </li>
             {/each}
           </ul>
-        </li>
+        </div>
       {/if}
     {/each}
   </ul>
