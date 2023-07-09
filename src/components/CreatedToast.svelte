@@ -22,10 +22,8 @@
 
 <div class="m-2">
   <div class="alert shadow-md text-gray-800 dark:text-gray-200">
-    <div>
-      <div class="text-info flex-shrink-0 w-6 h-6"><MdInfoOutline /></div>
-      <span>{createdText}</span>
-    </div>
+    <div class="text-info flex-shrink-0 w-6 h-6"><MdInfoOutline /></div>
+    <span>{createdText}</span>
     <div class="flex-none">
       <button class="btn btn-sm btn-ghost" on:click={removeToast}> Ok </button>
       {#if gotoUrl}
