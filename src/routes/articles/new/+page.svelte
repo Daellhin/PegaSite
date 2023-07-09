@@ -88,6 +88,7 @@
       <Dropzone bind:uploadedImages accept={"image/*"} />
     </div>
 
+    <!-- TODO move multislect to formHelper component -->
     <div class="form-control w-full max-w-sm">
       <label class="label" for="multiselect">
         <span class="label-text">Categorien:</span>
