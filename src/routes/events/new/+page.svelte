@@ -1,13 +1,13 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
   import FormControlDate from "$components/formHelpers/FormControlDate.svelte";
+  import FormControlEditor from "$components/formHelpers/FormControlEditor.svelte";
   import FormControlText from "$components/formHelpers/FormControlText.svelte";
   import { CalendarEvent } from "$lib/domain/CalendarEvent";
   import { authStore } from "$lib/stores/AuthStore";
   import { calendarEventStore } from "$lib/stores/CalendarEventStore";
   import { pageHeadStore } from "$lib/stores/PageHeadStore";
   import { pushCreatedToast } from "$lib/utils/Toast";
-  import Editor from "cl-editor";
   import dayjs from "dayjs";
 
   let title = "";
@@ -63,16 +63,7 @@
     required
   />
 
-  <div class="form-control">
-    <label class="label" for="editor">
-      <span class="label-text">Info over event:</span>
-    </label>
-    <Editor html={info} on:change={(evt) => (info = evt.detail)} />
-  </div>
+  <FormControlEditor label="Info over event:" bind:value={info} />
 
-  <button class="btn btn-primary btn-md mt-2 max-w-sm">Event aanmaken</button>
+  <button class="btn btn-primary btn-md mt-2 max-w-sm"> Event aanmaken </button>
 </form>
-
-<style lang="postcss">
-  @import "../../../css/cl-editor.postcss";
-</style>
