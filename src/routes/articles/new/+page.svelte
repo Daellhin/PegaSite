@@ -1,8 +1,9 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
   import Dropzone from "$components/Dropzone.svelte";
-  import FormControlText from "$components/formHelpers/FormControlText.svelte";
   import ArticleComponent from "$components/article/Article.svelte";
+  import FormControlMultiSelect from "$components/formHelpers/FormControlMultiSelect.svelte";
+  import FormControlText from "$components/formHelpers/FormControlText.svelte";
   import { Article } from "$lib/domain/Article";
   import { articleStore } from "$lib/stores/ArticleStore";
   import { authStore } from "$lib/stores/AuthStore";
@@ -11,7 +12,6 @@
   import { readFileAsDataURL } from "$lib/utils/Utils";
   import Editor from "cl-editor/src/Editor.svelte";
   import dayjs from "dayjs";
-  import MultiSelect from "svelte-multiselect";
 
   let title = "";
   let content = "";
@@ -88,18 +88,11 @@
       <Dropzone bind:uploadedImages accept={"image/*"} />
     </div>
 
-    <!-- TODO move multislect to formHelper component -->
-    <div class="form-control w-full max-w-sm">
-      <label class="label" for="multiselect">
-        <span class="label-text">Categorien:</span>
-      </label>
-      <MultiSelect
-        bind:selected={selectedCategories}
-        options={categories}
-        allowUserOptions={false}
-        placeholder={"Categorien"}
-      />
-    </div>
+    <FormControlMultiSelect
+      label="Categorien:"
+      bind:values={selectedCategories}
+      options={categories}
+    />
 
     <div class="form-control">
       <label class="label" for="editor">
@@ -117,5 +110,4 @@
 <style lang="postcss">
   @import "../../../css/cl-editor.postcss";
   @import "../../../css/usercontent.postcss";
-  @import "../../../css/multiselect.postcss";
 </style>

@@ -7,6 +7,7 @@
   export let required = false;
   export let size: "sm" | "xs" = "sm";
 
+  export let placeholder = "Kies";
   export let items = Array<any>();
   export let groupBy: ((e: any) => any) | undefined = undefined;
 
@@ -41,7 +42,7 @@
     on:select={handleSelect}
     class="select select-bordered border-2 font-normal"
     showChevron
-    placeholder="Kies"
+    {placeholder}
     {floatingConfig}
     {required}
   >

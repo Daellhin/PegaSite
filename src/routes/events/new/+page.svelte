@@ -47,7 +47,7 @@
     required
   />
 
-  <FormControlDate bind:value={date} label="Datum van event:" required />
+  <FormControlDate label="Datum van event:" bind:value={date} required />
 
   <FormControlText
     label="Duur van event:"
