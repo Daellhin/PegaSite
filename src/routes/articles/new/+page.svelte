@@ -101,7 +101,3 @@
     </button>
   </form>
 {/if}
-
-<style lang="postcss">
-  @import "../../../css/usercontent.postcss";
-</style>

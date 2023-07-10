@@ -1,5 +1,6 @@
 <script lang="ts">
   import EditDropdown from "$components/EditDropdown.svelte";
+  import UserContentRenderer from "$components/UserContentRenderer.svelte";
   import type { CalendarEvent } from "$lib/domain/CalendarEvent";
   import { authStore } from "$lib/stores/AuthStore";
   import { calendarEventStore } from "$lib/stores/CalendarEventStore";
@@ -44,11 +45,11 @@
       </div>
     {/if}
     {#if event.info}
-      <div class="max-w-xl mt-1.5">{@html event.info}</div>
+      <UserContentRenderer
+        content={event.info}
+        class="max-w-xl mt-1.5"
+        placeHolder=""
+      />
     {/if}
   </div>
 </div>
-
-<style lang="postcss">
-  @import "../../css/usercontent.postcss";
-</style>

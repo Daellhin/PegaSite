@@ -122,7 +122,3 @@
     >Create page</button
   >
 {/if}
-
-<style lang="postcss">
-  @import "../../../../css/usercontent.postcss";
-</style>

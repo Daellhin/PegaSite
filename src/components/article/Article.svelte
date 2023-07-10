@@ -1,6 +1,7 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
   import EditDropdown from "$components/EditDropdown.svelte";
+  import UserContentRenderer from "$components/UserContentRenderer.svelte";
   import type { Article } from "$lib/domain/Article";
   import { articleStore } from "$lib/stores/ArticleStore";
   import { authStore } from "$lib/stores/AuthStore";
@@ -72,14 +73,9 @@
   {/if}
 {/await}
 
-<!-- Content -->
-<div class="usercontent">
-  {@html article.content || "Geen inhoud"}
-</div>
+<UserContentRenderer content={article.content} />
 
 <style lang="postcss">
-  @import "../../css/usercontent.postcss";
-
   .custom-carousel :global(img) {
     @apply h-auto w-auto max-h-[27.5rem] max-w-[27.5rem] rounded-lg my-auto;
   }
