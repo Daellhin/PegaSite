@@ -19,11 +19,23 @@ function createMockAuthStore() {
   async function signOut() {
     update(() => null)
   }
+  async function updateCurrentUserEmail(email: string) {
+  }
+  async function updateCurrentUserPassword(password: string) {
+  }
+  async function updateCurrentUserName(name: string) {
+  }
+  async function createUser(email: string, password: string, displayName: string) {
+  }
 
   return {
     subscribe,
     signIn,
     signOut,
+    updateCurrentUserEmail,
+    updateCurrentUserPassword,
+    updateCurrentUserName,
+    createUser,
     known
   }
 }
@@ -49,7 +61,7 @@ function createAuthStore() {
       unsubscribe = onAuthStateChanged(auth, set)
     }
     init()
-    
+
     return unsubscribe
   })
 
@@ -73,14 +85,45 @@ function createAuthStore() {
     await signOut(auth)
   }
 
+  async function updateCurrentUserEmail(email: string) {
+    if (!auth.currentUser) return
+    const { updateEmail } = await import('firebase/auth')
+
+    await updateEmail(auth.currentUser, email);
+  }
+
+  async function updateCurrentUserPassword(password: string) {
+    if (!auth.currentUser) return
+    const { updatePassword } = await import('firebase/auth')
+
+    await updatePassword(auth.currentUser, password);
+  }
+
+  async function updateCurrentUserName(displayName: string) {
+    if (!auth.currentUser) return
+    const { updateProfile } = await import('firebase/auth')
+
+    await updateProfile(auth.currentUser, { displayName: displayName });
+  }
+
+  async function createUser(email: string, password: string, displayName: string) {
+    const { createUserWithEmailAndPassword, updateProfile } = await import('firebase/auth')
+
+    const newUser = await createUserWithEmailAndPassword(auth, email, password);
+    await updateProfile(newUser.user, { displayName: displayName });
+  }
+
   return {
     subscribe,
     signIn,
     signOut,
+    updateCurrentUserEmail,
+    updateCurrentUserPassword,
+    updateCurrentUserName,
+    createUser,
     known
   }
 }
-
 
 const useMock = convertStringToBool(import.meta.env.VITE_USEMOCKING)
 export const authStore = useMock ?

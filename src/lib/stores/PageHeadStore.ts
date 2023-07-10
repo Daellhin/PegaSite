@@ -28,5 +28,4 @@ function createPageHeadStore() {
     }
 }
 
-
 export const pageHeadStore = createPageHeadStore()

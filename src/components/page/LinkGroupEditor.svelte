@@ -1,5 +1,5 @@
 <script lang="ts">
-  import FormControlSavableText from "$components/formHelpers/FormControlSavableText.svelte";
+  import SavableTextInput from "$components/formHelpers/SavableTextInput.svelte";
   import { Link, type LinkGroup } from "$lib/domain/Link";
   import { navbarStore } from "$lib/stores/NavbarStore";
   import LinkEditor from "./LinkEditor.svelte";
@@ -32,14 +32,22 @@
   async function updateGroupTitle() {
     await navbarStore.updateGroupTitle(title, linkGroup);
   }
+  function validate(inner_value: string) {
+    const pattern = /^[a-zA-Z0-9- ]*$/g;
+    if (!inner_value || !inner_value.trim()) return "Titel moet ingevuld zijn";
+    if (!inner_value.match(pattern))
+      return "Titel mag enkel cijfers, letters, spaties, - bevatten";
+    return undefined;
+  }
 </script>
 
 <div>
   <div class="mb-2 max-w-xs">
-    <FormControlSavableText
+    <SavableTextInput
       bind:value={title}
       placeholder="Titel"
       save={updateGroupTitle}
+      {validate}
       inputStyling="text-2xl font-bold"
       transparent
     />

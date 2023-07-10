@@ -34,7 +34,7 @@
     return new Article(
       "-1", // temporary id
       dayjs(),
-      "Admin", // TODO give users a display name first
+      $authStore?.displayName || "User", // TODO give users a display name first
       selectedCategories,
       title,
       await Promise.all(uploadedImages.map(readFileAsDataURL)),

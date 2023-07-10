@@ -33,8 +33,7 @@ function createMockArticleStore() {
   async function getArticleById(id: string) {
     const exsistingArticle = get(innerStore).find((e) => e.id === id)
     return exsistingArticle || null
-}
-
+  }
 
   return {
     subscribe,
