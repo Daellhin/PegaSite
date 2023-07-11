@@ -11,8 +11,8 @@ function createMockAuthStore() {
   })
   const { subscribe, update } = store
 
-  const known = async () => Promise.resolve();
-  const dbUser = async () => Promise.resolve(new DbUser("1", "mockAdmin"))
+  const known =  Promise.resolve();
+  const dbUser = Promise.resolve(new DbUser("1", "mockAdmin"))
 
   async function signIn(email: string, password: string) {
     update(() => ({}) as User)

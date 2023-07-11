@@ -96,7 +96,7 @@
       label="Herhaal wachtwoord"
       placeholder="Wachtwoord"
       labelClass="font-semibold"
-      bind:passEdited={passEdited1}
+      bind:passEdited={passEdited2}
     />
     {#if error1 && passEdited1 && password1 != ""}
       <p class="text-error">{error1}</p>
@@ -107,9 +107,13 @@
         De sesie is al te lang actief, gelieve eerst opnieuw in te loggen
       </p>
     {/if}
-    <button class="btn btn-primary normal-case mt-3" on:click={updatePassword}>
+    <button
+      class="btn btn-primary normal-case mt-3"
+      on:click={updatePassword}
+      disabled={error1 != null || error2 != null}
+    >
       <span>Wachtwoord veranderen</span>
-      <span class="loading loading-spinner loading-xs" class:hidden={true} />
+      <span class="loading loading-spinner loading-xs" class:hidden={!saving} />
     </button>
   </div>
 {:else}
