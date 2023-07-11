@@ -19,4 +19,5 @@
   <a href="/pages/navbar" class="btn btn-primary normal-case"
     >Paginas aanpassen</a
   >
+  <a href="/users" class="btn btn-primary normal-case">Gebruikers beheren</a>
 </div>
