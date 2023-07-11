@@ -61,9 +61,13 @@
   pageHeadStore.updatePageTitle("Profiel");
 </script>
 
-<h1 class="text-2xl font-bold">Profiel</h1>
-
 {#if $authStore && init()}
+  <div class="flex flex-row gap-2 items-center">
+    <h1 class="text-2xl font-bold">Profiel</h1>
+    {#await authStore.dbUser then dbUser}
+      <div class="badge badge-primary capitalize">{dbUser.role}</div>
+    {/await}
+  </div>
   <FormControlSavableText
     bind:value={name}
     label="Naam"
@@ -108,4 +112,6 @@
       <span class="loading loading-spinner loading-xs" class:hidden={true} />
     </button>
   </div>
+{:else}
+  <h1 class="text-2xl font-bold">Profiel</h1>
 {/if}
