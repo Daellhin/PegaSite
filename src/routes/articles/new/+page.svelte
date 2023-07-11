@@ -1,17 +1,17 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
   import Dropzone from "$components/Dropzone.svelte";
-  import FormControlText from "$components/formHelpers/FormControlText.svelte";
   import ArticleComponent from "$components/article/Article.svelte";
+  import FormControlEditor from "$components/formHelpers/FormControlEditor.svelte";
+  import FormControlMultiSelect from "$components/formHelpers/FormControlMultiSelect.svelte";
+  import FormControlText from "$components/formHelpers/FormControlText.svelte";
   import { Article } from "$lib/domain/Article";
   import { articleStore } from "$lib/stores/ArticleStore";
   import { authStore } from "$lib/stores/AuthStore";
   import { pageHeadStore } from "$lib/stores/PageHeadStore";
   import { pushCreatedToast } from "$lib/utils/Toast";
   import { readFileAsDataURL } from "$lib/utils/Utils";
-  import Editor from "cl-editor/src/Editor.svelte";
   import dayjs from "dayjs";
-  import MultiSelect from "svelte-multiselect";
 
   let title = "";
   let content = "";
@@ -34,7 +34,7 @@
     return new Article(
       "-1", // temporary id
       dayjs(),
-      "Admin", // TODO give users a display name first
+      $authStore?.displayName || "User", // TODO give users a display name first
       selectedCategories,
       title,
       await Promise.all(uploadedImages.map(readFileAsDataURL)),
@@ -88,34 +88,16 @@
       <Dropzone bind:uploadedImages accept={"image/*"} />
     </div>
 
-    <!-- TODO move multislect to formHelper component -->
-    <div class="form-control w-full max-w-sm">
-      <label class="label" for="multiselect">
-        <span class="label-text">Categorien:</span>
-      </label>
-      <MultiSelect
-        bind:selected={selectedCategories}
-        options={categories}
-        allowUserOptions={false}
-        placeholder={"Categorien"}
-      />
-    </div>
+    <FormControlMultiSelect
+      label="Categorien:"
+      bind:values={selectedCategories}
+      options={categories}
+    />
 
-    <div class="form-control">
-      <label class="label" for="editor">
-        <span class="label-text">Inhoud van bericht:</span>
-      </label>
-      <Editor html={content} on:change={(evt) => (content = evt.detail)} />
-    </div>
+    <FormControlEditor label="Inhoud van artikel:" bind:value={content} />
 
-    <button class="btn btn-primary btn-md mt-2 max-w-sm"
-      >Bericht aanmaken</button
-    >
+    <button class="btn btn-primary btn-md mt-2 max-w-sm">
+      Bericht aanmaken
+    </button>
   </form>
 {/if}
-
-<style lang="postcss">
-  @import "../../../css/cl-editor.postcss";
-  @import "../../../css/usercontent.postcss";
-  @import "../../../css/multiselect.postcss";
-</style>

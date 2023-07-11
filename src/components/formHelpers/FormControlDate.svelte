@@ -23,7 +23,7 @@
   <input
     {required}
     id={inputId}
-    class="input input-bordered border-2"
+    class="input input-bordered border-2 hover:cursor-text"
     type="date"
     bind:value
   />

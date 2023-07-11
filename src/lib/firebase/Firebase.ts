@@ -18,4 +18,5 @@ export class Collections {
     static CLUB_RECORDS = "club-records"
     static CALENDAR_EVENTS = "calendar-events"
     static PAGES = "pages"
+    static USERS = "users"
 }

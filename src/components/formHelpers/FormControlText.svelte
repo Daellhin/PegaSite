@@ -3,7 +3,8 @@
   export let value: string;
   export let required = false;
   export let size: "sm" | "xs" = "sm";
-
+  
+  export let labelClass = "";
   export let placeholder: string;
 
   $: inputId = label?.replace(/[ :]/g, "").toLowerCase();
@@ -15,7 +16,7 @@
   class:max-w-xs={size === "xs"}
 >
   <label class="label" for={inputId}>
-    <span class="label-text">
+    <span class={`label-text ${labelClass}`}>
       {label}
       {#if required}
         <span class="text-red-500 font-bold">*</span>

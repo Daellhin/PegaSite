@@ -1,6 +1,8 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
   import Dropzone from "$components/Dropzone.svelte";
+  import FormControlEditor from "$components/formHelpers/FormControlEditor.svelte";
+  import FormControlText from "$components/formHelpers/FormControlText.svelte";
   import PageComponent from "$components/page/Page.svelte";
   import { Link } from "$lib/domain/Link";
   import { Page } from "$lib/domain/Page";
@@ -9,10 +11,8 @@
   import { pageStore } from "$lib/stores/PageStore";
   import { pushCreatedToast } from "$lib/utils/Toast";
   import { readFileAsDataURL } from "$lib/utils/Utils";
-  import Editor from "cl-editor/src/Editor.svelte";
   import dayjs from "dayjs";
   import type { PageData } from "./$types";
-  import FormControlText from "$components/formHelpers/FormControlText.svelte";
 
   export let data: PageData;
 
@@ -107,12 +107,7 @@
       <Dropzone bind:uploadedImages bind:existingImages accept={"image/*"} />
     </div>
 
-    <div class="form-control">
-      <label class="label" for="editor">
-        <span class="label-text">Inhoud van bericht:</span>
-      </label>
-      <Editor html={content} on:change={(evt) => (content = evt.detail)} />
-    </div>
+    <FormControlEditor label="Inhoud van bericht:" bind:value={content} />
 
     <button class="btn btn-primary btn-md mt-2 max-w-sm">
       Pagina bijwerken
@@ -127,9 +122,3 @@
     >Create page</button
   >
 {/if}
-
-<style lang="postcss">
-  @import "../../../../css/cl-editor.postcss";
-  @import "../../../../css/usercontent.postcss";
-  @import "../../../../css/multiselect.postcss";
-</style>

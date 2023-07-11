@@ -41,6 +41,7 @@
 </script>
 
 <div
+  role="application"
   class="flex items-center justify-center w-full"
   on:drop={handleDrop}
   on:dragover={ignoreDragOver}

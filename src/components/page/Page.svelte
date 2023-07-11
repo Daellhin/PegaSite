@@ -1,5 +1,6 @@
 <script lang="ts">
   import EditDropdown from "$components/EditDropdown.svelte";
+  import UserContentRenderer from "$components/UserContentRenderer.svelte";
   import type { Page } from "$lib/domain/Page";
   import { authStore } from "$lib/stores/AuthStore";
   import { Carousel } from "flowbite-svelte";
@@ -25,7 +26,6 @@
   {/if}
 </div>
 
-
 <!-- Carousel -->
 {#await Promise.all(page.createCarouselImages()) then images}
   {#if images.length > 0}
@@ -44,16 +44,10 @@
   {/if}
 {/await}
 
-<!-- Content -->
-<div class="usercontent">
-  {@html page.content || "Geen inhoud"}
-</div>
+<UserContentRenderer content={page.content} />
 
 <style lang="postcss">
-  @import "../../css/usercontent.postcss";
-
   .custom-carousel :global(img) {
     @apply h-auto w-auto max-h-[27.5rem] max-w-[27.5rem] rounded-lg my-auto;
   }
 </style>
-

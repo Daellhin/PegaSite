@@ -14,9 +14,9 @@
         </a>
       {:else}
         <div class="dropdown dropdown-hover z-10">
-          <label tabindex="0" class="btn normal-case text-[1.1em]">
+          <button tabindex="0" class="btn normal-case text-[1.1em]">
             {linkGroup.name}
-          </label>
+          </button>
           <ul class="dropdown-content rounded-box bg-base-100 p-2 shadow-2xl">
             {#each linkGroup.links as linkInner}
               <li>

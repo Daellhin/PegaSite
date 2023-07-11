@@ -17,7 +17,7 @@
       <li class="menu-title">
         <span>{$authStore.displayName || "User"}</span>
       </li>
-      <li><a href="/todo">Profiel</a></li>
+      <li><a href="/profile">Profiel</a></li>
       <li><a href="/dashboard">Dashboard</a></li>
       <li class="flex flex-row gap-1">
         <button on:click={authStore.signOut} class="w-full">
