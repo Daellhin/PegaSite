@@ -10,7 +10,7 @@
     faXmark,
   } from "@fortawesome/free-solid-svg-icons";
   import Fa from "svelte-fa/src/fa.svelte";
-  import CloudIcon from "./icons/CloudIcon.svelte";
+  import CloudIcon from "../icons/CloudIcon.svelte";
 
   export let uploadedImages: File[];
   export let existingImages: string[] = [];

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
-  import Dropzone from "$components/Dropzone.svelte";
+  import Dropzone from "$components/formHelpers/Dropzone.svelte";
   import ArticleComponent from "$components/article/Article.svelte";
   import FormControlEditor from "$components/formHelpers/FormControlEditor.svelte";
   import FormControlMultiSelect from "$components/formHelpers/FormControlMultiSelect.svelte";
