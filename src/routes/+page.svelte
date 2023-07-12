@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Card from "$components/Card.svelte";
+  import Card from "$components/article/ArticleCard.svelte";
   import ArrowLeft from "$components/icons/ArrowLeft.svelte";
   import ArrowRight from "$components/icons/ArrowRight.svelte";
   import { articleStore, paginationSize } from "$lib/stores/ArticleStore";
