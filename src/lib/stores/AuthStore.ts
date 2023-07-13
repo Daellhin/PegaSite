@@ -76,7 +76,7 @@ function createAuthStore() {
     })
   })
 
-  const dbUser = new Promise<DbUser>(async (resolve, reject) => {
+  const dbUser = new Promise<DbUser | undefined>(async (resolve, reject) => {
     const { firebaseApp } = await import('$lib/firebase/Firebase')
     const { getFirestore, doc, getDoc } = await import('firebase/firestore')
     const firestore = getFirestore(firebaseApp)
@@ -84,13 +84,16 @@ function createAuthStore() {
     let unsub = () => { }
     unsub = subscribe(async user => {
       if (user != undefined) {
-        const pageRef = doc(firestore, Collections.USERS, user.uid).withConverter(dbUserConverter)
-        const pageSnap = await getDoc(pageRef)
-        const userData = pageSnap.data()
+        try {
+          const pageRef = doc(firestore, Collections.USERS, user.uid).withConverter(dbUserConverter)
+          const pageSnap = await getDoc(pageRef)
+          const userData = pageSnap.data()
 
-        if (userData) resolve(userData)
-        else reject("User not found in database")
-
+          if (userData) resolve(userData)
+          else resolve(undefined)
+        } catch (error) {
+          resolve(undefined)
+        }
         unsub()
       }
     })

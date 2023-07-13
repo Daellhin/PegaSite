@@ -42,8 +42,8 @@
   }
 
   // Authguard
-  $: authStore.known.then(() => {
-    if (!$authStore) goto("/");
+  $: authStore.dbUser.then((dbUser) => {
+    if (!dbUser || dbUser.role != "admin") goto("/");
   });
   // Page title
   pageHeadStore.updatePageTitle("Gebruikers");
