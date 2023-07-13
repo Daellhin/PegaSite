@@ -5,6 +5,7 @@
   export let showForm: boolean;
   export let onSubmit: () => void;
   export let submitLabel = "Aanmaken";
+  export let error = "";
 </script>
 
 <form
@@ -23,5 +24,8 @@
     <slot />
   </div>
 
-  <button class="btn btn-primary btn-md mt-4">{submitLabel}</button>
+  <div class="mt-4">
+    <div class="text-error">{error}</div>
+    <button class="btn btn-primary btn-md mt-2">{submitLabel}</button>
+  </div>
 </form>

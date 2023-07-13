@@ -5,7 +5,7 @@
   export { className as class };
 </script>
 
-<div class={"alert shadow-md w-fit " + className}>
+<div class={"alert border border-base-300 w-fit " + className}>
   <div class="text-info flex-shrink-0 w-6 h-6"><MdInfoOutline /></div>
   <span>
     <slot />

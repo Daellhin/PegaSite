@@ -2,6 +2,7 @@ import { browser } from '$app/environment'
 import { DbUser, dbUserConverter } from '$lib/domain/DbUser'
 import { Collections } from '$lib/firebase/Firebase'
 import { convertStringToBool } from '$lib/utils/Utils'
+import dayjs from 'dayjs'
 import type { Auth, User } from 'firebase/auth'
 import { readable, writable } from 'svelte/store'
 
@@ -11,8 +12,8 @@ function createMockAuthStore() {
   })
   const { subscribe, update } = store
 
-  const known =  Promise.resolve();
-  const dbUser = Promise.resolve(new DbUser("1", "mockAdmin"))
+  const known = Promise.resolve();
+  const dbUser = Promise.resolve(new DbUser("1", "role", "email", "displayName", dayjs(1)))
 
   async function signIn(email: string, password: string) {
     update(() => ({}) as User)
@@ -26,8 +27,6 @@ function createMockAuthStore() {
   }
   async function updateCurrentUserName(name: string) {
   }
-  async function createUser(email: string, password: string, displayName: string) {
-  }
 
   return {
     subscribe,
@@ -36,13 +35,13 @@ function createMockAuthStore() {
     updateCurrentUserEmail,
     updateCurrentUserPassword,
     updateCurrentUserName,
-    createUser,
     known,
     dbUser
   }
 }
 
 /**
+ * 
  * Source: https://www.captaincodeman.com/lazy-loading-firebase-with-sveltekit
  */
 function createAuthStore() {
@@ -88,10 +87,10 @@ function createAuthStore() {
         const pageRef = doc(firestore, Collections.USERS, user.uid).withConverter(dbUserConverter)
         const pageSnap = await getDoc(pageRef)
         const userData = pageSnap.data()
-        
+
         if (userData) resolve(userData)
         else reject("User not found in database")
-        
+
         unsub()
       }
     })
@@ -109,30 +108,43 @@ function createAuthStore() {
 
   async function updateCurrentUserEmail(email: string) {
     if (!auth.currentUser) return
+
+    // -- Update authUser --
     const { updateEmail } = await import('firebase/auth')
 
     await updateEmail(auth.currentUser, email)
+
+    // -- Update dbUser --
+    const { firebaseApp } = await import('$lib/firebase/Firebase')
+    const { getFirestore, doc, updateDoc } = await import('firebase/firestore')
+    const firestore = getFirestore(firebaseApp)
+
+    const userRef = doc(firestore, Collections.USERS, auth.currentUser.uid)
+    await updateDoc(userRef, { email: email })
   }
 
   async function updateCurrentUserPassword(password: string) {
     if (!auth.currentUser) return
-    const { updatePassword } = await import('firebase/auth')
 
+    // -- Update authUser --
+    const { updatePassword, deleteUser } = await import('firebase/auth')
     await updatePassword(auth.currentUser, password)
   }
 
   async function updateCurrentUserName(displayName: string) {
     if (!auth.currentUser) return
+
+    // -- Update authUser --
     const { updateProfile } = await import('firebase/auth')
-
     await updateProfile(auth.currentUser, { displayName: displayName })
-  }
 
-  async function createUser(email: string, password: string, displayName: string) {
-    const { createUserWithEmailAndPassword, updateProfile } = await import('firebase/auth')
+    // -- Update dbUser --
+    const { firebaseApp } = await import('$lib/firebase/Firebase')
+    const { getFirestore, doc, updateDoc } = await import('firebase/firestore')
+    const firestore = getFirestore(firebaseApp)
 
-    const newUser = await createUserWithEmailAndPassword(auth, email, password)
-    await updateProfile(newUser.user, { displayName: displayName })
+    const userRef = doc(firestore, Collections.USERS, auth.currentUser.uid)
+    await updateDoc(userRef, { displayName: displayName })
   }
 
   return {
@@ -142,13 +154,15 @@ function createAuthStore() {
     updateCurrentUserEmail,
     updateCurrentUserPassword,
     updateCurrentUserName,
-    createUser,
     known,
     dbUser
   }
 }
 
 const useMock = convertStringToBool(import.meta.env.VITE_USEMOCKING)
+/**
+ * Store that handles authentication, and profile updates for current user
+ */
 export const authStore = useMock ?
   createMockAuthStore() :
   createAuthStore()
