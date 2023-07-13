@@ -59,7 +59,7 @@
     );
     haveValuesBeenSet = false;
     uploadedImages = [];
-    pushCreatedToast("Pagina bijgewerkt", page!.getUrl());
+    pushCreatedToast("Pagina bijgewerkt", { gotoUrl: page!.getUrl() });
   }
 
   // Authguard

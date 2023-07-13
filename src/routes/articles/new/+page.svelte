@@ -44,7 +44,7 @@
   async function saveArticle() {
     const article = await createPreviewArticle();
     await articleStore.addArticle(article, uploadedImages);
-    pushCreatedToast("Artikel aangemaakt", "/");
+    pushCreatedToast("Artikel aangemaakt",{gotoUrl: "/"});
   }
 
   // Authguard

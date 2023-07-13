@@ -26,7 +26,7 @@
       info
     );
     await calendarEventStore.addCalendarEvent(newCalendarEvent);
-    pushCreatedToast("Event aangemaakt", `/events#${newCalendarEvent.id}`);
+    pushCreatedToast("Event aangemaakt", {gotoUrl:`/events#${newCalendarEvent.id}`});
   }
 
   // Authguard
