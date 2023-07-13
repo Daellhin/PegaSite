@@ -45,7 +45,6 @@
     title = calendarEvent.title;
     info = calendarEvent.info;
     date = calendarEvent.date;
-    console.log(date)
     duration = calendarEvent.duration;
     location = calendarEvent.location;
     haveValuesBeenSet = true;

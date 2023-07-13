@@ -38,6 +38,9 @@ export class CalendarEvent {
             .format("ddd")
             .replace('.', '')
     }
+    get formattedDuration() {
+        return this.duration.replace('-', ' - ')
+    }
 
     static fromJson(json: CalendarEventJson) {
         return new CalendarEvent(

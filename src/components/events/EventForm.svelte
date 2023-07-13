@@ -1,6 +1,7 @@
 <script lang="ts">
   import FormControlDate from "$components/formHelpers/FormControlDate.svelte";
   import FormControlEditor from "$components/formHelpers/FormControlEditor.svelte";
+  import FormControlFullDuration from "$components/formHelpers/FormControlFullDuration.svelte";
   import FormControlText from "$components/formHelpers/FormControlText.svelte";
   import type { Dayjs } from "dayjs";
 
@@ -22,11 +23,7 @@
     required
   />
   <FormControlDate label="Datum van event:" bind:value={date} required />
-  <FormControlText
-    label="Duur van event:"
-    placeholder="00:00 - 00:00"
-    bind:value={duration}
-  />
+  <FormControlFullDuration label="Duur van event:" bind:value={duration} required />
   <FormControlText
     label="Locatie van event:"
     placeholder="Blauwenhoek 76, 1840 Londerzeel"

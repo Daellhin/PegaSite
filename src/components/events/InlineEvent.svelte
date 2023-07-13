@@ -26,14 +26,17 @@
 
   <!-- Middle column -->
   <div class="flex flex-col w-full">
-    <div class="text-sm font-semibold">{event.duration}</div>
+    <div class="text-sm font-semibold">{event.formattedDuration}</div>
     <div class="flex w-full">
       <div class="sm:text-3xl text-2xl font-semibold text-primary">
         {event.title}
       </div>
       {#if $authStore}
         <div class="ml-auto">
-          <EditDropdown editUrl={`/events/edit/${event.id}`} deleteHandler={removeCalendarEvent} />
+          <EditDropdown
+            editUrl={`/events/edit/${event.id}`}
+            deleteHandler={removeCalendarEvent}
+          />
         </div>
       {/if}
     </div>
