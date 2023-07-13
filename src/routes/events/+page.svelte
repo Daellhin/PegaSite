@@ -1,8 +1,9 @@
 <script lang="ts">
-  import { calendarEventStore } from "$lib/stores/CalendarEventStore";
-  import { groupBy } from "$lib/utils/Utils";
   import InlineEvent from "$components/events/InlineEvent.svelte";
+  import { authStore } from "$lib/stores/AuthStore";
+  import { calendarEventStore } from "$lib/stores/CalendarEventStore";
   import { pageHeadStore } from "$lib/stores/PageHeadStore";
+  import { groupBy } from "$lib/utils/Utils";
 
   $: groupedEvents = groupBy(
     $calendarEventStore,
@@ -13,7 +14,16 @@
   pageHeadStore.updatePageTitle("Events");
 </script>
 
-<h1 class="text-2xl font-bold mb-2">Events</h1>
+<div class="flex gap-3 mb-2">
+  <h1 class="text-2xl font-bold">Events</h1>
+  {#await authStore.known then _}
+    {#if $authStore}
+      <a class="btn btn-sm capitalize btn-primary" href="/events/new">
+        Nieuw event
+      </a>
+    {/if}
+  {/await}
+</div>
 
 <div class="sm:mx-10">
   {#if groupedEvents}
