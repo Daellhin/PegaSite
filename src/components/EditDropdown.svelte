@@ -37,7 +37,7 @@
   </button>
   <ul
     bind:this={dropdownList}
-    class={"dropdown-content menu p-2 shadow bg-base-100 rounded-box " + width}
+    class={"dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box " + width}
   >
     <li><a href={editUrl}>{editPrompt}</a></li>
     {#if hasDelete}

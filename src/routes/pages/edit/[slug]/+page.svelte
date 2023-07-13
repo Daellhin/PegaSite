@@ -1,6 +1,6 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
-  import Dropzone from "$components/Dropzone.svelte";
+  import Dropzone from "$components/formHelpers/Dropzone.svelte";
   import FormControlEditor from "$components/formHelpers/FormControlEditor.svelte";
   import FormControlText from "$components/formHelpers/FormControlText.svelte";
   import PageComponent from "$components/page/Page.svelte";
@@ -59,7 +59,7 @@
     );
     haveValuesBeenSet = false;
     uploadedImages = [];
-    pushCreatedToast("Pagina bijgewerkt", page!.getUrl());
+    pushCreatedToast("Pagina bijgewerkt", { gotoUrl: page!.getUrl() });
   }
 
   // Authguard

@@ -1,13 +1,20 @@
 <script lang="ts">
+  import { text } from "@sveltejs/kit";
+
   export let label: string;
   export let value: string;
   export let required = false;
   export let size: "sm" | "xs" = "sm";
-  
+
   export let labelClass = "";
-  export let placeholder: string;
+  export let placeholder = "";
+  export let validator: (value: string) => string | undefined = () => "";
+  export let disabled = false;
+
+  let edited = false;
 
   $: inputId = label?.replace(/[ :]/g, "").toLowerCase();
+  $: error = validator(value);
 </script>
 
 <div
@@ -28,7 +35,16 @@
     id={inputId}
     type="text"
     {placeholder}
-    class="input input-bordered border-2 w-full"
+    class="input input-bordered border-2 w-full" class:bg-base-300={disabled} class:text-slate-700={disabled}
     bind:value
+    on:focusout={() => (edited = true)}
+    disabled={disabled}
   />
+  {#if error && edited}
+    <label class="label" for={inputId}>
+      <span class={`label-text alt text-error ${labelClass}`}>
+        {error}
+      </span>
+    </label>
+  {/if}
 </div>
