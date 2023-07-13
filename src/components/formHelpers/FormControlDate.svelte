@@ -6,9 +6,8 @@
   export let required = false;
   export let size: "sm" | "xs" = "sm";
 
-  let dateInternal = value.format("YYYY-MM-DD");
+  let dateInternal = value?.format("YYYY-MM-DD");
   $: value = dayjs(dateInternal);
-  $: console.log(dateInternal);
 
   $: inputId = label?.replace(/[ :]/g, "").toLowerCase();
 </script>
