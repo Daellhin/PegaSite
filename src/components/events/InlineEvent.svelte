@@ -33,7 +33,7 @@
       </div>
       {#if $authStore}
         <div class="ml-auto">
-          <EditDropdown editUrl="/todo" deleteHandler={removeCalendarEvent} />
+          <EditDropdown editUrl={`/events/edit/${event.id}`} deleteHandler={removeCalendarEvent} />
         </div>
       {/if}
     </div>

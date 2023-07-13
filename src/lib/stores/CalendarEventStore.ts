@@ -3,8 +3,8 @@ import { EVENTS_JSON } from '$data/CalendarEventsJson'
 import { CalendarEvent, calendarEventConverter } from '$lib/domain/CalendarEvent'
 import { Collections } from '$lib/firebase/Firebase'
 import { convertStringToBool } from '$lib/utils/Utils'
-import dayjs from 'dayjs'
-import { writable } from 'svelte/store'
+import dayjs, { Dayjs } from 'dayjs'
+import { get, writable } from 'svelte/store'
 
 function createMockCalendarEventStore() {
   const store = writable<CalendarEvent[]>(undefined, set => {
@@ -18,14 +18,28 @@ function createMockCalendarEventStore() {
       return [...calendarEvents, newCalendarEvent].sort((a, b) => (a.date.isAfter(b.date) ? 1 : -1))
     })
   }
+  async function editCalendarEvent(newTitle: string, newInfo: string, newDate: Dayjs, newDuration: string, newLocation: string, calendarEvent: CalendarEvent) {
+    calendarEvent.title = newTitle
+    calendarEvent.info = newInfo
+    calendarEvent.date = newDate
+    calendarEvent.duration = newDuration
+    calendarEvent.location = newLocation
+    update((calendarEvents) => [...calendarEvents])
+  }
   async function removeCalendarEvent(calendarEvent: CalendarEvent) {
     update((calendarEvents) => (calendarEvents.filter((e) => e.id !== calendarEvent.id)))
+  }
+  function getCalendarEventById(id: string) {
+    const calendarEvents = get(store)
+    return calendarEvents.find((e) => e.id === id)
   }
 
   return {
     subscribe,
     addCalendarEvent,
-    removeCalendarEvent
+    editCalendarEvent,
+    removeCalendarEvent,
+    getCalendarEventById
   }
 }
 
@@ -34,7 +48,7 @@ function createCalendarEventStore() {
     async function init() {
       if (!browser) return
 
-      // -- Load CalendarEvents --
+      // -- Load calendarEvents --
       const { firebaseApp } = await import('$lib/firebase/Firebase')
       const { getFirestore, collection, query, where, getDocs } = await import('firebase/firestore')
       const firestore = getFirestore(firebaseApp)
@@ -54,7 +68,7 @@ function createCalendarEventStore() {
   const { subscribe, update } = store
 
   async function addCalendarEvent(newCalendarEvent: CalendarEvent) {
-      if (!browser) return
+    if (!browser) return
 
     // -- Update event --
     const { getFirestore, collection, doc, setDoc } = await import('firebase/firestore')
@@ -73,10 +87,36 @@ function createCalendarEventStore() {
     })
   }
 
+  async function editCalendarEvent(newTitle: string, newInfo: string, newDate: Dayjs, newDuration: string, newLocation: string, calendarEvent: CalendarEvent) {
+    if (!browser) return
+
+    // -- Update calendarEvent --
+    const { getFirestore, doc, updateDoc } = await import('firebase/firestore')
+    const { firebaseApp } = await import('$lib/firebase/Firebase')
+    const firestore = getFirestore(firebaseApp)
+
+    const calendarEventRef = doc(firestore, Collections.CALENDAR_EVENTS, calendarEvent.id)
+    await updateDoc(calendarEventRef, {
+      title: newTitle,
+      info: newInfo,
+      date: newDate.toDate(),
+      duration: newDuration,
+      location: newLocation
+    })
+
+    // -- Update store --
+    calendarEvent.title = newTitle
+    calendarEvent.info = newInfo
+    calendarEvent.date = newDate
+    calendarEvent.duration = newDuration
+    calendarEvent.location = newLocation
+    update((calendarEvents) => [...calendarEvents])
+  }
+
   async function removeCalendarEvent(calendarEvent: CalendarEvent) {
     if (!browser) return
 
-    // -- Remove event --
+    // -- Remove calendarEvent --
     const { getFirestore, doc, deleteDoc } = await import('firebase/firestore')
     const { firebaseApp } = await import('$lib/firebase/Firebase')
     const firestore = getFirestore(firebaseApp)
@@ -87,10 +127,20 @@ function createCalendarEventStore() {
     update((calendarEvents) => (calendarEvents.filter((e) => e.id !== calendarEvent.id)))
   }
 
+  function getCalendarEventById(id: string) {
+    if (!browser) return
+
+    // -- Get calendarEvent --
+    const calendarEvents = get(store)
+    return calendarEvents.find((e) => e.id === id)
+  }
+
   return {
     subscribe,
     addCalendarEvent,
-    removeCalendarEvent
+    editCalendarEvent,
+    removeCalendarEvent,
+    getCalendarEventById
   }
 }
 
