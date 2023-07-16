@@ -3,6 +3,7 @@
   import { clearHTMLTags } from "$lib/utils/Utils";
   import FaRegCalendar from "svelte-icons/fa/FaRegCalendar.svelte";
   import FaUser from "svelte-icons/fa/FaUser.svelte";
+  import FaUsers from "svelte-icons/fa/FaUsers.svelte";
   import Time from "svelte-time";
 
   export let article: Article;
@@ -29,13 +30,19 @@
       <div class="flex flex-row gap-3 text-sm mt-0">
         <!-- Time -->
         <div class="flex flex-row gap-1 items-center">
-          <div class="w-3 h-3"><FaRegCalendar /></div>
+          <div class="h-3"><FaRegCalendar /></div>
           <Time class="opacity-60" timestamp={article.timestamp} />
         </div>
         <!-- Author -->
         <div class="flex flex-row gap-1 items-center">
-          <div class="w-3 h-3"><FaUser /></div>
-          <span class="opacity-60">{article.author}</span>
+          <div class="h-3 my-auto">
+            {#if article.authors.length === 1}
+              <FaUser />
+            {:else}
+              <FaUsers />
+            {/if}
+          </div>
+          <span class="opacity-60">{article.authors.join(", ")}</span>
         </div>
       </div>
       <!-- Content -->

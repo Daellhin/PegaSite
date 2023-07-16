@@ -4,7 +4,7 @@ import { Timestamp, type FirestoreDataConverter } from "firebase/firestore"
 export interface ArticleJson {
     id: string
     timestamp: Timestamp
-    author: string
+    authors: string[]
     tags: string[]
     title: string
     images: string[]
@@ -15,7 +15,7 @@ export class Article {
     constructor(
         public id: string,
         public timestamp: Dayjs,
-        public author: string,
+        public authors: string[],
         public tags: string[],
         public title: string,
         public images: string[],
@@ -26,7 +26,7 @@ export class Article {
         return new Article(
             json.id,
             dayjs(json.timestamp.toMillis()),
-            json.author,
+            json.authors,
             json.tags,
             json.title,
             json.images,
@@ -35,7 +35,7 @@ export class Article {
     }
     toJson() {
         return {
-            author: this.author,
+            authors: this.authors,
             content: this.content,
             id: this.id,
             images: this.images,

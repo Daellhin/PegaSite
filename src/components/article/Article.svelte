@@ -8,6 +8,7 @@
   import { Carousel } from "flowbite-svelte";
   import FaRegCalendar from "svelte-icons/fa/FaRegCalendar.svelte";
   import FaUser from "svelte-icons/fa/FaUser.svelte";
+  import FaUsers from "svelte-icons/fa/FaUsers.svelte";
   import Time from "svelte-time";
 
   export let article: Article;
@@ -33,18 +34,22 @@
   <!-- Article data -->
   <div class="flex flex-row gap-3 ml-1">
     <!-- Time -->
-    <div class="flex flex-row gap-1 items-center">
-      <div class="w-4 h-4">
+    <div class="flex flex-row gap-1 items-center" title="Aangemaakt op">
+      <div class="h-4">
         <FaRegCalendar />
       </div>
       <Time class="opacity-60 text-md" timestamp={article.timestamp} />
     </div>
     <!-- Metadata -->
-    <div class="flex flex-row gap-1 items-center">
-      <div class="w-4 h-4">
-        <FaUser />
+    <div class="flex flex-row gap-1 items-center" title="Auteurs">
+      <div class="h-4">
+        {#if article.authors.length === 1}
+          <FaUser />
+        {:else}
+          <FaUsers />
+        {/if}
       </div>
-      <span class="opacity-60 text-md">{article.author}</span>
+      <span class="opacity-60 text-md">{article.authors.join(", ")}</span>
     </div>
   </div>
   <!-- Tags -->
