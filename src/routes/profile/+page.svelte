@@ -65,7 +65,9 @@
   <div class="flex flex-row gap-2 items-center">
     <h1 class="text-2xl font-bold">Profiel</h1>
     {#await authStore.dbUser then dbUser}
-      <div class="badge badge-primary capitalize">{dbUser.role}</div>
+      {#if dbUser}
+        <div class="badge badge-primary capitalize">{dbUser.role}</div>
+      {/if}
     {/await}
   </div>
   <FormControlSavableText
@@ -74,6 +76,8 @@
     placeholder="Naam"
     save={() => authStore.updateCurrentUserName(name)}
     labelClass="font-semibold"
+    required
+    tooltip="Artikels aangemaakt onder oude profielnaam zullen deze naam als author behouden"
   />
   <FormControlSavableText
     bind:value={email}
