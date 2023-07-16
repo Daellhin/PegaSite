@@ -31,7 +31,7 @@
         <!-- Time -->
         <div class="flex flex-row gap-1 items-center">
           <div class="h-3"><FaRegCalendar /></div>
-          <Time class="opacity-60" timestamp={article.timestamp} />
+          <Time class="opacity-60" timestamp={article.createdAt} />
         </div>
         <!-- Author -->
         <div class="flex flex-row gap-1 items-center">

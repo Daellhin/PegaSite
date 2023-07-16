@@ -3,7 +3,7 @@ import { Timestamp } from "firebase/firestore"
 
 export const ARTICLE: ArticleJson = {
     id: "1",
-    timestamp: new Timestamp(Math.round(Date.now() / 1000), 0),
+    createdAt: new Timestamp(Math.round(Date.now() / 1000), 0),
     authors: ["Lorin Speybrouck"],
     tags: ["Belangrijk", "Algemeen"],
     title: "Clubfeest 2023",

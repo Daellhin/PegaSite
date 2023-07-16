@@ -62,7 +62,7 @@ function createArticleStore() {
 
       const q = query(
         collection(firestore, Collections.ARTICLES),
-        orderBy('timestamp', 'desc'),
+        orderBy('createdAt', 'desc'),
         limit(paginationSize + 1)
       ).withConverter(articleConverter)
       const snapshot = await getDocs(q)
@@ -146,7 +146,7 @@ function createArticleStore() {
 
     const q = query(
       collection(firestore, Collections.ARTICLES),
-      orderBy('timestamp', 'desc'),
+      orderBy('createdAt', 'desc'),
       startAfter(lastRef),
       limit(paginationSize)
     ).withConverter(articleConverter)

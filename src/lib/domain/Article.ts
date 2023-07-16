@@ -3,7 +3,7 @@ import { Timestamp, type FirestoreDataConverter } from "firebase/firestore"
 
 export interface ArticleJson {
     id: string
-    timestamp: Timestamp
+    createdAt: Timestamp
     authors: string[]
     tags: string[]
     title: string
@@ -14,7 +14,7 @@ export interface ArticleJson {
 export class Article {
     constructor(
         public id: string,
-        public timestamp: Dayjs,
+        public createdAt: Dayjs,
         public authors: string[],
         public tags: string[],
         public title: string,
@@ -25,7 +25,7 @@ export class Article {
     static fromJson(json: ArticleJson) {
         return new Article(
             json.id,
-            dayjs(json.timestamp.toMillis()),
+            dayjs(json.createdAt.toMillis()),
             json.authors,
             json.tags,
             json.title,
@@ -40,13 +40,13 @@ export class Article {
             id: this.id,
             images: this.images,
             tags: this.tags,
-            timestamp: Timestamp.fromDate(this.timestamp.toDate()),
+            createdAt: Timestamp.fromDate(this.createdAt.toDate()),
             title: this.title
         } as ArticleJson
     }
 
     public isRecent(days = 5) {
-        return this.timestamp.isAfter(dayjs().subtract(days, 'day'))
+        return this.createdAt.isAfter(dayjs().subtract(days, 'day'))
     }
 
     public createCarouselImages() {
