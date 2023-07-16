@@ -9,6 +9,7 @@ export interface ArticleJson {
     title: string
     images: string[]
     content: string
+    lastUpdate: Timestamp | undefined
 }
 
 export class Article {
@@ -19,7 +20,8 @@ export class Article {
         public tags: string[],
         public title: string,
         public images: string[],
-        public content: string
+        public content: string,
+        public lastUpdate?: Dayjs
     ) { }
 
     static fromJson(json: ArticleJson) {
@@ -30,7 +32,8 @@ export class Article {
             json.tags,
             json.title,
             json.images,
-            json.content
+            json.content,
+            json.lastUpdate ? dayjs(json.lastUpdate.toMillis()) : undefined
         )
     }
     toJson() {
@@ -41,7 +44,8 @@ export class Article {
             images: this.images,
             tags: this.tags,
             createdAt: Timestamp.fromDate(this.createdAt.toDate()),
-            title: this.title
+            title: this.title,
+            lastUpdate: this.lastUpdate ? Timestamp.fromDate(this.lastUpdate.toDate()) : undefined
         } as ArticleJson
     }
 

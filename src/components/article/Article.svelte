@@ -37,19 +37,27 @@
 <div class="sm:flex flex-row gap-3 items-center justify flex-wrap">
   <!-- Article data -->
   <div class="flex flex-row gap-3 ml-1">
-    <!-- Edited at -->
-    <div class="flex flex-row gap-1 items-center " title="Laast bijgewerkt op">
-      <div class="h-4">
-        <Fa icon={faPenToSquare} />
+    <!-- Last update -->
+    {#if article.lastUpdate}
+      <div class="flex flex-row gap-1 items-center" title="Laast bijgewerkt op">
+        <div class="h-4">
+          <Fa icon={faPenToSquare} />
+        </div>
+        <Time
+          class="opacity-60 text-md whitespace-nowrap"
+          timestamp={article.lastUpdate}
+        />
       </div>
-      <Time class="opacity-60 text-md whitespace-nowrap" timestamp={article.createdAt} />
-    </div>
+    {/if}
     <!-- Created at -->
     <div class="flex flex-row gap-1 items-center" title="Aangemaakt op">
       <div class="h-4">
         <Fa icon={faCalendar} />
       </div>
-      <Time class="opacity-60 text-md whitespace-nowrap" timestamp={article.createdAt} />
+      <Time
+        class="opacity-60 text-md whitespace-nowrap"
+        timestamp={article.createdAt}
+      />
     </div>
     <!-- Authors -->
     <div class="flex flex-row gap-1 items-center" title="Auteurs">
