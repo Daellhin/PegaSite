@@ -1,6 +1,6 @@
-import type { Dayjs } from "dayjs";
-import dayjs from "dayjs";
-import type { FirestoreDataConverter } from "firebase/firestore";
+import type { Dayjs } from "dayjs"
+import dayjs from "dayjs"
+import type { FirestoreDataConverter } from "firebase/firestore"
 
 export interface DbUserJson {
     role: string

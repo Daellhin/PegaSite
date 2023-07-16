@@ -1,8 +1,13 @@
 <script lang="ts">
+  import dayjs, { Dayjs } from "dayjs";
+
   export let label: string;
-  export let value: Date;
+  export let value: Dayjs;
   export let required = false;
   export let size: "sm" | "xs" = "sm";
+
+  let dateInternal = value?.format("YYYY-MM-DD");
+  $: value = dayjs(dateInternal);
 
   $: inputId = label?.replace(/[ :]/g, "").toLowerCase();
 </script>
@@ -25,6 +30,6 @@
     id={inputId}
     class="input input-bordered border-2 hover:cursor-text"
     type="date"
-    bind:value
+    bind:value={dateInternal}
   />
 </div>

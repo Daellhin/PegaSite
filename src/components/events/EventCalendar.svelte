@@ -30,7 +30,7 @@
             </div>
           </div>
           <div class="flex flex-col">
-            <div class="text-xs font-semibold">{event.duration}</div>
+            <div class="text-xs font-semibold">{event.formattedDuration}</div>
             <div class="flex items-center h-full text-lg font-semibold">
               {event.title}
             </div>

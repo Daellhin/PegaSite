@@ -1,5 +1,5 @@
 <script lang="ts">
-  import ArticleComponent from "$components/article/Article.svelte";
+  import ArticleComponent from "$components/article/ArticleComponent.svelte";
   import type { Article } from "$lib/domain/Article";
   import { articleStore } from "$lib/stores/ArticleStore";
   import { pageHeadStore } from "$lib/stores/PageHeadStore";

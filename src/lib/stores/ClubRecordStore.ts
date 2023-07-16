@@ -32,7 +32,7 @@ function createMockClubRecordStore() {
   })
   const { subscribe, update } = store
 
-  async function add(discipline: Discipline, category: Category, gender: Gender, athleticEvent: AthleticEvent, newRecordInstance: RecordInstance) {
+  async function createClubRecord(discipline: Discipline, category: Category, gender: Gender, athleticEvent: AthleticEvent, newRecordInstance: RecordInstance) {
     update((clubRecords) => {
       const existingRecord = clubRecords.find((e) => e.isOfType(discipline, category, gender, athleticEvent))
       if (!existingRecord) {
@@ -46,7 +46,7 @@ function createMockClubRecordStore() {
 
   return {
     subscribe,
-    add
+    createClubRecord,
   }
 }
 
@@ -71,7 +71,7 @@ function createClubRecordStore() {
   })
   const { subscribe, update } = store
 
-  async function add(discipline: Discipline, category: Category, gender: Gender, athleticEvent: AthleticEvent, newRecordInstance: RecordInstance) {
+  async function createClubRecord(discipline: Discipline, category: Category, gender: Gender, athleticEvent: AthleticEvent, newRecordInstance: RecordInstance) {
     if (!browser) return
 
     // -- Upload record --
@@ -99,7 +99,7 @@ function createClubRecordStore() {
 
   return {
     subscribe,
-    add
+    createClubRecord,
   }
 }
 

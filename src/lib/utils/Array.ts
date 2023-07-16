@@ -8,7 +8,7 @@ export function containArraysSameElements<T>(array1: T[], array2: T[]) {
 }
 
 export function arrayDifference<T>(a1: T[], a2: T[]) {
-    return a1.filter(e => a2.indexOf(e) < 0);
+    return a1.filter(e => a2.indexOf(e) < 0)
 }
 
 export function filterValuesInMap<K, V>(map: Map<K, V[]> | undefined, predicate: (e: V) => boolean) {
@@ -34,4 +34,3 @@ export function getMapValues<K, V>(map: Map<K, V[]> | undefined) {
     if (!map) return undefined
     return Array.from(map).map(([, value]) => value)
 }
-

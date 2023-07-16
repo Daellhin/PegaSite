@@ -44,7 +44,7 @@
   {/if}
 {/await}
 
-<UserContentRenderer content={page.content} />
+<UserContentRenderer content={page.content} showLinks />
 
 <style lang="postcss">
   .custom-carousel :global(img) {

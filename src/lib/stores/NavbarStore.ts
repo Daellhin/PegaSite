@@ -28,12 +28,15 @@ function createMockNavbarStore() {
    * Also creates apropriate page
    */
   async function createLink(link: Link, group: LinkGroup) {
-    //pageStore.createBlankPage(link)
     group.links.push(link)
     update((linkGroups) => [...linkGroups])
   }
   async function updateLinkTitle(newTitle: string, link: Link, _group: LinkGroup) {
     link.title = newTitle
+    update((linkGroups) => [...linkGroups])
+  }
+  async function updateGroupTitle(title: string, linkGroup: LinkGroup) {
+    linkGroup.name = title
     update((linkGroups) => [...linkGroups])
   }
   /**
@@ -44,17 +47,13 @@ function createMockNavbarStore() {
     group.links = group.links.filter((e) => e !== link)
     update((linkGroups) => [...linkGroups])
   }
-  async function updateGroupTitle(title: string, linkGroup: LinkGroup) {
-    linkGroup.name = title
-    update((linkGroups) => [...linkGroups])
-  }
 
   return {
     subscribe,
     createLink,
     updateLinkTitle,
+    updateGroupTitle,
     deleteLink,
-    updateGroupTitle
   }
 }
 
@@ -142,6 +141,32 @@ function createNavbarStore() {
     update((linkGroups) => [...linkGroups])
   }
 
+  async function updateGroupTitle(title: string, linkGroup: LinkGroup) {
+    if (!browser) return
+    if (linkGroup.name === title) return
+
+    // -- Delete group --
+    const { getFirestore, doc, updateDoc, deleteField } = await import('firebase/firestore')
+    const { firebaseApp } = await import('$lib/firebase/Firebase')
+    const firestore = getFirestore(firebaseApp)
+
+    const linksRef = doc(firestore, Collections.PAGES, "overview")
+    const oldObjectKey = `${linkGroup.name}`
+    const deleteGroupPromise = updateDoc(linksRef, {
+      [oldObjectKey]: deleteField()
+    })
+
+    linkGroup.name = title
+    // -- Create link --
+    const createGroupPromise = updateDoc(linksRef, linkGroup.toFirebaseJson())
+
+    // TODO add transaction
+    await Promise.all([deleteGroupPromise, createGroupPromise])
+
+    // -- Update store --
+    update((linkGroups) => [...linkGroups])
+  }
+
   /**
    * Also deletes apropriate page
    */
@@ -171,38 +196,12 @@ function createNavbarStore() {
     update((linkGroups) => [...linkGroups])
   }
 
-  async function updateGroupTitle(title: string, linkGroup: LinkGroup) {
-    if (!browser) return
-    if (linkGroup.name === title) return
-
-    // -- Delete group --
-    const { getFirestore, doc, updateDoc, deleteField } = await import('firebase/firestore')
-    const { firebaseApp } = await import('$lib/firebase/Firebase')
-    const firestore = getFirestore(firebaseApp)
-
-    const linksRef = doc(firestore, Collections.PAGES, "overview")
-    const oldObjectKey = `${linkGroup.name}`
-    const deleteGroupPromise = updateDoc(linksRef, {
-      [oldObjectKey]: deleteField()
-    })
-
-    linkGroup.name = title
-    // -- Create link --
-    const createGroupPromise = updateDoc(linksRef, linkGroup.toFirebaseJson())
-
-    // TODO add transaction
-    await Promise.all([deleteGroupPromise, createGroupPromise])
-
-    // -- Update store --
-    update((linkGroups) => [...linkGroups])
-  }
-
   return {
     subscribe,
     createLink,
     updateLinkTitle,
+    updateGroupTitle,
     deleteLink,
-    updateGroupTitle
   }
 }
 

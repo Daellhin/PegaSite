@@ -3,50 +3,54 @@ import { Timestamp, type FirestoreDataConverter } from "firebase/firestore"
 
 export interface ArticleJson {
     id: string
-    timestamp: Timestamp
-    author: string
+    createdAt: Timestamp
+    authors: string[]
     tags: string[]
     title: string
     images: string[]
     content: string
+    lastUpdate: Timestamp | undefined
 }
 
 export class Article {
     constructor(
         public id: string,
-        public timestamp: Dayjs,
-        public author: string,
+        public createdAt: Dayjs,
+        public authors: string[],
         public tags: string[],
         public title: string,
         public images: string[],
-        public content: string
+        public content: string,
+        public lastUpdate?: Dayjs
     ) { }
 
     static fromJson(json: ArticleJson) {
         return new Article(
             json.id,
-            dayjs(json.timestamp.toMillis()),
-            json.author,
+            dayjs(json.createdAt.toMillis()),
+            json.authors,
             json.tags,
             json.title,
             json.images,
-            json.content
+            json.content,
+            json.lastUpdate ? dayjs(json.lastUpdate.toMillis()) : undefined
         )
     }
     toJson() {
         return {
-            author: this.author,
+            authors: this.authors,
             content: this.content,
             id: this.id,
             images: this.images,
             tags: this.tags,
-            timestamp: Timestamp.fromDate(this.timestamp.toDate()),
-            title: this.title
+            createdAt: Timestamp.fromDate(this.createdAt.toDate()),
+            title: this.title,
+            lastUpdate: this.lastUpdate ? Timestamp.fromDate(this.lastUpdate.toDate()) : undefined
         } as ArticleJson
     }
 
     public isRecent(days = 5) {
-        return this.timestamp.isAfter(dayjs().subtract(days, 'day'))
+        return this.createdAt.isAfter(dayjs().subtract(days, 'day'))
     }
 
     public createCarouselImages() {

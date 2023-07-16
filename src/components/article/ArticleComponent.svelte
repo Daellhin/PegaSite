@@ -5,16 +5,21 @@
   import type { Article } from "$lib/domain/Article";
   import { articleStore } from "$lib/stores/ArticleStore";
   import { authStore } from "$lib/stores/AuthStore";
+  import { faCalendar } from "@fortawesome/free-regular-svg-icons";
+  import {
+    faPenToSquare,
+    faUser,
+    faUsers,
+  } from "@fortawesome/free-solid-svg-icons";
   import { Carousel } from "flowbite-svelte";
-  import FaRegCalendar from "svelte-icons/fa/FaRegCalendar.svelte";
-  import FaUser from "svelte-icons/fa/FaUser.svelte";
+  import Fa from "svelte-fa/src/fa.svelte";
   import Time from "svelte-time";
 
   export let article: Article;
   export let isPreview = false;
 
   async function removeArticle() {
-    await articleStore.removeArticle(article);
+    await articleStore.deleteArticle(article);
     goto("/");
   }
 </script>
@@ -24,27 +29,45 @@
   <h1 class="text-4xl font-semibold">{article.title || "Geen titel"}</h1>
   {#if !isPreview && $authStore}
     <div class="ml-auto">
-      <EditDropdown editUrl="/todo" deleteHandler={removeArticle} />
+      <EditDropdown
+        editUrl={"/articles/edit/" + article.id}
+        deleteHandler={removeArticle}
+      />
     </div>
   {/if}
 </div>
 
-<div class="sm:flex flex-row gap-3 items-center justify">
+<div class="sm:flex flex-row gap-3 items-center justify flex-wrap">
   <!-- Article data -->
   <div class="flex flex-row gap-3 ml-1">
-    <!-- Time -->
-    <div class="flex flex-row gap-1 items-center">
-      <div class="w-4 h-4">
-        <FaRegCalendar />
+    <!-- Last update -->
+    {#if article.lastUpdate}
+      <div class="flex flex-row gap-1 items-center" title="Laast bijgewerkt op">
+        <div class="h-4">
+          <Fa icon={faPenToSquare} />
+        </div>
+        <Time
+          class="opacity-60 text-md whitespace-nowrap"
+          timestamp={article.lastUpdate}
+        />
       </div>
-      <Time class="opacity-60 text-md" timestamp={article.timestamp} />
+    {/if}
+    <!-- Created at -->
+    <div class="flex flex-row gap-1 items-center" title="Aangemaakt op">
+      <div class="h-4">
+        <Fa icon={faCalendar} />
+      </div>
+      <Time
+        class="opacity-60 text-md whitespace-nowrap"
+        timestamp={article.createdAt}
+      />
     </div>
-    <!-- Metadata -->
-    <div class="flex flex-row gap-1 items-center">
-      <div class="w-4 h-4">
-        <FaUser />
+    <!-- Authors -->
+    <div class="flex flex-row gap-1 items-center" title="Auteurs">
+      <div class="h-4">
+        <Fa icon={article.authors.length === 1 ? faUser : faUsers} />
       </div>
-      <span class="opacity-60 text-md">{article.author}</span>
+      <span class="opacity-60 text-md">{article.authors.join(", ")}</span>
     </div>
   </div>
   <!-- Tags -->
@@ -73,7 +96,7 @@
   {/if}
 {/await}
 
-<UserContentRenderer content={article.content} />
+<UserContentRenderer content={article.content} showLinks />
 
 <style lang="postcss">
   .custom-carousel :global(img) {

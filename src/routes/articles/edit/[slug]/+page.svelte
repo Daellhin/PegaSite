@@ -1,39 +1,50 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
+  import ArticleComponent from "$components/article/ArticleComponent.svelte";
   import Dropzone from "$components/formHelpers/Dropzone.svelte";
   import FormControlEditor from "$components/formHelpers/FormControlEditor.svelte";
+  import FormControlMultiSelect from "$components/formHelpers/FormControlMultiSelect.svelte";
   import FormControlText from "$components/formHelpers/FormControlText.svelte";
-  import PageComponent from "$components/page/Page.svelte";
-  import { Link } from "$lib/domain/Link";
-  import { Page } from "$lib/domain/Page";
+  import { Article } from "$lib/domain/Article";
+  import { CategoryValues } from "$lib/domain/Category";
+  import { articleStore } from "$lib/stores/ArticleStore";
   import { authStore } from "$lib/stores/AuthStore";
   import { pageHeadStore } from "$lib/stores/PageHeadStore";
-  import { pageStore } from "$lib/stores/PageStore";
   import { pushCreatedToast } from "$lib/utils/Toast";
   import { readFileAsDataURL } from "$lib/utils/Utils";
+  import type { Dayjs } from "dayjs";
   import dayjs from "dayjs";
   import type { PageData } from "./$types";
 
   export let data: PageData;
 
-  let title = "";
-  let content = "";
+  let lastUpdate: any;
+  let authors: string[];
+  let tags: string[];
+  let title: string;
   let uploadedImages: File[] = [];
   let existingImages: string[];
+  let content: string;
+  let createdAt: Dayjs;
 
-  let page: Page | undefined | null;
+  let article: Article | undefined | null;
 
-  async function updatePage() {
-    await pageStore.updatePage(
+  async function updateArticle() {
+    await articleStore.updateArticle(
+      authors,
+      tags,
       title,
       content,
+      lastUpdate,
       uploadedImages,
       existingImages,
-      page!
+      article!
     );
     haveValuesBeenSet = false;
     uploadedImages = [];
-    pushCreatedToast("Pagina gewijzigd", { gotoUrl: page!.getUrl() });
+    pushCreatedToast("Artikel gewijzigd", {
+      gotoUrl: "/articles/" + article!.id,
+    });
   }
 
   // -- Preview --
@@ -41,29 +52,38 @@
   function togglePreview() {
     showPreview = !showPreview;
   }
-  async function createPreviewPage() {
+  async function createPreviewArticle() {
     const newImages = await Promise.all(uploadedImages.map(readFileAsDataURL));
-    return new Page(
+    return new Article(
       "-1",
-      dayjs(),
+      createdAt,
+      authors,
+      tags,
       title,
       [...existingImages, ...newImages],
-      content
+      content,
+      lastUpdate
     );
   }
 
   // -- Data loading --
   let haveValuesBeenSet = false;
-  $: $pageStore && loadPage(data);
-  $: if (!haveValuesBeenSet && page) setValues(page);
+  $: $articleStore && loadArticle(data);
+  $: if (!haveValuesBeenSet && article) setValues(article);
 
-  async function loadPage(data: PageData) {
-    page = await pageStore.getPageById(data.id);
+  async function loadArticle(data: PageData) {
+    article = await articleStore.getArticleById(data.id);
   }
-  function setValues(page: Page) {
-    title = page.title;
-    content = page.content;
-    existingImages = page.images;
+  function setValues(article: Article) {
+    authors = article.authors;
+    if ($authStore!.displayName && !authors.indexOf($authStore!.displayName))
+      authors.push($authStore!.displayName);
+    tags = article.tags;
+    title = article.title;
+    existingImages = article.images;
+    content = article.content;
+    createdAt = article.createdAt;
+    lastUpdate = dayjs();
     haveValuesBeenSet = true;
   }
 
@@ -72,37 +92,37 @@
     if (!$authStore) goto("/");
   });
   // -- Page title --
-  pageHeadStore.updatePageTitle("Pagina wijzigen");
+  pageHeadStore.updatePageTitle("Artikel wijzigen");
 </script>
 
 {#if showPreview}
-  <!-- Page preview -->
-  {#await createPreviewPage()}
+  <!-- Article preview -->
+  {#await createPreviewArticle()}
     <div>Loadig</div>
-  {:then previewPage}
+  {:then previewArticle}
     <button class="btn btn-primary btn-xs normal-case" on:click={togglePreview}>
       Sluit preview
-    </button>ca
+    </button>
     <div class="md:mx-2 mb-4 sm:mb-10">
-      <PageComponent page={previewPage} isPreview={true} />
+      <ArticleComponent article={previewArticle} isPreview={true} />
     </div>
   {/await}
-{:else if page === undefined}
+{:else if article === undefined}
   Loading
-{:else if page}
-  <!-- Page editor -->
+{:else if article}
+  <!-- Article editor -->
   <div class="flex flex-row gap-3 items-center mb-1">
-    <h1 class="text-2xl font-bold">Pagina wijzigen</h1>
+    <h1 class="text-2xl font-bold">Artikel wijzigen</h1>
     <button class="btn btn-primary btn-xs normal-case" on:click={togglePreview}>
       Toon preview
     </button>
   </div>
 
-  <form class="flex flex-col gap-2" on:submit={updatePage}>
+  <form class="flex flex-col gap-2" on:submit={updateArticle}>
     <FormControlText
-      label="Titel van pagina:"
+      label="Titel van artikel:"
       placeholder="Titel"
-      value={title}
+      bind:value={title}
       required
     />
 
@@ -113,7 +133,13 @@
       <Dropzone bind:uploadedImages bind:existingImages accept={"image/*"} />
     </div>
 
-    <FormControlEditor label="Inhoud van bericht:" bind:value={content} />
+    <FormControlMultiSelect
+      label="Categorieën:"
+      bind:values={tags}
+      options={CategoryValues}
+    />
+
+    <FormControlEditor label="Inhoud van artikel:" bind:value={content} />
 
     <button class="btn btn-primary btn-md mt-2 max-w-sm">
       Wijzigingen opslaan
@@ -121,10 +147,4 @@
   </form>
 {:else}
   <div>"{data.id}": not found</div>
-  <button
-    class="btn btn-primary"
-    on:click={() =>
-      pageStore.createBlankPage(data.id, Link.titleFromId(data.id))}
-    >Create page</button
-  >
 {/if}

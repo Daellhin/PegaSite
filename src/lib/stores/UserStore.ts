@@ -45,8 +45,8 @@ function createUserStore() {
     const { getFirestore, doc, setDoc } = await import('firebase/firestore')
     const firestore = getFirestore(firebaseApp)
 
-    const creationTimestamp = dayjs(Number((authUser.metadata as any).createdAt));
-    const dbUser = new DbUser(authUser.uid, role, authUser.email!, displayName, creationTimestamp);
+    const creationTimestamp = dayjs(Number((authUser.metadata as any).createdAt))
+    const dbUser = new DbUser(authUser.uid, role, authUser.email!, displayName, creationTimestamp)
     const dbUserRef = doc(firestore, Collections.USERS, authUser.uid).withConverter(dbUserConverter)
     await setDoc(dbUserRef, dbUser)
 
@@ -74,12 +74,8 @@ function createUserStore() {
   return {
     subscribe,
     createUser,
-    updateUserRole
+    updateUserRole,
   }
-}
-
-async function deleteUser(uid: string) {
-
 }
 
 //const useMock = convertStringToBool(import.meta.env.VITE_USEMOCKING)

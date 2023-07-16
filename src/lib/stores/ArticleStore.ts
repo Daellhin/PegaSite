@@ -2,8 +2,10 @@ import { browser } from '$app/environment'
 import { ARTICLES_JSON } from '$data/ArticlesJson'
 import { Article, articleConverter } from '$lib/domain/Article'
 import { Collections } from '$lib/firebase/Firebase'
+import { arrayDifference, containArraysSameElements } from '$lib/utils/Array'
 import { convertStringToBool } from '$lib/utils/Utils'
-import type { QueryDocumentSnapshot } from 'firebase/firestore'
+import type { Dayjs } from 'dayjs'
+import { Timestamp, type QueryDocumentSnapshot } from 'firebase/firestore'
 import { get, writable } from 'svelte/store'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -21,26 +23,29 @@ function createMockArticleStore() {
   })
   const { subscribe, update } = innerStore
 
-  async function addArticle(newArticle: Article, images: File[]) {
-    update((articles) => ([newArticle, ...articles]))
-  }
-  async function removeArticle(article: Article) {
-    update((articles) => (articles.filter((e) => e.id !== article.id)))
-  }
   async function loadMoreArticles() {
     return
+  }
+  async function createArticle(newArticle: Article, images: File[]) {
+    update((articles) => ([newArticle, ...articles]))
   }
   async function getArticleById(id: string) {
     const exsistingArticle = get(innerStore).find((e) => e.id === id)
     return exsistingArticle || null
   }
+  async function updateArticle(newAuthors: string[], newTags: string[], newTitle: string, newContent: string, lastUpdate: Dayjs, uploadedImages: File[], newExcistingImages: string[], article: Article) {
+  }
+  async function deleteArticle(article: Article) {
+    update((articles) => (articles.filter((e) => e.id !== article.id)))
+  }
 
   return {
     subscribe,
-    addArticle,
-    removeArticle,
     loadMoreArticles,
-    getArticleById
+    createArticle,
+    getArticleById,
+    updateArticle,
+    deleteArticle,
   }
 }
 
@@ -62,7 +67,7 @@ function createArticleStore() {
 
       const q = query(
         collection(firestore, Collections.ARTICLES),
-        orderBy('timestamp', 'desc'),
+        orderBy('createdAt', 'desc'),
         limit(paginationSize + 1)
       ).withConverter(articleConverter)
       const snapshot = await getDocs(q)
@@ -79,7 +84,30 @@ function createArticleStore() {
   })
   const { subscribe, update } = innerStore
 
-  async function addArticle(newArticle: Article, images: File[]) {
+  async function loadMoreArticles() {
+    if (!browser) return
+    if (!hasMoreDocuments) return
+
+    // -- Load articles --
+    const { firebaseApp } = await import('$lib/firebase/Firebase')
+    const { getFirestore, collection, query, orderBy, limit, getDocs, startAfter } = await import('firebase/firestore')
+    const firestore = getFirestore(firebaseApp)
+
+    const q = query(
+      collection(firestore, Collections.ARTICLES),
+      orderBy('createdAt', 'desc'),
+      startAfter(lastRef),
+      limit(paginationSize)
+    ).withConverter(articleConverter)
+    const snapshot = await getDocs(q)
+
+    // -- Update articles --
+    update((articles) => ([...articles, ...snapshot.docs.map(e => e.data())]))
+    lastRef = snapshot.docs.slice(-1)[0]
+    hasMoreDocuments = snapshot.docs.length === paginationSize + 1
+  }
+
+  async function createArticle(newArticle: Article, images: File[]) {
     if (!browser) return
 
     // -- Upload images --
@@ -106,7 +134,78 @@ function createArticleStore() {
     update((articles) => ([newArticle, ...articles]))
   }
 
-  async function removeArticle(article: Article) {
+  async function getArticleById(id: string) {
+    if (!browser) return
+
+    const exsistingArticle = get(innerStore).find((e) => e.id === id)
+    if (exsistingArticle) return exsistingArticle
+
+    // -- Load page --
+    const { firebaseApp } = await import('$lib/firebase/Firebase')
+    const { getFirestore, doc, getDoc } = await import('firebase/firestore')
+    const firestore = getFirestore(firebaseApp)
+
+    const articleRef = doc(firestore, Collections.ARTICLES, id).withConverter(articleConverter)
+    const articleSnap = await getDoc(articleRef)
+    const article = articleSnap.data()
+
+    if (article) update((articles) => [...articles, article])
+    return article || null
+  }
+
+  async function updateArticle(newAuthors: string[], newTags: string[], newTitle: string, newContent: string, lastUpdate: Dayjs, uploadedImages: File[], newExcistingImages: string[], article: Article) {
+    if (!browser) return
+
+    let newImages: string[] = []
+    const { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } = await import('firebase/storage')
+    const storage = getStorage()
+
+    // -- Remove images --
+    if (!containArraysSameElements(article.images, newExcistingImages)) {
+      const imagesToRemove = arrayDifference(article.images, newExcistingImages)
+      console.log("imagesToRemove", imagesToRemove)
+      await Promise.all(imagesToRemove.map(async (image) => {
+        const imageRef = ref(storage, image)
+        await deleteObject(imageRef)
+      }))
+    }
+    newImages = newExcistingImages
+    // -- Upload images --
+    if (uploadedImages) {
+      const uploadedImageLinks = await Promise.all(uploadedImages.map(async (image) => {
+        const storageRef = ref(storage, `page-images/${uuidv4()}`)
+        const snapshot = await uploadBytes(storageRef, image)
+        return await getDownloadURL(snapshot.ref)
+      }))
+      newImages.push(...uploadedImageLinks)
+    }
+
+    // -- Update article --
+    const { getFirestore, doc, updateDoc } = await import('firebase/firestore')
+    const { firebaseApp } = await import('$lib/firebase/Firebase')
+    const firestore = getFirestore(firebaseApp)
+
+    const linksRef = doc(firestore, Collections.ARTICLES, article.id)
+    await updateDoc(linksRef, {
+      authors: newAuthors,
+      tags: newTags,
+      title: newTitle,
+      content: newContent,
+      lastUpdate: new Timestamp(Math.round(Date.now() / 1000), 0),
+      images: newImages
+    })
+
+    // -- Update store --
+    article.authors = newAuthors
+    article.tags = newTags
+    article.title = newTitle
+    article.content = newContent
+    article.images = newImages
+    article.lastUpdate = lastUpdate
+    update((pages) => [...pages])
+  }
+
+  async function deleteArticle(article: Article) {
     if (!browser) return
 
     // -- Remove images --
@@ -135,54 +234,13 @@ function createArticleStore() {
     update((articles) => (articles.filter((e) => e.id !== article.id)))
   }
 
-  async function loadMoreArticles() {
-    if (!browser) return
-    if (!hasMoreDocuments) return
-
-    // -- Load articles --
-    const { firebaseApp } = await import('$lib/firebase/Firebase')
-    const { getFirestore, collection, query, orderBy, limit, getDocs, startAfter } = await import('firebase/firestore')
-    const firestore = getFirestore(firebaseApp)
-
-    const q = query(
-      collection(firestore, Collections.ARTICLES),
-      orderBy('timestamp', 'desc'),
-      startAfter(lastRef),
-      limit(paginationSize)
-    ).withConverter(articleConverter)
-    const snapshot = await getDocs(q)
-
-    // -- Update articles --
-    update((articles) => ([...articles, ...snapshot.docs.map(e => e.data())]))
-    lastRef = snapshot.docs.slice(-1)[0]
-    hasMoreDocuments = snapshot.docs.length === paginationSize + 1
-  }
-
-  async function getArticleById(id: string) {
-    if (!browser) return
-
-    const exsistingArticle = get(innerStore).find((e) => e.id === id)
-    if (exsistingArticle) return exsistingArticle
-
-    // -- Load page --
-    const { firebaseApp } = await import('$lib/firebase/Firebase')
-    const { getFirestore, doc, getDoc } = await import('firebase/firestore')
-    const firestore = getFirestore(firebaseApp)
-
-    const articleRef = doc(firestore, Collections.ARTICLES, id).withConverter(articleConverter)
-    const articleSnap = await getDoc(articleRef)
-    const article = articleSnap.data()
-
-    if (article) update((articles) => [...articles, article])
-    return article || null
-  }
-
   return {
     subscribe,
-    addArticle,
-    removeArticle,
     loadMoreArticles,
-    getArticleById
+    createArticle,
+    getArticleById,
+    updateArticle,
+    deleteArticle,
   }
 }
 

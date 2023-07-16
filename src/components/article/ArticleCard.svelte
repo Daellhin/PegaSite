@@ -1,8 +1,10 @@
 <script lang="ts">
   import type { Article } from "$lib/domain/Article";
   import { clearHTMLTags } from "$lib/utils/Utils";
-  import FaRegCalendar from "svelte-icons/fa/FaRegCalendar.svelte";
-  import FaUser from "svelte-icons/fa/FaUser.svelte";
+
+  import { faCalendar } from "@fortawesome/free-regular-svg-icons";
+  import { faUser, faUsers } from "@fortawesome/free-solid-svg-icons";
+  import Fa from "svelte-fa/src/fa.svelte";
   import Time from "svelte-time";
 
   export let article: Article;
@@ -29,13 +31,17 @@
       <div class="flex flex-row gap-3 text-sm mt-0">
         <!-- Time -->
         <div class="flex flex-row gap-1 items-center">
-          <div class="w-3 h-3"><FaRegCalendar /></div>
-          <Time class="opacity-60" timestamp={article.timestamp} />
+          <div class="h-3">
+            <Fa icon={faCalendar} />
+          </div>
+          <Time class="opacity-60" timestamp={article.createdAt} />
         </div>
-        <!-- Author -->
+        <!-- Authors -->
         <div class="flex flex-row gap-1 items-center">
-          <div class="w-3 h-3"><FaUser /></div>
-          <span class="opacity-60">{article.author}</span>
+          <div class="h-3 my-auto">
+            <Fa icon={article.authors.length === 1 ? faUser : faUsers} />
+          </div>
+          <span class="opacity-60">{article.authors.join(", ")}</span>
         </div>
       </div>
       <!-- Content -->

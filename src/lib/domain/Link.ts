@@ -34,7 +34,7 @@ export class Link {
         return id.trim().replace(/ /g, "-").toLowerCase()
     }
     static titleFromId(id:string) {
-        return capitalizeFirstLetter(id.replace(/-/g, ""));
+        return capitalizeFirstLetter(id.replace(/-/g, ""))
     }
 
     static fromJson(json: LinkJson) {
