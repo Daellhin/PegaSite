@@ -23,7 +23,7 @@
       title,
       info
     );
-    await calendarEventStore.addCalendarEvent(newCalendarEvent);
+    await calendarEventStore.createCalendarEvent(newCalendarEvent);
     pushCreatedToast("Event aangemaakt", {
       gotoUrl: `/events#${newCalendarEvent.id}`,
     });

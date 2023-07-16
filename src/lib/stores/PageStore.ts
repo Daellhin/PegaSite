@@ -28,6 +28,16 @@ function createMockPageStore() {
     })
     const { subscribe, update } = innerStore
 
+    async function createBlankPage(id: string, title: string) {
+        const page = new Page(id, dayjs(), title, [], "")
+        await createPageHelper(page)
+    }
+    async function createPageHelper(page: Page) {
+        update((pages) => [...pages, page])
+    }
+    async function getPageById(id: string) {
+        return get(innerStore).find((e) => e.id === id)
+    }
     async function updatePage(newTitle: string, newContent: string, uploadedImages: File[], newExcistingImages: string[], page: Page) {
         const newImages = await Promise.all(uploadedImages.map(readFileAsDataURL))
         page.title = newTitle
@@ -35,42 +45,70 @@ function createMockPageStore() {
         page.images = [...newExcistingImages, ...newImages]
         update((pages) => [...pages])
     }
-    async function getPageById(id: string) {
-        return get(innerStore).find((e) => e.id === id)
-    }
-
-    async function createBlankPage(id: string, title: string) {
-        const page = new Page(id, dayjs(), title, [], "")
-        await createPage(page);
-    }
-
-    async function createPage(page: Page) {
-        update((pages) => [...pages, page])
-    }
-
-    async function deletePage(id: string, _deleteImages = true) {
-        update((pages) => pages.filter(e => e.id === id))
-    }
-
     async function updatePageId(newId: string, oldId: string) {
         const page = await getPageById(oldId)
         if (!page) throw new Error(`No page to update at id:${oldId}`)
         page.id = newId
     }
+    async function deletePage(id: string, _deleteImages = true) {
+        update((pages) => pages.filter(e => e.id === id))
+    }
+
 
     return {
         subscribe,
-        updatePage,
-        getPageById,
         createBlankPage,
+        getPageById,
+        updatePage,
+        updatePageId,
         deletePage,
-        updatePageId
     }
 }
 
 function createPageStore() {
     const innerStore = writable<Page[]>([])
     const { subscribe, update } = innerStore
+
+    async function createBlankPage(id: string, title: string) {
+        if (!browser) return
+
+        const page = new Page(id, dayjs(), title, [], "")
+        await createPageHelper(page)
+    }
+
+    async function createPageHelper(page: Page) {
+        if (!browser) return
+
+        // -- Create page --
+        const { getFirestore, doc, setDoc } = await import('firebase/firestore')
+        const { firebaseApp } = await import('$lib/firebase/Firebase')
+        const firestore = getFirestore(firebaseApp)
+
+        const pageRef = doc(firestore, Collections.PAGES, page.id).withConverter(pageConverter)
+        await setDoc(pageRef, page)
+
+        // -- Update store --
+        update((pages) => [...pages, page])
+    }
+
+    async function getPageById(id: string) {
+        if (!browser) return
+
+        const exsistingPage = get(innerStore).find((e) => e.id === id)
+        if (exsistingPage) return exsistingPage
+
+        // -- Load page --
+        const { firebaseApp } = await import('$lib/firebase/Firebase')
+        const { getFirestore, doc, getDoc } = await import('firebase/firestore')
+        const firestore = getFirestore(firebaseApp)
+
+        const pageRef = doc(firestore, Collections.PAGES, id).withConverter(pageConverter)
+        const pageSnap = await getDoc(pageRef)
+        const data = pageSnap.data()
+
+        if (data) update((pages) => [...pages, data])
+        return data || null
+    }
 
     async function updatePage(newTitle: string, newContent: string, uploadedImages: File[], newExcistingImages: string[], page: Page) {
         if (!browser) return
@@ -119,26 +157,22 @@ function createPageStore() {
         update((pages) => [...pages])
     }
 
-    async function createBlankPage(id: string, title: string) {
+    async function updatePageId(newId: string, oldId: string) {
         if (!browser) return
+        if (newId === oldId) return
 
-        const page = new Page(id, dayjs(), title, [], "")
-        await createPage(page);
-    }
+        // -- Get page --
+        const page = await getPageById(oldId)
+        if (!page) throw new Error(`No page to update at id:${oldId}`)
 
-    async function createPage(page: Page) {
-        if (!browser) return
+        // -- Delete page --
+        const deletePagePromise = deletePage(oldId, false)
 
         // -- Create page --
-        const { getFirestore, doc, setDoc } = await import('firebase/firestore')
-        const { firebaseApp } = await import('$lib/firebase/Firebase')
-        const firestore = getFirestore(firebaseApp)
+        page.id = newId
+        const createPagePromise = createPageHelper(page)
 
-        const pageRef = doc(firestore, Collections.PAGES, page.id).withConverter(pageConverter)
-        await setDoc(pageRef, page)
-
-        // -- Update store --
-        update((pages) => [...pages, page])
+        await Promise.all([deletePagePromise, createPagePromise])
     }
 
     async function deletePage(id: string, deleteImages = true) {
@@ -171,50 +205,13 @@ function createPageStore() {
         update((pages) => pages.filter(e => e.id === id))
     }
 
-    async function updatePageId(newId: string, oldId: string) {
-        if (!browser) return
-        if (newId === oldId) return
-
-        // -- Get page --
-        const page = await getPageById(oldId)
-        if (!page) throw new Error(`No page to update at id:${oldId}`)
-
-        // -- Delete page --
-        const deletePagePromise = deletePage(oldId, false)
-
-        // -- Create page --
-        page.id = newId
-        const createPagePromise = createPage(page)
-
-        await Promise.all([deletePagePromise, createPagePromise])
-    }
-
-    async function getPageById(id: string) {
-        if (!browser) return
-
-        const exsistingPage = get(innerStore).find((e) => e.id === id)
-        if (exsistingPage) return exsistingPage
-
-        // -- Load page --
-        const { firebaseApp } = await import('$lib/firebase/Firebase')
-        const { getFirestore, doc, getDoc } = await import('firebase/firestore')
-        const firestore = getFirestore(firebaseApp)
-
-        const pageRef = doc(firestore, Collections.PAGES, id).withConverter(pageConverter)
-        const pageSnap = await getDoc(pageRef)
-        const data = pageSnap.data()
-
-        if (data) update((pages) => [...pages, data])
-        return data || null
-    }
-
     return {
         subscribe,
-        updatePage,
-        getPageById,
         createBlankPage,
+        getPageById,
+        updatePage,
+        updatePageId,
         deletePage,
-        updatePageId
     }
 }
 

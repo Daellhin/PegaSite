@@ -20,7 +20,7 @@
   let calendarEvent: CalendarEvent | undefined | null;
 
   async function saveEvent() {
-    await calendarEventStore.editCalendarEvent(
+    await calendarEventStore.updateCalendarEvent(
       title,
       info,
       date,

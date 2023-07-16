@@ -13,12 +13,16 @@ function createMockCalendarEventStore() {
   })
   const { subscribe, update } = store
 
-  async function addCalendarEvent(newCalendarEvent: CalendarEvent) {
+  async function createCalendarEvent(newCalendarEvent: CalendarEvent) {
     update((calendarEvents) => {
       return [...calendarEvents, newCalendarEvent].sort((a, b) => (a.date.isAfter(b.date) ? 1 : -1))
     })
   }
-  async function editCalendarEvent(newTitle: string, newInfo: string, newDate: Dayjs, newDuration: string, newLocation: string, calendarEvent: CalendarEvent) {
+  async function getCalendarEventById(id: string) {
+    const calendarEvents = get(store)
+    return calendarEvents.find((e) => e.id === id)
+  }
+  async function updateCalendarEvent(newTitle: string, newInfo: string, newDate: Dayjs, newDuration: string, newLocation: string, calendarEvent: CalendarEvent) {
     calendarEvent.title = newTitle
     calendarEvent.info = newInfo
     calendarEvent.date = newDate
@@ -26,20 +30,16 @@ function createMockCalendarEventStore() {
     calendarEvent.location = newLocation
     update((calendarEvents) => [...calendarEvents])
   }
-  async function removeCalendarEvent(calendarEvent: CalendarEvent) {
+  async function deleteCalendarEvent(calendarEvent: CalendarEvent) {
     update((calendarEvents) => (calendarEvents.filter((e) => e.id !== calendarEvent.id)))
-  }
-  function getCalendarEventById(id: string) {
-    const calendarEvents = get(store)
-    return calendarEvents.find((e) => e.id === id)
   }
 
   return {
     subscribe,
-    addCalendarEvent,
-    editCalendarEvent,
-    removeCalendarEvent,
-    getCalendarEventById
+    createCalendarEvent,
+    getCalendarEventById,
+    updateCalendarEvent,
+    deleteCalendarEvent,
   }
 }
 
@@ -67,7 +67,7 @@ function createCalendarEventStore() {
   })
   const { subscribe, update } = store
 
-  async function addCalendarEvent(newCalendarEvent: CalendarEvent) {
+  async function createCalendarEvent(newCalendarEvent: CalendarEvent) {
     if (!browser) return
 
     // -- Update event --
@@ -87,7 +87,15 @@ function createCalendarEventStore() {
     })
   }
 
-  async function editCalendarEvent(newTitle: string, newInfo: string, newDate: Dayjs, newDuration: string, newLocation: string, calendarEvent: CalendarEvent) {
+  function getCalendarEventById(id: string) {
+    if (!browser) return
+
+    // -- Get calendarEvent --
+    const calendarEvents = get(store)
+    return calendarEvents.find((e) => e.id === id)
+  }
+
+  async function updateCalendarEvent(newTitle: string, newInfo: string, newDate: Dayjs, newDuration: string, newLocation: string, calendarEvent: CalendarEvent) {
     if (!browser) return
 
     // -- Update calendarEvent --
@@ -113,7 +121,7 @@ function createCalendarEventStore() {
     update((calendarEvents) => [...calendarEvents])
   }
 
-  async function removeCalendarEvent(calendarEvent: CalendarEvent) {
+  async function deleteCalendarEvent(calendarEvent: CalendarEvent) {
     if (!browser) return
 
     // -- Remove calendarEvent --
@@ -127,20 +135,12 @@ function createCalendarEventStore() {
     update((calendarEvents) => (calendarEvents.filter((e) => e.id !== calendarEvent.id)))
   }
 
-  function getCalendarEventById(id: string) {
-    if (!browser) return
-
-    // -- Get calendarEvent --
-    const calendarEvents = get(store)
-    return calendarEvents.find((e) => e.id === id)
-  }
-
   return {
     subscribe,
-    addCalendarEvent,
-    editCalendarEvent,
-    removeCalendarEvent,
-    getCalendarEventById
+    createCalendarEvent,
+    getCalendarEventById,
+    updateCalendarEvent,
+    deleteCalendarEvent,
   }
 }
 

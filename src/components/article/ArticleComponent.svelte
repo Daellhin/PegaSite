@@ -19,7 +19,7 @@
   export let isPreview = false;
 
   async function removeArticle() {
-    await articleStore.removeArticle(article);
+    await articleStore.deleteArticle(article);
     goto("/");
   }
 </script>

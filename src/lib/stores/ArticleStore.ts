@@ -23,29 +23,29 @@ function createMockArticleStore() {
   })
   const { subscribe, update } = innerStore
 
-  async function addArticle(newArticle: Article, images: File[]) {
-    update((articles) => ([newArticle, ...articles]))
-  }
-  async function updateArticle(newAuthors: string[], newTags: string[], newTitle: string, newContent: string, lastUpdate: Dayjs, uploadedImages: File[], newExcistingImages: string[], article: Article) {
-  }
-  async function removeArticle(article: Article) {
-    update((articles) => (articles.filter((e) => e.id !== article.id)))
-  }
   async function loadMoreArticles() {
     return
+  }
+  async function createArticle(newArticle: Article, images: File[]) {
+    update((articles) => ([newArticle, ...articles]))
   }
   async function getArticleById(id: string) {
     const exsistingArticle = get(innerStore).find((e) => e.id === id)
     return exsistingArticle || null
   }
+  async function updateArticle(newAuthors: string[], newTags: string[], newTitle: string, newContent: string, lastUpdate: Dayjs, uploadedImages: File[], newExcistingImages: string[], article: Article) {
+  }
+  async function deleteArticle(article: Article) {
+    update((articles) => (articles.filter((e) => e.id !== article.id)))
+  }
 
   return {
     subscribe,
-    addArticle,
-    updateArticle,
-    removeArticle,
     loadMoreArticles,
-    getArticleById
+    createArticle,
+    getArticleById,
+    updateArticle,
+    deleteArticle,
   }
 }
 
@@ -84,7 +84,30 @@ function createArticleStore() {
   })
   const { subscribe, update } = innerStore
 
-  async function addArticle(newArticle: Article, images: File[]) {
+  async function loadMoreArticles() {
+    if (!browser) return
+    if (!hasMoreDocuments) return
+
+    // -- Load articles --
+    const { firebaseApp } = await import('$lib/firebase/Firebase')
+    const { getFirestore, collection, query, orderBy, limit, getDocs, startAfter } = await import('firebase/firestore')
+    const firestore = getFirestore(firebaseApp)
+
+    const q = query(
+      collection(firestore, Collections.ARTICLES),
+      orderBy('createdAt', 'desc'),
+      startAfter(lastRef),
+      limit(paginationSize)
+    ).withConverter(articleConverter)
+    const snapshot = await getDocs(q)
+
+    // -- Update articles --
+    update((articles) => ([...articles, ...snapshot.docs.map(e => e.data())]))
+    lastRef = snapshot.docs.slice(-1)[0]
+    hasMoreDocuments = snapshot.docs.length === paginationSize + 1
+  }
+
+  async function createArticle(newArticle: Article, images: File[]) {
     if (!browser) return
 
     // -- Upload images --
@@ -109,6 +132,25 @@ function createArticleStore() {
 
     // -- Update store --
     update((articles) => ([newArticle, ...articles]))
+  }
+
+  async function getArticleById(id: string) {
+    if (!browser) return
+
+    const exsistingArticle = get(innerStore).find((e) => e.id === id)
+    if (exsistingArticle) return exsistingArticle
+
+    // -- Load page --
+    const { firebaseApp } = await import('$lib/firebase/Firebase')
+    const { getFirestore, doc, getDoc } = await import('firebase/firestore')
+    const firestore = getFirestore(firebaseApp)
+
+    const articleRef = doc(firestore, Collections.ARTICLES, id).withConverter(articleConverter)
+    const articleSnap = await getDoc(articleRef)
+    const article = articleSnap.data()
+
+    if (article) update((articles) => [...articles, article])
+    return article || null
   }
 
   async function updateArticle(newAuthors: string[], newTags: string[], newTitle: string, newContent: string, lastUpdate: Dayjs, uploadedImages: File[], newExcistingImages: string[], article: Article) {
@@ -163,7 +205,7 @@ function createArticleStore() {
     update((pages) => [...pages])
   }
 
-  async function removeArticle(article: Article) {
+  async function deleteArticle(article: Article) {
     if (!browser) return
 
     // -- Remove images --
@@ -192,55 +234,13 @@ function createArticleStore() {
     update((articles) => (articles.filter((e) => e.id !== article.id)))
   }
 
-  async function loadMoreArticles() {
-    if (!browser) return
-    if (!hasMoreDocuments) return
-
-    // -- Load articles --
-    const { firebaseApp } = await import('$lib/firebase/Firebase')
-    const { getFirestore, collection, query, orderBy, limit, getDocs, startAfter } = await import('firebase/firestore')
-    const firestore = getFirestore(firebaseApp)
-
-    const q = query(
-      collection(firestore, Collections.ARTICLES),
-      orderBy('createdAt', 'desc'),
-      startAfter(lastRef),
-      limit(paginationSize)
-    ).withConverter(articleConverter)
-    const snapshot = await getDocs(q)
-
-    // -- Update articles --
-    update((articles) => ([...articles, ...snapshot.docs.map(e => e.data())]))
-    lastRef = snapshot.docs.slice(-1)[0]
-    hasMoreDocuments = snapshot.docs.length === paginationSize + 1
-  }
-
-  async function getArticleById(id: string) {
-    if (!browser) return
-
-    const exsistingArticle = get(innerStore).find((e) => e.id === id)
-    if (exsistingArticle) return exsistingArticle
-
-    // -- Load page --
-    const { firebaseApp } = await import('$lib/firebase/Firebase')
-    const { getFirestore, doc, getDoc } = await import('firebase/firestore')
-    const firestore = getFirestore(firebaseApp)
-
-    const articleRef = doc(firestore, Collections.ARTICLES, id).withConverter(articleConverter)
-    const articleSnap = await getDoc(articleRef)
-    const article = articleSnap.data()
-
-    if (article) update((articles) => [...articles, article])
-    return article || null
-  }
-
   return {
     subscribe,
-    addArticle,
-    updateArticle,
-    removeArticle,
     loadMoreArticles,
-    getArticleById
+    createArticle,
+    getArticleById,
+    updateArticle,
+    deleteArticle,
   }
 }
 

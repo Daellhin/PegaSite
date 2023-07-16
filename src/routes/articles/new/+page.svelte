@@ -21,7 +21,7 @@
 
   async function saveArticle() {
     const article = await createPreviewArticle();
-    await articleStore.addArticle(article, uploadedImages);
+    await articleStore.createArticle(article, uploadedImages);
     pushCreatedToast("Artikel aangemaakt", { gotoUrl: "/" });
   }
 

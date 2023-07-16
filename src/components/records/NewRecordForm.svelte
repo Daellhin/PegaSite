@@ -26,7 +26,7 @@
 
   async function createRecord() {
     const record = new RecordInstance(name, result, location, dayjs(date));
-    await clubRecordStore.add(
+    await clubRecordStore.createClubRecord(
       discipline,
       category,
       gender,

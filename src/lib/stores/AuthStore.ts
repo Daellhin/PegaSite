@@ -12,7 +12,7 @@ function createMockAuthStore() {
   })
   const { subscribe, update } = store
 
-  const known = Promise.resolve();
+  const known = Promise.resolve()
   const dbUser = Promise.resolve(new DbUser("1", "role", "email", "displayName", dayjs(1)))
 
   async function signIn(email: string, password: string) {

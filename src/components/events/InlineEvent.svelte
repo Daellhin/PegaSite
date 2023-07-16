@@ -9,7 +9,7 @@
   export let event: CalendarEvent;
 
   async function removeCalendarEvent() {
-    await calendarEventStore.removeCalendarEvent(event);
+    await calendarEventStore.deleteCalendarEvent(event);
   }
 </script>
 

@@ -24,7 +24,7 @@ function createPageHeadStore() {
 
     return {
         subscribe,
-        updatePageTitle
+        updatePageTitle,
     }
 }
 
