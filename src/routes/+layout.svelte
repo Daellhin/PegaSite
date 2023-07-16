@@ -6,6 +6,7 @@
   import { pageHeadStore } from "$lib/stores/PageHeadStore";
   import { SvelteToast } from "@zerodevx/svelte-toast";
   import "../app.css";
+  import Sponsers from "$components/sponsers/Sponsers.svelte";
 
   const drawerID = "layout-drawer";
   const loginModalID = "login-modal";
@@ -26,7 +27,10 @@
           <slot />
         </main>
         <aside class="lg:col-span-4 xl:col-span-3 md:pt-0 py-0 p-2">
-          <EventCalendar />
+          <div class="flex flex-col gap-3">
+            <EventCalendar />
+            <Sponsers />
+          </div>
         </aside>
       </div>
     </section>
