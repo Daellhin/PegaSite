@@ -29,7 +29,10 @@
   <h1 class="text-4xl font-semibold">{article.title || "Geen titel"}</h1>
   {#if !isPreview && $authStore}
     <div class="ml-auto">
-      <EditDropdown editUrl="/todo" deleteHandler={removeArticle} />
+      <EditDropdown
+        editUrl={"/articles/edit/" + article.id}
+        deleteHandler={removeArticle}
+      />
     </div>
   {/if}
 </div>
