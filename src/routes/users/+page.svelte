@@ -2,7 +2,7 @@
   import { goto } from "$app/navigation";
   import InfoCard from "$components/InfoCard.svelte";
   import SortableTableHeaderRow from "$components/Table/SortableTableHeaderRow.svelte";
-  import SearchInput from "$components/formHelpers/SearchInput.svelte";
+  import SearchInput from "$components/formHelpers/inputs/SearchInput.svelte";
   import NewUserForm from "$components/users/NewUserForm.svelte";
   import UserRow from "$components/users/UserRow.svelte";
   import type { DbUser } from "$lib/domain/DbUser";
