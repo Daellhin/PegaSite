@@ -52,6 +52,7 @@
         content={event.info}
         class="max-w-xl mt-1.5"
         placeHolder=""
+        showLinks
       />
     {/if}
   </div>

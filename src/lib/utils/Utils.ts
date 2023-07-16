@@ -128,14 +128,47 @@ export function sleep(time: number | undefined) {
 
 export function isChild(obj: any, parentObj: any) {
     while (
-      obj != undefined &&
-      obj != null &&
-      obj.tagName.toUpperCase() != "BODY"
+        obj != undefined &&
+        obj != null &&
+        obj.tagName.toUpperCase() != "BODY"
     ) {
-      if (obj == parentObj) {
-        return true
-      }
-      obj = obj.parentNode
+        if (obj == parentObj) {
+            return true
+        }
+        obj = obj.parentNode
     }
     return false
-  }
+}
+
+/**
+ * Converts links to html anchors in a block of text
+ * Source: https://stackoverflow.com/a/71734086/8807613
+ */
+export function linkifyText(text: string) {
+    function isValidHttpUrl(urlText: string) {
+        let url
+        try {
+            url = new URL(urlText)
+        }
+        catch {
+            return false
+        }
+        return url.protocol.startsWith("http")
+    }
+    const isMatch = text.match(/(?<=\s|^|')[a-zA-Z0-9-:/]+\.[a-zA-Z0-9-].+?(?=[.,;:?!-]?(?:\s|$|'))/g)
+    if (!isMatch)
+        return text
+    const a = []
+    isMatch.forEach(e => {
+        const [t1, ...t2] = text.split(e)
+        a.push(t1)
+        text = t2.join(e)
+        const y = (!(e.match(/:\/\//)) ? 'https://' : '') + e
+        if (isNaN(e as any) && isValidHttpUrl(y))
+            a.push('<a href="' + y + '" target="_blank">' + y.split('/')[2] + '</a>')
+        else
+            a.push(e)
+    })
+    a.push(text)
+    return a.join('')
+}

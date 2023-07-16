@@ -96,7 +96,7 @@
   {/if}
 {/await}
 
-<UserContentRenderer content={article.content} />
+<UserContentRenderer content={article.content} showLinks />
 
 <style lang="postcss">
   .custom-carousel :global(img) {
