@@ -54,7 +54,6 @@ function createMockPageStore() {
         update((pages) => pages.filter(e => e.id === id))
     }
 
-
     return {
         subscribe,
         createBlankPage,

@@ -6,4 +6,4 @@ export enum Category {
     "Outdoor",
 }
 
-export const CategoryValues = Object.keys(Category).filter((v) => isNaN(Number(v)));
+export const CategoryValues = Object.keys(Category).filter((v) => isNaN(Number(v)))
