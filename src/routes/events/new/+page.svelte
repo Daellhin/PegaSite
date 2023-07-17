@@ -13,6 +13,7 @@
   let date: Dayjs;
   let duration = "";
   let location = "";
+  let endDate: Dayjs | undefined;
 
   async function saveEvent() {
     const newCalendarEvent = new CalendarEvent(
@@ -21,7 +22,8 @@
       duration,
       location,
       title,
-      info
+      info,
+      endDate
     );
     await calendarEventStore.createCalendarEvent(newCalendarEvent);
     pushCreatedToast("Event aangemaakt", {
@@ -29,11 +31,11 @@
     });
   }
 
-  // Authguard
+  // -- Authguard --
   $: authStore.known.then(() => {
     if (!$authStore) goto("/");
   });
-  // Page title
+  // -- Page title --
   pageHeadStore.updatePageTitle("Nieuw event");
 </script>
 
@@ -45,6 +47,7 @@
   bind:date
   bind:duration
   bind:location
+  bind:endDate
   onSave={saveEvent}
   buttonTitle="Event aanmaken"
 />

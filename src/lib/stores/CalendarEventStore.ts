@@ -22,12 +22,13 @@ function createMockCalendarEventStore() {
     const calendarEvents = get(store)
     return calendarEvents.find((e) => e.id === id)
   }
-  async function updateCalendarEvent(newTitle: string, newInfo: string, newDate: Dayjs, newDuration: string, newLocation: string, calendarEvent: CalendarEvent) {
+  async function updateCalendarEvent(newTitle: string, newInfo: string, newDate: Dayjs, newDuration: string, newLocation: string, endDate: Dayjs | undefined, calendarEvent: CalendarEvent) {
     calendarEvent.title = newTitle
     calendarEvent.info = newInfo
     calendarEvent.date = newDate
     calendarEvent.duration = newDuration
     calendarEvent.location = newLocation
+    calendarEvent.endDate = endDate
     update((calendarEvents) => [...calendarEvents])
   }
   async function deleteCalendarEvent(calendarEvent: CalendarEvent) {
@@ -95,7 +96,7 @@ function createCalendarEventStore() {
     return calendarEvents.find((e) => e.id === id)
   }
 
-  async function updateCalendarEvent(newTitle: string, newInfo: string, newDate: Dayjs, newDuration: string, newLocation: string, calendarEvent: CalendarEvent) {
+  async function updateCalendarEvent(newTitle: string, newInfo: string, newDate: Dayjs, newDuration: string, newLocation: string, endDate: Dayjs | undefined, calendarEvent: CalendarEvent) {
     if (!browser) return
 
     // -- Update calendarEvent --
@@ -109,7 +110,8 @@ function createCalendarEventStore() {
       info: newInfo,
       date: newDate.toDate(),
       duration: newDuration,
-      location: newLocation
+      location: newLocation,
+      endDate: endDate ? endDate.toDate() : null
     })
 
     // -- Update store --

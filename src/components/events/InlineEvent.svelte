@@ -26,7 +26,15 @@
 
   <!-- Middle column -->
   <div class="flex flex-col w-full">
-    <div class="text-sm font-semibold">{event.formattedDuration}</div>
+    <div class="text-sm font-semibold">
+      {event.date.locale("nl-be").format("D MMMM")}
+      {#if event.endDate}
+        tot
+        {event.endDate.locale("nl-be").format("D MMMM")}
+      {/if}
+      <span class="font-bold">|</span>
+      {event.formattedDuration}
+    </div>
     <div class="flex w-full">
       <div class="sm:text-3xl text-2xl font-semibold text-primary">
         {event.title}

@@ -1,7 +1,9 @@
 <script lang="ts">
+  import { v4 as uuidv4 } from "uuid";
+
   export let label: string;
   export let value: boolean;
-  export let id: string;
+  export let id = uuidv4();
   export let disabled = false;
   let classList = "";
   export { classList as class };

@@ -30,7 +30,15 @@
               </div>
             </div>
             <div class="flex flex-col">
-              <div class="text-xs font-semibold">{event.formattedDuration}</div>
+              <div class="text-xs font-semibold">
+                {event.date.locale("nl-be").format("DD/MM")}
+                {#if event.endDate}
+                  tot
+                  {event.endDate.locale("nl-be").format("DD/MM")}
+                {/if}
+                <span class="font-bold">|</span>
+                {event.formattedDuration}
+              </div>
               <div class="flex items-center h-full text-lg font-semibold">
                 {event.title}
               </div>
