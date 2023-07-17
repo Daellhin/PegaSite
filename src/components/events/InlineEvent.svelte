@@ -4,6 +4,7 @@
   import type { CalendarEvent } from "$lib/domain/CalendarEvent";
   import { authStore } from "$lib/stores/AuthStore";
   import { calendarEventStore } from "$lib/stores/CalendarEventStore";
+  import { Accordion, AccordionItem } from "flowbite-svelte";
   import MdLocationOn from "svelte-icons/md/MdLocationOn.svelte";
 
   export let event: CalendarEvent;
@@ -50,10 +51,31 @@
     </div>
 
     {#if event.location}
-      <div class="flex items-center">
-        <div class="w-5 h-5"><MdLocationOn /></div>
-        <div class="font-semibold text-sm sm:text-md">{event.location}</div>
-      </div>
+      <Accordion>
+        <AccordionItem>
+          <span slot="header">
+            <div class="flex flex-col">
+              <div class="flex items-center">
+                <div class="w-5 h-5"><MdLocationOn /></div>
+                <div class="font-semibold text-sm sm:text-md">
+                  {event.location}
+                </div>
+              
+              </div>
+              <div class="text-xs">Toon in Google Maps</div>
+            </div>
+          </span>
+          <div>
+            <iframe
+              src={`https://maps.google.com/maps?q=${event.location}&output=embed`}
+              class="w-full max-w-lg"
+              height="300"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+            />
+          </div>
+        </AccordionItem>
+      </Accordion>
     {/if}
     {#if event.info}
       <UserContentRenderer
