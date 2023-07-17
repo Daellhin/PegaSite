@@ -11,7 +11,7 @@
 
   let valueStart = value.split("-")[0];
   let valueEnd = value.split("-")[1];
-  let fullDay = false;
+  let fullDay = value === "Volledige dag";
 
   $: updateValue(valueStart, valueEnd, fullDay);
   function updateValue(valueStart: string, valueEnd: string, fullDay: boolean) {
