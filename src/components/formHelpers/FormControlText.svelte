@@ -1,15 +1,14 @@
 <script lang="ts">
-  import { text } from "@sveltejs/kit";
-
   export let label: string;
   export let value: string;
   export let required = false;
-  export let size: "sm" | "xs" = "sm";
+  export let size: "md" |"sm" | "xs" = "sm";
 
-  export let labelClass = "";
   export let placeholder = "";
-  export let validator: (value: string) => string | undefined = () => "";
   export let disabled = false;
+  export let labelClass = "";
+  export let validator: (value: string) => string | undefined = () => "";
+  export let onInput: () => void = () => {};
 
   let edited = false;
 
@@ -19,6 +18,7 @@
 
 <div
   class="form-control w-full"
+  class:max-w-md={size === "md"}
   class:max-w-sm={size === "sm"}
   class:max-w-xs={size === "xs"}
 >
@@ -35,10 +35,13 @@
     id={inputId}
     type="text"
     {placeholder}
-    class="input input-bordered border-2 w-full" class:bg-base-300={disabled} class:text-slate-700={disabled}
+    class="input input-bordered border-2 w-full"
+    class:bg-base-300={disabled}
+    class:text-slate-700={disabled}
     bind:value
     on:focusout={() => (edited = true)}
-    disabled={disabled}
+    on:input={onInput}
+    {disabled}
   />
   {#if error && edited}
     <label class="label" for={inputId}>

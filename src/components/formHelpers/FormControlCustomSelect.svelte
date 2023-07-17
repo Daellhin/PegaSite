@@ -8,8 +8,9 @@
   export let size: "sm" | "xs" = "sm";
 
   export let placeholder = "Kies";
-  export let items = Array<any>();
+  export let items = Array<{ label: string; value: string }>();
   export let groupBy: ((e: any) => any) | undefined = undefined;
+  export let searchable = false;
 
   $: selectId = label?.replace(/[ :]/g, "").toLowerCase();
 
@@ -40,11 +41,14 @@
     {groupBy}
     id={selectId}
     on:select={handleSelect}
-    class="select select-bordered border-2 font-normal"
+    class={"select select-bordered border-2 font-normal" + searchable
+      ? "searchable"
+      : ""}
     showChevron
     {placeholder}
     {floatingConfig}
     {required}
+    {searchable}
   >
     <div class="w-4 h-4 text-gray-500" slot="chevron-icon">
       <IoIosArrowDown />
@@ -102,6 +106,10 @@
     }
     .svelte-select-list {
       margin-top: 0.6rem;
+    }
+    .svelte-select.searchable,
+    .svelte-select.searchable input {
+      cursor: text !important;
     }
   }
 </style>

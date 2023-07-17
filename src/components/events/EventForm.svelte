@@ -3,6 +3,7 @@
   import FormControlEditor from "$components/formHelpers/FormControlEditor.svelte";
   import FormControlFullDuration from "$components/formHelpers/FormControlFullDuration.svelte";
   import FormControlText from "$components/formHelpers/FormControlText.svelte";
+  import GeoAutoComplete from "$components/formHelpers/inputs/GeoAutoComplete.svelte";
   import InputCheckbox from "$components/formHelpers/inputs/InputCheckbox.svelte";
   import type { Dayjs } from "dayjs";
 
@@ -48,11 +49,8 @@
     required
   />
 
-  <FormControlText
-    label="Locatie van event:"
-    placeholder="Blauwenhoek 76, 1840 Londerzeel"
-    bind:value={location}
-  />
+  <GeoAutoComplete label="Locatie van event:" bind:value={location} />
+
   <FormControlEditor label="Info over event:" bind:value={info} />
 
   <button class="btn btn-primary btn-md mt-2 max-w-sm">{buttonTitle}</button>

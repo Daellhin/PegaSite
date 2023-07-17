@@ -52,6 +52,7 @@
 		"svelte-multiselect": "^10.0.0",
 		"svelte-select": "5.6.1",
 		"svelte-vertical-timeline": "^1.0.0",
+		"ts-debounce": "^4.0.0",
 		"uuid": "^9.0.0"
 	}
 }
