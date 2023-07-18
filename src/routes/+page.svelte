@@ -3,6 +3,7 @@
   import ArrowLeft from "$components/icons/ArrowLeft.svelte";
   import ArrowRight from "$components/icons/ArrowRight.svelte";
   import { articleStore, paginationSize } from "$lib/stores/ArticleStore";
+  import { authStore } from "$lib/stores/AuthStore";
   import { pageHeadStore } from "$lib/stores/PageHeadStore";
   import { clamp, sizeOfIncreasingFirstSequence } from "$lib/utils/Utils";
 
@@ -44,7 +45,16 @@
   pageHeadStore.updatePageTitle("");
 </script>
 
-<h1 class="text-2xl font-bold mb-2">Nieuws</h1>
+<div class="flex gap-3 mb-2">
+  <h1 class="text-2xl font-bold mb-2">Nieuws</h1>
+  {#await authStore.known then _}
+    {#if $authStore}
+      <a class="btn btn-sm capitalize btn-primary" href="/articles/new">
+        Nieuw artikel
+      </a>
+    {/if}
+  {/await}
+</div>
 
 <!-- Articles -->
 <div

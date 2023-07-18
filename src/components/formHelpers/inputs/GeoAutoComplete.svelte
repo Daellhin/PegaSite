@@ -14,7 +14,7 @@
   export let required = false;
   export let size: "md" | "sm" | "xs" = "md";
 
-  export let placeholder = "Zoek locatie";
+  export let placeholder = "Zoek een locatie";
   export let disabled = false;
   export let limit = 5;
   export let lang = "nl";
