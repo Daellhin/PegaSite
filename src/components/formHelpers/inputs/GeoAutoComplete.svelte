@@ -4,7 +4,7 @@
     type AutocompleteResponseWrapperJson,
   } from "$lib/domain/geoapify/AutocompleteResponse";
   import { debounce } from "ts-debounce";
-  import FormControlText from "../FormControlText.svelte";
+  import FormControlSearchInput from "../FormControlSearchInput.svelte";
 
   const apiKey = import.meta.env.VITE_GEOAPIFY_APIKEY;
   const minAddressLength = 3;
@@ -14,7 +14,7 @@
   export let required = false;
   export let size: "md" | "sm" | "xs" = "md";
 
-  export let placeholder = "";
+  export let placeholder = "Zoek locatie";
   export let disabled = false;
   export let limit = 5;
   export let lang = "nl";
@@ -62,7 +62,7 @@
   class:max-w-sm={size === "sm"}
   class:max-w-xs={size === "xs"}
 >
-  <FormControlText
+  <FormControlSearchInput
     {label}
     bind:value
     {onInput}
