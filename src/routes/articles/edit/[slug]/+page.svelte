@@ -1,7 +1,7 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
   import ArticleComponent from "$components/article/ArticleComponent.svelte";
-  import Dropzone from "$components/formHelpers/Dropzone.svelte";
+  import FormControlDropzone from "$components/formHelpers/FormControlDropzone.svelte";
   import FormControlEditor from "$components/formHelpers/FormControlEditor.svelte";
   import FormControlMultiSelect from "$components/formHelpers/FormControlMultiSelect.svelte";
   import FormControlText from "$components/formHelpers/FormControlText.svelte";
@@ -126,12 +126,11 @@
       required
     />
 
-    <div class="form-control w-full max-w-sm">
-      <label class="label" for="dropzone-file">
-        <span class="label-text">Afbeeldingen:</span>
-      </label>
-      <Dropzone bind:uploadedImages bind:existingImages accept={"image/*"} />
-    </div>
+    <FormControlDropzone
+      label="Afbeeldingen:"
+      bind:uploadedImages
+      bind:existingImages
+    />
 
     <FormControlMultiSelect
       label="Categorieën:"

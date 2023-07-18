@@ -1,18 +1,18 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
-  import Dropzone from "$components/formHelpers/Dropzone.svelte";
   import ArticleComponent from "$components/article/ArticleComponent.svelte";
+  import FormControlDropzone from "$components/formHelpers/FormControlDropzone.svelte";
   import FormControlEditor from "$components/formHelpers/FormControlEditor.svelte";
   import FormControlMultiSelect from "$components/formHelpers/FormControlMultiSelect.svelte";
   import FormControlText from "$components/formHelpers/FormControlText.svelte";
   import { Article } from "$lib/domain/Article";
+  import { CategoryValues } from "$lib/domain/Category";
   import { articleStore } from "$lib/stores/ArticleStore";
   import { authStore } from "$lib/stores/AuthStore";
   import { pageHeadStore } from "$lib/stores/PageHeadStore";
   import { pushCreatedToast } from "$lib/utils/Toast";
   import { readFileAsDataURL } from "$lib/utils/Utils";
   import dayjs from "dayjs";
-  import { CategoryValues } from "$lib/domain/Category";
 
   let title = "";
   let content = "";
@@ -77,12 +77,7 @@
       required
     />
 
-    <div class="form-control w-full max-w-sm">
-      <label class="label" for="dropzone-file">
-        <span class="label-text">Afbeeldingen:</span>
-      </label>
-      <Dropzone bind:uploadedImages accept={"image/*"} />
-    </div>
+    <FormControlDropzone label="Afbeeldingen:" bind:uploadedImages />
 
     <FormControlMultiSelect
       label="Categorieën:"
