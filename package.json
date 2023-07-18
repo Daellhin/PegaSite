@@ -48,6 +48,7 @@
 		"firebase": "^10.0.0",
 		"flowbite": "^1.7.0",
 		"flowbite-svelte": "^0.39.2",
+		"svelte-collapse": "^0.1.2",
 		"svelte-icons": "^2.1.0",
 		"svelte-multiselect": "^10.0.0",
 		"svelte-select": "5.6.1",

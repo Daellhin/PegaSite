@@ -1,7 +1,6 @@
 <script lang="ts">
-  import FaChevronDown from "svelte-icons/fa/FaChevronDown.svelte";
-  import FaPen from "svelte-icons/fa/FaPen.svelte";
-  import FaRegTrashAlt from "svelte-icons/fa/FaRegTrashAlt.svelte";
+  import { faChevronDown, faPen, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+  import Fa from "svelte-fa/src/fa.svelte";
 
   export let editUrl: string;
   export let deleteHandler: () => Promise<void> | any = () => {};
@@ -9,7 +8,7 @@
   export let disabled = false;
   export let hasDelete = true;
   export let width = "w-52";
-  export let editPrompt = "Aanpassen"
+  export let editPrompt = "Aanpassen";
 
   let dropdownList: HTMLUListElement;
 
@@ -26,24 +25,25 @@
   <button
     {disabled}
     tabindex="0"
-    class="btn btn-ghost gap-2 normal-case flex flex-row"
+    class="btn btn-ghost gap-2 normal-case flex flex-row text-base"
     class:btn-xs={size === "xs"}
     class:btn-sm={size === "sm"}
     class:btn-md={size === "md"}
     class:bg-transparent={disabled}
   >
-    <div class="w-5 h-5"><FaPen /></div>
-    <div class="w-4 h-4 text-gray-500 hidden sm:block"><FaChevronDown /></div>
+    <Fa icon={faPen} class="text-xl" />
+    <Fa icon={faChevronDown} class="text-gray-500 hidden sm:block" />
   </button>
   <ul
     bind:this={dropdownList}
-    class={"dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box " + width}
+    class={"dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box " +
+      width}
   >
     <li><a href={editUrl}>{editPrompt}</a></li>
     {#if hasDelete}
       <li class="flex flex-row gap-1">
         <button on:click={deleteWrapper} class="w-full">
-          <div class="w-5 h-5"><FaRegTrashAlt /></div>
+          <Fa icon={faTrashAlt} class="text-lg" />
           Verwijderen
         </button>
       </li>
