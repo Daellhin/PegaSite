@@ -10,8 +10,8 @@
   import { pageHeadStore } from "$lib/stores/PageHeadStore";
   import { userStore } from "$lib/stores/UserStore";
 
-  let searchString = "";
   let showForm = false;
+  let searchString = "";
   let sortField = "";
   let ascDesc = 0;
 
@@ -65,16 +65,20 @@
   </div>
 {/if}
 
-<InfoCard class="mt-1 mb-3">
+<InfoCard class="mt-1">
   Om veiligheidsredenen is het niet mogelijk om gebruikers via de site te
   verwijderen. Indien nodig kan de site administrator dit doen in de databank
   console
 </InfoCard>
 
-<SearchInput bind:value={searchString} placeholder="Zoek een gebruiker " />
+<SearchInput
+  class="mt-3"
+  bind:value={searchString}
+  placeholder="Zoek een gebruiker "
+/>
 
 {#if $userStore}
-  <div class="grid mt-3">
+  <div class="mt-3">
     <div class="overflow-auto rounded-t-lg">
       <table class="table">
         <thead class="bg-base-200">

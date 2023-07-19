@@ -14,7 +14,7 @@
 </script>
 
 <div
-  class={"relative" + classList}
+  class={"relative " + classList}
   class:max-w-md={size === "md"}
   class:max-w-sm={size === "sm"}
   class:max-w-xs={size === "xs"}
