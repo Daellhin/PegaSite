@@ -49,6 +49,7 @@
 		"flowbite": "^1.7.0",
 		"flowbite-svelte": "^0.41.0",
 		"svelte-collapse": "^0.1.2",
+		"svelte-local-storage-store": "^0.5.0",
 		"svelte-multiselect": "^10.1.0",
 		"svelte-select": "5.6.1",
 		"svelte-vertical-timeline": "^1.0.0",
