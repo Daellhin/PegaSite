@@ -13,11 +13,11 @@
           {linkGroup.links[0].title}
         </a>
       {:else}
-        <div class="dropdown dropdown-hover z-10">
+        <div class="dropdown dropdown-hover">
           <button tabindex="0" class="btn normal-case text-[1.1em]">
             {linkGroup.name}
           </button>
-          <ul class="dropdown-content rounded-box bg-base-100 p-2 shadow-2xl">
+          <ul class="dropdown-content z-[1] rounded-box bg-base-100 p-2 shadow-2xl">
             {#each linkGroup.links as linkInner}
               <li>
                 <a class="text-[15px]" href={linkInner.getUrl()}>

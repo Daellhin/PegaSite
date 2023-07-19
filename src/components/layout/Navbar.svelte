@@ -1,6 +1,6 @@
 <script lang="ts">
   import LoginModal from "$components/LoginModal.svelte";
-  import UserAvatar from "$components/ProfileAndLoginButton.svelte";
+  import UserAvatar from "$components/ProfileDropdown.svelte";
   import PegaIconWithText from "$components/icons/PegaIconWithText.svelte";
   import MenuHorizontal from "$components/layout/MenuHorizontal.svelte";
   import { faBars } from "@fortawesome/free-solid-svg-icons";
