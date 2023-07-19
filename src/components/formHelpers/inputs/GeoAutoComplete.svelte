@@ -1,10 +1,10 @@
 <script lang="ts">
+  import FormControlSearchInput from "$components/formHelpers/FormControlSearchInput.svelte";
   import {
     AutocompleteResponse,
     type AutocompleteResponseWrapperJson,
   } from "$lib/domain/geoapify/AutocompleteResponse";
   import { debounce } from "ts-debounce";
-  import FormControlSearchInput from "../FormControlSearchInput.svelte";
 
   const apiKey = import.meta.env.VITE_GEOAPIFY_APIKEY;
   const minAddressLength = 3;

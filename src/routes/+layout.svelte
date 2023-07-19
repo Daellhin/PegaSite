@@ -3,10 +3,10 @@
   import Footer from "$components/layout/Footer.svelte";
   import MenuVertical from "$components/layout/MenuVertical.svelte";
   import Navbar from "$components/layout/Navbar.svelte";
+  import Sponsers from "$components/sponsers/Sponsers.svelte";
   import { pageHeadStore } from "$lib/stores/PageHeadStore";
   import { SvelteToast } from "@zerodevx/svelte-toast";
   import "../app.css";
-  import Sponsers from "$components/sponsers/Sponsers.svelte";
 
   const drawerID = "layout-drawer";
   const loginModalID = "login-modal";
@@ -26,7 +26,7 @@
         <main class="lg:col-span-8 xl:col-span-9 h-full">
           <slot />
         </main>
-        <hr class="mt-auto lg:hidden">
+        <hr class="mt-auto lg:hidden" />
         <aside class="lg:col-span-4 xl:col-span-3 md:pt-0 py-0 p-2">
           <div class="flex flex-col gap-3">
             <EventCalendar />

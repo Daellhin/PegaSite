@@ -1,7 +1,7 @@
 <script lang="ts">
+  import SavableTextInput from "$components/formHelpers/inputs/SavableTextInput.svelte";
   import InfoCircle from "$components/icons/Flowbite/InfoCircle.svelte";
   import { v4 as uuidv4 } from "uuid";
-  import SavableTextInput from "./inputs/SavableTextInput.svelte";
 
   export let label: string;
   export let value: string;

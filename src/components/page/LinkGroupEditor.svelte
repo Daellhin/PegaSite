@@ -1,8 +1,8 @@
 <script lang="ts">
   import SavableTextInput from "$components/formHelpers/inputs/SavableTextInput.svelte";
+  import LinkEditor from "$components/page/LinkEditor.svelte";
   import { Link, type LinkGroup } from "$lib/domain/Link";
   import { navbarStore } from "$lib/stores/NavbarStore";
-  import LinkEditor from "./LinkEditor.svelte";
 
   export let linkGroup: LinkGroup;
 
@@ -63,11 +63,7 @@
         />
       {:else}
         {#each links as link (link.title)}
-          <LinkEditor
-            {link}
-            {deleteLink}
-            saveLink={updateLinkTitle}
-          />
+          <LinkEditor {link} {deleteLink} saveLink={updateLinkTitle} />
         {/each}
       {/if}
       {#if tempLink}

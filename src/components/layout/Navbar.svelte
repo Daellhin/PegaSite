@@ -1,10 +1,10 @@
 <script lang="ts">
+  import LoginModal from "$components/LoginModal.svelte";
+  import UserAvatar from "$components/ProfileAndLoginButton.svelte";
+  import PegaIconWithText from "$components/icons/PegaIconWithText.svelte";
+  import MenuHorizontal from "$components/layout/MenuHorizontal.svelte";
   import { faBars } from "@fortawesome/free-solid-svg-icons";
   import Fa from "svelte-fa";
-  import LoginModal from "../LoginModal.svelte";
-  import UserAvatar from "../ProfileAndLoginButton.svelte";
-  import PegaIconWithText from "$components/icons/PegaIconWithText.svelte";
-  import MenuHorizontal from "./MenuHorizontal.svelte";
 
   export let drawerID: string;
   export let loginModalID: string;

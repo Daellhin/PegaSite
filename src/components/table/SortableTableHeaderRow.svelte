@@ -1,5 +1,5 @@
 <script lang="ts">
-  import SortableTableHeader from "./SortableTableHeader.svelte";
+  import SortableTableHeader from "$components/table/SortableTableHeader.svelte";
 
   export let columns: { name: string; dontSort?: boolean }[];
   export let onClick: (column: string, asDesc: number) => void;

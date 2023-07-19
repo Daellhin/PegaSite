@@ -1,6 +1,6 @@
 <script lang="ts">
+  import SearchInput from "$components/formHelpers/inputs/SearchInput.svelte";
   import { faSearch } from "@fortawesome/free-solid-svg-icons";
-  import SearchInput from "./inputs/SearchInput.svelte";
 
   export let label: string;
   export let required = false;

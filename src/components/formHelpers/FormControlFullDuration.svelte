@@ -1,5 +1,5 @@
 <script lang="ts">
-  import InputCheckbox from "./inputs/InputCheckbox.svelte";
+  import InputCheckbox from "$components/formHelpers/inputs/InputCheckbox.svelte";
 
   export let label: string;
   export let value: string;
