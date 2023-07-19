@@ -11,17 +11,16 @@
   pageHeadStore.updatePageTitle("Dashboard");
 </script>
 
-<h1 class="text-2xl font-bold mb-2">Aanpassingen</h1>
+<h1 class="text-2xl font-bold mb-2">Wijzigingen</h1>
 {#await authStore.dbUser}
   Loading
 {:then user}
-  <!-- promise was fulfilled -->
-  <div class="flex w-fit gap-2">
+  <div class="flex gap-2 flex-wrap">
     <a href="/articles/new" class="btn btn-primary normal-case">Nieuw bericht</a
     >
     <a href="/events/new" class="btn btn-primary normal-case">Nieuw event</a>
     <a href="/pages/navbar" class="btn btn-primary normal-case">
-      Paginas aanpassen
+      Navigatiebalk wijzigen
     </a>
     {#if user?.role === "admin"}
       <a href="/users" class="btn btn-primary normal-case">Gebruikers beheren</a

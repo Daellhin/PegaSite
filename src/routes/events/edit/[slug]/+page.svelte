@@ -16,6 +16,7 @@
   let date: Dayjs;
   let duration = "";
   let location = "";
+  let endDate: Dayjs | undefined;
 
   let calendarEvent: CalendarEvent | undefined | null;
 
@@ -26,6 +27,7 @@
       date,
       duration,
       location,
+      endDate,
       calendarEvent!
     );
     pushCreatedToast("Event aangepast", {
@@ -39,7 +41,7 @@
   $: if (!haveValuesBeenSet && calendarEvent) setValues(calendarEvent);
 
   async function loadCalendarEvent(data: PageData) {
-    calendarEvent = calendarEventStore.getCalendarEventById(data.id);
+    calendarEvent = await calendarEventStore.getCalendarEventById(data.id);
   }
   function setValues(calendarEvent: CalendarEvent) {
     title = calendarEvent.title;
@@ -47,6 +49,7 @@
     date = calendarEvent.date;
     duration = calendarEvent.duration;
     location = calendarEvent.location;
+    endDate = calendarEvent.endDate;
     haveValuesBeenSet = true;
   }
 
@@ -55,10 +58,10 @@
     if (!$authStore) goto("/");
   });
   // -- Page title --
-  pageHeadStore.updatePageTitle("Event aanpassen");
+  pageHeadStore.updatePageTitle("Event wijzigen");
 </script>
 
-<h1 class="text-2xl font-bold">Event aanpassen</h1>
+<h1 class="text-2xl font-bold">Event wijzigen</h1>
 
 {#if calendarEvent}
   <EventForm
@@ -67,7 +70,8 @@
     bind:date
     bind:duration
     bind:location
-    buttonTitle="Event aanpassen"
+    bind:endDate
+    buttonTitle="Event wijzigen"
     onSave={saveEvent}
   />
 {/if}

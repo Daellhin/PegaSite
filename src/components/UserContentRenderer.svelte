@@ -4,11 +4,11 @@
   export let content: string;
   export let placeHolder = "Geen inhoud";
   export let showLinks = false;
-  let classNames = "";
-  export { classNames as class };
+  let classList = "";
+  export { classList as class };
 </script>
 
-<div class={`usercontent ${classNames}`}>
+<div class={`usercontent ${classList}`}>
   {#if showLinks}
     {@html linkifyText(content) || placeHolder}
   {:else}

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import SearchInput from "$components/formHelpers/SearchInput.svelte";
+  import SearchInput from "$components/formHelpers/inputs/SearchInput.svelte";
   import NewRecordForm from "$components/records/NewRecordForm.svelte";
   import RecordsTable from "$components/records/RecordsTable.svelte";
   import { Category } from "$lib/domain/data-classes/Category";

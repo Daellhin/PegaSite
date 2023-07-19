@@ -1,7 +1,7 @@
 <script lang="ts">
   import MdInfoOutline from "svelte-icons/md/MdInfoOutline.svelte";
   import { v4 as uuidv4 } from "uuid";
-  import SavableTextInput from "./SavableTextInput.svelte";
+  import SavableTextInput from "./inputs/SavableTextInput.svelte";
 
   export let label: string;
   export let value: string;

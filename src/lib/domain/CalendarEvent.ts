@@ -10,6 +10,7 @@ export interface CalendarEventJson {
     location: string
     title: string
     info: string
+    endDate: Timestamp|undefined
 }
 
 export class CalendarEvent {
@@ -19,7 +20,8 @@ export class CalendarEvent {
         public duration: string,
         public location: string,
         public title: string,
-        public info: string
+        public info: string,
+        public endDate?: Dayjs
     ) { }
 
     // https://day.js.org/docs/en/display/format
@@ -49,7 +51,8 @@ export class CalendarEvent {
             json.duration,
             json.location,
             json.title,
-            json.info
+            json.info,
+            json.endDate ? dayjs(json.endDate.toMillis()) : undefined
         )
     }
 
@@ -60,7 +63,8 @@ export class CalendarEvent {
             duration: this.duration,
             location: this.location,
             title: this.title,
-            info: this.info
+            info: this.info,
+            endDate: this.endDate ? Timestamp.fromDate(this.endDate.toDate()) : undefined
         } as CalendarEventJson
     }
 }

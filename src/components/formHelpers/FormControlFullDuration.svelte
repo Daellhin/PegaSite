@@ -1,4 +1,6 @@
 <script lang="ts">
+  import InputCheckbox from "./inputs/InputCheckbox.svelte";
+
   export let label: string;
   export let value: string;
   export let required = false;
@@ -9,7 +11,7 @@
 
   let valueStart = value.split("-")[0];
   let valueEnd = value.split("-")[1];
-  let fullDay = false;
+  let fullDay = value === "Volledige dag";
 
   $: updateValue(valueStart, valueEnd, fullDay);
   function updateValue(valueStart: string, valueEnd: string, fullDay: boolean) {
@@ -57,23 +59,11 @@
       disabled={fullDay || disabled}
     />
   </div>
-  <div class="mt-2 flex items-center gap-3 text-sm">
-    <input
-      id={inputIdFullDay}
-      bind:checked={fullDay}
-      type="checkbox"
-      class={"border-fix  bg-clip-padding w-6 h-6 bg- hover:cursor-pointer rounded-md  checked:bg-primary " +
-        (disabled ? "border-0 bg-base-200" : "border-2 bg-transparent")}
-      {disabled}
-    />
-    <label for={inputIdFullDay} class:opacity-50={disabled}>Volledige dag</label
-    >
-  </div>
+  <InputCheckbox
+    id={inputIdFullDay}
+    label="Volledige dag"
+    bind:value={fullDay}
+    {disabled}
+    class="mt-2"
+  />
 </div>
-
-<style>
-  .border-fix {
-    --tw-border-opacity: 0.2 !important;
-    border-color: hsl(var(--bc) / var(--tw-border-opacity)) !important;
-  }
-</style>
