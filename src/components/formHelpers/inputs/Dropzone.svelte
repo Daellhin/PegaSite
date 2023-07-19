@@ -10,7 +10,7 @@
     faXmark,
   } from "@fortawesome/free-solid-svg-icons";
   import Fa from "svelte-fa";
-  import CloudIcon from "../../icons/CloudIcon.svelte";
+  import CloudIcon from "$components/icons/Flowbite/CloudIcon.svelte";
 
   export let uploadedImages: File[];
   export let existingImages: string[] = [];
@@ -51,9 +51,7 @@
     class="flex flex-col items-center justify-center w-full h-28 border-2 input-bordered border-color border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
   >
     <div class="flex flex-col items-center justify-center pt-5 pb-6">
-      <div class="text-gray-700 dark:text-gray-400">
-        <CloudIcon />
-      </div>
+      <CloudIcon class="text-gray-700 dark:text-gray-400 text-3xl" />
       <p class="mb-2 text-sm font-semibold">
         Sleep hier of klik om afbeelding up te loaden
       </p>

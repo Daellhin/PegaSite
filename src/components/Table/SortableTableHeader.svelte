@@ -1,6 +1,6 @@
 <script lang="ts">
-  import CaretDown from "../icons/Flowbite/CaretDown.svelte";
-  import CaretUp from "../icons/Flowbite/CaretUp.svelte";
+  import CaretDown from "$components/icons/Flowbite/CaretDown.svelte";
+  import CaretUp from "$components/icons/Flowbite/CaretUp.svelte";
 
   export let name: string;
   export let onClick: (index: number) => void;

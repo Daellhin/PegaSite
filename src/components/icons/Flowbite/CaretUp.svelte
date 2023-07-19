@@ -1,10 +1,12 @@
 <script lang="ts">
-  let classList = "";
-  export { classList as class };
+  export let style =
+    "height:1em;vertical-align:-.125em;transform-origin:center;overflow:visible";
+  let classNames = "";
+  export { classNames as class };
 </script>
 
 <svg
-  class={classList}
+  class={classNames}
   aria-hidden="true"
   xmlns="http://www.w3.org/2000/svg"
   fill="currentColor"
