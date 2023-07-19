@@ -5,7 +5,6 @@
   import { authStore } from "$lib/stores/AuthStore";
   import { navbarStore } from "$lib/stores/NavbarStore";
   import { pageHeadStore } from "$lib/stores/PageHeadStore";
-  import MdInfoOutline from "svelte-icons/md/MdInfoOutline.svelte";
 
   // Authguard
   $: authStore.known.then(() => {

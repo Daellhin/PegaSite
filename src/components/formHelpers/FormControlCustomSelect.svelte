@@ -1,5 +1,6 @@
 <script lang="ts">
-  import IoIosArrowDown from "svelte-icons/io/IoIosArrowDown.svelte";
+  import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
+  import Fa from "svelte-fa/src/fa.svelte";
   import Select from "svelte-select";
 
   export let label: string;
@@ -10,7 +11,7 @@
   export let placeholder = "Kies";
   export let items = Array<{ label: string; value: string }>();
   export let groupBy: ((e: any) => any) | undefined = undefined;
-  export let searchable = false;
+  export let searchable = false;  
 
   $: selectId = label?.replace(/[ :]/g, "").toLowerCase();
 
@@ -41,17 +42,16 @@
     {groupBy}
     id={selectId}
     on:select={handleSelect}
-    class={"select select-bordered border-2 font-normal" + searchable
-      ? "searchable"
-      : ""}
+    class={"select select-bordered border-2 font-normal " +
+      (searchable ? "searchable" : "")}
     showChevron
     {placeholder}
     {floatingConfig}
     {required}
     {searchable}
   >
-    <div class="w-4 h-4 text-gray-500" slot="chevron-icon">
-      <IoIosArrowDown />
+    <div slot="chevron-icon">
+      <Fa icon={faChevronDown} class="text-gray-500 text-sm" />
     </div>
   </Select>
 </div>
