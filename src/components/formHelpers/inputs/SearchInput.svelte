@@ -1,6 +1,6 @@
 <script lang="ts">
   import { faSearch } from "@fortawesome/free-solid-svg-icons";
-  import Fa from "svelte-fa/src/fa.svelte";
+  import Fa from "svelte-fa";
 
   export let value: string;
   export let size: "md" | "sm" | "xs" = "sm";

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { isChild } from "$lib/utils/Utils";
   import { faCheck, faPen, faXmark } from "@fortawesome/free-solid-svg-icons";
-  import Fa from "svelte-fa/src/fa.svelte";
+  import Fa from "svelte-fa";
   import { v4 as uuidv4 } from "uuid";
 
   export let value: string;

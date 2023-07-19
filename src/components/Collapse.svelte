@@ -1,7 +1,7 @@
 <script lang="ts">
   import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
   import collapse from "svelte-collapse";
-  import Fa from "svelte-fa/src/fa.svelte";
+  import Fa from "svelte-fa";
 
   let open = false;
 </script>

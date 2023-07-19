@@ -1,6 +1,6 @@
 <script lang="ts">
   import { faXmark } from "@fortawesome/free-solid-svg-icons";
-  import Fa from "svelte-fa/src/fa.svelte";
+  import Fa from "svelte-fa";
 
   export let showForm: boolean;
   export let onSubmit: () => void;
