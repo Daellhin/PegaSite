@@ -15,6 +15,7 @@
   <button
     class="btn btn-ghost btn-sm absolute right-2 top-2 font-bold btn-square"
     title="sluiten"
+    type="button"
     on:click={() => (showForm = false)}
   >
     <Fa icon={faXmark} size="lg" />
@@ -26,6 +27,6 @@
 
   <div class="mt-4">
     <div class="text-error">{error}</div>
-    <button class="btn btn-primary btn-md mt-2">{submitLabel}</button>
+    <button class="btn btn-primary btn-md mt-2" type="submit">{submitLabel}</button>
   </div>
 </form>

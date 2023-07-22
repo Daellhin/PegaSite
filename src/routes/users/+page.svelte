@@ -23,8 +23,6 @@
   function sort(users: DbUser[], sortField: string, ascDesc: number) {
     if (ascDesc === 0) return [...(filteredUsers || [])];
     switch (sortField) {
-      case "Nr":
-        return [...users];
       case "Naam":
         return [...users].sort((a, b) =>
           a.displayName.localeCompare(b.displayName)

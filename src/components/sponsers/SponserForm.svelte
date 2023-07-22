@@ -3,6 +3,8 @@
   import FormControlCustomSelect from "$components/formHelpers/FormControlCustomSelect.svelte";
   import FormControlDropzone from "$components/formHelpers/FormControlDropzone.svelte";
   import FormControlText from "$components/formHelpers/FormControlText.svelte";
+  import { Sponser } from "$lib/domain/Sponser";
+  import { sponserStore } from "$lib/stores/SponserStore";
   import { userStore } from "$lib/stores/UserStore";
   import { logFirebaseError } from "$lib/utils/Firebase";
   import { pushCreatedToast } from "$lib/utils/Toast";
@@ -14,13 +16,14 @@
   let name = "";
   let url: string;
   let image = Array<File>();
-  
+
   let errorMessage = "";
 
-  async function createUser() {
+  async function createSponser() {
     try {
       errorMessage = "";
-      //await userStore.createUser(email, tempPass, rol, displayName);
+      const newSponser = new Sponser("-1", name, url, "");
+      await sponserStore.createSponser(newSponser, image[0]);
       pushCreatedToast("Sponser aangemaakt");
       //showForm = false;
     } catch (error) {
@@ -40,7 +43,7 @@
   }
 </script>
 
-<DismissableForm onSubmit={createUser} bind:showForm error={errorMessage}>
+<DismissableForm onSubmit={createSponser} bind:showForm error={errorMessage}>
   <FormControlText
     label="Naam"
     placeholder="Naam"
@@ -49,16 +52,16 @@
     required
   />
   <FormControlText
-  label="Link"
-  placeholder="Link"
-  bind:value={url}
-  size="xs"
-  required
-/>
-<FormControlDropzone
-  label="Afbeelding"
-  bind:uploadedImages={image}
-  size="xs"
-  required></FormControlDropzone>
-
+    label="Link"
+    placeholder="Link"
+    bind:value={url}
+    size="xs"
+    required
+  />
+  <FormControlDropzone
+    label="Afbeelding"
+    bind:uploadedImages={image}
+    size="xs"
+    required
+  />
 </DismissableForm>

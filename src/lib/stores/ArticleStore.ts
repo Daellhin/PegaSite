@@ -156,14 +156,13 @@ function createArticleStore() {
   async function updateArticle(newAuthors: string[], newTags: string[], newTitle: string, newContent: string, lastUpdate: Dayjs, uploadedImages: File[], newExcistingImages: string[], article: Article) {
     if (!browser) return
 
-    let newImages: string[] = []
+    let newImages = Array<string>()
     const { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } = await import('firebase/storage')
     const storage = getStorage()
 
     // -- Remove images --
     if (!containArraysSameElements(article.images, newExcistingImages)) {
       const imagesToRemove = arrayDifference(article.images, newExcistingImages)
-      console.log("imagesToRemove", imagesToRemove)
       await Promise.all(imagesToRemove.map(async (image) => {
         const imageRef = ref(storage, image)
         await deleteObject(imageRef)

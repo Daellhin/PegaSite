@@ -16,6 +16,7 @@
   export let existingImages: string[] = [];
   export let accept: string;
   export let dropzoneId = "file-dropzone";
+  export let maxAmount = 1;
 
   function onFileInput(e: Event & { currentTarget: HTMLInputElement }) {
     if (!e.currentTarget.files) return;
@@ -28,7 +29,9 @@
   function handleDrop(event: DragEvent) {
     const droppedFiles = getFilesFromDragEvent(event);
     if (!droppedFiles) return;
-    const newFiles = droppedFiles.filter((e) => e.type.match(accept));
+    const newFiles = droppedFiles
+      .filter((e) => e.type.match(accept))
+      .slice(0, remainingSpace);
     uploadedImages.push(...newFiles);
     uploadedImages = uploadedImages;
   }
@@ -38,37 +41,43 @@
   function removeExistingImage(toRemove: string) {
     existingImages = existingImages.filter((e) => e != toRemove);
   }
+
+  $: remainingSpace = uploadedImages.length + existingImages.length - maxAmount;
 </script>
 
-<div
-  role="application"
-  class="flex items-center justify-center w-full"
-  on:drop={handleDrop}
-  on:dragover={ignoreDragOver}
->
-  <label
-    id={dropzoneId}
-    class="flex flex-col items-center justify-center w-full h-28 border-2 input-bordered border-color border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+{#if remainingSpace}
+  <div
+    role="application"
+    class="flex items-center justify-center w-full"
+    on:drop={handleDrop}
+    on:dragover={ignoreDragOver}
   >
-    <div class="flex flex-col items-center justify-center pt-5 pb-6">
-      <CloudIcon class="text-gray-700 dark:text-gray-400 text-3xl" />
-      <p class="mb-2 text-sm font-semibold">
-        Sleep hier of klik om afbeelding up te loaden
-      </p>
-      <p class="text-xs text-gray-500 dark:text-gray-400">
-        SVG, PNG, JPG, GIF of WEBP
-      </p>
-    </div>
-    <input
+    <label
       id={dropzoneId}
-      type="file"
-      on:input={(e) => onFileInput(e)}
-      class="hidden"
-      {accept}
-      multiple
-    />
-  </label>
-</div>
+      class="flex flex-col items-center justify-center w-full h-28 border-2 input-bordered border-color border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+    >
+      <div class="flex flex-col items-center justify-center pt-5 pb-6">
+        <CloudIcon class="text-gray-700 dark:text-gray-400 text-3xl" />
+        <p class="mb-2 text-sm font-semibold">
+          Sleep hier of klik om afbeelding<span class:hidden={maxAmount <= 1}
+            >(en)</span
+          > up te loaden
+        </p>
+        <p class="text-xs text-gray-500 dark:text-gray-400">
+          SVG, PNG, JPG, GIF of WEBP
+        </p>
+      </div>
+      <input
+        id={dropzoneId}
+        type="file"
+        on:input={(e) => onFileInput(e)}
+        class="hidden"
+        {accept}
+        multiple
+      />
+    </label>
+  </div>
+{/if}
 
 {#if uploadedImages.length || existingImages.length}
   <div class="border-2 border-color rounded-lg input-bordered mt-2">

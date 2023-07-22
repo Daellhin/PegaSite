@@ -14,8 +14,8 @@ function createUserStore() {
       const { getFirestore, getDocs, collection } = await import('firebase/firestore')
       const firestore = getFirestore(firebaseApp)
 
-      const userRef = collection(firestore, Collections.USERS)
-      const usersSnap = await getDocs(userRef)
+      const usersRef = collection(firestore, Collections.USERS)
+      const usersSnap = await getDocs(usersRef)
       const users = usersSnap.docs.map(e => DbUser.fromJson(e.id, e.data() as DbUserJson))
 
       // -- Set store --
