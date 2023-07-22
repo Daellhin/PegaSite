@@ -10,9 +10,9 @@
   import Fa from "svelte-fa";
 
   type Item = {
-    imageUrl: string;
     name: string;
-    externalLink: string;
+    url: string;
+    imageUrl: string;
   };
 
   export let items = Array<Item>();
@@ -136,7 +136,7 @@
     <span class="text-lg font-semibold">
       {items[counter].name}
     </span>
-    <a href={items[counter].externalLink} class="btn btn-sm">
+    <a href={items[counter].url} class="btn btn-sm" target="_blank">
       Site
       <Fa icon={faExternalLink} class="text-lg" />
     </a>

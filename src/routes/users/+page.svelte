@@ -76,8 +76,8 @@
 />
 
 {#if $userStore}
-  <div class="mt-3">
-    <div class="overflow-auto rounded-t-lg">
+  <div class="mt-3 grid">
+    <div class="overflow-x-auto rounded-t-lg">
       <table class="table">
         <thead class="bg-base-200">
           <SortableTableHeaderRow

@@ -23,5 +23,5 @@
       {/if}
     </span>
   </label>
-  <Dropzone bind:uploadedImages bind:existingImages {accept} />
+  <Dropzone bind:uploadedImages bind:existingImages {accept} {required}  />
 </div>

@@ -1,26 +1,37 @@
 <script lang="ts">
-  import { faChevronDown, faPen, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+  import {
+    faChevronDown,
+    faPen,
+    faTrashAlt,
+  } from "@fortawesome/free-solid-svg-icons";
   import Fa from "svelte-fa";
 
-  export let editUrl: string;
-  export let deleteHandler: () => Promise<void> | any = () => {};
+  // EditUrl of editHandler can be used
+  export let editUrl = "";
+  export let editHandler: () => Promise<void> | any = () => {};
+  export let deleteHandler: (() => Promise<void> | any) | undefined = undefined;
   export let size: "md" | "sm" | "xs" = "md";
   export let disabled = false;
-  export let hasDelete = true;
   export let width = "w-52";
   export let editPrompt = "Aanpassen";
+  export let positionStatic = false;
 
-  let dropdownList: HTMLUListElement;
-
+  async function editWrapper() {
+    if (editHandler === undefined) return;
+    await editHandler();
+    (document.activeElement as HTMLElement).blur();
+  }
   async function deleteWrapper() {
+    if (deleteHandler === undefined) return;
     await deleteHandler();
-    dropdownList.hidden = true;
+    (document.activeElement as HTMLElement).blur();
   }
 </script>
 
 <div
   title={disabled ? "Uitgeschakeld" : "Aanpassen"}
   class="dropdown dropdown-end min-w-fit"
+  class:static={positionStatic}
 >
   <button
     {disabled}
@@ -35,12 +46,17 @@
     <Fa icon={faChevronDown} class="text-gray-500 hidden sm:block" />
   </button>
   <ul
-    bind:this={dropdownList}
     class={"dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box " +
       width}
   >
-    <li><a href={editUrl}>{editPrompt}</a></li>
-    {#if hasDelete}
+    <li>
+      {#if editUrl}
+        <a href={editUrl}>{editPrompt}</a>
+      {:else}
+        <button on:click={editWrapper}>{editPrompt}</button>
+      {/if}
+    </li>
+    {#if deleteHandler}
       <li class="flex flex-row gap-1">
         <button on:click={deleteWrapper} class="w-full">
           <Fa icon={faTrashAlt} class="text-lg" />

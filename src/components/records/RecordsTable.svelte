@@ -2,7 +2,7 @@
   import CollapsableList from "$components/records/CollapsableList.svelte";
   import TabedView from "$components/records/TabedView.svelte";
   import { constructMapWithCategory } from "$lib/domain/ClubRecord";
-  import type { Category } from "$lib/domain/data-classes/Category";
+  import type { Category } from "$lib/domain/dataClasses/Category";
   import { clubRecordStore } from "$lib/stores/ClubRecordStore";
   import {
     filterValuesInMap,

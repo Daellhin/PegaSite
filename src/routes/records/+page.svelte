@@ -2,7 +2,7 @@
   import SearchInput from "$components/formHelpers/inputs/SearchInput.svelte";
   import NewRecordForm from "$components/records/NewRecordForm.svelte";
   import RecordsTable from "$components/records/RecordsTable.svelte";
-  import { Category } from "$lib/domain/data-classes/Category";
+  import { Category } from "$lib/domain/dataClasses/Category";
   import { clubRecordStore } from "$lib/stores/ClubRecordStore";
   import { pageHeadStore } from "$lib/stores/PageHeadStore";
 

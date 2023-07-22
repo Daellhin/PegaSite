@@ -217,8 +217,8 @@ function createArticleStore() {
         await deleteObject(storageRef)
       } catch (error: any) {
         // Not existing images can be safely ignored
-        if (error.code === 'storage/object-not-found') return
-        throw error
+        if (error.code !== 'storage/object-not-found')
+          throw error
       }
     }))
 

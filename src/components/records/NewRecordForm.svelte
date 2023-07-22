@@ -4,10 +4,10 @@
   import FormControlDate from "$components/formHelpers/FormControlDate.svelte";
   import FormControlText from "$components/formHelpers/FormControlText.svelte";
   import { RecordInstance } from "$lib/domain/RecordInstance";
-  import { AthleticEvent } from "$lib/domain/data-classes/AthleticEvent";
-  import { Category } from "$lib/domain/data-classes/Category";
-  import { Discipline } from "$lib/domain/data-classes/Discipline";
-  import { Gender } from "$lib/domain/data-classes/Gender";
+  import { AthleticEvent } from "$lib/domain/dataClasses/AthleticEvent";
+  import { Category } from "$lib/domain/dataClasses/Category";
+  import { Discipline } from "$lib/domain/dataClasses/Discipline";
+  import { Gender } from "$lib/domain/dataClasses/Gender";
   import { clubRecordStore } from "$lib/stores/ClubRecordStore";
   import { pushCreatedToast } from "$lib/utils/Toast";
   import dayjs from "dayjs";

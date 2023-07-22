@@ -4,7 +4,6 @@ import { Collections } from '$lib/firebase/Firebase'
 import { writable } from 'svelte/store'
 import { v4 as uuidv4 } from "uuid";
 
-
 function createSponserStore() {
   const store = writable<(Sponser)[]>(undefined, set => {
     async function init() {
@@ -31,11 +30,9 @@ function createSponserStore() {
     const { getStorage, ref, uploadBytes, getDownloadURL } = await import('firebase/storage')
     const storage = getStorage()
 
-
     const storageRef = ref(storage, `sponser-images/${uuidv4()}`)
     const snapshot = await uploadBytes(storageRef, image)
     const uploadedImage = await getDownloadURL(snapshot.ref)
-
     sponser.imageUrl = uploadedImage
 
     // -- Upload article --
@@ -43,7 +40,7 @@ function createSponserStore() {
     const { firebaseApp } = await import('$lib/firebase/Firebase')
     const firestore = getFirestore(firebaseApp)
 
-    const newDocRef = doc(collection(firestore, Collections.ARTICLES)).withConverter(sponserConverter)
+    const newDocRef = doc(collection(firestore, Collections.SPONSERS)).withConverter(sponserConverter)
     await setDoc(newDocRef, sponser)
 
     // -- Update store --
@@ -87,8 +84,8 @@ function createSponserStore() {
       await deleteObject(storageRef)
     } catch (error: any) {
       // Not existing images can be safely ignored
-      if (error.code === 'storage/object-not-found') return
-      throw error
+      if (error.code !== 'storage/object-not-found')
+        throw error
     }
 
     // -- Remove sponser --

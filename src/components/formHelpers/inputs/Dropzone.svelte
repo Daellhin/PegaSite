@@ -17,6 +17,7 @@
   export let accept: string;
   export let dropzoneId = "file-dropzone";
   export let maxAmount = 1;
+  export let required = false;
 
   function onFileInput(e: Event & { currentTarget: HTMLInputElement }) {
     if (!e.currentTarget.files) return;
@@ -71,9 +72,10 @@
         id={dropzoneId}
         type="file"
         on:input={(e) => onFileInput(e)}
-        class="hidden"
+        class="opacity-0"
         {accept}
         multiple
+        {required}
       />
     </label>
   </div>

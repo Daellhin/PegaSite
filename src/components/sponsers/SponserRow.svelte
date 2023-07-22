@@ -1,10 +1,18 @@
 <script lang="ts">
+  import EditDropdown from "$components/EditDropdown.svelte";
   import type { Sponser } from "$lib/domain/Sponser";
-  import { faPen } from "@fortawesome/free-solid-svg-icons";
-  import Fa from "svelte-fa";
+  import { sponserStore } from "$lib/stores/SponserStore";
 
   export let index: number;
   export let sponser: Sponser;
+  export let editHandler: (sponer: Sponser) => Promise<void> | any;
+
+  function editWrapper() {
+    editHandler(sponser);
+  }
+  async function deleteSponser() {
+    await sponserStore.deleteSponser(sponser);
+  }
 </script>
 
 <tr class="hover:bg-base-300 border-b border-base-200">
@@ -15,8 +23,10 @@
     <img src={sponser.imageUrl} alt="Logo" class="rounded-lg h-20" />
   </td>
   <td>
-    <button class="btn btn-circle btn-ghost" title="edit" type="button">
-      <Fa icon={faPen} class="text-xl" />
-    </button>
+    <EditDropdown
+      editHandler={editWrapper}
+      deleteHandler={deleteSponser}
+      positionStatic
+    />
   </td>
 </tr>

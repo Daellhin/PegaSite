@@ -1,20 +1,21 @@
 <script lang="ts">
   import CaretDown from "$components/icons/Flowbite/CaretDown.svelte";
   import CaretUp from "$components/icons/Flowbite/CaretUp.svelte";
+  import { SortOrder } from "$lib/domain/dataClasses/SortOrder";
 
   export let name: string;
-  export let onClick: (index: number) => void;
+  export let onClick: (sortOrder: SortOrder) => void;
 
   export function reset() {
-    index = 0;
+    sortOrder = SortOrder.None;
   }
 
   function onClickInner() {
-    index = (index + 1) % 3;
-    onClick(index);
+    sortOrder = sortOrder.next();
+    onClick(sortOrder);
   }
 
-  let index = 0;
+  let sortOrder = SortOrder.None;
 </script>
 
 <th
@@ -25,10 +26,10 @@
     {name}
     <div class="flex flex-col">
       <CaretUp
-        class={"w-2 h-2 " + (index == 0 || index === 2 ? "" : "invisible")}
+        class={"w-2 h-2 " + (sortOrder.showUpArrow() ? "" : "invisible")}
       />
       <CaretDown
-        class={"w-2 h-2 " + (index == 0 || index === 1 ? "" : "invisible")}
+        class={"w-2 h-2 " + (sortOrder.showDownArrow() ? "" : "invisible")}
       />
     </div>
   </div>
