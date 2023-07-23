@@ -172,3 +172,5 @@ export function linkifyText(text: string) {
     a.push(text)
     return a.join('')
 }
+
+export function doNothing() { }

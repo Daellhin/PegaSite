@@ -1,7 +1,7 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
   import InfoCard from "$components/InfoCard.svelte";
-  import SortableTableHeaderRow from "$components/Table/SortableTableHeaderRow.svelte";
+  import SortableTableHeaderRow from "$components/table/SortableTableHeaderRow.svelte";
   import SearchInput from "$components/formHelpers/inputs/SearchInput.svelte";
   import NewUserForm from "$components/users/NewUserForm.svelte";
   import UserRow from "$components/users/UserRow.svelte";
@@ -10,8 +10,8 @@
   import { pageHeadStore } from "$lib/stores/PageHeadStore";
   import { userStore } from "$lib/stores/UserStore";
 
-  let searchString = "";
   let showForm = false;
+  let searchString = "";
   let sortField = "";
   let ascDesc = 0;
 
@@ -23,8 +23,6 @@
   function sort(users: DbUser[], sortField: string, ascDesc: number) {
     if (ascDesc === 0) return [...(filteredUsers || [])];
     switch (sortField) {
-      case "Nr":
-        return [...users];
       case "Naam":
         return [...users].sort((a, b) =>
           a.displayName.localeCompare(b.displayName)
@@ -65,17 +63,21 @@
   </div>
 {/if}
 
-<InfoCard class="mt-1 mb-3">
+<InfoCard class="mt-1">
   Om veiligheidsredenen is het niet mogelijk om gebruikers via de site te
   verwijderen. Indien nodig kan de site administrator dit doen in de databank
   console
 </InfoCard>
 
-<SearchInput bind:value={searchString} placeholder="Zoek een gebruiker " />
+<SearchInput
+  class="mt-3"
+  bind:value={searchString}
+  placeholder="Zoek een gebruiker "
+/>
 
 {#if $userStore}
-  <div class="grid mt-3">
-    <div class="overflow-auto rounded-t-lg">
+  <div class="mt-3 grid">
+    <div class="overflow-x-auto rounded-t-lg">
       <table class="table">
         <thead class="bg-base-200">
           <SortableTableHeaderRow

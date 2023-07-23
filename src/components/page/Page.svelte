@@ -17,7 +17,6 @@
     <div class="ml-auto">
       <EditDropdown
         editUrl={`/pages/edit/${page.id}`}
-        hasDelete={false}
         width="w-60"
       >
         <li><a href="/pages/navbar">Navigatiebalk&nbsp;aanpassen</a></li>

@@ -1,14 +1,15 @@
 <script lang="ts">
-  import SortableTableHeader from "./SortableTableHeader.svelte";
+  import SortableTableHeader from "$components/table/SortableTableHeader.svelte";
+  import type { SortOrder } from "$lib/domain/dataClasses/SortOrder";
 
   export let columns: { name: string; dontSort?: boolean }[];
-  export let onClick: (column: string, asDesc: number) => void;
+  export let onClick: (column: string, sortOrder: SortOrder) => void;
 
   let headers = [] as any[];
 
-  function onClickInner(index: number, asDesc: number) {
+  function onClickInner(index: number, sortOrder: SortOrder) {
     headers.filter((e, i) => i !== index).forEach((e) => e.reset());
-    onClick(columns[index].name, asDesc);
+    onClick(columns[index].name, sortOrder);
   }
 </script>
 
@@ -18,7 +19,7 @@
       <SortableTableHeader
         name={column.name}
         bind:this={headers[index]}
-        onClick={(asDesc) => onClickInner(index, asDesc)}
+        onClick={(sortOrder) => onClickInner(index, sortOrder)}
       />
     {:else}
       <th>

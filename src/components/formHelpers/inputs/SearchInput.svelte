@@ -1,6 +1,6 @@
 <script lang="ts">
   import { faSearch } from "@fortawesome/free-solid-svg-icons";
-  import Fa from "svelte-fa/src/fa.svelte";
+  import Fa from "svelte-fa";
 
   export let value: string;
   export let size: "md" | "sm" | "xs" = "sm";
@@ -14,7 +14,7 @@
 </script>
 
 <div
-  class={"relative" + classList}
+  class={"relative " + classList}
   class:max-w-md={size === "md"}
   class:max-w-sm={size === "sm"}
   class:max-w-xs={size === "xs"}

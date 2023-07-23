@@ -1,11 +1,14 @@
 <script lang="ts">
   import Card from "$components/article/ArticleCard.svelte";
-  import ArrowLeft from "$components/icons/ArrowLeft.svelte";
-  import ArrowRight from "$components/icons/ArrowRight.svelte";
   import { articleStore, paginationSize } from "$lib/stores/ArticleStore";
   import { authStore } from "$lib/stores/AuthStore";
   import { pageHeadStore } from "$lib/stores/PageHeadStore";
   import { clamp, sizeOfIncreasingFirstSequence } from "$lib/utils/Utils";
+  import {
+    faArrowLeftLong,
+    faArrowRightLong,
+  } from "@fortawesome/free-solid-svg-icons";
+  import Fa from "svelte-fa";
 
   const minArticlesOnPage = 6;
   let width = 0;
@@ -77,23 +80,19 @@
 <!-- Pagiation -->
 <div class="flex space-x-3 mt-3">
   <button
-    class="btn btn-sm btn-outline normal-case"
+    class="btn btn-sm btn-outline normal-case items-center"
     on:click={previous}
     disabled={!hasPrevPage}
   >
-    <div class="mr-2 w-5 h-5">
-      <ArrowLeft />
-    </div>
-    Vorige
+    <Fa icon={faArrowLeftLong} class="mr-2 text-[16px]" />
+    <span>Vorige</span>
   </button>
   <button
-    class="btn btn-sm btn-outline normal-case"
+    class="btn btn-sm btn-outline normal-case flex items-center"
     on:click={next}
     disabled={!hasNextPage}
   >
-    Volgende
-    <div class="ml-2 w-5 h-5">
-      <ArrowRight />
-    </div>
+    <span>Volgende</span>
+    <Fa icon={faArrowRightLong} class="ml-2 text-[16px]" />
   </button>
 </div>

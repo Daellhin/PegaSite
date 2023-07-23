@@ -1,7 +1,7 @@
 <script lang="ts">
-  import MdInfoOutline from "svelte-icons/md/MdInfoOutline.svelte";
+  import SavableTextInput from "$components/formHelpers/inputs/SavableTextInput.svelte";
+  import InfoCircle from "$components/icons/Flowbite/InfoCircle.svelte";
   import { v4 as uuidv4 } from "uuid";
-  import SavableTextInput from "./inputs/SavableTextInput.svelte";
 
   export let label: string;
   export let value: string;
@@ -34,7 +34,7 @@
     {#if tooltip}
       <div class="tooltip ml-auto tooltip-left sm:tooltip-bottom" data-tip={tooltip}>
         <button class="btn btn-ghost btn-xs btn-circle">
-          <div class="flex-shrink-0 w-4 h-4"><MdInfoOutline /></div>
+          <InfoCircle class="" />
         </button>
       </div>
     {/if}

@@ -2,9 +2,9 @@ import { browser } from '$app/environment'
 import { LINKS_JSON } from '$data/LinksJson'
 import { Link, LinkGroup } from '$lib/domain/Link'
 import { Collections } from '$lib/firebase/Firebase'
+import { pageStore } from '$lib/stores/PageStore'
 import { convertStringToBool } from '$lib/utils/Utils'
 import { writable } from 'svelte/store'
-import { pageStore } from './PageStore'
 
 async function addLinksFromJson() {
   const links = LINKS_JSON.map(LinkGroup.fromJson)

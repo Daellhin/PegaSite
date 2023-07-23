@@ -1,10 +1,10 @@
 <script lang="ts">
+  import FormControlSearchInput from "$components/formHelpers/FormControlSearchInput.svelte";
   import {
     AutocompleteResponse,
     type AutocompleteResponseWrapperJson,
   } from "$lib/domain/geoapify/AutocompleteResponse";
   import { debounce } from "ts-debounce";
-  import FormControlSearchInput from "../FormControlSearchInput.svelte";
 
   const apiKey = import.meta.env.VITE_GEOAPIFY_APIKEY;
   const minAddressLength = 3;
@@ -71,7 +71,7 @@
     {placeholder}
     {disabled}
   />
-  <ul
+  <button
     tabindex="0"
     class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-full"
     class:hidden={results.length === 0}
@@ -83,5 +83,5 @@
         </button>
       </li>
     {/each}
-  </ul>
+  </button>
 </div>

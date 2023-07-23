@@ -5,9 +5,8 @@
   import type { CalendarEvent } from "$lib/domain/CalendarEvent";
   import { authStore } from "$lib/stores/AuthStore";
   import { calendarEventStore } from "$lib/stores/CalendarEventStore";
-  import { faLocationDot, faMapLocationDot } from "@fortawesome/free-solid-svg-icons";
-  import Fa from "svelte-fa/src/fa.svelte";
-  import MdLocationOn from "svelte-icons/md/MdLocationOn.svelte";
+  import { faMapLocationDot } from "@fortawesome/free-solid-svg-icons";
+  import Fa from "svelte-fa";
 
   export let event: CalendarEvent;
 

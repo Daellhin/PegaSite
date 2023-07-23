@@ -4,7 +4,7 @@
 
   import { faCalendar } from "@fortawesome/free-regular-svg-icons";
   import { faUser, faUsers } from "@fortawesome/free-solid-svg-icons";
-  import Fa from "svelte-fa/src/fa.svelte";
+  import Fa from "svelte-fa";
   import Time from "svelte-time";
 
   export let article: Article;

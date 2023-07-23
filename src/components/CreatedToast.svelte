@@ -3,7 +3,7 @@
   import { isPageNavigation } from "$lib/utils/Utils";
   import type { BeforeNavigate } from "@sveltejs/kit";
   import { toast } from "@zerodevx/svelte-toast";
-  import MdInfoOutline from "svelte-icons/md/MdInfoOutline.svelte";
+  import InfoCircle from "$components/icons/Flowbite/InfoCircle.svelte";
 
   export let createdText = "";
   export let gotoUrl: string | undefined;
@@ -22,7 +22,7 @@
 
 <div class="m-2">
   <div class="alert shadow-md text-gray-800 dark:text-gray-200">
-    <div class="text-info flex-shrink-0 w-6 h-6"><MdInfoOutline /></div>
+    <InfoCircle class="text-xl text-info" />
     <span>{createdText}</span>
     <div class="flex-none">
       <button class="btn btn-sm btn-ghost" on:click={removeToast}> Ok </button>

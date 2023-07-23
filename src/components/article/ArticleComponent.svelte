@@ -12,7 +12,7 @@
     faUsers,
   } from "@fortawesome/free-solid-svg-icons";
   import { Carousel } from "flowbite-svelte";
-  import Fa from "svelte-fa/src/fa.svelte";
+  import Fa from "svelte-fa";
   import Time from "svelte-time";
 
   export let article: Article;

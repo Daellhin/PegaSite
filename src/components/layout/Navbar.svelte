@@ -1,9 +1,10 @@
 <script lang="ts">
-  import FaBars from "svelte-icons/fa/FaBars.svelte";
-  import PegaIconWithText from "../icons/PegaIconWithText.svelte";
-  import MenuHorizontal from "./MenuHorizontal.svelte";
-  import LoginModal from "../LoginModal.svelte";
-  import UserAvatar from "../ProfileAndLoginButton.svelte";
+  import LoginModal from "$components/LoginModal.svelte";
+  import UserAvatar from "$components/ProfileDropdown.svelte";
+  import PegaIconWithText from "$components/icons/PegaIconWithText.svelte";
+  import MenuHorizontal from "$components/layout/MenuHorizontal.svelte";
+  import { faBars } from "@fortawesome/free-solid-svg-icons";
+  import Fa from "svelte-fa";
 
   export let drawerID: string;
   export let loginModalID: string;
@@ -26,7 +27,7 @@
     <!-- Mobile menu end -->
     <div class="lg:hidden">
       <label for={drawerID} class="btn btn-square btn-ghost">
-        <div class="w-5 h-5"><FaBars /></div>
+        <Fa icon={faBars} class="text-xl" />
       </label>
     </div>
     <!-- Always shown -->

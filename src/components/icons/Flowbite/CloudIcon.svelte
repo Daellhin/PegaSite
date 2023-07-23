@@ -9,11 +9,15 @@
   class={classNames}
   aria-hidden="true"
   xmlns="http://www.w3.org/2000/svg"
-  fill="currentColor"
-  viewBox="0 0 16 10"
+  fill="none"
+  viewBox="0 0 20 16"
   {style}
 >
   <path
-    d="M9.207 1A2 2 0 0 0 6.38 1L.793 6.586A2 2 0 0 0 2.207 10H13.38a2 2 0 0 0 1.414-3.414L9.207 1Z"
+    stroke="currentColor"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    stroke-width="2"
+    d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
   />
 </svg>
