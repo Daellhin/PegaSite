@@ -7,7 +7,7 @@
   $: authStore.known.then(() => {
     if (!$authStore) goto("/");
   });
-  // Page title
+  // -- Page title --
   pageHeadStore.updatePageTitle("Dashboard");
 </script>
 

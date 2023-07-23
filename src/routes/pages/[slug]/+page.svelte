@@ -14,7 +14,7 @@
     page = await pageStore.getPageById(data.id);
   }
 
-  // Page title
+  // -- Page title --
   $: page && pageHeadStore.updatePageTitle(page.title);
 </script>
 

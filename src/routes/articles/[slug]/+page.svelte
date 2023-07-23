@@ -14,7 +14,7 @@
     article = await articleStore.getArticleById(data.id);
   }
 
-  // Page title
+  // -- Page title --
   $: article && pageHeadStore.updatePageTitle(article.title);
 </script>
 

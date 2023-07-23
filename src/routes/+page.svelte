@@ -44,7 +44,7 @@
     return clamp(maxArticlesToPlaceInRow, minArticlesOnPage, paginationSize);
   }
 
-  // Page title
+  // -- Page title --
   pageHeadStore.updatePageTitle("");
 </script>
 
@@ -73,7 +73,7 @@
       <div>Geen berichten gevonden</div>
     {/each}
   {:else}
-    <div>loading</div>
+    <div>Loading</div>
   {/if}
 </div>
 

@@ -10,7 +10,7 @@
     (event) => `${event.date.year()}${event.date.month()}`
   );
 
-  // Page title
+  // -- Page title --
   pageHeadStore.updatePageTitle("Events");
 </script>
 

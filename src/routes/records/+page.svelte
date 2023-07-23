@@ -46,5 +46,5 @@
     </div>
   {/each}
 {:else}
-  loading
+  Locationoading
 {/if}

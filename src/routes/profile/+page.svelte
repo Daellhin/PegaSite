@@ -39,7 +39,7 @@
   let saving = false;
   let loginError = false;
   async function updatePassword() {
-    //if(!validatePassword1(password1) || !validatePasswords(password1, password2)) return
+    if(!validatePassword1(password1) || !validatePasswords(password1, password2)) return
     try {
       saving = true;
       await authStore.updateCurrentUserPassword(password1);
@@ -53,11 +53,11 @@
     saving = false;
   }
 
-  // Authguard
+  // -- Authguard --
   $: authStore.known.then(() => {
     if (!$authStore) goto("/");
   });
-  // Page title
+  // -- Page title --
   pageHeadStore.updatePageTitle("Profiel");
 </script>
 

@@ -6,11 +6,11 @@
   import { navbarStore } from "$lib/stores/NavbarStore";
   import { pageHeadStore } from "$lib/stores/PageHeadStore";
 
-  // Authguard
+  // -- Authguard --
   $: authStore.known.then(() => {
     if (!$authStore) goto("/");
   });
-  // Page title
+  // -- Page title --
   pageHeadStore.updatePageTitle("Navigatiebalk wijzigen");
 </script>
 
@@ -30,5 +30,5 @@
     {/each}
   </div>
 {:else}
-  loading
+  Loading
 {/if}
