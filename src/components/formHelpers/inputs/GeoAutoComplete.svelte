@@ -71,7 +71,7 @@
     {placeholder}
     {disabled}
   />
-  <ul
+  <button
     tabindex="0"
     class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-full"
     class:hidden={results.length === 0}
@@ -83,5 +83,5 @@
         </button>
       </li>
     {/each}
-  </ul>
+  </button>
 </div>
