@@ -1,33 +1,33 @@
 <script lang="ts">
-  import { authStore } from "$lib/stores/AuthStore";
-  import type { FirebaseError } from "firebase/app";
-  import PegaIcon from "$components/icons/PegaIcon.svelte";
+  import { authStore } from "$lib/stores/AuthStore"
+  import type { FirebaseError } from "firebase/app"
+  import PegaIcon from "$components/icons/PegaIcon.svelte"
 
-  export let loginModalID: string;
+  export let loginModalID: string
 
-  let username: string;
-  let password: string;
-  let loginError: string | undefined;
+  let username: string
+  let password: string
+  let loginError: string | undefined
 
-  let showModal = false;
+  let showModal = false
 
   async function submitLogin() {
     try {
-      loginError = undefined;
-      await authStore.signIn(username, password);
-      showModal = false;
-      username = "";
-      password = "";
+      loginError = undefined
+      await authStore.signIn(username, password)
+      showModal = false
+      username = ""
+      password = ""
     } catch (error) {
       if (error as FirebaseError) {
-        const firebaseEror = error as FirebaseError;
+        const firebaseEror = error as FirebaseError
         // logFirebaseError(firebaseEror);
         if ((firebaseEror.customData as any)?.message?.includes("NetworkError"))
-          loginError = "Probleem met het netwerk";
-        else loginError = "Ongeldige login gegevens";
+          loginError = "Probleem met het netwerk"
+        else loginError = "Ongeldige login gegevens"
       } else {
-        console.error(error);
-        loginError = "Ongekend probleem";
+        console.error(error)
+        loginError = "Ongekend probleem"
       }
     }
   }

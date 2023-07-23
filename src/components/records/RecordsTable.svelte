@@ -1,27 +1,27 @@
 <script lang="ts">
-  import CollapsableList from "$components/records/CollapsableList.svelte";
-  import TabedView from "$components/records/TabedView.svelte";
-  import { constructMapWithCategory } from "$lib/domain/ClubRecord";
-  import type { Category } from "$lib/domain/dataClasses/Category";
-  import { clubRecordStore } from "$lib/stores/ClubRecordStore";
+  import CollapsableList from "$components/records/CollapsableList.svelte"
+  import TabedView from "$components/records/TabedView.svelte"
+  import { constructMapWithCategory } from "$lib/domain/ClubRecord"
+  import type { Category } from "$lib/domain/dataClasses/Category"
+  import { clubRecordStore } from "$lib/stores/ClubRecordStore"
   import {
     filterValuesInMap,
     getMapKeys,
     getMapValues,
-  } from "$lib/utils/Array";
+  } from "$lib/utils/Array"
 
-  export let category: Category;
-  export let searchString = "";
+  export let category: Category
+  export let searchString = ""
 
-  let recordComponents = Array<CollapsableList>();
+  let recordComponents = Array<CollapsableList>()
 
-  $: clubRecords = constructMapWithCategory($clubRecordStore, category);
+  $: clubRecords = constructMapWithCategory($clubRecordStore, category)
   $: filteredClubrecords = filterValuesInMap(clubRecords, (e) =>
     e.matchesSearchString(searchString)
-  );
-  $: keys = getMapKeys(filteredClubrecords);
-  $: values = getMapValues(filteredClubrecords);
-  $: isSearching = searchString ? true : false;
+  )
+  $: keys = getMapKeys(filteredClubrecords)
+  $: values = getMapValues(filteredClubrecords)
+  $: isSearching = searchString ? true : false
 </script>
 
 {#if filteredClubrecords && filteredClubrecords.size}

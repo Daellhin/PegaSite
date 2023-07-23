@@ -1,14 +1,14 @@
 <script lang="ts">
-  import { goto } from "$app/navigation";
-  import { authStore } from "$lib/stores/AuthStore";
-  import { pageHeadStore } from "$lib/stores/PageHeadStore";
+  import { goto } from "$app/navigation"
+  import { authStore } from "$lib/stores/AuthStore"
+  import { pageHeadStore } from "$lib/stores/PageHeadStore"
 
   // Authguard
   $: authStore.known.then(() => {
-    if (!$authStore) goto("/");
-  });
+    if (!$authStore) goto("/")
+  })
   // -- Page title --
-  pageHeadStore.updatePageTitle("Dashboard");
+  pageHeadStore.updatePageTitle("Dashboard")
 </script>
 
 <h1 class="text-2xl font-bold mb-2">Wijzigingen</h1>

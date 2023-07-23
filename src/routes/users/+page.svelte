@@ -1,54 +1,54 @@
 <script lang="ts">
-  import { goto } from "$app/navigation";
-  import InfoCard from "$components/InfoCard.svelte";
-  import SortableTableHeaderRow from "$components/table/SortableTableHeaderRow.svelte";
-  import SearchInput from "$components/formHelpers/inputs/SearchInput.svelte";
-  import NewUserForm from "$components/users/NewUserForm.svelte";
-  import UserRow from "$components/users/UserRow.svelte";
-  import type { DbUser } from "$lib/domain/DbUser";
-  import { authStore } from "$lib/stores/AuthStore";
-  import { pageHeadStore } from "$lib/stores/PageHeadStore";
-  import { userStore } from "$lib/stores/UserStore";
-  import { SortOrder } from "$lib/domain/dataClasses/SortOrder";
+  import { goto } from "$app/navigation"
+  import InfoCard from "$components/InfoCard.svelte"
+  import SortableTableHeaderRow from "$components/table/SortableTableHeaderRow.svelte"
+  import SearchInput from "$components/formHelpers/inputs/SearchInput.svelte"
+  import NewUserForm from "$components/users/NewUserForm.svelte"
+  import UserRow from "$components/users/UserRow.svelte"
+  import type { DbUser } from "$lib/domain/DbUser"
+  import { authStore } from "$lib/stores/AuthStore"
+  import { pageHeadStore } from "$lib/stores/PageHeadStore"
+  import { userStore } from "$lib/stores/UserStore"
+  import { SortOrder } from "$lib/domain/dataClasses/SortOrder"
 
-  let showForm = false;
-  let searchString = "";
-  let sortColumn = "";
-  let sortOrder = SortOrder.None;
+  let showForm = false
+  let searchString = ""
+  let sortColumn = ""
+  let sortOrder = SortOrder.None
 
   $: filteredUsers =
-    $userStore?.filter((user) => user.matchesSearchString(searchString)) || [];
-  $: sortedUsers = sort(filteredUsers, sortColumn, sortOrder);
+    $userStore?.filter((user) => user.matchesSearchString(searchString)) || []
+  $: sortedUsers = sort(filteredUsers, sortColumn, sortOrder)
 
   function sort(users: DbUser[], sortColumn: string, sortOrder: SortOrder) {
-    if (sortOrder.isNone) return [...users];
-    const newArray = [...users];
+    if (sortOrder.isNone) return [...users]
+    const newArray = [...users]
     switch (sortColumn) {
       case "Naam":
-        newArray.sort((a, b) => a.displayName.localeCompare(b.displayName));
-        break;
+        newArray.sort((a, b) => a.displayName.localeCompare(b.displayName))
+        break
       case "Email":
-        newArray.sort((a, b) => a.email.localeCompare(b.email));
-        break;
+        newArray.sort((a, b) => a.email.localeCompare(b.email))
+        break
       case "Rol":
-        newArray.sort((a, b) => a.role.localeCompare(b.role));
-        break;
+        newArray.sort((a, b) => a.role.localeCompare(b.role))
+        break
       case "Aangemaakt":
         newArray.sort((a, b) =>
           a.creationTimestamp.isAfter(b.creationTimestamp) ? 1 : -1
-        );
-        break;
+        )
+        break
     }
-    if (sortOrder.isDesc) newArray.reverse();
-    return newArray;
+    if (sortOrder.isDesc) newArray.reverse()
+    return newArray
   }
 
   // -- Authguard --
   $: authStore.dbUser.then((dbUser) => {
-    if (!dbUser || dbUser.role != "admin") goto("/");
-  });
+    if (!dbUser || dbUser.role != "admin") goto("/")
+  })
   // -- Page title --
-  pageHeadStore.updatePageTitle("Gebruikers");
+  pageHeadStore.updatePageTitle("Gebruikers")
 </script>
 
 <div class="flex gap-3">

@@ -1,14 +1,14 @@
 <script lang="ts">
-  import { navbarStore } from "$lib/stores/NavbarStore";
+  import { navbarStore } from "$lib/stores/NavbarStore"
 
-  export let drawerID: string;
+  export let drawerID: string
 
   function closeDrawer() {
     const drawerInput = document.querySelector<HTMLInputElement>(
       `#${drawerID}`
-    );
+    )
     if (drawerInput) {
-      drawerInput.checked = false;
+      drawerInput.checked = false
     }
   }
 </script>

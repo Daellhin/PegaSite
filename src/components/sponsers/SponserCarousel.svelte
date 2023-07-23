@@ -1,13 +1,13 @@
 <script lang="ts">
-  import { preferencesStore } from "$lib/stores/LocalStorrageStores";
+  import { preferencesStore } from "$lib/stores/LocalStorrageStores"
   import {
     faChevronLeft,
     faChevronRight,
     faExternalLink,
     faPause,
     faPlay,
-  } from "@fortawesome/free-solid-svg-icons";
-  import Fa from "svelte-fa";
+  } from "@fortawesome/free-solid-svg-icons"
+  import Fa from "svelte-fa"
 
   type Item = {
     name: string;
@@ -15,35 +15,35 @@
     imageUrl: string;
   };
 
-  export let items = Array<Item>();
-  export let hideIndicators = false;
-  export let loop = false;
-  export let duration = 10000;
+  export let items = Array<Item>()
+  export let hideIndicators = false
+  export let loop = false
+  export let duration = 10000
 
-  let counter = 0;
+  let counter = 0
 
   function toggleAutoPlay() {
-    preferencesStore.set({ autoPlay: !$preferencesStore.autoPlay });
+    preferencesStore.set({ autoPlay: !$preferencesStore.autoPlay })
   }
   function next() {
-    counter = (counter + 1) % items.length;
+    counter = (counter + 1) % items.length
   }
   function previous() {
-    counter = (counter - 1) % items.length;
+    counter = (counter - 1) % items.length
   }
 
   // -- Looping --
-  let loopTimeout: number;
+  let loopTimeout: number
 
   function setLoop() {
-    clearTimeout(loopTimeout);
+    clearTimeout(loopTimeout)
     loopTimeout = window.setTimeout(() => {
-      next();
-      setLoop();
-    }, duration);
+      next()
+      setLoop()
+    }, duration)
   }
-  $: if (loop && $preferencesStore.autoPlay) setLoop();
-  else clearTimeout(loopTimeout);
+  $: if (loop && $preferencesStore.autoPlay) setLoop()
+  else clearTimeout(loopTimeout)
 </script>
 
 <!-- Adapted from https://flowbite.com/docs/components/carousel/ -->

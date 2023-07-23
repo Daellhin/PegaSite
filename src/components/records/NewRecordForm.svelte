@@ -1,39 +1,39 @@
 <script lang="ts">
-  import DismisableForm from "$components/DismissableForm.svelte";
-  import FormControlCustomSelect from "$components/formHelpers/FormControlCustomSelect.svelte";
-  import FormControlDate from "$components/formHelpers/FormControlDate.svelte";
-  import FormControlText from "$components/formHelpers/FormControlText.svelte";
-  import { RecordInstance } from "$lib/domain/RecordInstance";
-  import { AthleticEvent } from "$lib/domain/dataClasses/AthleticEvent";
-  import { Category } from "$lib/domain/dataClasses/Category";
-  import { Discipline } from "$lib/domain/dataClasses/Discipline";
-  import { Gender } from "$lib/domain/dataClasses/Gender";
-  import { clubRecordStore } from "$lib/stores/ClubRecordStore";
-  import { pushCreatedToast } from "$lib/utils/Toast";
-  import dayjs from "dayjs";
+  import DismisableForm from "$components/DismissableForm.svelte"
+  import FormControlCustomSelect from "$components/formHelpers/FormControlCustomSelect.svelte"
+  import FormControlDate from "$components/formHelpers/FormControlDate.svelte"
+  import FormControlText from "$components/formHelpers/FormControlText.svelte"
+  import { RecordInstance } from "$lib/domain/RecordInstance"
+  import { AthleticEvent } from "$lib/domain/dataClasses/AthleticEvent"
+  import { Category } from "$lib/domain/dataClasses/Category"
+  import { Discipline } from "$lib/domain/dataClasses/Discipline"
+  import { Gender } from "$lib/domain/dataClasses/Gender"
+  import { clubRecordStore } from "$lib/stores/ClubRecordStore"
+  import { pushCreatedToast } from "$lib/utils/Toast"
+  import dayjs from "dayjs"
 
-  export let showForm: boolean;
+  export let showForm: boolean
 
-  let discipline: Discipline;
-  let category: Category;
-  let gender: Gender;
-  let athleticEvent: AthleticEvent;
+  let discipline: Discipline
+  let category: Category
+  let gender: Gender
+  let athleticEvent: AthleticEvent
 
-  let name: string;
-  let result: string;
-  let location: string;
-  let date: Date;
+  let name: string
+  let result: string
+  let location: string
+  let date: Date
 
   async function createRecord() {
-    const record = new RecordInstance(name, result, location, dayjs(date));
+    const record = new RecordInstance(name, result, location, dayjs(date))
     await clubRecordStore.createClubRecord(
       discipline,
       category,
       gender,
       athleticEvent,
       record
-    );
-    pushCreatedToast("Record aangemaakt");
+    )
+    pushCreatedToast("Record aangemaakt")
     //showForm = false;
   }
 </script>

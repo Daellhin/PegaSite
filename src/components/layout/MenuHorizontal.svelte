@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { navbarStore } from "$lib/stores/NavbarStore";
+  import { navbarStore } from "$lib/stores/NavbarStore"
 </script>
 
 {#if $navbarStore}

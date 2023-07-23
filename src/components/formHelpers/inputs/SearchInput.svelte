@@ -1,16 +1,16 @@
 <script lang="ts">
-  import { faSearch } from "@fortawesome/free-solid-svg-icons";
-  import Fa from "svelte-fa";
+  import { faSearch } from "@fortawesome/free-solid-svg-icons"
+  import Fa from "svelte-fa"
 
-  export let value: string;
-  export let size: "md" | "sm" | "xs" = "sm";
-  export let placeholder = "Zoek";
-  export let disabled = false;
-  export let onInput: () => void = () => {};
+  export let value: string
+  export let size: "md" | "sm" | "xs" = "sm"
+  export let placeholder = "Zoek"
+  export let disabled = false
+  export let onInput: () => void = () => {}
 
-  export let icon = faSearch;
-  let classList = "";
-  export { classList as class };
+  export let icon = faSearch
+  let classList = ""
+  export { classList as class }
 </script>
 
 <div

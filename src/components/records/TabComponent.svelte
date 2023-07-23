@@ -1,9 +1,9 @@
 <script lang="ts">
-    export let responsive = false;
-    export let bg = "";
-    export let classes = "";
+    export let responsive = false
+    export let bg = ""
+    export let classes = ""
 
-    let showContent = "f-indoor";
+    let showContent = "f-indoor"
 </script>
 
 <div>{$$slots["f-indoor"]}</div>

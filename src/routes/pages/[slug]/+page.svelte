@@ -1,21 +1,21 @@
 <script lang="ts">
-  import PageComponent from "$components/page/Page.svelte";
-  import type { Page } from "$lib/domain/Page";
-  import { pageHeadStore } from "$lib/stores/PageHeadStore";
-  import { pageStore } from "$lib/stores/PageStore";
-  import type { PageData } from "./$types";
+  import PageComponent from "$components/page/Page.svelte"
+  import type { Page } from "$lib/domain/Page"
+  import { pageHeadStore } from "$lib/stores/PageHeadStore"
+  import { pageStore } from "$lib/stores/PageStore"
+  import type { PageData } from "./$types"
 
-  export let data: PageData;
+  export let data: PageData
 
-  let page: Page | undefined | null;
-  $: $pageStore && loadPage(data);
+  let page: Page | undefined | null
+  $: $pageStore && loadPage(data)
 
   async function loadPage(data: PageData) {
-    page = await pageStore.getPageById(data.id);
+    page = await pageStore.getPageById(data.id)
   }
 
   // -- Page title --
-  $: page && pageHeadStore.updatePageTitle(page.title);
+  $: page && pageHeadStore.updatePageTitle(page.title)
 </script>
 
 {#if page === undefined}

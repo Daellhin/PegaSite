@@ -1,27 +1,27 @@
 <script lang="ts">
-  import ConfirmModal from "$components/ConfirmModal.svelte";
-  import EditDropdown from "$components/EditDropdown.svelte";
-  import FormControlSavableText from "$components/formHelpers/FormControlSavableText.svelte";
-  import { Link } from "$lib/domain/Link";
+  import ConfirmModal from "$components/ConfirmModal.svelte"
+  import EditDropdown from "$components/EditDropdown.svelte"
+  import FormControlSavableText from "$components/formHelpers/FormControlSavableText.svelte"
+  import { Link } from "$lib/domain/Link"
 
-  export let link: Link;
-  export let isEditable = true;
-  export let deleteLink: (link: Link) => Promise<void> | any;
-  export let saveLink: (newTitle:string, link: Link) => Promise<void>;
+  export let link: Link
+  export let isEditable = true
+  export let deleteLink: (link: Link) => Promise<void> | any
+  export let saveLink: (newTitle:string, link: Link) => Promise<void>
 
-  const confirmModalID = "confirmLinkDelete";
-  let showModal = false;
+  const confirmModalID = "confirmLinkDelete"
+  let showModal = false
 
-  let linkTitle = link.title;
-  $: linkUrl = Link.normaliseUrl(linkTitle);
+  let linkTitle = link.title
+  $: linkUrl = Link.normaliseUrl(linkTitle)
 
   async function saveLinkWrapper() {
-    linkTitle = linkTitle.trim();
-    await saveLink(linkTitle, link);
+    linkTitle = linkTitle.trim()
+    await saveLink(linkTitle, link)
   }
   async function deleteLinkAndPageWrapper() {
-    showModal = false;
-    await deleteLink(link);
+    showModal = false
+    await deleteLink(link)
   }
 </script>
 

@@ -1,8 +1,8 @@
 <script lang="ts">
   export let style =
-    "height:1em;vertical-align:-.125em;transform-origin:center;overflow:visible";
-  let classNames = "";
-  export { classNames as class };
+    "height:1em;vertical-align:-.125em;transform-origin:center;overflow:visible"
+  let classNames = ""
+  export { classNames as class }
 </script>
 
 <svg

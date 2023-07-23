@@ -1,7 +1,7 @@
 <script lang="ts">
-  export let confirmModalID = "confirmModalID";
-  export let showModal = false;
-  export let onConfirm: () => void;
+  export let confirmModalID = "confirmModalID"
+  export let showModal = false
+  export let onConfirm: () => void
 </script>
 
 <input

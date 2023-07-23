@@ -1,17 +1,17 @@
 <script lang="ts">
-  import { goto } from "$app/navigation";
-  import InfoCard from "$components/InfoCard.svelte";
-  import LinkGroupEditor from "$components/page/LinkGroupEditor.svelte";
-  import { authStore } from "$lib/stores/AuthStore";
-  import { navbarStore } from "$lib/stores/NavbarStore";
-  import { pageHeadStore } from "$lib/stores/PageHeadStore";
+  import { goto } from "$app/navigation"
+  import InfoCard from "$components/InfoCard.svelte"
+  import LinkGroupEditor from "$components/page/LinkGroupEditor.svelte"
+  import { authStore } from "$lib/stores/AuthStore"
+  import { navbarStore } from "$lib/stores/NavbarStore"
+  import { pageHeadStore } from "$lib/stores/PageHeadStore"
 
   // -- Authguard --
   $: authStore.known.then(() => {
-    if (!$authStore) goto("/");
-  });
+    if (!$authStore) goto("/")
+  })
   // -- Page title --
-  pageHeadStore.updatePageTitle("Navigatiebalk wijzigen");
+  pageHeadStore.updatePageTitle("Navigatiebalk wijzigen")
 </script>
 
 <h1 class="text-2xl font-bold mb-1">Navigatiebalk wijzigen</h1>

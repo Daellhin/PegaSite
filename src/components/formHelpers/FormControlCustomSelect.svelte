@@ -1,27 +1,27 @@
 <script lang="ts">
-  import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
-  import Fa from "svelte-fa";
-  import Select from "svelte-select";
+  import { faChevronDown } from "@fortawesome/free-solid-svg-icons"
+  import Fa from "svelte-fa"
+  import Select from "svelte-select"
 
-  export let label: string;
-  export let value: any;
-  export let required = false;
-  export let size: "sm" | "xs" = "sm";
+  export let label: string
+  export let value: any
+  export let required = false
+  export let size: "sm" | "xs" = "sm"
 
-  export let placeholder = "Kies";
-  export let items = Array<{ label: string; value: string }>();
-  export let groupBy: ((e: any) => any) | undefined = undefined;
-  export let searchable = false;  
+  export let placeholder = "Kies"
+  export let items = Array<{ label: string; value: string }>()
+  export let groupBy: ((e: any) => any) | undefined = undefined
+  export let searchable = false  
 
-  $: selectId = label?.replace(/[ :]/g, "").toLowerCase();
+  $: selectId = label?.replace(/[ :]/g, "").toLowerCase()
 
   function handleSelect(event: { detail: { label: string; value: any } }) {
-    value = event.detail.value;
+    value = event.detail.value
   }
   const floatingConfig = {
     placement: "bottom",
     middleware: [],
-  };
+  }
 </script>
 
 <div

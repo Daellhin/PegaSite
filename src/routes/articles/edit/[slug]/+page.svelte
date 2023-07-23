@@ -1,33 +1,33 @@
 <script lang="ts">
-  import { goto } from "$app/navigation";
-  import ArticleComponent from "$components/article/ArticleComponent.svelte";
-  import FormControlDropzone from "$components/formHelpers/FormControlDropzone.svelte";
-  import FormControlEditor from "$components/formHelpers/FormControlEditor.svelte";
-  import FormControlMultiSelect from "$components/formHelpers/FormControlMultiSelect.svelte";
-  import FormControlText from "$components/formHelpers/FormControlText.svelte";
-  import { Article } from "$lib/domain/Article";
-  import { CategoryValues } from "$lib/domain/Category";
-  import { articleStore } from "$lib/stores/ArticleStore";
-  import { authStore } from "$lib/stores/AuthStore";
-  import { pageHeadStore } from "$lib/stores/PageHeadStore";
-  import { pushCreatedToast } from "$lib/utils/Toast";
-  import { readFileAsDataURL } from "$lib/utils/Utils";
-  import type { Dayjs } from "dayjs";
-  import dayjs from "dayjs";
-  import type { PageData } from "./$types";
+  import { goto } from "$app/navigation"
+  import ArticleComponent from "$components/article/ArticleComponent.svelte"
+  import FormControlDropzone from "$components/formHelpers/FormControlDropzone.svelte"
+  import FormControlEditor from "$components/formHelpers/FormControlEditor.svelte"
+  import FormControlMultiSelect from "$components/formHelpers/FormControlMultiSelect.svelte"
+  import FormControlText from "$components/formHelpers/FormControlText.svelte"
+  import { Article } from "$lib/domain/Article"
+  import { CategoryValues } from "$lib/domain/Category"
+  import { articleStore } from "$lib/stores/ArticleStore"
+  import { authStore } from "$lib/stores/AuthStore"
+  import { pageHeadStore } from "$lib/stores/PageHeadStore"
+  import { pushCreatedToast } from "$lib/utils/Toast"
+  import { readFileAsDataURL } from "$lib/utils/Utils"
+  import type { Dayjs } from "dayjs"
+  import dayjs from "dayjs"
+  import type { PageData } from "./$types"
 
-  export let data: PageData;
+  export let data: PageData
 
-  let lastUpdate: Dayjs;
-  let authors: string[];
-  let tags: string[];
-  let title: string;
-  let uploadedImages: File[] = [];
-  let existingImages: string[];
-  let content: string;
-  let createdAt: Dayjs;
+  let lastUpdate: Dayjs
+  let authors: string[]
+  let tags: string[]
+  let title: string
+  let uploadedImages: File[] = []
+  let existingImages: string[]
+  let content: string
+  let createdAt: Dayjs
 
-  let article: Article | undefined | null;
+  let article: Article | undefined | null
 
   async function updateArticle() {
     await articleStore.updateArticle(
@@ -39,21 +39,21 @@
       uploadedImages,
       existingImages,
       article!
-    );
-    haveValuesBeenSet = false;
-    uploadedImages = [];
+    )
+    haveValuesBeenSet = false
+    uploadedImages = []
     pushCreatedToast("Artikel gewijzigd", {
       gotoUrl: "/articles/" + article!.id,
-    });
+    })
   }
 
   // -- Preview --
-  let showPreview = false;
+  let showPreview = false
   function togglePreview() {
-    showPreview = !showPreview;
+    showPreview = !showPreview
   }
   async function createPreviewArticle() {
-    const newImages = await Promise.all(uploadedImages.map(readFileAsDataURL));
+    const newImages = await Promise.all(uploadedImages.map(readFileAsDataURL))
     return new Article(
       "-1",
       createdAt,
@@ -63,36 +63,36 @@
       [...existingImages, ...newImages],
       content,
       lastUpdate
-    );
+    )
   }
 
   // -- Data loading --
-  let haveValuesBeenSet = false;
-  $: $articleStore && loadArticle(data);
-  $: if (!haveValuesBeenSet && article) setValues(article);
+  let haveValuesBeenSet = false
+  $: $articleStore && loadArticle(data)
+  $: if (!haveValuesBeenSet && article) setValues(article)
 
   async function loadArticle(data: PageData) {
-    article = await articleStore.getArticleById(data.id);
+    article = await articleStore.getArticleById(data.id)
   }
   function setValues(article: Article) {
-    authors = article.authors;
+    authors = article.authors
     if ($authStore!.displayName && !authors.indexOf($authStore!.displayName))
-      authors.push($authStore!.displayName);
-    tags = article.tags;
-    title = article.title;
-    existingImages = article.images;
-    content = article.content;
-    createdAt = article.createdAt;
-    lastUpdate = dayjs();
-    haveValuesBeenSet = true;
+      authors.push($authStore!.displayName)
+    tags = article.tags
+    title = article.title
+    existingImages = article.images
+    content = article.content
+    createdAt = article.createdAt
+    lastUpdate = dayjs()
+    haveValuesBeenSet = true
   }
 
   // -- Authguard --
   $: authStore.known.then(() => {
-    if (!$authStore) goto("/");
-  });
+    if (!$authStore) goto("/")
+  })
   // -- Page title --
-  pageHeadStore.updatePageTitle("Artikel wijzigen");
+  pageHeadStore.updatePageTitle("Artikel wijzigen")
 </script>
 
 {#if showPreview}

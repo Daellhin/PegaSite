@@ -2,7 +2,7 @@ import { browser } from '$app/environment'
 import { Sponser, sponserConverter, type SponserJson } from '$lib/domain/Sponser'
 import { Collections } from '$lib/firebase/Firebase'
 import { writable } from 'svelte/store'
-import { v4 as uuidv4 } from "uuid";
+import { v4 as uuidv4 } from "uuid"
 
 function createSponserStore() {
   const store = writable<(Sponser)[]>(undefined, set => {

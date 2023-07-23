@@ -1,5 +1,5 @@
 <script>
-  import PegaIcon from "$components/icons/PegaIcon.svelte";
+  import PegaIcon from "$components/icons/PegaIcon.svelte"
 </script>
 
 <div class="flex row-auto gap-2">

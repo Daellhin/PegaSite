@@ -1,8 +1,8 @@
 <script lang="ts">
-    export let tabs: string[] = [];
-    export let bg = "";
+    export let tabs: string[] = []
+    export let bg = ""
 
-    let showContent = 0;
+    let showContent = 0
 
     // this component is limited by the inability of svelte to use dynamic named slots
     // thus the max amount of tabs is 4 (add more if needed)

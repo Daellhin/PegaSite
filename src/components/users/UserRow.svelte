@@ -1,22 +1,22 @@
 <script lang="ts">
-  import type { DbUser } from "$lib/domain/DbUser";
-  import { userStore } from "$lib/stores/UserStore";
-  import { pushCreatedToast } from "$lib/utils/Toast";
+  import type { DbUser } from "$lib/domain/DbUser"
+  import { userStore } from "$lib/stores/UserStore"
+  import { pushCreatedToast } from "$lib/utils/Toast"
 
-  export let index: number;
-  export let user: DbUser;
+  export let index: number
+  export let user: DbUser
 
-  let role = user.role;
+  let role = user.role
 
   function blurAfterSelected(event: Event) {
-    (event.target as HTMLElement).parentElement?.blur();
+    (event.target as HTMLElement).parentElement?.blur()
   }
   async function updateRole() {
     try {
-      await userStore.updateUserRole(user.uid, role);
-      pushCreatedToast("Rol aangepast", { removeLast: true });
+      await userStore.updateUserRole(user.uid, role)
+      pushCreatedToast("Rol aangepast", { removeLast: true })
     } catch (error) {
-      console.error(error);
+      console.error(error)
     }
   }
 </script>

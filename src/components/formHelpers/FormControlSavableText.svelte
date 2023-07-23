@@ -1,20 +1,20 @@
 <script lang="ts">
-  import SavableTextInput from "$components/formHelpers/inputs/SavableTextInput.svelte";
-  import InfoCircle from "$components/icons/Flowbite/InfoCircle.svelte";
-  import { v4 as uuidv4 } from "uuid";
+  import SavableTextInput from "$components/formHelpers/inputs/SavableTextInput.svelte"
+  import InfoCircle from "$components/icons/Flowbite/InfoCircle.svelte"
+  import { v4 as uuidv4 } from "uuid"
 
-  export let label: string;
-  export let value: string;
-  export let required = false;
-  export let size: "sm" | "xs" = "sm";
-  export let labelClass = "";
+  export let label: string
+  export let value: string
+  export let required = false
+  export let size: "sm" | "xs" = "sm"
+  export let labelClass = ""
 
-  export let placeholder: string;
-  export let save: () => Promise<void>;
-  export let validate: (value: string) => string | undefined = () => undefined;
-  export let tooltip = "";
+  export let placeholder: string
+  export let save: () => Promise<void>
+  export let validate: (value: string) => string | undefined = () => undefined
+  export let tooltip = ""
 
-  const id = uuidv4();
+  const id = uuidv4()
 </script>
 
 <div

@@ -1,23 +1,23 @@
 <script lang="ts">
-  import { beforeNavigate, goto } from "$app/navigation";
-  import { isPageNavigation } from "$lib/utils/Utils";
-  import type { BeforeNavigate } from "@sveltejs/kit";
-  import { toast } from "@zerodevx/svelte-toast";
-  import InfoCircle from "$components/icons/Flowbite/InfoCircle.svelte";
+  import { beforeNavigate, goto } from "$app/navigation"
+  import { isPageNavigation } from "$lib/utils/Utils"
+  import type { BeforeNavigate } from "@sveltejs/kit"
+  import { toast } from "@zerodevx/svelte-toast"
+  import InfoCircle from "$components/icons/Flowbite/InfoCircle.svelte"
 
-  export let createdText = "";
-  export let gotoUrl: string | undefined;
-  export let toastId: number;
+  export let createdText = ""
+  export let gotoUrl: string | undefined
+  export let toastId: number
 
   function removeToast() {
-    toast.pop(toastId);
+    toast.pop(toastId)
   }
   function gotoCreated() {
-    goto(gotoUrl!);
+    goto(gotoUrl!)
   }
   beforeNavigate(async (navigation: BeforeNavigate) => {
-    if (isPageNavigation(navigation)) removeToast();
-  });
+    if (isPageNavigation(navigation)) removeToast()
+  })
 </script>
 
 <div class="m-2">

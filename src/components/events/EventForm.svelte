@@ -1,26 +1,26 @@
 <script lang="ts">
-  import FormControlDate from "$components/formHelpers/FormControlDate.svelte";
-  import FormControlEditor from "$components/formHelpers/FormControlEditor.svelte";
-  import FormControlFullDuration from "$components/formHelpers/FormControlFullDuration.svelte";
-  import FormControlText from "$components/formHelpers/FormControlText.svelte";
-  import GeoAutoComplete from "$components/formHelpers/inputs/GeoAutoComplete.svelte";
-  import InputCheckbox from "$components/formHelpers/inputs/InputCheckbox.svelte";
-  import type { Dayjs } from "dayjs";
+  import FormControlDate from "$components/formHelpers/FormControlDate.svelte"
+  import FormControlEditor from "$components/formHelpers/FormControlEditor.svelte"
+  import FormControlFullDuration from "$components/formHelpers/FormControlFullDuration.svelte"
+  import FormControlText from "$components/formHelpers/FormControlText.svelte"
+  import GeoAutoComplete from "$components/formHelpers/inputs/GeoAutoComplete.svelte"
+  import InputCheckbox from "$components/formHelpers/inputs/InputCheckbox.svelte"
+  import type { Dayjs } from "dayjs"
 
-  export let buttonTitle: string;
+  export let buttonTitle: string
 
-  export let title = "";
-  export let info = "";
-  export let date: Dayjs;
-  export let endDate: Dayjs | undefined;
-  export let duration = "";
-  export let location = "";
-  export let onSave: () => void;
+  export let title = ""
+  export let info = ""
+  export let date: Dayjs
+  export let endDate: Dayjs | undefined
+  export let duration = ""
+  export let location = ""
+  export let onSave: () => void
 
-  let multiDay = endDate !== undefined;
-  let endDateInner = endDate || date;
+  let multiDay = endDate !== undefined
+  let endDateInner = endDate || date
 
-  $: endDate = multiDay ? endDateInner : undefined;
+  $: endDate = multiDay ? endDateInner : undefined
 </script>
 
 <form class="flex flex-col gap-2" on:submit={onSave}>

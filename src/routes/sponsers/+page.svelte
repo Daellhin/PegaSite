@@ -1,62 +1,62 @@
 <script lang="ts">
-  import { goto } from "$app/navigation";
-  import SearchInput from "$components/formHelpers/inputs/SearchInput.svelte";
-  import SponserForm from "$components/sponsers/SponserForm.svelte";
-  import SponserRow from "$components/sponsers/SponserRow.svelte";
-  import SortableTableHeaderRow from "$components/table/SortableTableHeaderRow.svelte";
-  import type { Sponser } from "$lib/domain/Sponser";
-  import { SortOrder } from "$lib/domain/dataClasses/SortOrder";
-  import { authStore } from "$lib/stores/AuthStore";
-  import { pageHeadStore } from "$lib/stores/PageHeadStore";
-  import { sponserStore } from "$lib/stores/SponserStore";
+  import { goto } from "$app/navigation"
+  import SearchInput from "$components/formHelpers/inputs/SearchInput.svelte"
+  import SponserForm from "$components/sponsers/SponserForm.svelte"
+  import SponserRow from "$components/sponsers/SponserRow.svelte"
+  import SortableTableHeaderRow from "$components/table/SortableTableHeaderRow.svelte"
+  import type { Sponser } from "$lib/domain/Sponser"
+  import { SortOrder } from "$lib/domain/dataClasses/SortOrder"
+  import { authStore } from "$lib/stores/AuthStore"
+  import { pageHeadStore } from "$lib/stores/PageHeadStore"
+  import { sponserStore } from "$lib/stores/SponserStore"
 
-  let showForm = false;
-  let searchString = "";
-  let sortColumn = "";
-  let sortOrder = SortOrder.None;
+  let showForm = false
+  let searchString = ""
+  let sortColumn = ""
+  let sortOrder = SortOrder.None
 
-  let editSponser: Sponser | undefined = undefined;
+  let editSponser: Sponser | undefined = undefined
 
   $: filteredSponsers =
     $sponserStore?.filter((sponser) =>
       sponser.matchesSearchString(searchString)
-    ) || [];
-  $: sortedSponsers = sort(filteredSponsers, sortColumn, sortOrder);
+    ) || []
+  $: sortedSponsers = sort(filteredSponsers, sortColumn, sortOrder)
 
   function sort(sponsers: Sponser[], sortColumn: string, sortOrder: SortOrder) {
-    if (sortOrder.isNone) return [...sponsers];
-    const newArray = [...sponsers];
+    if (sortOrder.isNone) return [...sponsers]
+    const newArray = [...sponsers]
     switch (sortColumn) {
       case "Naam":
-        newArray.sort((a, b) => a.name.localeCompare(b.name));
-        break;
+        newArray.sort((a, b) => a.name.localeCompare(b.name))
+        break
       case "Website":
-        newArray.sort((a, b) => a.url.localeCompare(b.url));
-        break;
+        newArray.sort((a, b) => a.url.localeCompare(b.url))
+        break
     }
-    if (sortOrder.isDesc) newArray.reverse();
-    return newArray;
+    if (sortOrder.isDesc) newArray.reverse()
+    return newArray
   }
 
   function startEdit(sponser: Sponser) {
-    showForm = true;
-    editSponser = sponser;
+    showForm = true
+    editSponser = sponser
   }
   function dismisForm() {
-    showForm = false;
-    editSponser = undefined;
+    showForm = false
+    editSponser = undefined
   }
   function showFormHandler() {
-    showForm = true;
-    editSponser = undefined;
+    showForm = true
+    editSponser = undefined
   }
 
   // -- Authguard --
   $: authStore.known.then(() => {
-    if (!$authStore) goto("/");
-  });
+    if (!$authStore) goto("/")
+  })
   // -- Page title --
-  pageHeadStore.updatePageTitle("Sponsers wijzigen");
+  pageHeadStore.updatePageTitle("Sponsers wijzigen")
 </script>
 
 <div class="flex gap-3">

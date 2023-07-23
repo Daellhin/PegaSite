@@ -1,17 +1,17 @@
 <script lang="ts">
-  import EditDropdown from "$components/EditDropdown.svelte";
-  import type { Sponser } from "$lib/domain/Sponser";
-  import { sponserStore } from "$lib/stores/SponserStore";
+  import EditDropdown from "$components/EditDropdown.svelte"
+  import type { Sponser } from "$lib/domain/Sponser"
+  import { sponserStore } from "$lib/stores/SponserStore"
 
-  export let index: number;
-  export let sponser: Sponser;
-  export let editHandler: (sponer: Sponser) => Promise<void> | any;
+  export let index: number
+  export let sponser: Sponser
+  export let editHandler: (sponer: Sponser) => Promise<void> | any
 
   function editWrapper() {
-    editHandler(sponser);
+    editHandler(sponser)
   }
   async function deleteSponser() {
-    await sponserStore.deleteSponser(sponser);
+    await sponserStore.deleteSponser(sponser)
   }
 </script>
 

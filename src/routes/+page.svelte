@@ -1,51 +1,51 @@
 <script lang="ts">
-  import Card from "$components/article/ArticleCard.svelte";
-  import { articleStore, paginationSize } from "$lib/stores/ArticleStore";
-  import { authStore } from "$lib/stores/AuthStore";
-  import { pageHeadStore } from "$lib/stores/PageHeadStore";
-  import { clamp, sizeOfIncreasingFirstSequence } from "$lib/utils/Utils";
+  import Card from "$components/article/ArticleCard.svelte"
+  import { articleStore, paginationSize } from "$lib/stores/ArticleStore"
+  import { authStore } from "$lib/stores/AuthStore"
+  import { pageHeadStore } from "$lib/stores/PageHeadStore"
+  import { clamp, sizeOfIncreasingFirstSequence } from "$lib/utils/Utils"
   import {
     faArrowLeftLong,
     faArrowRightLong,
-  } from "@fortawesome/free-solid-svg-icons";
-  import Fa from "svelte-fa";
+  } from "@fortawesome/free-solid-svg-icons"
+  import Fa from "svelte-fa"
 
-  const minArticlesOnPage = 6;
-  let width = 0;
-  let pages: number[] = [];
-  let articleRefs: HTMLElement[] = Array(paginationSize);
+  const minArticlesOnPage = 6
+  let width = 0
+  let pages: number[] = []
+  let articleRefs: HTMLElement[] = Array(paginationSize)
 
-  $: amountOfCardsToShow = width && calculateAmountOfCardsToShow(articleRefs);
+  $: amountOfCardsToShow = width && calculateAmountOfCardsToShow(articleRefs)
   $: hasNextPage = $articleStore
     ? $articleStore.length > articlesOnPreviousPages + amountOfCardsToShow
-    : false;
-  $: hasPrevPage = pages.length !== 0;
-  $: articlesOnPreviousPages = pages.reduce((sum, a) => sum + a, 0);
+    : false
+  $: hasPrevPage = pages.length !== 0
+  $: articlesOnPreviousPages = pages.reduce((sum, a) => sum + a, 0)
 
   async function next() {
     if (hasNextPage) {
-      pages.push(amountOfCardsToShow);
-      pages = pages;
-      await articleStore.loadMoreArticles();
+      pages.push(amountOfCardsToShow)
+      pages = pages
+      await articleStore.loadMoreArticles()
     }
   }
   function previous() {
     if (pages.length > 0) {
-      pages.pop();
-      pages = pages;
+      pages.pop()
+      pages = pages
     }
   }
   function calculateAmountOfCardsToShow(articleRefs: any[]) {
     const distancesFromLeft = articleRefs.map(
       (e) => e?.getBoundingClientRect().left || 0
-    );
+    )
     const maxArticlesToPlaceInRow =
-      sizeOfIncreasingFirstSequence(distancesFromLeft) * 2;
-    return clamp(maxArticlesToPlaceInRow, minArticlesOnPage, paginationSize);
+      sizeOfIncreasingFirstSequence(distancesFromLeft) * 2
+    return clamp(maxArticlesToPlaceInRow, minArticlesOnPage, paginationSize)
   }
 
   // -- Page title --
-  pageHeadStore.updatePageTitle("");
+  pageHeadStore.updatePageTitle("")
 </script>
 
 <div class="flex gap-3 mb-2">

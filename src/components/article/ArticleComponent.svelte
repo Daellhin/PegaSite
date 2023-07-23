@@ -1,26 +1,26 @@
 <script lang="ts">
-  import { goto } from "$app/navigation";
-  import EditDropdown from "$components/EditDropdown.svelte";
-  import UserContentRenderer from "$components/UserContentRenderer.svelte";
-  import type { Article } from "$lib/domain/Article";
-  import { articleStore } from "$lib/stores/ArticleStore";
-  import { authStore } from "$lib/stores/AuthStore";
-  import { faCalendar } from "@fortawesome/free-regular-svg-icons";
+  import { goto } from "$app/navigation"
+  import EditDropdown from "$components/EditDropdown.svelte"
+  import UserContentRenderer from "$components/UserContentRenderer.svelte"
+  import type { Article } from "$lib/domain/Article"
+  import { articleStore } from "$lib/stores/ArticleStore"
+  import { authStore } from "$lib/stores/AuthStore"
+  import { faCalendar } from "@fortawesome/free-regular-svg-icons"
   import {
     faPenToSquare,
     faUser,
     faUsers,
-  } from "@fortawesome/free-solid-svg-icons";
-  import { Carousel } from "flowbite-svelte";
-  import Fa from "svelte-fa";
-  import Time from "svelte-time";
+  } from "@fortawesome/free-solid-svg-icons"
+  import { Carousel } from "flowbite-svelte"
+  import Fa from "svelte-fa"
+  import Time from "svelte-time"
 
-  export let article: Article;
-  export let isPreview = false;
+  export let article: Article
+  export let isPreview = false
 
   async function removeArticle() {
-    await articleStore.deleteArticle(article);
-    goto("/");
+    await articleStore.deleteArticle(article)
+    goto("/")
   }
 </script>
 

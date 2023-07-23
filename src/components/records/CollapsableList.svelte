@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { ClubRecord } from "$lib/domain/ClubRecord";
+  import type { ClubRecord } from "$lib/domain/ClubRecord"
   import {
     Timeline,
     TimelineItem,
@@ -8,30 +8,30 @@
     TimelineConnector,
     TimelineContent,
     TimelineOppositeContent,
-  } from "svelte-vertical-timeline";
+  } from "svelte-vertical-timeline"
 
-  export let clubRecord: ClubRecord;
+  export let clubRecord: ClubRecord
   // To force open state, e.g. when searching
-  export let forceOpen = false;
-  $: forceOpen ? open() : collapse();
+  export let forceOpen = false
+  $: forceOpen ? open() : collapse()
 
-  let visibleRecordInstances = clubRecord.records.slice(0, 1);
-  let isCollapsed = true;
+  let visibleRecordInstances = clubRecord.records.slice(0, 1)
+  let isCollapsed = true
 
   export function collapse() {
-    visibleRecordInstances = clubRecord.records.slice(0, 1);
-    isCollapsed = true;
+    visibleRecordInstances = clubRecord.records.slice(0, 1)
+    isCollapsed = true
   }
   export function open() {
-    visibleRecordInstances = clubRecord.records;
-    isCollapsed = false;
+    visibleRecordInstances = clubRecord.records
+    isCollapsed = false
   }
 
   function toggleCollapse() {
     visibleRecordInstances = isCollapsed
       ? clubRecord.records
-      : clubRecord.records.slice(0, 1);
-    isCollapsed = !isCollapsed;
+      : clubRecord.records.slice(0, 1)
+    isCollapsed = !isCollapsed
   }
 </script>
 

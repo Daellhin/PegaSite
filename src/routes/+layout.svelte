@@ -1,15 +1,15 @@
 <script lang="ts">
-  import EventCalendar from "$components/events/EventCalendar.svelte";
-  import Footer from "$components/layout/Footer.svelte";
-  import MenuVertical from "$components/layout/MenuVertical.svelte";
-  import Navbar from "$components/layout/Navbar.svelte";
-  import Sponsers from "$components/sponsers/Sponsers.svelte";
-  import { pageHeadStore } from "$lib/stores/PageHeadStore";
-  import { SvelteToast } from "@zerodevx/svelte-toast";
-  import "../app.css";
+  import EventCalendar from "$components/events/EventCalendar.svelte"
+  import Footer from "$components/layout/Footer.svelte"
+  import MenuVertical from "$components/layout/MenuVertical.svelte"
+  import Navbar from "$components/layout/Navbar.svelte"
+  import Sponsers from "$components/sponsers/Sponsers.svelte"
+  import { pageHeadStore } from "$lib/stores/PageHeadStore"
+  import { SvelteToast } from "@zerodevx/svelte-toast"
+  import "../app.css"
 
-  const drawerID = "layout-drawer";
-  const loginModalID = "login-modal";
+  const drawerID = "layout-drawer"
+  const loginModalID = "login-modal"
 </script>
 
 <svelte:head>

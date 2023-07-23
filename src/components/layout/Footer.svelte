@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { authStore } from "$lib/stores/AuthStore";
-  import { faFacebookSquare } from "@fortawesome/free-brands-svg-icons";
-  import { faFeather, faSignIn } from "@fortawesome/free-solid-svg-icons";
-  import Fa from "svelte-fa";
+  import { authStore } from "$lib/stores/AuthStore"
+  import { faFacebookSquare } from "@fortawesome/free-brands-svg-icons"
+  import { faFeather, faSignIn } from "@fortawesome/free-solid-svg-icons"
+  import Fa from "svelte-fa"
 
-  export let loginModalID: string;
+  export let loginModalID: string
 </script>
 
 <footer

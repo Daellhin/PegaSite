@@ -1,9 +1,9 @@
 <script lang="ts">
-  import Editor from "cl-editor/src/Editor.svelte";
+  import Editor from "cl-editor/src/Editor.svelte"
 
-  export let label: string;
-  export let value: string;
-  export let required = false;
+  export let label: string
+  export let value: string
+  export let required = false
   /**
    * Toolbar actions
    * - Empty array is all actions
@@ -35,7 +35,7 @@
     "forecolor",
     "backcolor",
     "removeFormat",
-  ];
+  ]
 </script>
 
 <div class="form-control">

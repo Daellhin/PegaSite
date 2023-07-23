@@ -3,28 +3,28 @@
     faChevronDown,
     faPen,
     faTrashAlt,
-  } from "@fortawesome/free-solid-svg-icons";
-  import Fa from "svelte-fa";
+  } from "@fortawesome/free-solid-svg-icons"
+  import Fa from "svelte-fa"
 
   // EditUrl of editHandler can be used
-  export let editUrl = "";
-  export let editHandler: () => Promise<void> | any = () => {};
-  export let deleteHandler: (() => Promise<void> | any) | undefined = undefined;
-  export let size: "md" | "sm" | "xs" = "md";
-  export let disabled = false;
-  export let width = "w-52";
-  export let editPrompt = "Aanpassen";
-  export let positionStatic = false;
+  export let editUrl = ""
+  export let editHandler: () => Promise<void> | any = () => {}
+  export let deleteHandler: (() => Promise<void> | any) | undefined = undefined
+  export let size: "md" | "sm" | "xs" = "md"
+  export let disabled = false
+  export let width = "w-52"
+  export let editPrompt = "Aanpassen"
+  export let positionStatic = false
 
   async function editWrapper() {
-    if (editHandler === undefined) return;
+    if (editHandler === undefined) return
     await editHandler();
-    (document.activeElement as HTMLElement).blur();
+    (document.activeElement as HTMLElement).blur()
   }
   async function deleteWrapper() {
-    if (deleteHandler === undefined) return;
+    if (deleteHandler === undefined) return
     await deleteHandler();
-    (document.activeElement as HTMLElement).blur();
+    (document.activeElement as HTMLElement).blur()
   }
 </script>
 

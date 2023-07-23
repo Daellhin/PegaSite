@@ -1,8 +1,8 @@
 <script lang="ts">
-  import CustomCarousel from "$components/sponsers/SponserCarousel.svelte";
-  import { sponserStore } from "$lib/stores/SponserStore";
+  import CustomCarousel from "$components/sponsers/SponserCarousel.svelte"
+  import { sponserStore } from "$lib/stores/SponserStore"
 
-  $: sponsers = $sponserStore;
+  $: sponsers = $sponserStore
 </script>
 
 <div>

@@ -1,48 +1,48 @@
 <script lang="ts">
-  import FormControlSearchInput from "$components/formHelpers/FormControlSearchInput.svelte";
+  import FormControlSearchInput from "$components/formHelpers/FormControlSearchInput.svelte"
   import {
     AutocompleteResponse,
     type AutocompleteResponseWrapperJson,
-  } from "$lib/domain/geoapify/AutocompleteResponse";
-  import { debounce } from "ts-debounce";
+  } from "$lib/domain/geoapify/AutocompleteResponse"
+  import { debounce } from "ts-debounce"
 
-  const apiKey = import.meta.env.VITE_GEOAPIFY_APIKEY;
-  const minAddressLength = 3;
+  const apiKey = import.meta.env.VITE_GEOAPIFY_APIKEY
+  const minAddressLength = 3
 
-  export let label: string;
-  export let value: string;
-  export let required = false;
-  export let size: "md" | "sm" | "xs" = "md";
+  export let label: string
+  export let value: string
+  export let required = false
+  export let size: "md" | "sm" | "xs" = "md"
 
-  export let placeholder = "Zoek een locatie";
-  export let disabled = false;
-  export let limit = 5;
-  export let lang = "nl";
-  export let debounceTime = 500;
+  export let placeholder = "Zoek een locatie"
+  export let disabled = false
+  export let limit = 5
+  export let lang = "nl"
+  export let debounceTime = 500
 
-  let results = Array<AutocompleteResponse>();
+  let results = Array<AutocompleteResponse>()
 
   async function fetchData() {
-    const encodedValue = encodeURIComponent(value);
-    const url = `https://api.geoapify.com/v1/geocode/autocomplete?text=${encodedValue}&apiKey=${apiKey}&lang=${lang}&limit=${limit}&format=json`;
+    const encodedValue = encodeURIComponent(value)
+    const url = `https://api.geoapify.com/v1/geocode/autocomplete?text=${encodedValue}&apiKey=${apiKey}&lang=${lang}&limit=${limit}&format=json`
 
-    const response = await fetch(url);
+    const response = await fetch(url)
     if (response.ok) {
       const jsonResponse =
-        (await response.json()) as AutocompleteResponseWrapperJson;
+        (await response.json()) as AutocompleteResponseWrapperJson
       const fetchResults = jsonResponse.results.map(
         AutocompleteResponse.fromJson
-      );
-      results = fetchResults;
+      )
+      results = fetchResults
     } else {
-      const jsonResponse = await response.json();
-      console.error(jsonResponse);
+      const jsonResponse = await response.json()
+      console.error(jsonResponse)
     }
   }
 
   async function validateAndFetch() {
-    if (value.length > minAddressLength) await fetchData();
-    else results = [];
+    if (value.length > minAddressLength) await fetchData()
+    else results = []
   }
 
   function handleDropdownSelect(
@@ -50,10 +50,10 @@
     event: MouseEvent
   ) {
     value = result.formatted;
-    (event.target as HTMLElement).blur();
+    (event.target as HTMLElement).blur()
   }
 
-  const onInput = debounce(validateAndFetch, debounceTime);
+  const onInput = debounce(validateAndFetch, debounceTime)
 </script>
 
 <div

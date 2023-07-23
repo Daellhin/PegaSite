@@ -1,17 +1,17 @@
 <script lang="ts">
-  import InlineEvent from "$components/events/InlineEvent.svelte";
-  import { authStore } from "$lib/stores/AuthStore";
-  import { calendarEventStore } from "$lib/stores/CalendarEventStore";
-  import { pageHeadStore } from "$lib/stores/PageHeadStore";
-  import { groupBy } from "$lib/utils/Utils";
+  import InlineEvent from "$components/events/InlineEvent.svelte"
+  import { authStore } from "$lib/stores/AuthStore"
+  import { calendarEventStore } from "$lib/stores/CalendarEventStore"
+  import { pageHeadStore } from "$lib/stores/PageHeadStore"
+  import { groupBy } from "$lib/utils/Utils"
 
   $: groupedEvents = groupBy(
     $calendarEventStore,
     (event) => `${event.date.year()}${event.date.month()}`
-  );
+  )
 
   // -- Page title --
-  pageHeadStore.updatePageTitle("Events");
+  pageHeadStore.updatePageTitle("Events")
 </script>
 
 <div class="flex gap-3 mb-2">

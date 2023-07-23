@@ -1,19 +1,19 @@
 <script lang="ts">
-  export let label: string;
-  export let value: string;
-  export let required = false;
-  export let size: "md" | "sm" | "xs" = "sm";
+  export let label: string
+  export let value: string
+  export let required = false
+  export let size: "md" | "sm" | "xs" = "sm"
 
-  export let placeholder = "";
-  export let disabled = false;
-  export let labelClass = "";
-  export let validator: (value: string) => string | undefined = () => "";
-  export let onInput: () => void = () => {};
+  export let placeholder = ""
+  export let disabled = false
+  export let labelClass = ""
+  export let validator: (value: string) => string | undefined = () => ""
+  export let onInput: () => void = () => {}
 
-  let edited = false;
+  let edited = false
 
-  $: inputId = label?.replace(/[ :]/g, "").toLowerCase();
-  $: error = validator(value);
+  $: inputId = label?.replace(/[ :]/g, "").toLowerCase()
+  $: error = validator(value)
 </script>
 
 <div
