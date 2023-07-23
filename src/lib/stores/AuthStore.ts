@@ -66,7 +66,7 @@ function createAuthStore() {
     return unsubscribe
   })
 
-  const known = async () => {
+  async function knownFunction() {
     let unsub = () => { }
     unsub = subscribe(user => {
       if (user !== undefined) {
@@ -76,8 +76,9 @@ function createAuthStore() {
       }
     })
   }
+  const known = knownFunction()
 
-  const dbUser = async () => {
+  async function dbUserFunction() {
     const { firebaseApp } = await import('$lib/firebase/Firebase')
     const { getFirestore, doc, getDoc } = await import('firebase/firestore')
     const firestore = getFirestore(firebaseApp)
@@ -99,6 +100,7 @@ function createAuthStore() {
       }
     })
   }
+  const dbUser = dbUserFunction()
 
   async function signIn(email: string, password: string) {
     const { signInWithEmailAndPassword } = await import('firebase/auth')
