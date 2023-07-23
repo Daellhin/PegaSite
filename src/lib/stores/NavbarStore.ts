@@ -6,17 +6,17 @@ import { pageStore } from '$lib/stores/PageStore'
 import { convertStringToBool } from '$lib/utils/Utils'
 import { writable } from 'svelte/store'
 
-async function addLinksFromJson() {
-  const links = LINKS_JSON.map(LinkGroup.fromJson)
-  await Promise.all(links.map(async (linkGroup) => {
-    const { getFirestore, doc, updateDoc } = await import('firebase/firestore')
-    const { firebaseApp } = await import('$lib/firebase/Firebase')
-    const firestore = getFirestore(firebaseApp)
+// async function addLinksFromJson() {
+//   const links = LINKS_JSON.map(LinkGroup.fromJson)
+//   await Promise.all(links.map(async (linkGroup) => {
+//     const { getFirestore, doc, updateDoc } = await import('firebase/firestore')
+//     const { firebaseApp } = await import('$lib/firebase/Firebase')
+//     const firestore = getFirestore(firebaseApp)
 
-    const linksRef = doc(firestore, Collections.PAGES, "overview")
-    await updateDoc(linksRef, linkGroup.toFirebaseJson())
-  }))
-}
+//     const linksRef = doc(firestore, Collections.PAGES, "overview")
+//     await updateDoc(linksRef, linkGroup.toFirebaseJson())
+//   }))
+// }
 
 function createMockNavbarStore() {
   const store = writable<(LinkGroup)[]>(undefined, set => {

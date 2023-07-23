@@ -4,7 +4,7 @@
   export let label: string;
   export let uploadedImages: File[];
   export let existingImages: string[] = [];
-  export let accept: "image/*" = "image/*";
+  export let accept = "image/*";
   export let required = false;
   export let size: "md" | "sm" | "xs" = "sm";
 </script>

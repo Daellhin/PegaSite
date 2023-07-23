@@ -26,14 +26,14 @@ function createMockArticleStore() {
   async function loadMoreArticles() {
     return
   }
-  async function createArticle(newArticle: Article, images: File[]) {
+  async function createArticle(newArticle: Article, _images: File[]) {
     update((articles) => ([newArticle, ...articles]))
   }
   async function getArticleById(id: string) {
     const exsistingArticle = get(innerStore).find((e) => e.id === id)
     return exsistingArticle || null
   }
-  async function updateArticle(newAuthors: string[], newTags: string[], newTitle: string, newContent: string, lastUpdate: Dayjs, uploadedImages: File[], newExcistingImages: string[], article: Article) {
+  async function updateArticle(_newAuthors: string[], _newTags: string[], _newTitle: string, _newContent: string, _lastUpdate: Dayjs, _uploadedImages: File[], _newExcistingImages: string[], _article: Article) {
   }
   async function deleteArticle(article: Article) {
     update((articles) => (articles.filter((e) => e.id !== article.id)))

@@ -15,17 +15,17 @@ function createMockAuthStore() {
   const known = Promise.resolve()
   const dbUser = Promise.resolve(new DbUser("1", "role", "email", "displayName", dayjs(1)))
 
-  async function signIn(email: string, password: string) {
+  async function signIn(_email: string, _password: string) {
     update(() => ({}) as User)
   }
   async function signOut() {
     update(() => null)
   }
-  async function updateCurrentUserEmail(email: string) {
+  async function updateCurrentUserEmail(_email: string) {
   }
-  async function updateCurrentUserPassword(password: string) {
+  async function updateCurrentUserPassword(_password: string) {
   }
-  async function updateCurrentUserName(name: string) {
+  async function updateCurrentUserName(_name: string) {
   }
 
   return {
@@ -66,17 +66,18 @@ function createAuthStore() {
     return unsubscribe
   })
 
-  const known = new Promise<void>(resolve => {
+  const known = async () => {
     let unsub = () => { }
     unsub = subscribe(user => {
       if (user !== undefined) {
-        resolve()
+
         unsub()
+        return
       }
     })
-  })
+  }
 
-  const dbUser = new Promise<DbUser | undefined>(async (resolve, reject) => {
+  const dbUser = async () => {
     const { firebaseApp } = await import('$lib/firebase/Firebase')
     const { getFirestore, doc, getDoc } = await import('firebase/firestore')
     const firestore = getFirestore(firebaseApp)
@@ -89,15 +90,15 @@ function createAuthStore() {
           const pageSnap = await getDoc(pageRef)
           const userData = pageSnap.data()
 
-          if (userData) resolve(userData)
-          else resolve(undefined)
-        } catch (error) {
-          resolve(undefined)
+          unsub()
+          if (userData) return userData
+          else return undefined
+        } catch {
+          return undefined
         }
-        unsub()
       }
     })
-  })
+  }
 
   async function signIn(email: string, password: string) {
     const { signInWithEmailAndPassword } = await import('firebase/auth')
@@ -130,7 +131,7 @@ function createAuthStore() {
     if (!auth.currentUser) return
 
     // -- Update authUser --
-    const { updatePassword, deleteUser } = await import('firebase/auth')
+    const { updatePassword } = await import('firebase/auth')
     await updatePassword(auth.currentUser, password)
   }
 

@@ -10,8 +10,10 @@
 
 <div class={`usercontent ${classList}`}>
   {#if showLinks}
+    <!-- eslint-disable-next-line svelte/no-at-html-tags -->
     {@html linkifyText(content) || placeHolder}
   {:else}
+    <!--  eslint-disable-next-line svelte/no-at-html-tags -->
     {@html content || placeHolder}
   {/if}
 </div>

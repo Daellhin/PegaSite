@@ -13,7 +13,7 @@
   export let category: Category;
   export let searchString = "";
 
-  let recordComponents: any[] = [];
+  let recordComponents = Array<CollapsableList>();
 
   $: clubRecords = constructMapWithCategory($clubRecordStore, category);
   $: filteredClubrecords = filterValuesInMap(clubRecords, (e) =>

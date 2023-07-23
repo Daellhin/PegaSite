@@ -33,11 +33,11 @@
   }
 
   // -- Looping --
-  let loopTimeout: NodeJS.Timeout | undefined;
+  let loopTimeout: number;
 
   function setLoop() {
     clearTimeout(loopTimeout);
-    loopTimeout = setTimeout(() => {
+    loopTimeout = window.setTimeout(() => {
       next();
       setLoop();
     }, duration);

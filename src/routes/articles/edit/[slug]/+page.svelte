@@ -18,7 +18,7 @@
 
   export let data: PageData;
 
-  let lastUpdate: any;
+  let lastUpdate: Dayjs;
   let authors: string[];
   let tags: string[];
   let title: string;

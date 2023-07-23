@@ -7,7 +7,7 @@
   export let size: "sm" | "xs" = "sm";
 
   export let placeholder = "Kies";
-  export let options = Array<any>();
+  export let options = Array<string>();
   export let allowUserOptions = false;
 </script>
 

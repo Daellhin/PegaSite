@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { LinkGroup } from "$lib/domain/Link";
   import { navbarStore } from "$lib/stores/NavbarStore";
 
   export let drawerID: string;

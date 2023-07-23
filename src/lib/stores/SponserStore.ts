@@ -49,7 +49,7 @@ function createSponserStore() {
 
   async function updateSponser(newName: string, newUrl: string, newImage: File | undefined, sponser: Sponser) {
     // -- Update image --
-    const { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } = await import('firebase/storage')
+    const { getStorage, ref, uploadBytes } = await import('firebase/storage')
     const storage = getStorage()
 
     if (newImage) {

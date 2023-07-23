@@ -17,7 +17,7 @@
     tempLink = undefined;
   }
   async function updateLinkTitle(newTitle: string, link: Link) {
-    await navbarStore.updateLinkTitle(newTitle, link, linkGroup);
+    await navbarStore.updateLinkTitle(newTitle, link);
   }
   async function deleteLink(link: Link) {
     await navbarStore.deleteLink(link, linkGroup);

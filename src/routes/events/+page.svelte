@@ -27,7 +27,7 @@
 
 <div class="sm:mx-10">
   {#if groupedEvents}
-    {#each [...groupedEvents] as [_key, events]}
+    {#each [...groupedEvents] as [_, events]}
       <div class="mb-4">
         <div class="flex">
           <div class="min-w-fit font-semibold">

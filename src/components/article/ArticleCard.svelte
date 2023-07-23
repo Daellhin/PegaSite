@@ -46,8 +46,6 @@
       </div>
       <!-- Content -->
       <p class="my-2 line-clamp-2">
-        <!-- Using @html results in text overflow flash -->
-        <!-- {@html article.content} -->
         {clearHTMLTags(article.content)}
       </p>
       <!-- Tags -->
