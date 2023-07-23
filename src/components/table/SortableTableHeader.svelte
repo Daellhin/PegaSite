@@ -9,13 +9,16 @@
   export function reset() {
     sortOrder = SortOrder.None;
   }
+  export function setSortOrder(sortOrderParam: SortOrder) {
+    sortOrder = sortOrderParam;
+  }
+
+  let sortOrder = SortOrder.None;
 
   function onClickInner() {
     sortOrder = sortOrder.next();
     onClick(sortOrder);
   }
-
-  let sortOrder = SortOrder.None;
 </script>
 
 <th

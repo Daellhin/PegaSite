@@ -12,26 +12,29 @@
 
   let showForm = false;
   let searchString = "";
-  let sortField = "";
+  let sortColumn = "";
   let sortOrder = SortOrder.None;
 
   let editSponser: Sponser | undefined = undefined;
 
-  $: filteredSponsers = $sponserStore?.filter((sponser) =>
-    sponser.matchesSearchString(searchString)
-  );
-  $: sortedSponsers = sort(filteredSponsers, sortField, sortOrder);
+  $: filteredSponsers =
+    $sponserStore?.filter((sponser) =>
+      sponser.matchesSearchString(searchString)
+    ) || [];
+  $: sortedSponsers = sort(filteredSponsers, sortColumn, sortOrder);
 
-  function sort(sponsers: Sponser[], sortField: string, sortOrder: SortOrder) {
-    if (sortOrder.none) return [...(filteredSponsers || [])];
+  function sort(sponsers: Sponser[], sortColumn: string, sortOrder: SortOrder) {
+    if (sortOrder.isNone) return [...sponsers];
     const newArray = [...sponsers];
-    switch (sortField) {
+    switch (sortColumn) {
       case "Naam":
-        newArray.sort((a, b) => b.name.localeCompare(a.name));
+        newArray.sort((a, b) => a.name.localeCompare(b.name));
+        break;
       case "Website":
-        newArray.sort((a, b) => b.url.localeCompare(a.url));
+        newArray.sort((a, b) => a.url.localeCompare(b.url));
+        break;
     }
-    if (sortOrder.desc) newArray.reverse();
+    if (sortOrder.isDesc) newArray.reverse();
     return newArray;
   }
 
@@ -88,10 +91,8 @@
               { name: "Afbeelding", dontSort: true },
               { name: "", dontSort: true },
             ]}
-            onClick={(column, order) => {
-              sortField = column;
-              sortOrder = order;
-            }}
+            bind:sortColumn
+            bind:sortOrder
           />
         </thead>
         <tbody>

@@ -9,41 +9,45 @@
   import { authStore } from "$lib/stores/AuthStore";
   import { pageHeadStore } from "$lib/stores/PageHeadStore";
   import { userStore } from "$lib/stores/UserStore";
+  import { SortOrder } from "$lib/domain/dataClasses/SortOrder";
 
   let showForm = false;
   let searchString = "";
-  let sortField = "";
-  let ascDesc = 0;
+  let sortColumn = "";
+  let sortOrder = SortOrder.None;
 
-  $: filteredUsers = $userStore?.filter((user) =>
-    user.matchesSearchString(searchString)
-  );
-  $: sortedUsers = sort(filteredUsers, sortField, ascDesc);
+  $: filteredUsers =
+    $userStore?.filter((user) => user.matchesSearchString(searchString)) || [];
+  $: sortedUsers = sort(filteredUsers, sortColumn, sortOrder);
 
-  function sort(users: DbUser[], sortField: string, ascDesc: number) {
-    if (ascDesc === 0) return [...(filteredUsers || [])];
-    switch (sortField) {
+  function sort(users: DbUser[], sortColumn: string, sortOrder: SortOrder) {
+    if (sortOrder.isNone) return [...users];
+    const newArray = [...users];
+    switch (sortColumn) {
       case "Naam":
-        return [...users].sort((a, b) =>
-          a.displayName.localeCompare(b.displayName)
-        );
+        newArray.sort((a, b) => a.displayName.localeCompare(b.displayName));
+        break;
       case "Email":
-        return [...users].sort((a, b) => a.email.localeCompare(b.email));
+        newArray.sort((a, b) => a.email.localeCompare(b.email));
+        break;
       case "Rol":
-        return [...users].sort((a, b) => a.role.localeCompare(b.role));
+        newArray.sort((a, b) => a.role.localeCompare(b.role));
+        break;
       case "Aangemaakt":
-        return [...users].sort((a, b) =>
+        newArray.sort((a, b) =>
           a.creationTimestamp.isAfter(b.creationTimestamp) ? 1 : -1
         );
+        break;
     }
-    return users;
+    if (sortOrder.isDesc) newArray.reverse();
+    return newArray;
   }
 
-  // Authguard
+  // -- Authguard --
   $: authStore.dbUser.then((dbUser) => {
     if (!dbUser || dbUser.role != "admin") goto("/");
   });
-  // Page title
+  // -- Page title --
   pageHeadStore.updatePageTitle("Gebruikers");
 </script>
 
@@ -88,10 +92,8 @@
               { name: "Rol" },
               { name: "Aangemaakt" },
             ]}
-            onClick={(e, a) => {
-              sortField = e;
-              ascDesc = a;
-            }}
+            bind:sortColumn
+            bind:sortOrder
           />
         </thead>
         <tbody>
