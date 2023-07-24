@@ -1,59 +1,59 @@
 import { browser } from '$app/environment'
-import { Sponser, sponserConverter, type SponserJson } from '$lib/domain/Sponser'
+import { Sponsor, sponsorConverter, type SponsorJson } from '$lib/domain/Sponsor'
 import { Collections } from '$lib/firebase/Firebase'
 import { writable } from 'svelte/store'
 import { v4 as uuidv4 } from "uuid"
 
-function createSponserStore() {
-  const store = writable<(Sponser)[]>(undefined, set => {
+function createSponsorStore() {
+  const store = writable<(Sponsor)[]>(undefined, set => {
     async function init() {
       if (!browser) return
 
-      // -- Load Sponsers --
+      // -- Load Sponsors --
       const { firebaseApp } = await import('$lib/firebase/Firebase')
       const { getFirestore, getDocs, collection } = await import('firebase/firestore')
       const firestore = getFirestore(firebaseApp)
 
-      const sponsersRef = collection(firestore, Collections.SPONSERS)
-      const sponsersSnap = await getDocs(sponsersRef)
-      const sponsers = sponsersSnap.docs.map(e => Sponser.fromJson(e.id, e.data() as SponserJson))
+      const sponsorsRef = collection(firestore, Collections.SPONSORS)
+      const sponsorsSnap = await getDocs(sponsorsRef)
+      const sponsors = sponsorsSnap.docs.map(e => Sponsor.fromJson(e.id, e.data() as SponsorJson))
 
       // -- Set store --
-      set(sponsers)
+      set(sponsors)
     }
     init()
   })
   const { subscribe, update } = store
 
-  async function createSponser(sponser: Sponser, image: File) {
+  async function createSponsor(sponsor: Sponsor, image: File) {
     // -- Upload images --
     const { getStorage, ref, uploadBytes, getDownloadURL } = await import('firebase/storage')
     const storage = getStorage()
 
-    const storageRef = ref(storage, `sponser-images/${uuidv4()}`)
+    const storageRef = ref(storage, `sponsor-images/${uuidv4()}`)
     const snapshot = await uploadBytes(storageRef, image)
     const uploadedImage = await getDownloadURL(snapshot.ref)
-    sponser.imageUrl = uploadedImage
+    sponsor.imageUrl = uploadedImage
 
     // -- Upload article --
     const { getFirestore, collection, doc, setDoc } = await import('firebase/firestore')
     const { firebaseApp } = await import('$lib/firebase/Firebase')
     const firestore = getFirestore(firebaseApp)
 
-    const newDocRef = doc(collection(firestore, Collections.SPONSERS)).withConverter(sponserConverter)
-    await setDoc(newDocRef, sponser)
+    const newDocRef = doc(collection(firestore, Collections.SPONSORS)).withConverter(sponsorConverter)
+    await setDoc(newDocRef, sponsor)
 
     // -- Update store --
-    update((sponsers) => ([...sponsers, sponser]))
+    update((sponsors) => ([...sponsors, sponsor]))
   }
 
-  async function updateSponser(newName: string, newUrl: string, newImage: File | undefined, sponser: Sponser) {
+  async function updateSponsor(newName: string, newUrl: string, newImage: File | undefined, sponsor: Sponsor) {
     // -- Update image --
     const { getStorage, ref, uploadBytes } = await import('firebase/storage')
     const storage = getStorage()
 
     if (newImage) {
-      const imageRef = ref(storage, sponser.imageUrl)
+      const imageRef = ref(storage, sponsor.imageUrl)
       await uploadBytes(imageRef, newImage)
     }
 
@@ -62,25 +62,25 @@ function createSponserStore() {
     const { firebaseApp } = await import('$lib/firebase/Firebase')
     const firestore = getFirestore(firebaseApp)
 
-    const linksRef = doc(firestore, Collections.SPONSERS, sponser.id)
+    const linksRef = doc(firestore, Collections.SPONSORS, sponsor.id)
     await updateDoc(linksRef, {
       name: newName,
       url: newUrl
     })
 
     // -- Update store --
-    sponser.name = newName
-    sponser.url = newUrl
-    update((sponsers) => [...sponsers])
+    sponsor.name = newName
+    sponsor.url = newUrl
+    update((sponsors) => [...sponsors])
   }
 
-  async function deleteSponser(sponser: Sponser) {
+  async function deleteSponsor(sponsor: Sponsor) {
     // -- Remove image --
     const { getStorage, ref, deleteObject } = await import('firebase/storage')
     const storage = getStorage()
 
     try {
-      const storageRef = ref(storage, sponser.imageUrl)
+      const storageRef = ref(storage, sponsor.imageUrl)
       await deleteObject(storageRef)
     } catch (error: any) {
       // Not existing images can be safely ignored
@@ -88,23 +88,23 @@ function createSponserStore() {
         throw error
     }
 
-    // -- Remove sponser --
+    // -- Remove sponsor --
     const { getFirestore, doc, deleteDoc } = await import('firebase/firestore')
     const { firebaseApp } = await import('$lib/firebase/Firebase')
     const firestore = getFirestore(firebaseApp)
 
-    await deleteDoc(doc(firestore, Collections.SPONSERS, sponser.id))
+    await deleteDoc(doc(firestore, Collections.SPONSORS, sponsor.id))
 
     // -- Remove from store --
-    update((sponsers) => (sponsers.filter((e) => e.id !== sponser.id)))
+    update((sponsors) => (sponsors.filter((e) => e.id !== sponsor.id)))
 
   }
 
   return {
     subscribe,
-    createSponser,
-    updateSponser,
-    deleteSponser,
+    createSponsor,
+    updateSponsor,
+    deleteSponsor,
   }
 }
 
@@ -112,4 +112,4 @@ function createSponserStore() {
 /**
  * Store that handles managing users, meant for use by admin users
  */
-export const sponserStore = createSponserStore()
+export const sponsorStore = createSponsorStore()

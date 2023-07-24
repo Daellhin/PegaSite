@@ -2,14 +2,14 @@
   import DismissableForm from "$components/DismissableForm.svelte"
   import FormControlDropzone from "$components/formHelpers/FormControlDropzone.svelte"
   import FormControlText from "$components/formHelpers/FormControlText.svelte"
-  import { Sponser } from "$lib/domain/Sponser"
-  import { sponserStore } from "$lib/stores/SponserStore"
+  import { Sponsor } from "$lib/domain/Sponsor"
+  import { sponsorStore } from "$lib/stores/SponsorStore"
   import { logFirebaseError } from "$lib/utils/Firebase"
   import { pushCreatedToast } from "$lib/utils/Toast"
   import type { FirebaseError } from "firebase/app"
 
   export let showForm = false
-  export let editSponser: Sponser | undefined = undefined
+  export let editSponsor: Sponsor | undefined = undefined
   export let onDismiss: () => void = () => {}
 
   let name = ""
@@ -22,13 +22,13 @@
   async function save() {
     try {
       errorMessage = ""
-      if (editSponser) {
-        await sponserStore.updateSponser(name, url, image[0], editSponser)
-        pushCreatedToast("Sponser gewijzigd")
+      if (editSponsor) {
+        await sponsorStore.updateSponsor(name, url, image[0], editSponsor)
+        pushCreatedToast("Sponsor gewijzigd")
       } else {
-        const newSponser = new Sponser("-1", name, url, "")
-        await sponserStore.createSponser(newSponser, image[0])
-        pushCreatedToast("Sponser aangemaakt")
+        const newSponsor = new Sponsor("-1", name, url, "")
+        await sponsorStore.createSponsor(newSponsor, image[0])
+        pushCreatedToast("Sponsor aangemaakt")
       }
     } catch (error) {
       if (error as FirebaseError) {
@@ -46,13 +46,13 @@
     }
   }
 
-  // -- Set editSponser --
-  $: setSponser(editSponser)
-  function setSponser(editSponser: Sponser | undefined) {
-    if (editSponser) {
-      name = editSponser.name
-      url = editSponser.url
-      exsitingImage = [editSponser.imageUrl]
+  // -- Set editSponsor --
+  $: setSponsor(editSponsor)
+  function setSponsor(editSponsor: Sponsor | undefined) {
+    if (editSponsor) {
+      name = editSponsor.name
+      url = editSponsor.url
+      exsitingImage = [editSponsor.imageUrl]
     } else {
       name = ""
       url = ""
@@ -65,7 +65,7 @@
   onSubmit={save}
   bind:showForm
   error={errorMessage}
-  submitLabel={editSponser ? "Wijzigen" : "Aanmaken"}
+  submitLabel={editSponsor ? "Wijzigen" : "Aanmaken"}
   {onDismiss}
 >
   <FormControlText

@@ -21,5 +21,5 @@ export class Collections {
     static CALENDAR_EVENTS = "calendar-events"
     static PAGES = "pages"
     static USERS = "users"
-    static SPONSERS = "sponsers"
+    static SPONSORS = "sponsors"
 }

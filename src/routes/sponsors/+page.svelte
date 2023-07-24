@@ -1,31 +1,31 @@
 <script lang="ts">
   import { goto } from "$app/navigation"
   import SearchInput from "$components/formHelpers/inputs/SearchInput.svelte"
-  import SponserForm from "$components/sponsers/SponserForm.svelte"
-  import SponserRow from "$components/sponsers/SponserRow.svelte"
+  import SponsorForm from "$components/sponsors/SponsorForm.svelte"
+  import SponsorRow from "$components/sponsors/SponsorRow.svelte"
   import SortableTableHeaderRow from "$components/table/SortableTableHeaderRow.svelte"
-  import type { Sponser } from "$lib/domain/Sponser"
+  import type { Sponsor } from "$lib/domain/Sponsor"
   import { SortOrder } from "$lib/domain/dataClasses/SortOrder"
   import { authStore } from "$lib/stores/AuthStore"
   import { pageHeadStore } from "$lib/stores/PageHeadStore"
-  import { sponserStore } from "$lib/stores/SponserStore"
+  import { sponsorStore } from "$lib/stores/SponsorStore"
 
   let showForm = false
   let searchString = ""
   let sortColumn = ""
   let sortOrder = SortOrder.None
 
-  let editSponser: Sponser | undefined = undefined
+  let editSponsor: Sponsor | undefined = undefined
 
-  $: filteredSponsers =
-    $sponserStore?.filter((sponser) =>
-      sponser.matchesSearchString(searchString)
+  $: filteredSponsors =
+    $sponsorStore?.filter((sponsor) =>
+      sponsor.matchesSearchString(searchString)
     ) || []
-  $: sortedSponsers = sort(filteredSponsers, sortColumn, sortOrder)
+  $: sortedSponsors = sort(filteredSponsors, sortColumn, sortOrder)
 
-  function sort(sponsers: Sponser[], sortColumn: string, sortOrder: SortOrder) {
-    if (sortOrder.isNone) return [...sponsers]
-    const newArray = [...sponsers]
+  function sort(sponsors: Sponsor[], sortColumn: string, sortOrder: SortOrder) {
+    if (sortOrder.isNone) return [...sponsors]
+    const newArray = [...sponsors]
     switch (sortColumn) {
       case "Naam":
         newArray.sort((a, b) => a.name.localeCompare(b.name))
@@ -38,17 +38,17 @@
     return newArray
   }
 
-  function startEdit(sponser: Sponser) {
+  function startEdit(sponsor: Sponsor) {
     showForm = true
-    editSponser = sponser
+    editSponsor = sponsor
   }
   function dismisForm() {
     showForm = false
-    editSponser = undefined
+    editSponsor = undefined
   }
   function showFormHandler() {
     showForm = true
-    editSponser = undefined
+    editSponsor = undefined
   }
 
   // -- Authguard --
@@ -56,29 +56,29 @@
     if (!$authStore) goto("/")
   })
   // -- Page title --
-  pageHeadStore.updatePageTitle("Sponsers wijzigen")
+  pageHeadStore.updatePageTitle("Sponsors wijzigen")
 </script>
 
 <div class="flex gap-3">
-  <h1 class="text-2xl font-bold mb-1">Sponsers wijzigen</h1>
+  <h1 class="text-2xl font-bold mb-1">Sponsors wijzigen</h1>
   <button class="btn btn-sm capitalize btn-primary" on:click={showFormHandler}>
-    Nieuwe Sponser
+    Nieuwe Sponsor
   </button>
 </div>
 
 {#if showForm}
   <div class="mt-2">
-    <SponserForm bind:showForm bind:editSponser onDismiss={dismisForm} />
+    <SponsorForm bind:showForm bind:editSponsor onDismiss={dismisForm} />
   </div>
 {/if}
 
 <SearchInput
   class="mt-2"
   bind:value={searchString}
-  placeholder="Zoek een sponser "
+  placeholder="Zoek een sponsor "
 />
 
-{#if $sponserStore}
+{#if $sponsorStore}
   <div class="mt-3 grid relative">
     <div class="overflow-x-auto rounded-t-lg">
       <table class="table static">
@@ -96,8 +96,8 @@
           />
         </thead>
         <tbody>
-          {#each sortedSponsers as sponser, n}
-            <SponserRow {sponser} index={n} editHandler={startEdit} />
+          {#each sortedSponsors as sponsor, n}
+            <SponsorRow {sponsor} index={n} editHandler={startEdit} />
           {/each}
         </tbody>
       </table>
@@ -105,9 +105,9 @@
     <div class="flex items-center justify-between mt-4">
       <div class="opacity-80">
         Weergegeven
-        <span class="font-bold opacity-100">{filteredSponsers.length}</span>
+        <span class="font-bold opacity-100">{filteredSponsors.length}</span>
         van
-        <span class="font-bold opacity-100">{filteredSponsers.length}</span>
+        <span class="font-bold opacity-100">{filteredSponsors.length}</span>
       </div>
       <div class="join">
         <button class="join-item btn btn-sm">«</button>

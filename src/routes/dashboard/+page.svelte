@@ -23,8 +23,8 @@
       Navigatiebalk wijzigen
     </a>
     {#if user?.role === "admin"}
-      <a href="/sponsers" class="btn btn-primary normal-case"
-        >Sponsers wijzigen</a
+      <a href="/sponsors" class="btn btn-primary normal-case"
+        >Sponsors wijzigen</a
       >
       <a href="/users" class="btn btn-primary normal-case">Gebruikers beheren</a
       >
