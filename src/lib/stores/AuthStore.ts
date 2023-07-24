@@ -42,19 +42,20 @@ function createMockAuthStore() {
 
 /**
  * 
- * Source: https://www.captaincodeman.com/lazy-loading-firebase-with-sveltekit
+ * Sources: 
+ * - https://www.captaincodeman.com/lazy-loading-firebase-with-sveltekit
+ * - https://www.captaincodeman.com/how-to-await-firebase-auth-with-sveltekit#creating-an-awaitable-auth-promise
  */
 function createAuthStore() {
   let auth: Auth
 
-  // Is run anytime the first subscriber attaches to the store
-  // returns a function that is called whenever the last subscriber disconnects
-  const { subscribe } = readable<User | null>(undefined, set => {
+  const innerStore = readable<User | null>(undefined, set => {
     let unsubscribe = () => { }
 
     async function init() {
       if (!browser) return
 
+      // -- Load auth(user is set asynchronously) --
       const { firebaseApp } = await import('$lib/firebase/Firebase')
       const { getAuth, onAuthStateChanged } = await import('firebase/auth')
 
@@ -65,20 +66,19 @@ function createAuthStore() {
 
     return unsubscribe
   })
+  const{ subscribe } = innerStore
 
-  async function knownFunction() {
+  const known = new Promise<void>(resolve => {
     let unsub = () => { }
     unsub = subscribe(user => {
       if (user !== undefined) {
-
+        resolve()
         unsub()
-        return
       }
     })
-  }
-  const known = knownFunction()
+  })
 
-  async function dbUserFunction() {
+  const dbUser = new Promise<DbUser | undefined>(async (resolve) => {
     const { firebaseApp } = await import('$lib/firebase/Firebase')
     const { getFirestore, doc, getDoc } = await import('firebase/firestore')
     const firestore = getFirestore(firebaseApp)
@@ -91,16 +91,15 @@ function createAuthStore() {
           const pageSnap = await getDoc(pageRef)
           const userData = pageSnap.data()
 
-          unsub()
-          if (userData) return userData
-          else return undefined
-        } catch {
-          return undefined
+          if (userData) resolve(userData)
+          else resolve(undefined)
+        } catch (error) {
+          resolve(undefined)
         }
+        unsub()
       }
     })
-  }
-  const dbUser = dbUserFunction()
+  })
 
   async function signIn(email: string, password: string) {
     const { signInWithEmailAndPassword } = await import('firebase/auth')
