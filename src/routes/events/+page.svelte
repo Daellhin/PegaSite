@@ -30,7 +30,7 @@
     {#each [...groupedEvents] as [_, events]}
       <div class="mb-4">
         <div class="flex">
-          <div class="min-w-fit font-semibold">
+          <div class="min-w-fit font-semibold text-xl">
             <span class="capitalize">{events[0].fullMonth}</span>
             {events[0].date.year()}
           </div>
