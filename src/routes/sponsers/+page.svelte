@@ -60,20 +60,20 @@
 </script>
 
 <div class="flex gap-3">
-  <h1 class="text-2xl font-bold">Sponsers wijzigen</h1>
+  <h1 class="text-2xl font-bold mb-1">Sponsers wijzigen</h1>
   <button class="btn btn-sm capitalize btn-primary" on:click={showFormHandler}>
     Nieuwe Sponser
   </button>
 </div>
 
 {#if showForm}
-  <div class="my-2">
+  <div class="mt-2">
     <SponserForm bind:showForm bind:editSponser onDismiss={dismisForm} />
   </div>
 {/if}
 
 <SearchInput
-  class="mt-3"
+  class="mt-2"
   bind:value={searchString}
   placeholder="Zoek een sponser "
 />

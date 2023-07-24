@@ -39,7 +39,7 @@
   pageHeadStore.updatePageTitle("Nieuw event")
 </script>
 
-<h1 class="text-2xl font-bold">Nieuw event</h1>
+<h1 class="text-2xl font-bold mb-1">Nieuw event</h1>
 
 <EventForm
   bind:title

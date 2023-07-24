@@ -65,7 +65,7 @@
   <!-- Article editor -->
   <div class="flex flex-row gap-3 items-center mb-1">
     <h1 class="text-2xl font-bold">Nieuw bericht</h1>
-    <button class="btn btn-primary btn-xs normal-case" on:click={togglePreview}>
+    <button class="btn btn-primary btn-sm normal-case" on:click={togglePreview}>
       Toon preview
     </button>
   </div>

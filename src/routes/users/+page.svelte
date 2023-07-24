@@ -52,7 +52,7 @@
 </script>
 
 <div class="flex gap-3">
-  <h1 class="text-2xl font-bold">Gebruikers beheren</h1>
+  <h1 class="text-2xl font-bold mb-1">Gebruikers beheren</h1>
   <button
     class="btn btn-sm capitalize btn-primary"
     on:click={() => (showForm = !showForm)}
@@ -62,12 +62,12 @@
 </div>
 
 {#if showForm}
-  <div class="my-2">
+  <div class="mt-2">
     <NewUserForm bind:showForm />
   </div>
 {/if}
 
-<InfoCard class="mt-1">
+<InfoCard class="mt-2">
   Om veiligheidsredenen is het niet mogelijk om gebruikers via de site te
   verwijderen. Indien nodig kan de site administrator dit doen in de databank
   console

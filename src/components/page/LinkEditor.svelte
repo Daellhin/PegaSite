@@ -1,13 +1,13 @@
 <script lang="ts">
   import ConfirmModal from "$components/ConfirmModal.svelte"
   import EditDropdown from "$components/EditDropdown.svelte"
-  import FormControlSavableText from "$components/formHelpers/FormControlSavableText.svelte"
+  import SavableTextInput from "$components/formHelpers/inputs/SavableTextInput.svelte"
   import { Link } from "$lib/domain/Link"
 
   export let link: Link
   export let isEditable = true
   export let deleteLink: (link: Link) => Promise<void> | any
-  export let saveLink: (newTitle:string, link: Link) => Promise<void>
+  export let saveLink: (newTitle: string, link: Link) => Promise<void>
 
   const confirmModalID = "confirmLinkDelete"
   let showModal = false
@@ -34,7 +34,7 @@
     {/if}
   </div>
   <div class="flex gap-2 w-full max-w-lg">
-    <FormControlSavableText
+    <SavableTextInput
       bind:value={linkTitle}
       placeholder="Titel"
       save={saveLinkWrapper}

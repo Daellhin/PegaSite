@@ -8,6 +8,7 @@
   export let required = false
   export let size: "sm" | "xs" = "sm"
   export let labelClass = ""
+  export let disabled = false
 
   export let placeholder: string
   export let save: () => Promise<void>
@@ -39,5 +40,5 @@
       </div>
     {/if}
   </div>
-  <SavableTextInput bind:value {placeholder} {save} {id} {validate} />
+  <SavableTextInput bind:value {placeholder} {save} {id} {validate} {disabled} />
 </div>
