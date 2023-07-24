@@ -1,12 +1,12 @@
 import type { FirestoreDataConverter } from "firebase/firestore"
 
-export interface SponserJson {
+export interface SponsorJson {
     name: string
     url: string
     imageUrl: string
 }
 
-export class Sponser {
+export class Sponsor {
     public searchableString: string
 
     constructor(
@@ -18,8 +18,8 @@ export class Sponser {
         this.searchableString = `${name.toLowerCase()} ${url.toLowerCase()}`
     }
 
-    static fromJson(id: string, json: SponserJson) {
-        return new Sponser(id, json.name, json.url, json.imageUrl)
+    static fromJson(id: string, json: SponsorJson) {
+        return new Sponsor(id, json.name, json.url, json.imageUrl)
     }
 
     toJson() {
@@ -27,7 +27,7 @@ export class Sponser {
             name: this.name,
             url: this.url,
             imageUrl: this.imageUrl
-        } as SponserJson
+        } as SponsorJson
     }
 
         /**
@@ -50,7 +50,7 @@ export class Sponser {
 /**
  * Firestore data converter
  * */
-export const sponserConverter: FirestoreDataConverter<Sponser> = {
-    toFirestore: (sponser: Sponser) => sponser.toJson(),
-    fromFirestore: (snapshot, options) => Sponser.fromJson(snapshot.id, snapshot.data(options) as SponserJson)
+export const sponsorConverter: FirestoreDataConverter<Sponsor> = {
+    toFirestore: (sponsor: Sponsor) => sponsor.toJson(),
+    fromFirestore: (snapshot, options) => Sponsor.fromJson(snapshot.id, snapshot.data(options) as SponsorJson)
 }

@@ -1,20 +1,20 @@
 <script lang="ts">
-  import SearchInput from "$components/formHelpers/inputs/SearchInput.svelte";
-  import { faSearch } from "@fortawesome/free-solid-svg-icons";
+  import SearchInput from "$components/formHelpers/inputs/SearchInput.svelte"
+  import { faSearch } from "@fortawesome/free-solid-svg-icons"
 
-  export let label: string;
-  export let required = false;
-  export let value: string;
-  export let size: "md" | "sm" | "xs" = "sm";
-  export let placeholder = "Zoek";
-  export let disabled = false;
+  export let label: string
+  export let required = false
+  export let value: string
+  export let size: "md" | "sm" | "xs" = "sm"
+  export let placeholder = "Zoek"
+  export let disabled = false
 
-  export let onInput: () => void = () => {};
-  export let icon = faSearch;
-  let classList = "";
-  export { classList as class };
+  export let onInput: () => void = () => {}
+  export let icon = faSearch
+  let classList = ""
+  export { classList as class }
 
-  $: inputId = label?.replace(/[ :]/g, "").toLowerCase();
+  $: inputId = label?.replace(/[ :]/g, "").toLowerCase()
 </script>
 
 <div

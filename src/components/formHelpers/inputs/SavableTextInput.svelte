@@ -1,45 +1,45 @@
 <script lang="ts">
-  import { isChild } from "$lib/utils/Utils";
-  import { faCheck, faPen, faXmark } from "@fortawesome/free-solid-svg-icons";
-  import Fa from "svelte-fa";
-  import { v4 as uuidv4 } from "uuid";
+  import { isChild } from "$lib/utils/Utils"
+  import { faCheck, faPen, faXmark } from "@fortawesome/free-solid-svg-icons"
+  import Fa from "svelte-fa"
+  import { v4 as uuidv4 } from "uuid"
 
-  export let value: string;
-  export let placeholder: string;
-  export let save: () => Promise<void>;
-  export let disabled = false;
-  export let inputStyling = "";
-  export let transparent = false;
-  export let id = uuidv4();
-  export let validate: (value: string) => string | undefined = () => undefined;
+  export let value: string
+  export let placeholder: string
+  export let save: () => Promise<void>
+  export let disabled = false
+  export let inputStyling = ""
+  export let transparent = false
+  export let id = uuidv4()
+  export let validate: (value: string) => string | undefined = () => undefined
 
-  let oldValue = value;
-  let focused = false;
-  let divParent: HTMLElement;
-  let saving = false;
+  let oldValue = value
+  let focused = false
+  let divParent: HTMLElement
+  let saving = false
 
-  $: dirty = value != oldValue;
-  $: error = validate(value);
+  $: dirty = value != oldValue
+  $: error = validate(value)
 
   async function saveWrapper() {
     if (!error) {
       if (dirty) {
-        saving = true;
-        await save();
-        oldValue = value;
-        dirty = false;
-        saving = false;
+        saving = true
+        await save()
+        oldValue = value
+        dirty = false
+        saving = false
       }
-      focused = false;
+      focused = false
     }
   }
   function cancel() {
-    value = oldValue;
-    dirty = false;
-    focused = false;
+    value = oldValue
+    dirty = false
+    focused = false
   }
   async function unfocus(e: FocusEvent) {
-    if (!isChild(e.relatedTarget, divParent)) focused = false;
+    if (!isChild(e.relatedTarget, divParent)) focused = false
   }
 </script>
 

@@ -1,7 +1,7 @@
 import { browser } from '$app/environment'
 import { ARTICLES_JSON } from '$data/ArticlesJson'
 import { Article, articleConverter } from '$lib/domain/Article'
-import { Collections } from '$lib/firebase/Firebase'
+import { Collections, StorageFolders } from '$lib/firebase/Firebase'
 import { arrayDifference, containArraysSameElements } from '$lib/utils/Array'
 import { convertStringToBool } from '$lib/utils/Utils'
 import type { Dayjs } from 'dayjs'
@@ -26,14 +26,14 @@ function createMockArticleStore() {
   async function loadMoreArticles() {
     return
   }
-  async function createArticle(newArticle: Article, images: File[]) {
+  async function createArticle(newArticle: Article, _images: File[]) {
     update((articles) => ([newArticle, ...articles]))
   }
   async function getArticleById(id: string) {
     const exsistingArticle = get(innerStore).find((e) => e.id === id)
     return exsistingArticle || null
   }
-  async function updateArticle(newAuthors: string[], newTags: string[], newTitle: string, newContent: string, lastUpdate: Dayjs, uploadedImages: File[], newExcistingImages: string[], article: Article) {
+  async function updateArticle(_newAuthors: string[], _newTags: string[], _newTitle: string, _newContent: string, _lastUpdate: Dayjs, _uploadedImages: File[], _newExcistingImages: string[], _article: Article) {
   }
   async function deleteArticle(article: Article) {
     update((articles) => (articles.filter((e) => e.id !== article.id)))
@@ -115,7 +115,7 @@ function createArticleStore() {
     const storage = getStorage()
 
     const uploadedImageLinks = await Promise.all(images.map(async (image) => {
-      const storageRef = ref(storage, `article-images/${uuidv4()}`)
+      const storageRef = ref(storage, `${StorageFolders.ARTICLE_IMAGES}/${uuidv4()}`)
       const snapshot = await uploadBytes(storageRef, image)
       return await getDownloadURL(snapshot.ref)
     }))

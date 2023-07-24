@@ -1,13 +1,13 @@
 <script lang="ts">
-  export let label: string;
-  export let value: string;
-  export let required = false;
-  export let size: "sm" | "xs" = "sm";
+  export let label: string
+  export let value: string
+  export let required = false
+  export let size: "sm" | "xs" = "sm"
 
-  $: selectId = label?.replace(/[ :]/g, "").toLowerCase();
+  $: selectId = label?.replace(/[ :]/g, "").toLowerCase()
 
   function removePlaceholderStyle(event: Event) {
-    (event?.target as HTMLElement).classList.remove("placeholder-style");
+    (event?.target as HTMLElement).classList.remove("placeholder-style")
   }
 </script>
 

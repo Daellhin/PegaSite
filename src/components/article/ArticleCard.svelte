@@ -1,13 +1,13 @@
 <script lang="ts">
-  import type { Article } from "$lib/domain/Article";
-  import { clearHTMLTags } from "$lib/utils/Utils";
+  import type { Article } from "$lib/domain/Article"
+  import { clearHTMLTags } from "$lib/utils/Utils"
 
-  import { faCalendar } from "@fortawesome/free-regular-svg-icons";
-  import { faUser, faUsers } from "@fortawesome/free-solid-svg-icons";
-  import Fa from "svelte-fa";
-  import Time from "svelte-time";
+  import { faCalendar } from "@fortawesome/free-regular-svg-icons"
+  import { faUser, faUsers } from "@fortawesome/free-solid-svg-icons"
+  import Fa from "svelte-fa"
+  import Time from "svelte-time"
 
-  export let article: Article;
+  export let article: Article
 </script>
 
 <a href="/articles/{article.id}">
@@ -46,8 +46,6 @@
       </div>
       <!-- Content -->
       <p class="my-2 line-clamp-2">
-        <!-- Using @html results in text overflow flash -->
-        <!-- {@html article.content} -->
         {clearHTMLTags(article.content)}
       </p>
       <!-- Tags -->

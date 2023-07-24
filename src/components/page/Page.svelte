@@ -1,13 +1,13 @@
 <script lang="ts">
-  import EditDropdown from "$components/EditDropdown.svelte";
-  import UserContentRenderer from "$components/UserContentRenderer.svelte";
-  import type { Page } from "$lib/domain/Page";
-  import { authStore } from "$lib/stores/AuthStore";
-  import { Carousel } from "flowbite-svelte";
+  import EditDropdown from "$components/EditDropdown.svelte"
+  import UserContentRenderer from "$components/UserContentRenderer.svelte"
+  import type { Page } from "$lib/domain/Page"
+  import { authStore } from "$lib/stores/AuthStore"
+  import { Carousel } from "flowbite-svelte"
 
-  export let isPreview = false;
+  export let isPreview = false
 
-  export let page: Page;
+  export let page: Page
 </script>
 
 <!-- Title -->

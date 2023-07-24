@@ -1,54 +1,58 @@
 <script lang="ts">
-  import { goto } from "$app/navigation";
-  import InfoCard from "$components/InfoCard.svelte";
-  import SortableTableHeaderRow from "$components/table/SortableTableHeaderRow.svelte";
-  import SearchInput from "$components/formHelpers/inputs/SearchInput.svelte";
-  import NewUserForm from "$components/users/NewUserForm.svelte";
-  import UserRow from "$components/users/UserRow.svelte";
-  import type { DbUser } from "$lib/domain/DbUser";
-  import { authStore } from "$lib/stores/AuthStore";
-  import { pageHeadStore } from "$lib/stores/PageHeadStore";
-  import { userStore } from "$lib/stores/UserStore";
+  import { goto } from "$app/navigation"
+  import InfoCard from "$components/InfoCard.svelte"
+  import SortableTableHeaderRow from "$components/table/SortableTableHeaderRow.svelte"
+  import SearchInput from "$components/formHelpers/inputs/SearchInput.svelte"
+  import NewUserForm from "$components/users/NewUserForm.svelte"
+  import UserRow from "$components/users/UserRow.svelte"
+  import type { DbUser } from "$lib/domain/DbUser"
+  import { authStore } from "$lib/stores/AuthStore"
+  import { pageHeadStore } from "$lib/stores/PageHeadStore"
+  import { userStore } from "$lib/stores/UserStore"
+  import { SortOrder } from "$lib/domain/dataClasses/SortOrder"
 
-  let showForm = false;
-  let searchString = "";
-  let sortField = "";
-  let ascDesc = 0;
+  let showForm = false
+  let searchString = ""
+  let sortColumn = ""
+  let sortOrder = SortOrder.None
 
-  $: filteredUsers = $userStore?.filter((user) =>
-    user.matchesSearchString(searchString)
-  );
-  $: sortedUsers = sort(filteredUsers, sortField, ascDesc);
+  $: filteredUsers =
+    $userStore?.filter((user) => user.matchesSearchString(searchString)) || []
+  $: sortedUsers = sort(filteredUsers, sortColumn, sortOrder)
 
-  function sort(users: DbUser[], sortField: string, ascDesc: number) {
-    if (ascDesc === 0) return [...(filteredUsers || [])];
-    switch (sortField) {
+  function sort(users: DbUser[], sortColumn: string, sortOrder: SortOrder) {
+    if (sortOrder.isNone) return [...users]
+    const newArray = [...users]
+    switch (sortColumn) {
       case "Naam":
-        return [...users].sort((a, b) =>
-          a.displayName.localeCompare(b.displayName)
-        );
+        newArray.sort((a, b) => a.displayName.localeCompare(b.displayName))
+        break
       case "Email":
-        return [...users].sort((a, b) => a.email.localeCompare(b.email));
+        newArray.sort((a, b) => a.email.localeCompare(b.email))
+        break
       case "Rol":
-        return [...users].sort((a, b) => a.role.localeCompare(b.role));
+        newArray.sort((a, b) => a.role.localeCompare(b.role))
+        break
       case "Aangemaakt":
-        return [...users].sort((a, b) =>
+        newArray.sort((a, b) =>
           a.creationTimestamp.isAfter(b.creationTimestamp) ? 1 : -1
-        );
+        )
+        break
     }
-    return users;
+    if (sortOrder.isDesc) newArray.reverse()
+    return newArray
   }
 
-  // Authguard
+  // -- Authguard --
   $: authStore.dbUser.then((dbUser) => {
-    if (!dbUser || dbUser.role != "admin") goto("/");
-  });
-  // Page title
-  pageHeadStore.updatePageTitle("Gebruikers");
+    if (!dbUser || dbUser.role != "admin") goto("/")
+  })
+  // -- Page title --
+  pageHeadStore.updatePageTitle("Gebruikers")
 </script>
 
 <div class="flex gap-3">
-  <h1 class="text-2xl font-bold">Gebruikers beheren</h1>
+  <h1 class="text-2xl font-bold mb-1">Gebruikers beheren</h1>
   <button
     class="btn btn-sm capitalize btn-primary"
     on:click={() => (showForm = !showForm)}
@@ -58,12 +62,12 @@
 </div>
 
 {#if showForm}
-  <div class="my-2">
+  <div class="mt-2">
     <NewUserForm bind:showForm />
   </div>
 {/if}
 
-<InfoCard class="mt-1">
+<InfoCard class="mt-2">
   Om veiligheidsredenen is het niet mogelijk om gebruikers via de site te
   verwijderen. Indien nodig kan de site administrator dit doen in de databank
   console
@@ -88,10 +92,8 @@
               { name: "Rol" },
               { name: "Aangemaakt" },
             ]}
-            onClick={(e, a) => {
-              sortField = e;
-              ascDesc = a;
-            }}
+            bind:sortColumn
+            bind:sortOrder
           />
         </thead>
         <tbody>

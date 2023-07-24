@@ -10,20 +10,20 @@ import { Collections } from '$lib/firebase/Firebase'
 import { convertStringToBool } from '$lib/utils/Utils'
 import { writable } from 'svelte/store'
 
-async function addRecordsFromJson() {
-  const records = CLUB_RECORDS_JSON.map(ClubRecord.fromJSON)
-  await Promise.all(records.map(async (e) => {
-    const { getFirestore, doc, updateDoc, arrayUnion } = await import('firebase/firestore')
-    const { firebaseApp } = await import('$lib/firebase/Firebase')
-    const firestore = getFirestore(firebaseApp)
+// async function addRecordsFromJson() {
+//   const records = CLUB_RECORDS_JSON.map(ClubRecord.fromJSON)
+//   await Promise.all(records.map(async (e) => {
+//     const { getFirestore, doc, updateDoc, arrayUnion } = await import('firebase/firestore')
+//     const { firebaseApp } = await import('$lib/firebase/Firebase')
+//     const firestore = getFirestore(firebaseApp)
 
-    const clubrecordsRef = doc(firestore, Collections.CLUB_RECORDS, "singleDocument")
-    const objectKey = `${e.gender.keyName}.${e.athleticEvent.keyName}.${e.discipline.name}.${e.category.keyName}`
-    await updateDoc(clubrecordsRef, {
-      [objectKey]: arrayUnion(...e.records.map(e => e.toJSON()))
-    })
-  }))
-}
+//     const clubrecordsRef = doc(firestore, Collections.CLUB_RECORDS, "singleDocument")
+//     const objectKey = `${e.gender.keyName}.${e.athleticEvent.keyName}.${e.discipline.name}.${e.category.keyName}`
+//     await updateDoc(clubrecordsRef, {
+//       [objectKey]: arrayUnion(...e.records.map(e => e.toJSON()))
+//     })
+//   }))
+// }
 
 function createMockClubRecordStore() {
   const store = writable<ClubRecord[]>(undefined, set => {

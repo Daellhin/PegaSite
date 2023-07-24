@@ -1,21 +1,24 @@
 <script lang="ts">
-  import CaretDown from "$components/icons/Flowbite/CaretDown.svelte";
-  import CaretUp from "$components/icons/Flowbite/CaretUp.svelte";
-  import { SortOrder } from "$lib/domain/dataClasses/SortOrder";
+  import CaretDown from "$components/icons/Flowbite/CaretDown.svelte"
+  import CaretUp from "$components/icons/Flowbite/CaretUp.svelte"
+  import { SortOrder } from "$lib/domain/dataClasses/SortOrder"
 
-  export let name: string;
-  export let onClick: (sortOrder: SortOrder) => void;
+  export let name: string
+  export let onClick: (sortOrder: SortOrder) => void
 
   export function reset() {
-    sortOrder = SortOrder.None;
+    sortOrder = SortOrder.None
   }
+  export function setSortOrder(sortOrderParam: SortOrder) {
+    sortOrder = sortOrderParam
+  }
+
+  let sortOrder = SortOrder.None
 
   function onClickInner() {
-    sortOrder = sortOrder.next();
-    onClick(sortOrder);
+    sortOrder = sortOrder.next()
+    onClick(sortOrder)
   }
-
-  let sortOrder = SortOrder.None;
 </script>
 
 <th

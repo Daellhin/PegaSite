@@ -1,8 +1,8 @@
 <script lang="ts">
-  import InfoCircle from "$components/icons/Flowbite/InfoCircle.svelte";
+  import InfoCircle from "$components/icons/Flowbite/InfoCircle.svelte"
 
-  let classList = "";
-  export { classList as class };
+  let classList = ""
+  export { classList as class }
 </script>
 
 <div class={"alert border border-base-300 w-fit " + classList}>

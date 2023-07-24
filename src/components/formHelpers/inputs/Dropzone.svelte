@@ -4,46 +4,46 @@
     getFilesFromDragEvent,
     ignoreDragOver,
     readFileAsDataURL,
-  } from "$lib/utils/Utils";
+  } from "$lib/utils/Utils"
   import {
     faFileCircleExclamation,
     faXmark,
-  } from "@fortawesome/free-solid-svg-icons";
-  import Fa from "svelte-fa";
-  import CloudIcon from "$components/icons/Flowbite/CloudIcon.svelte";
+  } from "@fortawesome/free-solid-svg-icons"
+  import Fa from "svelte-fa"
+  import CloudIcon from "$components/icons/Flowbite/CloudIcon.svelte"
 
-  export let uploadedImages: File[];
-  export let existingImages: string[] = [];
-  export let accept: string;
-  export let dropzoneId = "file-dropzone";
-  export let maxAmount = 1;
-  export let required = false;
+  export let uploadedImages: File[]
+  export let existingImages: string[] = []
+  export let accept: string
+  export let dropzoneId = "file-dropzone"
+  export let maxAmount = 1
+  export let required = false
 
   function onFileInput(e: Event & { currentTarget: HTMLInputElement }) {
-    if (!e.currentTarget.files) return;
+    if (!e.currentTarget.files) return
     const newFiles = Array.from(e.currentTarget.files).filter((e) =>
       e.type.match(accept)
-    );
-    uploadedImages.push(...newFiles);
-    uploadedImages = uploadedImages;
+    )
+    uploadedImages.push(...newFiles)
+    uploadedImages = uploadedImages
   }
   function handleDrop(event: DragEvent) {
-    const droppedFiles = getFilesFromDragEvent(event);
-    if (!droppedFiles) return;
+    const droppedFiles = getFilesFromDragEvent(event)
+    if (!droppedFiles) return
     const newFiles = droppedFiles
       .filter((e) => e.type.match(accept))
-      .slice(0, remainingSpace);
-    uploadedImages.push(...newFiles);
-    uploadedImages = uploadedImages;
+      .slice(0, remainingSpace)
+    uploadedImages.push(...newFiles)
+    uploadedImages = uploadedImages
   }
   function removeFile(toRemove: File) {
-    uploadedImages = uploadedImages.filter((e) => e != toRemove);
+    uploadedImages = uploadedImages.filter((e) => e != toRemove)
   }
   function removeExistingImage(toRemove: string) {
-    existingImages = existingImages.filter((e) => e != toRemove);
+    existingImages = existingImages.filter((e) => e != toRemove)
   }
 
-  $: remainingSpace = uploadedImages.length + existingImages.length - maxAmount;
+  $: remainingSpace = uploadedImages.length + existingImages.length - maxAmount
 </script>
 
 {#if remainingSpace}

@@ -1,12 +1,12 @@
 <script lang="ts">
-  import Dropzone from "$components/formHelpers/inputs/Dropzone.svelte";
+  import Dropzone from "$components/formHelpers/inputs/Dropzone.svelte"
 
-  export let label: string;
-  export let uploadedImages: File[];
-  export let existingImages: string[] = [];
-  export let accept: "image/*" = "image/*";
-  export let required = false;
-  export let size: "md" | "sm" | "xs" = "sm";
+  export let label: string
+  export let uploadedImages: File[]
+  export let existingImages: string[] = []
+  export let accept = "image/*"
+  export let required = false
+  export let size: "md" | "sm" | "xs" = "sm"
 </script>
 
 <div

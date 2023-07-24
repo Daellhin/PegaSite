@@ -1,43 +1,43 @@
 <script lang="ts">
-  import SavableTextInput from "$components/formHelpers/inputs/SavableTextInput.svelte";
-  import LinkEditor from "$components/page/LinkEditor.svelte";
-  import { Link, type LinkGroup } from "$lib/domain/Link";
-  import { navbarStore } from "$lib/stores/NavbarStore";
+  import SavableTextInput from "$components/formHelpers/inputs/SavableTextInput.svelte"
+  import LinkEditor from "$components/page/LinkEditor.svelte"
+  import { Link, type LinkGroup } from "$lib/domain/Link"
+  import { navbarStore } from "$lib/stores/NavbarStore"
 
-  export let linkGroup: LinkGroup;
+  export let linkGroup: LinkGroup
 
-  let title = linkGroup.name;
-  let tempLink: Link | undefined;
+  let title = linkGroup.name
+  let tempLink: Link | undefined
 
-  $: links = linkGroup.links;
+  $: links = linkGroup.links
 
   async function createLink(newTitle: string, link: Link) {
-    link.title = newTitle;
-    await navbarStore.createLink(link, linkGroup);
-    tempLink = undefined;
+    link.title = newTitle
+    await navbarStore.createLink(link, linkGroup)
+    tempLink = undefined
   }
   async function updateLinkTitle(newTitle: string, link: Link) {
-    await navbarStore.updateLinkTitle(newTitle, link, linkGroup);
+    await navbarStore.updateLinkTitle(newTitle, link, linkGroup)
   }
   async function deleteLink(link: Link) {
-    await navbarStore.deleteLink(link, linkGroup);
+    await navbarStore.deleteLink(link, linkGroup)
   }
   async function createTempLink() {
-    if (tempLink) return;
-    tempLink = new Link("", links.length);
+    if (tempLink) return
+    tempLink = new Link("", links.length)
   }
   function deleteTempLink() {
-    tempLink = undefined;
+    tempLink = undefined
   }
   async function updateGroupTitle() {
-    await navbarStore.updateGroupTitle(title, linkGroup);
+    await navbarStore.updateGroupTitle(title, linkGroup)
   }
   function validate(inner_value: string) {
-    const pattern = /^[a-zA-Z0-9- ]*$/g;
-    if (!inner_value || !inner_value.trim()) return "Titel moet ingevuld zijn";
+    const pattern = /^[a-zA-Z0-9- ]*$/g
+    if (!inner_value || !inner_value.trim()) return "Titel moet ingevuld zijn"
     if (!inner_value.match(pattern))
-      return "Titel mag enkel cijfers, letters, spaties, - bevatten";
-    return undefined;
+      return "Titel mag enkel cijfers, letters, spaties, - bevatten"
+    return undefined
   }
 </script>
 

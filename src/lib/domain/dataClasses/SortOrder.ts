@@ -7,13 +7,13 @@ export class SortOrder {
         public direction: "none" | "asc" | "desc",
     ) { }
 
-    get none() {
+    get isNone() {
         return this.direction === "none"
     }
-    get asc() {
+    get isAsc() {
         return this.direction === "asc"
     }
-    get desc() {
+    get isDesc() {
         return this.direction === "desc"
     }
 

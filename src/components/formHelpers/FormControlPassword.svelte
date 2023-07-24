@@ -1,14 +1,14 @@
 <script lang="ts">
-    export let label: string;
-    export let value: string;
-    export let required = false;
-    export let size: "sm" | "xs" = "sm";
+    export let label: string
+    export let value: string
+    export let required = false
+    export let size: "sm" | "xs" = "sm"
     
-    export let labelClass = "";
-    export let placeholder: string;
-    export let passEdited  = false;
+    export let labelClass = ""
+    export let placeholder: string
+    export let passEdited  = false
   
-    $: inputId = label?.replace(/[ :]/g, "").toLowerCase();
+    $: inputId = label?.replace(/[ :]/g, "").toLowerCase()
   </script>
   
   <div

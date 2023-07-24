@@ -1,64 +1,64 @@
 <script lang="ts">
-  import { goto } from "$app/navigation";
-  import FormControlPassword from "$components/formHelpers/FormControlPassword.svelte";
-  import FormControlSavableText from "$components/formHelpers/FormControlSavableText.svelte";
-  import { authStore } from "$lib/stores/AuthStore";
-  import { pageHeadStore } from "$lib/stores/PageHeadStore";
+  import { goto } from "$app/navigation"
+  import FormControlPassword from "$components/formHelpers/FormControlPassword.svelte"
+  import FormControlSavableText from "$components/formHelpers/FormControlSavableText.svelte"
+  import { authStore } from "$lib/stores/AuthStore"
+  import { pageHeadStore } from "$lib/stores/PageHeadStore"
 
-  let email = "";
-  let name = "";
-  let password1 = "";
-  let password2 = "";
+  let email = ""
+  let name = ""
+  let password1 = ""
+  let password2 = ""
 
   function init() {
-    email = $authStore!.email || "";
-    name = $authStore!.displayName || "";
-    return true;
+    email = $authStore!.email || ""
+    name = $authStore!.displayName || ""
+    return true
   }
   function validate(inner_value: string) {
-    const pattern = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/g;
-    if (!inner_value || !inner_value.trim()) return "Email moet ingevuld zijn";
-    if (!inner_value.match(pattern)) return "Email moet geldig zijn";
-    return undefined;
+    const pattern = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/g
+    if (!inner_value || !inner_value.trim()) return "Email moet ingevuld zijn"
+    if (!inner_value.match(pattern)) return "Email moet geldig zijn"
+    return undefined
   }
 
-  let passEdited1 = false;
-  let passEdited2 = false;
+  let passEdited1 = false
+  let passEdited2 = false
   function validatePassword1(password1: string) {
     if (!password1.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{12,}$/))
-      return "Wachtwoord moet minimaal 12 karakters bevatten, inclusief kleine letters, hoofdletters en cijfers";
-    return undefined;
+      return "Wachtwoord moet minimaal 12 karakters bevatten, inclusief kleine letters, hoofdletters en cijfers"
+    return undefined
   }
   function validatePasswords(password1: string, password2: string) {
-    if (password1 !== password2) return "Wachtwoorden moeten gelijk zijn";
-    return undefined;
+    if (password1 !== password2) return "Wachtwoorden moeten gelijk zijn"
+    return undefined
   }
-  $: error1 = validatePassword1(password1);
-  $: error2 = validatePasswords(password1, password2);
+  $: error1 = validatePassword1(password1)
+  $: error2 = validatePasswords(password1, password2)
 
-  let saving = false;
-  let loginError = false;
+  let saving = false
+  let loginError = false
   async function updatePassword() {
-    //if(!validatePassword1(password1) || !validatePasswords(password1, password2)) return
+    if(!validatePassword1(password1) || !validatePasswords(password1, password2)) return
     try {
-      saving = true;
-      await authStore.updateCurrentUserPassword(password1);
-      password1 = "";
-      password2 = "";
-      passEdited1 = false;
-      passEdited2 = false;
+      saving = true
+      await authStore.updateCurrentUserPassword(password1)
+      password1 = ""
+      password2 = ""
+      passEdited1 = false
+      passEdited2 = false
     } catch (error) {
-      loginError = true;
+      loginError = true
     }
-    saving = false;
+    saving = false
   }
 
-  // Authguard
+  // -- Authguard --
   $: authStore.known.then(() => {
-    if (!$authStore) goto("/");
-  });
-  // Page title
-  pageHeadStore.updatePageTitle("Profiel");
+    if (!$authStore) goto("/")
+  })
+  // -- Page title --
+  pageHeadStore.updatePageTitle("Profiel")
 </script>
 
 {#if $authStore && init()}

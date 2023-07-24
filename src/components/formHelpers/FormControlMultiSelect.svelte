@@ -1,14 +1,14 @@
 <script lang="ts">
-  import { MultiSelect } from "svelte-multiselect";
+  import { MultiSelect } from "svelte-multiselect"
 
-  export let label: string;
-  export let values: string[];
-  export let required = false;
-  export let size: "sm" | "xs" = "sm";
+  export let label: string
+  export let values: string[]
+  export let required = false
+  export let size: "sm" | "xs" = "sm"
 
-  export let placeholder = "Kies";
-  export let options = Array<any>();
-  export let allowUserOptions = false;
+  export let placeholder = "Kies"
+  export let options = Array<string>()
+  export let allowUserOptions = false
 </script>
 
 <div

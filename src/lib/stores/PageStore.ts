@@ -9,17 +9,17 @@ import { Timestamp } from 'firebase/firestore'
 import { get, writable } from 'svelte/store'
 import { v4 as uuidv4 } from "uuid"
 
-async function addPagesFromJson() {
-  const pages = PAGES_JSON.map(Page.fromJson)
-  await Promise.all(pages.map(async (page) => {
-    const { getFirestore, doc, setDoc } = await import('firebase/firestore')
-    const { firebaseApp } = await import('$lib/firebase/Firebase')
-    const firestore = getFirestore(firebaseApp)
+// async function addPagesFromJson() {
+//   const pages = PAGES_JSON.map(Page.fromJson)
+//   await Promise.all(pages.map(async (page) => {
+//     const { getFirestore, doc, setDoc } = await import('firebase/firestore')
+//     const { firebaseApp } = await import('$lib/firebase/Firebase')
+//     const firestore = getFirestore(firebaseApp)
 
-    const pagesRef = doc(firestore, Collections.PAGES, page.id).withConverter(pageConverter)
-    await setDoc(pagesRef, page)
-  }))
-}
+//     const pagesRef = doc(firestore, Collections.PAGES, page.id).withConverter(pageConverter)
+//     await setDoc(pagesRef, page)
+//   }))
+// }
 
 function createMockPageStore() {
   const innerStore = writable<Page[]>(undefined, set => {

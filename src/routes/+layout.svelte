@@ -1,15 +1,15 @@
 <script lang="ts">
-  import EventCalendar from "$components/events/EventCalendar.svelte";
-  import Footer from "$components/layout/Footer.svelte";
-  import MenuVertical from "$components/layout/MenuVertical.svelte";
-  import Navbar from "$components/layout/Navbar.svelte";
-  import Sponsers from "$components/sponsers/Sponsers.svelte";
-  import { pageHeadStore } from "$lib/stores/PageHeadStore";
-  import { SvelteToast } from "@zerodevx/svelte-toast";
-  import "../app.css";
+  import EventCalendar from "$components/events/EventCalendar.svelte"
+  import Footer from "$components/layout/Footer.svelte"
+  import MenuVertical from "$components/layout/MenuVertical.svelte"
+  import Navbar from "$components/layout/Navbar.svelte"
+  import Sponsors from "$components/sponsors/Sponsors.svelte"
+  import { pageHeadStore } from "$lib/stores/PageHeadStore"
+  import { SvelteToast } from "@zerodevx/svelte-toast"
+  import "../app.css"
 
-  const drawerID = "layout-drawer";
-  const loginModalID = "login-modal";
+  const drawerID = "layout-drawer"
+  const loginModalID = "login-modal"
 </script>
 
 <svelte:head>
@@ -22,7 +22,7 @@
     <Navbar {drawerID} {loginModalID} />
     <!-- Page content here -->
     <section class="my-1 flex-grow">
-      <div class="grid lg:grid-cols-12 gap-4 lg:gap-4 p-2 xl:p-4 m-2 h-full">
+      <div class="grid lg:grid-cols-12 gap-4 lg:gap-4 py-0 px-2 xl:px-4 mx-2 h-full">
         <main class="lg:col-span-8 xl:col-span-9 h-full">
           <slot />
         </main>
@@ -30,7 +30,7 @@
         <aside class="lg:col-span-4 xl:col-span-3 md:pt-0 py-0 p-2">
           <div class="flex flex-col gap-3">
             <EventCalendar />
-            <Sponsers />
+            <Sponsors />
           </div>
         </aside>
       </div>

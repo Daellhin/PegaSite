@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function isArrayNotEmpty(array: any[] | undefined) {
     return Array.isArray(array) && array.length > 0
 }

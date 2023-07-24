@@ -1,15 +1,15 @@
 <script lang="ts">
-  import SearchInput from "$components/formHelpers/inputs/SearchInput.svelte";
-  import NewRecordForm from "$components/records/NewRecordForm.svelte";
-  import RecordsTable from "$components/records/RecordsTable.svelte";
-  import { Category } from "$lib/domain/dataClasses/Category";
-  import { clubRecordStore } from "$lib/stores/ClubRecordStore";
-  import { pageHeadStore } from "$lib/stores/PageHeadStore";
+  import SearchInput from "$components/formHelpers/inputs/SearchInput.svelte"
+  import NewRecordForm from "$components/records/NewRecordForm.svelte"
+  import RecordsTable from "$components/records/RecordsTable.svelte"
+  import { Category } from "$lib/domain/dataClasses/Category"
+  import { clubRecordStore } from "$lib/stores/ClubRecordStore"
+  import { pageHeadStore } from "$lib/stores/PageHeadStore"
 
-  let searchString = "";
-  let showForm = false;
+  let searchString = ""
+  let showForm = false
 
-  pageHeadStore.updatePageTitle("Clubrecords");
+  pageHeadStore.updatePageTitle("Clubrecords")
 </script>
 
 <!-- Title -->
@@ -46,5 +46,5 @@
     </div>
   {/each}
 {:else}
-  loading
+  Locationoading
 {/if}

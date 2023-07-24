@@ -9,6 +9,24 @@
 			],
 			"label": "npm: dev",
 			"detail": "vite dev"
+		},
+		{
+			"type": "npm",
+			"script": "lint",
+			"problemMatcher": [
+				"$eslint-stylish"
+			],
+			"label": "npm: lint",
+			"detail": "eslint . "
+		},
+		{
+			"type": "npm",
+			"script": "lint-fix",
+			"problemMatcher": [
+				"$eslint-stylish"
+			],
+			"label": "npm: lint-fix",
+			"detail": "eslint . --fix"
 		}
 	]
 }

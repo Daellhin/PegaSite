@@ -1,14 +1,14 @@
 <script lang="ts">
-  import { goto } from "$app/navigation";
-  import { authStore } from "$lib/stores/AuthStore";
-  import { pageHeadStore } from "$lib/stores/PageHeadStore";
+  import { goto } from "$app/navigation"
+  import { authStore } from "$lib/stores/AuthStore"
+  import { pageHeadStore } from "$lib/stores/PageHeadStore"
 
   // Authguard
   $: authStore.known.then(() => {
-    if (!$authStore) goto("/");
-  });
-  // Page title
-  pageHeadStore.updatePageTitle("Dashboard");
+    if (!$authStore) goto("/")
+  })
+  // -- Page title --
+  pageHeadStore.updatePageTitle("Dashboard")
 </script>
 
 <h1 class="text-2xl font-bold mb-2">Wijzigingen</h1>
@@ -23,8 +23,8 @@
       Navigatiebalk wijzigen
     </a>
     {#if user?.role === "admin"}
-      <a href="/sponsers" class="btn btn-primary normal-case"
-        >Sponsers wijzigen</a
+      <a href="/sponsors" class="btn btn-primary normal-case"
+        >Sponsors wijzigen</a
       >
       <a href="/users" class="btn btn-primary normal-case">Gebruikers beheren</a
       >

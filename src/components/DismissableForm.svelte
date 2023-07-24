@@ -1,23 +1,23 @@
 <script lang="ts">
-  import { faXmark } from "@fortawesome/free-solid-svg-icons";
-  import Fa from "svelte-fa";
+  import { faXmark } from "@fortawesome/free-solid-svg-icons"
+  import Fa from "svelte-fa"
 
-  export let showForm: boolean;
-  export let onSubmit: () => Promise<void>;
-  export let submitLabel = "Aanmaken";
-  export let error = "";
-  export let onDismiss: () => void = () => {};
+  export let showForm: boolean
+  export let onSubmit: () => Promise<void>
+  export let submitLabel = "Aanmaken"
+  export let error = ""
+  export let onDismiss: () => void = () => {}
 
-  let saving = false;
+  let saving = false
 
   async function onSubmitWrapper() {
-    saving = true;
-    await onSubmit();
-    saving = false;
+    saving = true
+    await onSubmit()
+    saving = false
   }
   function dismissForm() {
-    showForm = false;
-    onDismiss();
+    showForm = false
+    onDismiss()
   }
 </script>
 

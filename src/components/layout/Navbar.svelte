@@ -1,13 +1,13 @@
 <script lang="ts">
-  import LoginModal from "$components/LoginModal.svelte";
-  import UserAvatar from "$components/ProfileDropdown.svelte";
-  import PegaIconWithText from "$components/icons/PegaIconWithText.svelte";
-  import MenuHorizontal from "$components/layout/MenuHorizontal.svelte";
-  import { faBars } from "@fortawesome/free-solid-svg-icons";
-  import Fa from "svelte-fa";
+  import LoginModal from "$components/LoginModal.svelte"
+  import UserAvatar from "$components/ProfileDropdown.svelte"
+  import PegaIconWithText from "$components/icons/PegaIconWithText.svelte"
+  import MenuHorizontal from "$components/layout/MenuHorizontal.svelte"
+  import { faBars } from "@fortawesome/free-solid-svg-icons"
+  import Fa from "svelte-fa"
 
-  export let drawerID: string;
-  export let loginModalID: string;
+  export let drawerID: string
+  export let loginModalID: string
 </script>
 
 <div class="w-full navbar mt-2 h-10">

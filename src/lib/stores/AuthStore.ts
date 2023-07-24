@@ -15,17 +15,17 @@ function createMockAuthStore() {
   const known = Promise.resolve()
   const dbUser = Promise.resolve(new DbUser("1", "role", "email", "displayName", dayjs(1)))
 
-  async function signIn(email: string, password: string) {
+  async function signIn(_email: string, _password: string) {
     update(() => ({}) as User)
   }
   async function signOut() {
     update(() => null)
   }
-  async function updateCurrentUserEmail(email: string) {
+  async function updateCurrentUserEmail(_email: string) {
   }
-  async function updateCurrentUserPassword(password: string) {
+  async function updateCurrentUserPassword(_password: string) {
   }
-  async function updateCurrentUserName(name: string) {
+  async function updateCurrentUserName(_name: string) {
   }
 
   return {
@@ -42,19 +42,20 @@ function createMockAuthStore() {
 
 /**
  * 
- * Source: https://www.captaincodeman.com/lazy-loading-firebase-with-sveltekit
+ * Sources: 
+ * - https://www.captaincodeman.com/lazy-loading-firebase-with-sveltekit
+ * - https://www.captaincodeman.com/how-to-await-firebase-auth-with-sveltekit#creating-an-awaitable-auth-promise
  */
 function createAuthStore() {
   let auth: Auth
 
-  // Is run anytime the first subscriber attaches to the store
-  // returns a function that is called whenever the last subscriber disconnects
-  const { subscribe } = readable<User | null>(undefined, set => {
+  const innerStore = readable<User | null>(undefined, set => {
     let unsubscribe = () => { }
 
     async function init() {
       if (!browser) return
 
+      // -- Load auth(user is set asynchronously) --
       const { firebaseApp } = await import('$lib/firebase/Firebase')
       const { getAuth, onAuthStateChanged } = await import('firebase/auth')
 
@@ -65,6 +66,7 @@ function createAuthStore() {
 
     return unsubscribe
   })
+  const{ subscribe } = innerStore
 
   const known = new Promise<void>(resolve => {
     let unsub = () => { }
@@ -76,7 +78,7 @@ function createAuthStore() {
     })
   })
 
-  const dbUser = new Promise<DbUser | undefined>(async (resolve, reject) => {
+  const dbUser = new Promise<DbUser | undefined>(async (resolve) => {
     const { firebaseApp } = await import('$lib/firebase/Firebase')
     const { getFirestore, doc, getDoc } = await import('firebase/firestore')
     const firestore = getFirestore(firebaseApp)
@@ -130,7 +132,7 @@ function createAuthStore() {
     if (!auth.currentUser) return
 
     // -- Update authUser --
-    const { updatePassword, deleteUser } = await import('firebase/auth')
+    const { updatePassword } = await import('firebase/auth')
     await updatePassword(auth.currentUser, password)
   }
 

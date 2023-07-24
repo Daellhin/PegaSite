@@ -1,30 +1,30 @@
 <script lang="ts">
-  import InputCheckbox from "$components/formHelpers/inputs/InputCheckbox.svelte";
+  import InputCheckbox from "$components/formHelpers/inputs/InputCheckbox.svelte"
 
-  export let label: string;
-  export let value: string;
-  export let required = false;
-  export let size: "sm" | "xs" = "sm";
+  export let label: string
+  export let value: string
+  export let required = false
+  export let size: "sm" | "xs" = "sm"
 
-  export let labelClass = "";
-  export let disabled = false;
+  export let labelClass = ""
+  export let disabled = false
 
-  let valueStart = value.split("-")[0];
-  let valueEnd = value.split("-")[1];
-  let fullDay = value === "Volledige dag";
+  let valueStart = value.split("-")[0]
+  let valueEnd = value.split("-")[1]
+  let fullDay = value === "Volledige dag"
 
-  $: updateValue(valueStart, valueEnd, fullDay);
+  $: updateValue(valueStart, valueEnd, fullDay)
   function updateValue(valueStart: string, valueEnd: string, fullDay: boolean) {
     if (fullDay) {
-      value = "Volledige dag";
+      value = "Volledige dag"
     } else {
-      value = `${valueStart}-${valueEnd}`;
+      value = `${valueStart}-${valueEnd}`
     }
   }
 
-  $: inputIdStart = label?.replace(/[ :]/g, "-").toLowerCase() + "start";
-  $: inputIdEnd = label?.replace(/[ :]/g, "-").toLowerCase() + "end";
-  $: inputIdFullDay = label?.replace(/[ :]/g, "-").toLowerCase() + "fullday";
+  $: inputIdStart = label?.replace(/[ :]/g, "-").toLowerCase() + "start"
+  $: inputIdEnd = label?.replace(/[ :]/g, "-").toLowerCase() + "end"
+  $: inputIdFullDay = label?.replace(/[ :]/g, "-").toLowerCase() + "fullday"
 </script>
 
 <div
