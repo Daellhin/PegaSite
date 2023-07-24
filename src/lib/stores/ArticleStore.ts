@@ -1,7 +1,7 @@
 import { browser } from '$app/environment'
 import { ARTICLES_JSON } from '$data/ArticlesJson'
 import { Article, articleConverter } from '$lib/domain/Article'
-import { Collections } from '$lib/firebase/Firebase'
+import { Collections, StorageFolders } from '$lib/firebase/Firebase'
 import { arrayDifference, containArraysSameElements } from '$lib/utils/Array'
 import { convertStringToBool } from '$lib/utils/Utils'
 import type { Dayjs } from 'dayjs'
@@ -115,7 +115,7 @@ function createArticleStore() {
     const storage = getStorage()
 
     const uploadedImageLinks = await Promise.all(images.map(async (image) => {
-      const storageRef = ref(storage, `article-images/${uuidv4()}`)
+      const storageRef = ref(storage, `${StorageFolders.ARTICLE_IMAGES}/${uuidv4()}`)
       const snapshot = await uploadBytes(storageRef, image)
       return await getDownloadURL(snapshot.ref)
     }))

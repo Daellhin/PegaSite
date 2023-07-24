@@ -16,10 +16,18 @@ export const firebaseApp = initializeApp(firebaseConfig)
  * Firebase Collection names
  */
 export class Collections {
-    static ARTICLES = "articles"
-    static CLUB_RECORDS = "club-records"
-    static CALENDAR_EVENTS = "calendar-events"
-    static PAGES = "pages"
-    static USERS = "users"
-    static SPONSORS = "sponsors"
+    static readonly ARTICLES = "articles"
+    static readonly CLUB_RECORDS = "club-records"
+    static readonly CALENDAR_EVENTS = "calendar-events"
+    static readonly PAGES = "pages"
+    static readonly USERS = "users"
+    static readonly SPONSORS = "sponsors"
+}
+
+/**
+ * Firebase Storage folder names
+ */
+export class StorageFolders {
+    static readonly ARTICLE_IMAGES = "article-images"
+    static readonly SPONSOR_IMAGES = "sponsor-images"
 }

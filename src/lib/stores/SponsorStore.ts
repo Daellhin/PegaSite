@@ -1,6 +1,6 @@
 import { browser } from '$app/environment'
 import { Sponsor, sponsorConverter, type SponsorJson } from '$lib/domain/Sponsor'
-import { Collections } from '$lib/firebase/Firebase'
+import { Collections, StorageFolders } from '$lib/firebase/Firebase'
 import { writable } from 'svelte/store'
 import { v4 as uuidv4 } from "uuid"
 
@@ -30,7 +30,7 @@ function createSponsorStore() {
     const { getStorage, ref, uploadBytes, getDownloadURL } = await import('firebase/storage')
     const storage = getStorage()
 
-    const storageRef = ref(storage, `sponsor-images/${uuidv4()}`)
+    const storageRef = ref(storage, `${StorageFolders.SPONSOR_IMAGES}/${uuidv4()}`)
     const snapshot = await uploadBytes(storageRef, image)
     const uploadedImage = await getDownloadURL(snapshot.ref)
     sponsor.imageUrl = uploadedImage
