@@ -1,5 +1,6 @@
 <script lang="ts">
   import Card from "$components/article/ArticleCard.svelte"
+  import LoadingCard from "$components/article/LoadingCard.svelte"
   import { articleStore, paginationSize } from "$lib/stores/ArticleStore"
   import { authStore } from "$lib/stores/AuthStore"
   import { pageHeadStore } from "$lib/stores/PageHeadStore"
@@ -21,6 +22,11 @@
     : false
   $: hasPrevPage = pages.length !== 0
   $: articlesOnPreviousPages = pages.reduce((sum, a) => sum + a, 0)
+  $: articlesOnPage =
+    $articleStore?.slice(
+      articlesOnPreviousPages,
+      articlesOnPreviousPages + amountOfCardsToShow
+    ) || []
 
   async function next() {
     if (hasNextPage) {
@@ -48,6 +54,7 @@
   pageHeadStore.updatePageTitle("")
 </script>
 
+<!-- Title -->
 <div class="flex gap-3 mb-2">
   <h1 class="text-2xl font-bold mb-2">Nieuws</h1>
   {#await authStore.known then _}
@@ -59,40 +66,47 @@
   {/await}
 </div>
 
-<!-- Articles -->
+<!-- Articles or loading -->
 <div
-  class="flex gap-4 flex-wrap justify-center sm:justify-start"
+  class="flex gap-4 flex-wrap sm:justify-start justify-center"
   bind:clientWidth={width}
 >
   {#if $articleStore}
-    {#each $articleStore.slice(articlesOnPreviousPages, articlesOnPreviousPages + amountOfCardsToShow) as article, index}
+    {#each articlesOnPage as article, index}
       <div bind:this={articleRefs[index]}>
         <Card {article} />
       </div>
-    {:else}
-      <div>Geen berichten gevonden</div>
     {/each}
   {:else}
-    <div>Loading</div>
+    {#each Array(paginationSize) as _}
+      <LoadingCard />
+    {/each}
   {/if}
 </div>
 
-<!-- Pagiation -->
-<div class="flex space-x-3 mt-3">
-  <button
-    class="btn btn-sm btn-outline normal-case items-center"
-    on:click={previous}
-    disabled={!hasPrevPage}
-  >
-    <Fa icon={faArrowLeftLong} class="mr-2 text-[16px]" />
-    <span>Vorige</span>
-  </button>
-  <button
-    class="btn btn-sm btn-outline normal-case flex items-center"
-    on:click={next}
-    disabled={!hasNextPage}
-  >
-    <span>Volgende</span>
-    <Fa icon={faArrowRightLong} class="ml-2 text-[16px]" />
-  </button>
-</div>
+<!-- Pagination or error -->
+{#if $articleStore}
+  {#if articlesOnPage}
+    <!-- Pagiation -->
+    <div class="flex space-x-3 mt-3">
+      <button
+        class="btn btn-sm btn-outline normal-case items-center"
+        on:click={previous}
+        disabled={!hasPrevPage}
+      >
+        <Fa icon={faArrowLeftLong} class="mr-2 text-[16px]" />
+        <span>Vorige</span>
+      </button>
+      <button
+        class="btn btn-sm btn-outline normal-case flex items-center"
+        on:click={next}
+        disabled={!hasNextPage}
+      >
+        <span>Volgende</span>
+        <Fa icon={faArrowRightLong} class="ml-2 text-[16px]" />
+      </button>
+    </div>
+  {:else}
+    <div>Geen berichten gevonden</div>
+  {/if}
+{/if}
