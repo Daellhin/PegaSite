@@ -15,10 +15,7 @@
   <h1 class="text-4xl font-semibold">{page.title || "Geen titel"}</h1>
   {#if !isPreview && $authStore}
     <div class="ml-auto">
-      <EditDropdown
-        editUrl={`/pages/edit/${page.id}`}
-        width="w-60"
-      >
+      <EditDropdown editUrl={`/pages/edit/${page.id}`} width="w-60">
         <li><a href="/pages/navbar">Navigatiebalk&nbsp;aanpassen</a></li>
       </EditDropdown>
     </div>
@@ -47,6 +44,6 @@
 
 <style lang="postcss">
   .custom-carousel :global(img) {
-    @apply h-auto w-auto max-h-[27.5rem] max-w-[27.5rem] rounded-lg my-auto;
+    @apply w-full max-w-[27.5rem] max-h-[27.5rem] rounded-lg;
   }
 </style>

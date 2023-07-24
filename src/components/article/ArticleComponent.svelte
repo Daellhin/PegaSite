@@ -37,9 +37,9 @@
   {/if}
 </div>
 
-<div class="sm:flex flex-row gap-3 items-center justify flex-wrap">
-  <!-- Article data -->
-  <div class="flex flex-row gap-3 ml-1">
+ <!-- Metadata -->
+<div class="flex flex-col gap-1">
+  <div class="flex flex-row flex-wrap gap-x-3 ml-1">
     <!-- Last update -->
     {#if article.lastUpdate}
       <div class="flex flex-row gap-1 items-center" title="Laast bijgewerkt op">
@@ -70,8 +70,9 @@
       <span class="opacity-60 text-md">{article.authors.join(", ")}</span>
     </div>
   </div>
-  <!-- Tags -->
+  
   <div class="flex flex-row gap-2">
+    <!-- Tags -->
     {#each article.tags as tag}
       <div class="badge badge-primary badge-lg">{tag}</div>
     {/each}
@@ -100,6 +101,6 @@
 
 <style lang="postcss">
   .custom-carousel :global(img) {
-    @apply h-auto w-auto max-h-[27.5rem] max-w-[27.5rem] rounded-lg my-auto;
+    @apply w-full max-w-[27.5rem] max-h-[27.5rem] rounded-lg;
   }
 </style>
