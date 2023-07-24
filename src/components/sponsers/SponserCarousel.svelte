@@ -10,10 +10,10 @@
   import Fa from "svelte-fa"
 
   type Item = {
-    name: string;
-    url: string;
-    imageUrl: string;
-  };
+    name: string
+    url: string
+    imageUrl: string
+  }
 
   export let items = Array<Item>()
   export let hideIndicators = false
@@ -65,23 +65,18 @@
         </button>
       </div>
     {/if}
-    <div
-      class="rounded mx-auto lg:h-[180px] overflow-hidden custom-carousel relative"
-    >
-      <div id="default-carousel" class=" w-full">
-        <!-- Carousel wrapper -->
-        <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
-          {#each items as item, i}
-            <img
-              src={item.imageUrl}
-              class:opacity-100={counter === i}
-              class:opacity-0={counter !== i}
-              class="absolute duration-1000 ease-in-out transition-opacity"
-              alt="Logo"
-            />
-          {/each}
-        </div>
-
+    <div class="h-56 sm:h-96 lg:h-44 2xl:h-52 overflow-hidden relative rounded">
+      <div id="default-carousel">
+        <!-- Carousel images -->
+        {#each items as item, i}
+          <img
+            src={item.imageUrl}
+            class:opacity-100={counter === i}
+            class:opacity-0={counter !== i}
+            class="absolute duration-1000 ease-in-out transition-opacity top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+            alt="Logo"
+          />
+        {/each}
         <!-- Slider indicators -->
         <div
           class="absolute z-30 flex space-x-3 -translate-x-1/2 bottom-5 left-1/2"
