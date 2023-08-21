@@ -2,13 +2,13 @@
 <script lang="ts">
   import CloudIcon from "$components/icons/Flowbite/CloudIcon.svelte"
   import {
-      getFilesFromDragEvent,
-      ignoreDragOver,
-      readFileAsDataURL,
+    getFilesFromDragEvent,
+    ignoreDragOver,
+    readFileAsDataURL,
   } from "$lib/utils/Utils"
   import {
-      faFileCircleExclamation,
-      faXmark
+    faFileCircleExclamation,
+    faXmark,
   } from "@fortawesome/free-solid-svg-icons"
   import Fa from "svelte-fa"
 
@@ -19,22 +19,24 @@
   export let maxAmount = 100
   export let required = false
 
+  // -- File input handlers --
   function onFileInput(e: Event & { currentTarget: HTMLInputElement }) {
     if (!e.currentTarget.files) return
     const newFiles = Array.from(e.currentTarget.files).filter((e) =>
       e.type.match(accept)
     )
-    uploadedImages.push(...newFiles)
-    uploadedImages = uploadedImages
+    addFiles(newFiles)
   }
-  function handleDrop(event: DragEvent) {
+  function onFileDrop(event: DragEvent) {
     const droppedFiles = getFilesFromDragEvent(event)
     if (!droppedFiles) return
-    const newFiles = droppedFiles
-      .filter((e) => e.type.match(accept))
-      .slice(0, remainingSpace)
-    uploadedImages.push(...newFiles)
-    uploadedImages = uploadedImages
+    const newFiles = droppedFiles.filter((e) => e.type.match(accept))
+    addFiles(newFiles)
+  }
+
+  // -- File management --
+  function addFiles(newFiles: File[]) {
+    uploadedImages = [...uploadedImages, ...newFiles.slice(0, remainingSpace)]
   }
   function removeFile(toRemove: File) {
     uploadedImages = uploadedImages.filter((e) => e != toRemove)
@@ -42,8 +44,8 @@
   function removeExistingImage(toRemove: string) {
     existingImages = existingImages.filter((e) => e != toRemove)
   }
-  
-  $: remainingSpace = uploadedImages.length + existingImages.length - maxAmount
+
+  $: remainingSpace = maxAmount - uploadedImages.length - existingImages.length
 </script>
 
 <!-- Dropzone -->
@@ -51,7 +53,7 @@
   <div
     role="application"
     class="flex items-center justify-center w-full"
-    on:drop={handleDrop}
+    on:drop={onFileDrop}
     on:dragover={ignoreDragOver}
   >
     <label
@@ -72,7 +74,7 @@
       <input
         id={dropzoneId}
         type="file"
-        on:input={(e) => onFileInput(e)}
+        on:input={onFileInput}
         class="opacity-0"
         {accept}
         multiple
