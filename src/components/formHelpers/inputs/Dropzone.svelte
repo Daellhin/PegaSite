@@ -1,22 +1,22 @@
 <!-- Component currently only supports previewing images -->
 <script lang="ts">
+  import CloudIcon from "$components/icons/Flowbite/CloudIcon.svelte"
   import {
-    getFilesFromDragEvent,
-    ignoreDragOver,
-    readFileAsDataURL,
+      getFilesFromDragEvent,
+      ignoreDragOver,
+      readFileAsDataURL,
   } from "$lib/utils/Utils"
   import {
-    faFileCircleExclamation,
-    faXmark,
+      faFileCircleExclamation,
+      faXmark
   } from "@fortawesome/free-solid-svg-icons"
   import Fa from "svelte-fa"
-  import CloudIcon from "$components/icons/Flowbite/CloudIcon.svelte"
 
   export let uploadedImages: File[]
   export let existingImages: string[] = []
   export let accept: string
   export let dropzoneId = "file-dropzone"
-  export let maxAmount = 1
+  export let maxAmount = 100
   export let required = false
 
   function onFileInput(e: Event & { currentTarget: HTMLInputElement }) {
@@ -42,10 +42,11 @@
   function removeExistingImage(toRemove: string) {
     existingImages = existingImages.filter((e) => e != toRemove)
   }
-
+  
   $: remainingSpace = uploadedImages.length + existingImages.length - maxAmount
 </script>
 
+<!-- Dropzone -->
 {#if remainingSpace}
   <div
     role="application"
@@ -81,6 +82,7 @@
   </div>
 {/if}
 
+<!-- SelectedImages viewer -->
 {#if uploadedImages.length || existingImages.length}
   <div class="border-2 border-color rounded-lg input-bordered mt-2">
     {#each existingImages as image, i}
@@ -94,6 +96,7 @@
         </div>
         <button
           class="btn btn-circle btn-xs hover:text-red-500 ml-auto"
+          type="button"
           on:click={() => removeExistingImage(image)}
         >
           <Fa icon={faXmark} />
@@ -106,21 +109,28 @@
         class:border-b-2={i < uploadedImages.length - 1}
       >
         <div class="flex flex-row gap-2">
-          {#await readFileAsDataURL(file) then src}
-            <img class="w-10 rounded-sm" alt={file.name} {src} />
-          {:catch error}
-            <div
-              class="tooltip tooltip-right"
-              data-tip="Bestand kan niet getoond worden"
-            >
-              <Fa icon={faFileCircleExclamation} />
-              <div class="hidden">{error}</div>
-            </div>
-          {/await}
+          <div class="w-10 rounded-sm h-6 overflow-hidden">
+            {#await readFileAsDataURL(file)}
+              <div
+                class="flex items-center justify-center bg-base-200 w-full h-full"
+              />
+            {:then src}
+              <img class="" alt={file.name} {src} />
+            {:catch error}
+              <div
+                class="tooltip tooltip-right"
+                data-tip="Bestand kan niet getoond worden"
+              >
+                <Fa icon={faFileCircleExclamation} />
+                <div class="hidden">{error}</div>
+              </div>
+            {/await}
+          </div>
           <div class="my-auto font-semibold">{file.name}</div>
         </div>
         <button
           class="btn btn-circle btn-xs hover:text-red-500 ml-auto"
+          type="button"
           on:click={() => removeFile(file)}
         >
           <Fa icon={faXmark} />
