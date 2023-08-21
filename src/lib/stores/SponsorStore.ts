@@ -1,8 +1,10 @@
 import { browser } from '$app/environment'
 import { Sponsor, sponsorConverter, type SponsorJson } from '$lib/domain/Sponsor'
 import { Collections, StorageFolders } from '$lib/firebase/Firebase'
+import { WEBP_IMAGE_QUALITY } from '$lib/utils/Constants'
 import { writable } from 'svelte/store'
 import { v4 as uuidv4 } from "uuid"
+import { blobToWebP } from 'webp-converter-browser'
 
 function createSponsorStore() {
   const store = writable<(Sponsor)[]>(undefined, set => {
@@ -26,12 +28,15 @@ function createSponsorStore() {
   const { subscribe, update } = store
 
   async function createSponsor(sponsor: Sponsor, image: File) {
-    // -- Upload images --
+    // -- Convert images --
+    const convertedImage = await blobToWebP(image, { quality: WEBP_IMAGE_QUALITY })
+
+    // -- Upload image --
     const { getStorage, ref, uploadBytes, getDownloadURL } = await import('firebase/storage')
     const storage = getStorage()
 
     const storageRef = ref(storage, `${StorageFolders.SPONSOR_IMAGES}/${uuidv4()}`)
-    const snapshot = await uploadBytes(storageRef, image)
+    const snapshot = await uploadBytes(storageRef, convertedImage)
     const uploadedImage = await getDownloadURL(snapshot.ref)
     sponsor.imageUrl = uploadedImage
 
@@ -53,8 +58,10 @@ function createSponsorStore() {
     const storage = getStorage()
 
     if (newImage) {
+      console.log(WEBP_IMAGE_QUALITY) 
+      const convertedImage = await blobToWebP(newImage, { quality: WEBP_IMAGE_QUALITY })
       const imageRef = ref(storage, sponsor.imageUrl)
-      await uploadBytes(imageRef, newImage)
+      await uploadBytes(imageRef, convertedImage)
     }
 
     // -- Update article --

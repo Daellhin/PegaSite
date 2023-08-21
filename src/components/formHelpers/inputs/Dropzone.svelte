@@ -86,7 +86,7 @@
 
 <!-- SelectedImages viewer -->
 {#if uploadedImages.length || existingImages.length}
-  <div class="border-2 border-color rounded-lg input-bordered mt-2">
+  <div class="border-2 border-color rounded-lg input-bordered min-h-[3rem] bg-base-100" class:mt-2={remainingSpace}>
     {#each existingImages as image, i}
       <div
         class="inline-flex items-center w-full px-4 py-2 text-sm border-color"

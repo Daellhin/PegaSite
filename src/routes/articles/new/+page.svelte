@@ -18,11 +18,15 @@
   let content = ""
   let uploadedImages: File[] = []
   let selectedCategories: string[] = []
+  let saving = false
 
-  async function saveArticle() {
+  async function saveArticle(event: SubmitEvent) {
+    event.preventDefault()
+    saving = true
     const article = await createPreviewArticle()
     await articleStore.createArticle(article, uploadedImages)
     pushCreatedToast("Artikel aangemaakt", { gotoUrl: "/" })
+    saving = false
   }
 
   // -- Preview --
@@ -69,6 +73,7 @@
       Toon preview
     </button>
   </div>
+
   <form class="flex flex-col gap-2" on:submit={saveArticle}>
     <FormControlText
       label="Titel van bericht:"
@@ -76,19 +81,20 @@
       value={title}
       required
     />
-
     <FormControlDropzone label="Afbeeldingen:" bind:uploadedImages />
-
     <FormControlMultiSelect
       label="Categorieën:"
       bind:values={selectedCategories}
       options={CategoryValues}
     />
-
     <FormControlEditor label="Inhoud van artikel:" bind:value={content} />
-
-    <button class="btn btn-primary btn-md mt-2 max-w-sm">
+    <button
+      class="btn btn-primary btn-md mt-2 max-w-sm disabled:bg-base-200"
+      type="submit"
+      disabled={saving}
+    >
       Bericht aanmaken
+      <span class="loading loading-dots" class:hidden={!saving} />
     </button>
   </form>
 {/if}

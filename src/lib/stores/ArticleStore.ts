@@ -3,11 +3,13 @@ import { ARTICLES_JSON } from '$data/ArticlesJson'
 import { Article, articleConverter } from '$lib/domain/Article'
 import { Collections, StorageFolders } from '$lib/firebase/Firebase'
 import { arrayDifference, containArraysSameElements } from '$lib/utils/Array'
+import { WEBP_IMAGE_QUALITY } from '$lib/utils/Constants'
 import { convertStringToBool } from '$lib/utils/Utils'
 import type { Dayjs } from 'dayjs'
 import { Timestamp, type QueryDocumentSnapshot } from 'firebase/firestore'
 import { get, writable } from 'svelte/store'
 import { v4 as uuidv4 } from 'uuid'
+import { blobToWebP } from 'webp-converter-browser'
 
 /**
  * Pagination size is used to load articles in batches. 
@@ -110,11 +112,16 @@ function createArticleStore() {
   async function createArticle(newArticle: Article, images: File[]) {
     if (!browser) return
 
+    // -- Convert images --
+    const convertedImages = await Promise.all(
+      images.map((e) => blobToWebP(e, { quality: WEBP_IMAGE_QUALITY }))
+    )
+
     // -- Upload images --
     const { getStorage, ref, uploadBytes, getDownloadURL } = await import('firebase/storage')
     const storage = getStorage()
 
-    const uploadedImageLinks = await Promise.all(images.map(async (image) => {
+    const uploadedImageLinks = await Promise.all(convertedImages.map(async (image) => {
       const storageRef = ref(storage, `${StorageFolders.ARTICLE_IMAGES}/${uuidv4()}`)
       const snapshot = await uploadBytes(storageRef, image)
       return await getDownloadURL(snapshot.ref)
@@ -171,7 +178,11 @@ function createArticleStore() {
     newImages = newExcistingImages
     // -- Upload images --
     if (uploadedImages) {
-      const uploadedImageLinks = await Promise.all(uploadedImages.map(async (image) => {
+      // -- Convert images --
+      const convertedImages = await Promise.all(
+        uploadedImages.map((e) => blobToWebP(e, { quality: 90 }))
+      )
+      const uploadedImageLinks = await Promise.all(convertedImages.map(async (image) => {
         const storageRef = ref(storage, `page-images/${uuidv4()}`)
         const snapshot = await uploadBytes(storageRef, image)
         return await getDownloadURL(snapshot.ref)
