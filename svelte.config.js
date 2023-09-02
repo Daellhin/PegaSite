@@ -35,7 +35,10 @@ const config = {
 			$components: 'src/components',
 			$data: 'src/data',
 			$lib: 'src/lib',
-		}
+		},
+		version: {
+            name: process.env.npm_package_version
+        }
 	},
 }
 
