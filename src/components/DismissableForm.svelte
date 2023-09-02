@@ -4,7 +4,7 @@
 
   export let showForm: boolean
   export let onSubmit: () => Promise<void>
-  export let submitLabel = "Aanmaken"
+  export let submitLabel: string
   export let error = ""
   export let onDismiss: () => void = () => {}
 
@@ -41,7 +41,11 @@
 
   <div class="mt-4">
     <div class="text-error">{error}</div>
-    <button class="btn btn-primary mt-2" type="submit" disabled={saving}>
+    <button
+      class="btn btn-primary mt-2 max-w-xs w-full md:w-auto"
+      type="submit"
+      disabled={saving}
+    >
       {submitLabel}
       <span class="loading loading-ring" class:hidden={!saving} />
     </button>

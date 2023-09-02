@@ -75,7 +75,8 @@
 <SearchInput
   class="mt-2"
   bind:value={searchString}
-  placeholder="Zoek een sponsor "
+  placeholder="Zoek een sponsor"
+  id="search-sponsor"
 />
 
 {#if $sponsorStore}

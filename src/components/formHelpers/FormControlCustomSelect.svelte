@@ -9,7 +9,7 @@
   export let size: "sm" | "xs" = "sm"
 
   export let placeholder = "Kies"
-  export let items = Array<{ label: string; value: string }>()
+  export let items = Array<{ label: string; value: any }>()
   export let groupBy: ((e: any) => any) | undefined = undefined
   export let searchable = false  
 

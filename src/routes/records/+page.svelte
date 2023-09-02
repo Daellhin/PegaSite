@@ -13,7 +13,7 @@
 </script>
 
 <!-- Title -->
-<div class="flex gap-3">
+<div class="flex gap-3 mb-2">
   <h1 class="text-2xl font-bold">Clubrecords</h1>
   <button
     class="btn btn-sm capitalize btn-primary"

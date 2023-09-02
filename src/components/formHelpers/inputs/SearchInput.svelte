@@ -20,7 +20,7 @@
   class:max-w-sm={size === "sm"}
   class:max-w-xs={size === "xs"}
 >
-  <div class="absolute inset-y-0 left-0 flex items-center pl-3">
+  <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
     <Fa icon={icon} class="text-gray-500" />
   </div>
   <input
