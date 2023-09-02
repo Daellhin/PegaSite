@@ -19,7 +19,7 @@
 
   let errorMessage = ""
 
-  async function save() {
+  async function saveSponsor() {
     try {
       errorMessage = ""
       if (editSponsor) {
@@ -52,17 +52,19 @@
     if (editSponsor) {
       name = editSponsor.name
       url = editSponsor.url
+      image = []
       exsitingImage = [editSponsor.imageUrl]
     } else {
       name = ""
       url = ""
+      image = []
       exsitingImage = []
     }
   }
 </script>
 
 <DismissableForm
-  onSubmit={save}
+  onSubmit={saveSponsor}
   bind:showForm
   error={errorMessage}
   submitLabel={editSponsor ? "Wijzigen" : "Aanmaken"}
@@ -88,5 +90,6 @@
     bind:existingImages={exsitingImage}
     size="xs"
     required
+    maxAmount={1}
   />
 </DismissableForm>

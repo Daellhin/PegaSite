@@ -6,6 +6,7 @@
   export let existingImages: string[] = []
   export let accept = "image/*"
   export let required = false
+  export let maxAmount = 100
   export let size: "md" | "sm" | "xs" = "sm"
 </script>
 
@@ -23,5 +24,5 @@
       {/if}
     </span>
   </label>
-  <Dropzone bind:uploadedImages bind:existingImages {accept} {required}  />
+  <Dropzone bind:uploadedImages bind:existingImages {accept} {required} {maxAmount}  />
 </div>

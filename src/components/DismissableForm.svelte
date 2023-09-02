@@ -10,7 +10,8 @@
 
   let saving = false
 
-  async function onSubmitWrapper() {
+  async function onSubmitWrapper(event: SubmitEvent) {
+    event.preventDefault()
     saving = true
     await onSubmit()
     saving = false

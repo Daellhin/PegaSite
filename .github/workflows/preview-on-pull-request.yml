@@ -6,7 +6,7 @@ name: Deploy to Firebase Staging on PR
       - master
 
 jobs:
-  build_and_preview:
+  build-and-preview:
     if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'
     runs-on: ubuntu-latest
     environment: testing

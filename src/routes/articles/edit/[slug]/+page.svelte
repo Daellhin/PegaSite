@@ -28,8 +28,11 @@
   let createdAt: Dayjs
 
   let article: Article | undefined | null
+  let saving = false
 
-  async function updateArticle() {
+  async function updateArticle(event: SubmitEvent) {
+    event.preventDefault()
+    saving = true
     await articleStore.updateArticle(
       authors,
       tags,
@@ -45,6 +48,7 @@
     pushCreatedToast("Artikel gewijzigd", {
       gotoUrl: "/articles/" + article!.id,
     })
+    saving = false
   }
 
   // -- Preview --
@@ -125,23 +129,24 @@
       bind:value={title}
       required
     />
-
     <FormControlDropzone
       label="Afbeeldingen:"
       bind:uploadedImages
       bind:existingImages
     />
-
     <FormControlMultiSelect
       label="Categorieën:"
       bind:values={tags}
       options={CategoryValues}
     />
-
     <FormControlEditor label="Inhoud van artikel:" bind:value={content} />
-
-    <button class="btn btn-primary btn-md mt-2 max-w-sm">
+    <button
+      class="btn btn-primary btn-md mt-2 max-w-sm disabled:bg-base-200"
+      type="submit"
+      disabled={saving}
+    >
       Wijzigingen opslaan
+      <span class="loading loading-dots" class:hidden={!saving} />
     </button>
   </form>
 {:else}

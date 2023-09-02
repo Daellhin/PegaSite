@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { preferencesStore } from "$lib/stores/LocalStorrageStores"
+  import { preferencesStore } from "$lib/stores/LocalStorageStores"
   import {
     faChevronLeft,
     faChevronRight,
