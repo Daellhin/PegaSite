@@ -41,7 +41,7 @@
 
   <div class="mt-4">
     <div class="text-error">{error}</div>
-    <button class="btn btn-primary btn-md mt-2" type="submit" disabled={saving}>
+    <button class="btn btn-primary mt-2" type="submit" disabled={saving}>
       {submitLabel}
       <span class="loading loading-ring" class:hidden={!saving} />
     </button>

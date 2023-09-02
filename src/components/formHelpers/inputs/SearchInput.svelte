@@ -3,6 +3,7 @@
   import Fa from "svelte-fa"
 
   export let value: string
+  export let id: string
   export let size: "md" | "sm" | "xs" = "sm"
   export let placeholder = "Zoek"
   export let disabled = false
@@ -24,6 +25,7 @@
   </div>
   <input
     type="text"
+	{id}
     bind:value
     {placeholder}
     class="input input-bordered border-2 block w-full p-4 pl-9"

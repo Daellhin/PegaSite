@@ -49,5 +49,5 @@
   bind:location
   bind:endDate
   onSave={saveEvent}
-  buttonTitle="Event aanmaken"
+  submitLabel="Event aanmaken"
 />

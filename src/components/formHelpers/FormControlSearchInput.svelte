@@ -33,6 +33,7 @@
   </label>
   <SearchInput
     bind:value
+	id={inputId}
     {placeholder}
     {disabled}
     {icon}

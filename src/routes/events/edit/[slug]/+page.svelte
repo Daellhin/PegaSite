@@ -71,7 +71,7 @@
     bind:duration
     bind:location
     bind:endDate
-    buttonTitle="Event wijzigen"
+    submitLabel="Wijzigingen opslaan"
     onSave={saveEvent}
   />
 {/if}
