@@ -1,4 +1,4 @@
-name: Deploy to Firebase Hosting on merge
+name: Bump version and deploy on merge
 
 'on':
   push:
@@ -6,12 +6,25 @@ name: Deploy to Firebase Hosting on merge
       - master
 
 jobs:
+  version:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: 'Automated Version Bump'
+        uses: 'phips28/gh-action-bump-version@master'
+        with:
+          tag-prefix: 'v'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            
   build_and_deploy:
     runs-on: ubuntu-latest
     environment: production
-    
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code 
+        uses: actions/checkout@v3
       - name: 'Create env file'
         run: |
           echo "${{ secrets.ENV_FILE }}" > .env
