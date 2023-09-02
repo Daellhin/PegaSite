@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { version } from '$app/environment'
   import { authStore } from "$lib/stores/AuthStore"
   import { faFacebookSquare } from "@fortawesome/free-brands-svg-icons"
   import { faFeather, faSignIn } from "@fortawesome/free-solid-svg-icons"
@@ -15,7 +16,7 @@
     <p>
       Copyright © {new Date().getFullYear()} - AC Pegasus Londerzeel
       <br />
-      <a href="/" class="link-hover">Versie: 0.1</a>,
+      <a href="/" class="link-hover">Versie: {version}</a>,
       <a href="/" class="link-hover">Ontwerp: Lorin Speybrouck</a>
     </p>
   </div>
