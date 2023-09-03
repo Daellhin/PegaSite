@@ -46,7 +46,7 @@
       class="btn btn-sm btn-circle absolute right-2 top-2 btn-ghost">✕</label
     >
     <div class="flex flex-row">
-      <div class="w-96 my-auto hidden md:block">
+      <div class="w-96 my-auto hidden sm:block">
         <PegaIcon />
       </div>
       <div class="w-full">
