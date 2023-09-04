@@ -47,7 +47,7 @@
 
 
 {#if $sponsorStore}
-  <SponsorTable bind:sponsors={$sponsorStore} {startEdit} />
+  <SponsorTable {startEdit} />
 {:else}
   Loading
 {/if}

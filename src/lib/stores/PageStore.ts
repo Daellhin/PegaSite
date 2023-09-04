@@ -64,7 +64,6 @@ function createPageStore() {
 		// -- Remove images --
 		if (!containArraysSameElements(page.images, newExcistingImages)) {
 			const imagesToRemove = arrayDifference(page.images, newExcistingImages)
-			console.log("imagesToRemove", imagesToRemove)
 			await Promise.all(imagesToRemove.map(async (image) => {
 				const imageRef = ref(storage, image)
 				await deleteObject(imageRef)

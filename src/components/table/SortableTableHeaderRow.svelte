@@ -2,8 +2,9 @@
   import SortableTableHeader from "$components/table/SortableTableHeader.svelte"
   import { SortOrder } from "$lib/domain/dataClasses/SortOrder"
   import { onMount } from "svelte"
+  import TableHeader from "./TableHeader.svelte"
 
-  export let columns: { name: string; dontSort?: boolean }[]
+  export let columns: { name: string; dontSort?: boolean; hidden?: boolean }[]
   export let sortColumn: string
   export let sortOrder: SortOrder
   export let initalSortColumn = 1
@@ -30,18 +31,16 @@
 
 <tr class="text-[15px]">
   {#each columns as column, index}
-    {#if !column.dontSort}
-      <SortableTableHeader
-        name={column.name}
-        bind:this={headers[index]}
-        onClick={(sortOrder) => updateSorting(index, sortOrder)}
-      />
-    {:else}
-      <th>
-        <div class="flex w-full gap-2.5">
-          {column.name}
-        </div>
-      </th>
+    {#if !column.hidden}
+      {#if !column.dontSort}
+        <SortableTableHeader
+          name={column.name}
+          bind:this={headers[index]}
+          onClick={(sortOrder) => updateSorting(index, sortOrder)}
+        />
+      {:else}
+        <TableHeader name={column.name} />
+      {/if}
     {/if}
   {/each}
 </tr>

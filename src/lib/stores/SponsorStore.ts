@@ -61,7 +61,6 @@ function createSponsorStore() {
 		const storage = getStorage()
 
 		if (newImage) {
-			console.log(WEBP_IMAGE_QUALITY)
 			const convertedImage = await blobToWebP(newImage, { quality: WEBP_IMAGE_QUALITY })
 			const imageRef = ref(storage, sponsor.imageUrl)
 			await uploadBytes(imageRef, convertedImage)

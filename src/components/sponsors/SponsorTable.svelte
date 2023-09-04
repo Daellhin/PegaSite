@@ -1,40 +1,44 @@
 <script lang="ts">
   import SearchInput from "$components/formHelpers/inputs/SearchInput.svelte"
   import SponsorRow from "$components/sponsors/SponsorRow.svelte"
-  import SortableTableHeaderRow from "$components/table/SortableTableHeaderRow.svelte"
+  import TableHeaderRow from "$components/table/TableHeaderRow.svelte"
   import type { Sponsor } from "$lib/domain/Sponsor"
-  import { SortOrder } from "$lib/domain/dataClasses/SortOrder"
+  import { sponsorStore } from "$lib/stores/SponsorStore"
+  import { FLIP_DURATION } from "$lib/utils/Constants"
   import {
-    faAnglesLeft,
-    faAnglesRight,
+      faAnglesLeft,
+      faAnglesRight,
   } from "@fortawesome/free-solid-svg-icons"
+  import { dndzone } from "svelte-dnd-action"
   import Fa from "svelte-fa"
 
-  export let sponsors: Sponsor[]
   export let startEdit: (sponsor: Sponsor) => void
 
+  // -- Drag and drop --
+  let dragDisabled = false
+
+  $: dragableSponsors = $sponsorStore.map((e) => e.toDragableSponsor())
+
+  function handleConsider(event: CustomEvent<DndEvent<any>>) {
+    dragableSponsors = event.detail.items
+    dragDisabled = true
+  }
+  function handleFinalize(event: CustomEvent<DndEvent<any>>) {
+    dragableSponsors = event.detail.items
+    dragDisabled = true
+  }
+
+  // -- Search --
   let searchString = ""
-  let sortColumn = ""
-  let sortOrder = SortOrder.None
 
-  $: filteredSponsors =
-    sponsors?.filter((sponsor) => sponsor.matchesSearchString(searchString)) ||
-    []
-  $: sortedSponsors = sort(filteredSponsors, sortColumn, sortOrder)
+  $: filteredSponsors = searchString
+    ? filterSponsors(searchString)
+    : dragableSponsors
 
-  function sort(sponsors: Sponsor[], sortColumn: string, sortOrder: SortOrder) {
-    if (sortOrder.isNone) return [...sponsors]
-    const newArray = [...sponsors]
-    switch (sortColumn) {
-      case "Naam":
-        newArray.sort((a, b) => a.name.localeCompare(b.name))
-        break
-      case "Website":
-        newArray.sort((a, b) => a.url.localeCompare(b.url))
-        break
-    }
-    if (sortOrder.isDesc) newArray.reverse()
-    return newArray
+  function filterSponsors(searchString: string) {
+    return dragableSponsors.filter((sponsor) =>
+      sponsor.sponsor.matchesSearchString(searchString)
+    )
   }
 </script>
 
@@ -47,23 +51,35 @@
 
 <div class="mt-3 grid relative">
   <div class="overflow-x-auto rounded-t-lg">
-    <table class="table static">
+    <table class="table static table-xs sm:table-sm md:table-md">
       <thead class="bg-base-200">
-        <SortableTableHeaderRow
+        <TableHeaderRow
           columns={[
-            { name: "Nr", dontSort: true },
+            { name: "", hidden: searchString.length > 0 },
             { name: "Naam" },
             { name: "Website" },
-            { name: "Afbeelding", dontSort: true },
-            { name: "", dontSort: true },
+            { name: "Afbeelding" },
+            { name: "" },
           ]}
-          bind:sortColumn
-          bind:sortOrder
         />
       </thead>
-      <tbody>
-        {#each sortedSponsors as sponsor, n}
-          <SponsorRow {sponsor} index={n} editHandler={startEdit} />
+      <tbody
+        use:dndzone={{
+          items: dragableSponsors,
+          dragDisabled: dragDisabled,
+          flipDurationMs: FLIP_DURATION,
+          dropTargetStyle: {},
+        }}
+        on:consider={handleConsider}
+        on:finalize={handleFinalize}
+      >
+        {#each filteredSponsors as sponsor, n (sponsor.id)}
+          <SponsorRow
+            sponsor={sponsor.sponsor}
+            editHandler={startEdit}
+            bind:dragDisabled
+            dragFullyDisabled={searchString.length > 0}
+          />
         {/each}
       </tbody>
     </table>
@@ -76,11 +92,11 @@
       <span class="font-bold opacity-100">{filteredSponsors.length}</span>
     </div>
     <div class="join">
-      <button class="join-item btn btn-sm lin">
+      <button class="join-item btn btn-sm lin" type="button">
         <Fa icon={faAnglesLeft} class="" />
       </button>
-      <button class="join-item btn btn-sm btn-active">1</button>
-      <button class="join-item btn btn-sm">
+      <button class="join-item btn btn-sm btn-active" type="button">1</button>
+      <button class="join-item btn btn-sm" type="button">
         <Fa icon={faAnglesRight} class="" />
       </button>
     </div>

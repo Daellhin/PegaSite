@@ -1,9 +1,9 @@
 <script lang="ts">
   import DndHandle from "$components/DNDHandle.svelte"
+    import { FLIP_DURATION } from "$lib/utils/Constants"
   import { dndzone, type DndEvent } from "svelte-dnd-action"
   import { flip } from "svelte/animate"
 
-  const flipDuartionMs = 100
   let dragDisabled = true
 
   interface ListItem {
@@ -50,7 +50,7 @@
     use:dndzone={{
       items: items,
       dragDisabled: dragDisabled,
-      flipDurationMs: flipDuartionMs,
+      flipDurationMs: FLIP_DURATION,
       dropTargetStyle: {},
     }}
     on:consider={handleConsider}
@@ -59,7 +59,7 @@
     {#each items as item (item.id)}
       <div
         class="card card-hover w-96 my-4"
-        animate:flip={{ duration: flipDuartionMs }}
+        animate:flip={{ duration: FLIP_DURATION }}
       >
         <header class="card-header bg-slate-200 rounded-md">
           <div class="card-body flex flex-row gap-4">
