@@ -1,16 +1,12 @@
 <script lang="ts">
   import SearchInput from "$components/formHelpers/inputs/SearchInput.svelte"
   import SponsorRow from "$components/sponsors/SponsorRow.svelte"
+  import TablePagination from "$components/table/TableFooter.svelte"
   import TableHeaderRow from "$components/table/TableHeaderRow.svelte"
   import type { Sponsor } from "$lib/domain/Sponsor"
   import { sponsorStore } from "$lib/stores/SponsorStore"
   import { FLIP_DURATION } from "$lib/utils/Constants"
-  import {
-      faAnglesLeft,
-      faAnglesRight,
-  } from "@fortawesome/free-solid-svg-icons"
   import { dndzone } from "svelte-dnd-action"
-  import Fa from "svelte-fa"
 
   export let startEdit: (sponsor: Sponsor) => void
 
@@ -84,21 +80,8 @@
       </tbody>
     </table>
   </div>
-  <div class="flex items-center justify-between mt-4">
-    <div class="opacity-80">
-      Weergegeven
-      <span class="font-bold opacity-100">{filteredSponsors.length}</span>
-      van
-      <span class="font-bold opacity-100">{filteredSponsors.length}</span>
-    </div>
-    <div class="join">
-      <button class="join-item btn btn-sm lin" type="button">
-        <Fa icon={faAnglesLeft} class="" />
-      </button>
-      <button class="join-item btn btn-sm btn-active" type="button">1</button>
-      <button class="join-item btn btn-sm" type="button">
-        <Fa icon={faAnglesRight} class="" />
-      </button>
-    </div>
-  </div>
+  <TablePagination
+    filteredLength={filteredSponsors.length}
+    fullLength={dragableSponsors.length}
+  />
 </div>
