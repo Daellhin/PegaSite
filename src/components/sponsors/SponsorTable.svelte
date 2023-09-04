@@ -1,5 +1,6 @@
 <script lang="ts">
   import SearchInput from "$components/formHelpers/inputs/SearchInput.svelte"
+    import InfoCircle from "$components/icons/Flowbite/InfoCircle.svelte"
   import SponsorRow from "$components/sponsors/SponsorRow.svelte"
   import TablePagination from "$components/table/TableFooter.svelte"
   import TableHeaderRow from "$components/table/TableHeaderRow.svelte"
@@ -9,6 +10,8 @@
   import { dndzone } from "svelte-dnd-action"
 
   export let startEdit: (sponsor: Sponsor) => void
+
+  const tooltip = "Versleep een sponsor met het icoontje naast de naam om de volgorde te wijzigen"
 
   // -- Drag and drop --
   let dragDisabled = false
@@ -45,7 +48,12 @@
   id="search-sponsor"
 />
 
-<div class="mt-3 grid relative">
+<div class="grid relative">
+	<div class="tooltip ml-auto tooltip-left sm:tooltip-bottom" data-tip={tooltip}>
+		<button class="btn btn-ghost btn-xs btn-circle">
+		  <InfoCircle class="" />
+		</button>
+	  </div>
   <div class="overflow-x-auto rounded-t-lg">
     <table class="table static table-xs sm:table-sm md:table-md">
       <thead class="bg-base-200">
