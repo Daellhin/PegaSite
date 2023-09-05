@@ -1,6 +1,6 @@
 <script lang="ts">
   import SearchInput from "$components/formHelpers/inputs/SearchInput.svelte"
-    import InfoCircle from "$components/icons/Flowbite/InfoCircle.svelte"
+  import InfoCircle from "$components/icons/Flowbite/InfoCircle.svelte"
   import SponsorRow from "$components/sponsors/SponsorRow.svelte"
   import TablePagination from "$components/table/TableFooter.svelte"
   import TableHeaderRow from "$components/table/TableHeaderRow.svelte"
@@ -11,10 +11,13 @@
 
   export let startEdit: (sponsor: Sponsor) => void
 
-  const tooltip = "Versleep een sponsor met het icoontje naast de naam om de volgorde te wijzigen"
+  const tooltip =
+    "Versleep een sponsor met het icoontje naast de naam om de volgorde te wijzigen"
+  let savingNewOrder = false
 
   // -- Drag and drop --
   let dragDisabled = false
+  $: dragFullyDisabled = searchString.length > 0
 
   $: dragableSponsors = $sponsorStore.map((e) => e.toDragableSponsor())
 
@@ -22,9 +25,13 @@
     dragableSponsors = event.detail.items
     dragDisabled = true
   }
-  function handleFinalize(event: CustomEvent<DndEvent<any>>) {
+  async function handleFinalize(event: CustomEvent<DndEvent<any>>) {
+    savingNewOrder = true
     dragableSponsors = event.detail.items
     dragDisabled = true
+    const newSortedIds = dragableSponsors.map((e) => e.sponsor.id)
+    await sponsorStore.updateSponsorsOrder(newSortedIds)
+    savingNewOrder = false
   }
 
   // -- Search --
@@ -49,17 +56,20 @@
 />
 
 <div class="grid relative">
-	<div class="tooltip ml-auto tooltip-left sm:tooltip-bottom" data-tip={tooltip}>
-		<button class="btn btn-ghost btn-xs btn-circle">
-		  <InfoCircle class="" />
-		</button>
-	  </div>
+  <div
+    class="tooltip ml-auto tooltip-left sm:tooltip-bottom"
+    data-tip={tooltip}
+  >
+    <button class="btn btn-ghost btn-xs btn-circle">
+      <InfoCircle class="" />
+    </button>
+  </div>
   <div class="overflow-x-auto rounded-t-lg">
     <table class="table static table-xs sm:table-sm md:table-md">
       <thead class="bg-base-200">
         <TableHeaderRow
           columns={[
-            { name: "", hidden: searchString.length > 0 },
+            { name: "", hidden: dragFullyDisabled },
             { name: "Naam" },
             { name: "Website" },
             { name: "Afbeelding" },
@@ -82,7 +92,7 @@
             sponsor={sponsor.sponsor}
             editHandler={startEdit}
             bind:dragDisabled
-            dragFullyDisabled={searchString.length > 0}
+            {dragFullyDisabled}
           />
         {/each}
       </tbody>
@@ -91,5 +101,6 @@
   <TablePagination
     filteredLength={filteredSponsors.length}
     fullLength={dragableSponsors.length}
+    saving={savingNewOrder}
   />
 </div>

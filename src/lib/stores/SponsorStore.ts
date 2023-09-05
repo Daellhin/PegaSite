@@ -1,8 +1,9 @@
 import { browser } from '$app/environment'
+import type { OrderingJson } from '$lib/domain/Ordering'
 import { Sponsor, sponsorConverter, type SponsorJson } from '$lib/domain/Sponsor'
 import { Collections, StorageFolders } from '$lib/firebase/Firebase'
 import { WEBP_IMAGE_QUALITY } from '$lib/utils/Constants'
-import { writable } from 'svelte/store'
+import { get, writable } from 'svelte/store'
 import { v4 as uuidv4 } from "uuid"
 import { blobToWebP } from 'webp-converter-browser'
 
@@ -16,12 +17,19 @@ function createSponsorStore() {
 
 			// -- Load Sponsors --
 			const { firebaseApp } = await import('$lib/firebase/Firebase')
-			const { getFirestore, getDocs, collection } = await import('firebase/firestore')
+			const { getFirestore, getDocs, getDoc, doc, collection } = await import('firebase/firestore')
 			const firestore = getFirestore(firebaseApp)
 
 			const sponsorsRef = collection(firestore, Collections.SPONSORS)
 			const sponsorsSnap = await getDocs(sponsorsRef)
 			const sponsors = sponsorsSnap.docs.map(e => Sponsor.fromJson(e.id, e.data() as SponsorJson))
+
+			// -- Sort Sponsors --
+			const orderingRef = doc(firestore, Collections.ORDERINGS, Collections.SPONSORS)
+			const orderingSnap = await getDoc(orderingRef)
+			const ordering = orderingSnap.data() as OrderingJson | undefined
+			if (!ordering) throw new Error(`Sort order ${Collections.SPONSORS} not found`)
+			sortSponsors(sponsors, ordering.ids)
 
 			// -- Set store --
 			set(sponsors)
@@ -106,7 +114,33 @@ function createSponsorStore() {
 
 		// -- Remove from store --
 		update((sponsors) => (sponsors.filter((e) => e.id !== sponsor.id)))
+	}
 
+	async function updateSponsorsOrder(newSortedIds: string[]) {
+		// -- Update ordering --
+		const { firebaseApp } = await import('$lib/firebase/Firebase')
+		const { getFirestore, doc, updateDoc } = await import('firebase/firestore')
+		const firestore = getFirestore(firebaseApp)
+
+		const orderingRef = doc(firestore, Collections.ORDERINGS, Collections.SPONSORS)
+		await updateDoc(orderingRef, {
+			ids: newSortedIds,
+		})
+
+		// -- Update store --
+		sortSponsors(get(store), newSortedIds)
+		update((sponsors) => [...sponsors])
+	}
+
+	function sortSponsors(sponsors: Sponsor[], sortedIds: string[]) {
+		const sortMap = new Map(sortedIds.map((e, i) => [e, i] as [string, number]))
+		sponsors.sort((a, b) => {
+			const first = sortMap.get(a.id)
+			if (first === undefined) throw new Error(`Sponsor ${a.id} not found in sort map`)
+			const second = sortMap.get(b.id)
+			if (second === undefined) throw new Error(`Sponsor ${b.id} not found in sort map`)
+			return first - second
+		})
 	}
 
 	return {
@@ -114,6 +148,7 @@ function createSponsorStore() {
 		createSponsor,
 		updateSponsor,
 		deleteSponsor,
+		updateSponsorsOrder
 	}
 }
 
