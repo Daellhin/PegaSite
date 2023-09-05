@@ -3,10 +3,9 @@
   import FormControlCustomSelect from "$components/formHelpers/FormControlCustomSelect.svelte"
   import FormControlText from "$components/formHelpers/FormControlText.svelte"
   import { userStore } from "$lib/stores/UserStore"
-  import { logFirebaseError } from "$lib/utils/Firebase"
+  import { handleFirebaseError } from "$lib/utils/Firebase"
   import { pushCreatedToast } from "$lib/utils/Toast"
   import { emailValidator } from "$lib/utils/Validators"
-  import type { FirebaseError } from "firebase/app"
 
   export let showForm = false
 
@@ -26,27 +25,14 @@
       errorMessage = ""
       await userStore.createUser(email, tempPass, rol, displayName)
       pushCreatedToast("Gebruiker aangemaakt")
-      //showForm = false;
+      showForm = false;
     } catch (error) {
-      if (error as FirebaseError) {
-        const firebaseEror = error as FirebaseError
-        if ((firebaseEror.customData as any)?.message?.includes("NetworkError"))
-          errorMessage = "Probleem met het netwerk"
-        else if (firebaseEror.code === "auth/email-already-in-use")
-          errorMessage = "Er bestaat al een gebruiker met dit emailadres"
-        else {
-          errorMessage = firebaseEror.message
-          logFirebaseError(firebaseEror)
-        }
-      } else {
-        console.error(error)
-        errorMessage = "Ongekend probleem, probeer het later opnieuw"
-      }
+      errorMessage = handleFirebaseError(error)
     }
   }
 </script>
 
-<DismissableForm onSubmit={createUser} bind:showForm error={errorMessage}>
+<DismissableForm onSubmit={createUser} bind:showForm error={errorMessage} submitLabel="Gebruiker aanmaken">
   <FormControlText
     label="Naam"
     placeholder="Naam"
