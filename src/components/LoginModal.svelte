@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { authStore } from "$lib/stores/AuthStore"
-  import type { FirebaseError } from "firebase/app"
   import PegaIcon from "$components/icons/PegaIcon.svelte"
+  import { authStore } from "$lib/stores/AuthStore"
+  import { handleFirebaseError } from "$lib/utils/Firebase"
 
   export let loginModalID: string
 
@@ -19,16 +19,7 @@
       username = ""
       password = ""
     } catch (error) {
-      if (error as FirebaseError) {
-        const firebaseEror = error as FirebaseError
-        // logFirebaseError(firebaseEror);
-        if ((firebaseEror.customData as any)?.message?.includes("NetworkError"))
-          loginError = "Probleem met het netwerk"
-        else loginError = "Ongeldige login gegevens"
-      } else {
-        console.error(error)
-        loginError = "Ongekend probleem"
-      }
+      loginError = handleFirebaseError(error)
     }
   }
 </script>
@@ -46,7 +37,7 @@
       class="btn btn-sm btn-circle absolute right-2 top-2 btn-ghost">✕</label
     >
     <div class="flex flex-row">
-      <div class="w-96 my-auto hidden md:block">
+      <div class="w-96 my-auto hidden sm:block">
         <PegaIcon />
       </div>
       <div class="w-full">

@@ -22,8 +22,11 @@
   let existingImages: string[]
 
   let page: Page | undefined | null
+  let saving = false
 
-  async function updatePage() {
+  async function updatePage(event: SubmitEvent) {
+	event.preventDefault()
+    saving = true
     await pageStore.updatePage(
       title,
       content,
@@ -34,6 +37,7 @@
     haveValuesBeenSet = false
     uploadedImages = []
     pushCreatedToast("Pagina gewijzigd", { gotoUrl: page!.getUrl() })
+	saving = false
   }
 
   // -- Preview --
@@ -105,17 +109,20 @@
       value={title}
       required
     />
-
     <FormControlDropzone
       label="Afbeeldingen:"
       bind:uploadedImages
       bind:existingImages
     />
-
     <FormControlEditor label="Inhoud van bericht:" bind:value={content} />
 
-    <button class="btn btn-primary btn-md mt-2 max-w-sm">
+    <button
+      class="btn btn-primary mt-2 max-w-sm disabled:bg-base-200"
+      type="submit"
+      disabled={saving}
+    >
       Wijzigingen opslaan
+      <span class="loading loading-dots" class:hidden={!saving} />
     </button>
   </form>
 {:else}

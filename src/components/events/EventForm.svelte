@@ -7,7 +7,7 @@
   import InputCheckbox from "$components/formHelpers/inputs/InputCheckbox.svelte"
   import type { Dayjs } from "dayjs"
 
-  export let buttonTitle: string
+  export let submitLabel: string
 
   export let title = ""
   export let info = ""
@@ -15,15 +15,23 @@
   export let endDate: Dayjs | undefined
   export let duration = ""
   export let location = ""
-  export let onSave: () => void
+  export let onSave: () => Promise<void>
 
   let multiDay = endDate !== undefined
   let endDateInner = endDate || date
+  let saving = false
 
   $: endDate = multiDay ? endDateInner : undefined
+
+  async function onSubmitWrapper(event: SubmitEvent) {
+    event.preventDefault()
+    saving = true
+    await onSave()
+    saving = false
+  }
 </script>
 
-<form class="flex flex-col gap-2" on:submit={onSave}>
+<form class="flex flex-col gap-2" on:submit={onSubmitWrapper}>
   <FormControlText
     label="Titel van event:"
     placeholder="Titel"
@@ -48,10 +56,11 @@
     bind:value={duration}
     required
   />
-
   <GeoAutoComplete label="Locatie van event:" bind:value={location} />
-
   <FormControlEditor label="Info over event:" bind:value={info} />
 
-  <button class="btn btn-primary btn-md mt-2 max-w-sm">{buttonTitle}</button>
+  <button class="btn btn-primary mt-2 max-w-sm" type="submit" disabled={saving}>
+	{submitLabel}
+	<span class="loading loading-ring" class:hidden={!saving} />
+  </button>
 </form>

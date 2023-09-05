@@ -89,7 +89,7 @@
     />
     <FormControlEditor label="Inhoud van artikel:" bind:value={content} />
     <button
-      class="btn btn-primary btn-md mt-2 max-w-sm disabled:bg-base-200"
+      class="btn btn-primary mt-2 max-w-sm disabled:bg-base-200"
       type="submit"
       disabled={saving}
     >

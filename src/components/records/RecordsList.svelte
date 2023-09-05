@@ -4,11 +4,7 @@
   import { constructMapWithCategory } from "$lib/domain/ClubRecord"
   import type { Category } from "$lib/domain/dataClasses/Category"
   import { clubRecordStore } from "$lib/stores/ClubRecordStore"
-  import {
-    filterValuesInMap,
-    getMapKeys,
-    getMapValues,
-  } from "$lib/utils/Array"
+  import { filterValuesInMap, getMapKeys, getMapValues } from "$lib/utils/Array"
 
   export let category: Category
   export let searchString = ""

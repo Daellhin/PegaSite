@@ -10,7 +10,7 @@
   import { Gender } from "$lib/domain/dataClasses/Gender"
   import { clubRecordStore } from "$lib/stores/ClubRecordStore"
   import { pushCreatedToast } from "$lib/utils/Toast"
-  import dayjs from "dayjs"
+  import type { Dayjs } from "dayjs"
 
   export let showForm: boolean
 
@@ -22,10 +22,10 @@
   let name: string
   let result: string
   let location: string
-  let date: Date
+  let date: Dayjs
 
   async function createRecord() {
-    const record = new RecordInstance(name, result, location, dayjs(date))
+    const record = new RecordInstance(name, result, location, date)
     await clubRecordStore.createClubRecord(
       discipline,
       category,
@@ -38,7 +38,7 @@
   }
 </script>
 
-<DismisableForm onSubmit={createRecord} bind:showForm>
+<DismisableForm onSubmit={createRecord} bind:showForm submitLabel="Clubrecord aanmaken">
   <FormControlCustomSelect
     bind:value={discipline}
     items={Discipline.Disciplines.map((e) => ({
@@ -49,7 +49,6 @@
     label="Disipline"
     size="xs"
   />
-
   <FormControlCustomSelect
     bind:value={athleticEvent}
     items={AthleticEvent.AthleticEvents.map((e) => ({
@@ -59,7 +58,6 @@
     label="Indoor/outdoor"
     size="xs"
   />
-
   <FormControlCustomSelect
     bind:value={category}
     items={Category.Categories.map((e) => ({
@@ -69,7 +67,6 @@
     label="Categorie"
     size="xs"
   />
-
   <FormControlCustomSelect
     bind:value={gender}
     items={Gender.Genders.map((e) => ({
@@ -79,7 +76,6 @@
     label="Geslacht"
     size="xs"
   />
-
   <FormControlText
     label="Naam"
     placeholder="Voornaam Naam"

@@ -22,6 +22,7 @@ export class Collections {
     static readonly PAGES = "pages"
     static readonly USERS = "users"
     static readonly SPONSORS = "sponsors"
+	static readonly ORDERINGS = "orderings"
 }
 
 /**

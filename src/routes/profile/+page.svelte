@@ -38,8 +38,9 @@
 
   let saving = false
   let loginError = false
-  async function updatePassword() {
-    if(!validatePassword1(password1) || !validatePasswords(password1, password2)) return
+  async function updatePassword(event: SubmitEvent) {
+	event.preventDefault()
+    if (error1 || error2) return
     try {
       saving = true
       await authStore.updateCurrentUserPassword(password1)
@@ -87,13 +88,14 @@
     {validate}
     labelClass="font-semibold"
   />
-  <div class="mt-5">
+  <form class="mt-5" on:submit={updatePassword}>
     <FormControlPassword
       bind:value={password1}
       label="Nieuw wachtwoord"
       placeholder="Wachtwoord"
       labelClass="font-semibold"
       bind:passEdited={passEdited1}
+      required
     />
     <FormControlPassword
       bind:value={password2}
@@ -101,6 +103,7 @@
       placeholder="Wachtwoord"
       labelClass="font-semibold"
       bind:passEdited={passEdited2}
+      required
     />
     {#if error1 && passEdited1 && password1 != ""}
       <p class="text-error">{error1}</p>
@@ -111,15 +114,11 @@
         De sesie is al te lang actief, gelieve eerst opnieuw in te loggen
       </p>
     {/if}
-    <button
-      class="btn btn-primary normal-case mt-3"
-      on:click={updatePassword}
-      disabled={error1 != null || error2 != null}
-    >
-      <span>Wachtwoord veranderen</span>
-      <span class="loading loading-spinner loading-xs" class:hidden={!saving} />
+    <button class="btn btn-primary normal-case mt-3">
+      Wachtwoord veranderen
+	  <span class="loading loading-dots" class:hidden={!saving} />
     </button>
-  </div>
+  </form>
 {:else}
   <h1 class="text-2xl font-bold">Profiel</h1>
 {/if}

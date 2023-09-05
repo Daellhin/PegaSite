@@ -4,9 +4,8 @@
   import FormControlText from "$components/formHelpers/FormControlText.svelte"
   import { Sponsor } from "$lib/domain/Sponsor"
   import { sponsorStore } from "$lib/stores/SponsorStore"
-  import { logFirebaseError } from "$lib/utils/Firebase"
+  import { handleFirebaseError } from "$lib/utils/Firebase"
   import { pushCreatedToast } from "$lib/utils/Toast"
-  import type { FirebaseError } from "firebase/app"
 
   export let showForm = false
   export let editSponsor: Sponsor | undefined = undefined
@@ -31,18 +30,7 @@
         pushCreatedToast("Sponsor aangemaakt")
       }
     } catch (error) {
-      if (error as FirebaseError) {
-        const firebaseEror = error as FirebaseError
-        if ((firebaseEror.customData as any)?.message?.includes("NetworkError"))
-          errorMessage = "Probleem met het netwerk"
-        else {
-          errorMessage = firebaseEror.message
-          logFirebaseError(firebaseEror)
-        }
-      } else {
-        console.error(error)
-        errorMessage = "Ongekend probleem, probeer het later opnieuw"
-      }
+      errorMessage = handleFirebaseError(error)
     }
   }
 
