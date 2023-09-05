@@ -1,5 +1,6 @@
 <script lang="ts">
   import { preferencesStore } from "$lib/stores/LocalStorageStores"
+    import { clamp } from "$lib/utils/Utils"
   import {
     faChevronLeft,
     faChevronRight,
@@ -21,6 +22,7 @@
   export let duration = 10000
 
   let counter = 0
+  $: counter = clamp(counter, 0, items.length - 1)
 
   function toggleAutoPlay() {
     preferencesStore.set({ autoPlay: !$preferencesStore.autoPlay })

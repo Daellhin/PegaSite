@@ -58,10 +58,11 @@ function createSponsorStore() {
 
 		const newDocRef = doc(collection(firestore, Collections.SPONSORS)).withConverter(sponsorConverter)
 		await setDoc(newDocRef, sponsor)
+		sponsor.id = newDocRef.id
 
 		// -- Update ordering --
-		const excistingOrderings = get(store).map((e) => e.id)
-		await updateSponsorsOrder([...excistingOrderings, newDocRef.id])
+		const existingSortedIds = get(store).map((e) => e.id)
+		await updateSponsorsOrder([...existingSortedIds, newDocRef.id])
 
 		// -- Update store --
 		update((sponsors) => ([...sponsors, sponsor]))
@@ -118,7 +119,11 @@ function createSponsorStore() {
 		await deleteDoc(docRef)
 
 		// -- Remove from store --
-		update((sponsors) => (sponsors.filter((e) => e.id !== sponsor.id)))
+		update((sponsors) => sponsors.filter((e) => e.id !== sponsor.id))
+
+		// -- Update ordering --
+		const existingSortedIds = get(store).map((e) => e.id)
+		await updateSponsorsOrder(existingSortedIds)
 	}
 
 	async function updateSponsorsOrder(newSortedIds: string[]) {
