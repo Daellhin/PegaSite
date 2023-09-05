@@ -51,13 +51,17 @@ function createSponsorStore() {
 		const uploadedImage = await getDownloadURL(snapshot.ref)
 		sponsor.imageUrl = uploadedImage
 
-		// -- Upload article --
+		// -- Upload sponsor --
 		const { getFirestore, collection, doc, setDoc } = await import('firebase/firestore')
 		const { firebaseApp } = await import('$lib/firebase/Firebase')
 		const firestore = getFirestore(firebaseApp)
 
 		const newDocRef = doc(collection(firestore, Collections.SPONSORS)).withConverter(sponsorConverter)
 		await setDoc(newDocRef, sponsor)
+
+		// -- Update ordering --
+		const excistingOrderings = get(store).map((e) => e.id)
+		await updateSponsorsOrder([...excistingOrderings, newDocRef.id])
 
 		// -- Update store --
 		update((sponsors) => ([...sponsors, sponsor]))
@@ -74,13 +78,13 @@ function createSponsorStore() {
 			await uploadBytes(imageRef, convertedImage)
 		}
 
-		// -- Update article --
+		// -- Update sponsor --
 		const { getFirestore, doc, updateDoc } = await import('firebase/firestore')
 		const { firebaseApp } = await import('$lib/firebase/Firebase')
 		const firestore = getFirestore(firebaseApp)
 
-		const linksRef = doc(firestore, Collections.SPONSORS, sponsor.id)
-		await updateDoc(linksRef, {
+		const docRef = doc(firestore, Collections.SPONSORS, sponsor.id)
+		await updateDoc(docRef, {
 			name: newName,
 			url: newUrl
 		})
@@ -110,7 +114,8 @@ function createSponsorStore() {
 		const { firebaseApp } = await import('$lib/firebase/Firebase')
 		const firestore = getFirestore(firebaseApp)
 
-		await deleteDoc(doc(firestore, Collections.SPONSORS, sponsor.id))
+		const docRef = doc(firestore, Collections.SPONSORS, sponsor.id)
+		await deleteDoc(docRef)
 
 		// -- Remove from store --
 		update((sponsors) => (sponsors.filter((e) => e.id !== sponsor.id)))
@@ -122,8 +127,8 @@ function createSponsorStore() {
 		const { getFirestore, doc, updateDoc } = await import('firebase/firestore')
 		const firestore = getFirestore(firebaseApp)
 
-		const orderingRef = doc(firestore, Collections.ORDERINGS, Collections.SPONSORS)
-		await updateDoc(orderingRef, {
+		const docRef = doc(firestore, Collections.ORDERINGS, Collections.SPONSORS)
+		await updateDoc(docRef, {
 			ids: newSortedIds,
 		})
 
