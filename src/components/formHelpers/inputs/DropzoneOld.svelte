@@ -1,0 +1,150 @@
+<!-- Component currently only supports previewing images -->
+<script lang="ts">
+	import CloudIcon from "$components/icons/Flowbite/CloudIcon.svelte"
+	import {
+	  getFilesFromDragEvent,
+	  ignoreDragOver,
+	  readFileAsDataURL,
+	} from "$lib/utils/Utils"
+	import {
+	  faFileCircleExclamation,
+	  faXmark,
+	} from "@fortawesome/free-solid-svg-icons"
+	import Fa from "svelte-fa"
+  
+	export let uploadedImages: File[]
+	export let existingImages: string[] = []
+	export let accept: string
+	export let dropzoneId = "file-dropzone"
+	export let maxAmount = 100
+	export let required = false
+  
+	// -- File input handlers --
+	function onFileInput(e: Event & { currentTarget: HTMLInputElement }) {
+	  if (!e.currentTarget.files) return
+	  const newFiles = Array.from(e.currentTarget.files).filter((e) =>
+		e.type.match(accept)
+	  )
+	  addFiles(newFiles)
+	}
+	function onFileDrop(event: DragEvent) {
+	  const droppedFiles = getFilesFromDragEvent(event)
+	  if (!droppedFiles) return
+	  const newFiles = droppedFiles.filter((e) => e.type.match(accept))
+	  addFiles(newFiles)
+	}
+  
+	// -- File management --
+	function addFiles(newFiles: File[]) {
+	  uploadedImages = [...uploadedImages, ...newFiles.slice(0, remainingSpace)]
+	}
+	function removeFile(toRemove: File) {
+	  uploadedImages = uploadedImages.filter((e) => e != toRemove)
+	}
+	function removeExistingImage(toRemove: string) {
+	  existingImages = existingImages.filter((e) => e != toRemove)
+	}
+  
+	$: remainingSpace = maxAmount - uploadedImages.length - existingImages.length
+  </script>
+  
+  <!-- Dropzone -->
+  {#if remainingSpace}
+	<div
+	  role="application"
+	  class="flex items-center justify-center w-full"
+	  on:drop={onFileDrop}
+	  on:dragover={ignoreDragOver}
+	>
+	  <label
+		id={dropzoneId}
+		class="flex flex-col items-center justify-center w-full h-28 border-2 input-bordered border-color border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+	  >
+		<div class="flex flex-col items-center justify-center pt-5 pb-6">
+		  <CloudIcon class="text-gray-700 dark:text-gray-400 text-3xl" />
+		  <p class="mb-2 text-sm font-semibold">
+			Sleep hier of klik om afbeelding<span class:hidden={maxAmount <= 1}
+			  >(en)</span
+			> up te loaden
+		  </p>
+		  <p class="text-xs text-gray-500 dark:text-gray-400">
+			SVG, PNG, JPG, GIF of WEBP
+		  </p>
+		</div>
+		<input
+		  id={dropzoneId}
+		  type="file"
+		  on:input={onFileInput}
+		  class="opacity-0"
+		  {accept}
+		  multiple
+		  {required}
+		/>
+	  </label>
+	</div>
+  {/if}
+  
+  <!-- SelectedImages viewer -->
+  {#if uploadedImages.length || existingImages.length}
+	<div class="border-2 border-color rounded-lg input-bordered min-h-[3rem] bg-base-100" class:mt-2={remainingSpace}>
+	  {#each existingImages as image, i}
+		<div
+		  class="inline-flex items-center w-full px-4 py-2 text-sm border-color"
+		  class:border-b-2={i < existingImages.length + uploadedImages.length - 1}
+		>
+		  <div class="flex flex-row gap-2">
+			<img class="w-10 rounded-sm" alt="Upload" src={image} />
+			<div class="my-auto font-semibold">Geüpload bestand</div>
+		  </div>
+		  <button
+			class="btn btn-circle btn-xs hover:text-red-500 ml-auto"
+			type="button"
+			on:click={() => removeExistingImage(image)}
+		  >
+			<Fa icon={faXmark} />
+		  </button>
+		</div>
+	  {/each}
+	  {#each uploadedImages as file, i}
+		<div
+		  class="inline-flex items-center w-full px-4 py-2 text-sm border-color"
+		  class:border-b-2={i < uploadedImages.length - 1}
+		>
+		  <div class="flex flex-row gap-2">
+			<div class="w-10 rounded-sm h-6 overflow-hidden">
+			  {#await readFileAsDataURL(file)}
+				<div
+				  class="flex items-center justify-center bg-base-200 w-full h-full"
+				/>
+			  {:then src}
+				<img class="" alt={file.name} {src} />
+			  {:catch error}
+				<div
+				  class="tooltip tooltip-right"
+				  data-tip="Bestand kan niet getoond worden"
+				>
+				  <Fa icon={faFileCircleExclamation} />
+				  <div class="hidden">{error}</div>
+				</div>
+			  {/await}
+			</div>
+			<div class="my-auto font-semibold">{file.name}</div>
+		  </div>
+		  <button
+			class="btn btn-circle btn-xs hover:text-red-500 ml-auto"
+			type="button"
+			on:click={() => removeFile(file)}
+		  >
+			<Fa icon={faXmark} />
+		  </button>
+		</div>
+	  {/each}
+	</div>
+  {/if}
+  
+  <style lang="postcss">
+	.border-color {
+	  border-color: hsl(var(--bc) / var(--tw-border-opacity));
+	}
+  </style>
+  

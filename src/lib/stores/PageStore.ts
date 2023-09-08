@@ -1,7 +1,7 @@
 import { browser } from '$app/environment'
 import { Page, pageConverter } from '$lib/domain/Page'
 import { Collections } from '$lib/firebase/Firebase'
-import { arrayDifference, containArraysSameElements } from '$lib/utils/Array'
+import { arrayDifference, arraysContainSameElements } from '$lib/utils/Array'
 import { convertStringToBool } from '$lib/utils/Utils'
 import dayjs from 'dayjs'
 import { Timestamp } from 'firebase/firestore'
@@ -62,7 +62,7 @@ function createPageStore() {
 		const storage = getStorage()
 
 		// -- Remove images --
-		if (!containArraysSameElements(page.images, newExcistingImages)) {
+		if (!arraysContainSameElements(page.images, newExcistingImages)) {
 			const imagesToRemove = arrayDifference(page.images, newExcistingImages)
 			await Promise.all(imagesToRemove.map(async (image) => {
 				const imageRef = ref(storage, image)

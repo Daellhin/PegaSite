@@ -1,6 +1,6 @@
 <script lang="ts">
   import DismissableForm from "$components/DismissableForm.svelte"
-  import FormControlDropzone from "$components/formHelpers/FormControlDropzone.svelte"
+  import FormControlDropzoneOld from "$components/formHelpers/FormControlDropzoneOld.svelte"
   import FormControlText from "$components/formHelpers/FormControlText.svelte"
   import { Sponsor } from "$lib/domain/Sponsor"
   import { sponsorStore } from "$lib/stores/SponsorStore"
@@ -72,7 +72,7 @@
     size="xs"
     required
   />
-  <FormControlDropzone
+  <FormControlDropzoneOld
     label="Afbeelding"
     bind:uploadedImages={image}
     bind:existingImages={exsitingImage}

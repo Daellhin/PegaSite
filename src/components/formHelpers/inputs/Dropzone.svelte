@@ -1,23 +1,19 @@
 <!-- Component currently only supports previewing images -->
 <script lang="ts">
   import CloudIcon from "$components/icons/Flowbite/CloudIcon.svelte"
-  import {
-    getFilesFromDragEvent,
-    ignoreDragOver,
-    readFileAsDataURL,
-  } from "$lib/utils/Utils"
-  import {
-    faFileCircleExclamation,
-    faXmark,
-  } from "@fortawesome/free-solid-svg-icons"
-  import Fa from "svelte-fa"
+  import { FLIP_DURATION } from "$lib/utils/Constants"
+  import { PreviewableFile } from "$lib/utils/PreviewableFile"
+  import { getFilesFromDragEvent, ignoreDragOver } from "$lib/utils/Utils"
+  import { dndzone } from "svelte-dnd-action"
+  import DropzoneFilePreview from "./DropzoneFilePreview.svelte"
 
-  export let uploadedImages: File[]
-  export let existingImages: string[] = []
+  export let combinedImages: (string | File)[]
   export let accept: string
   export let dropzoneId = "file-dropzone"
   export let maxAmount = 100
   export let required = false
+
+  $: remainingSpace = maxAmount - combinedImages.length
 
   // -- File input handlers --
   function onFileInput(e: Event & { currentTarget: HTMLInputElement }) {
@@ -36,16 +32,30 @@
 
   // -- File management --
   function addFiles(newFiles: File[]) {
-    uploadedImages = [...uploadedImages, ...newFiles.slice(0, remainingSpace)]
+    const newPreviewableFiles = newFiles.map((e) => new PreviewableFile(e))
+    combinedImages = [
+      ...combinedImages,
+      ...newPreviewableFiles.slice(0, remainingSpace),
+    ]
   }
-  function removeFile(toRemove: File) {
-    uploadedImages = uploadedImages.filter((e) => e != toRemove)
-  }
-  function removeExistingImage(toRemove: string) {
-    existingImages = existingImages.filter((e) => e != toRemove)
+  function remove(toRemove: File | string) {
+    combinedImages = combinedImages.filter((e) => e != toRemove)
   }
 
-  $: remainingSpace = maxAmount - uploadedImages.length - existingImages.length
+  // -- Drag and drop --
+  let dragDisabled = false
+
+  $: dragableImages = combinedImages.map((e) => ({ id: e, data: e }))
+
+  function handleConsider(event: CustomEvent<DndEvent<any>>) {
+    dragableImages = event.detail.items
+    dragDisabled = true
+  }
+  async function handleFinalize(event: CustomEvent<DndEvent<any>>) {
+    dragableImages = event.detail.items
+    dragDisabled = true
+    combinedImages = dragableImages.map((e) => e.data)
+  }
 </script>
 
 <!-- Dropzone -->
@@ -85,59 +95,26 @@
 {/if}
 
 <!-- SelectedImages viewer -->
-{#if uploadedImages.length || existingImages.length}
-  <div class="border-2 border-color rounded-lg input-bordered min-h-[3rem] bg-base-100" class:mt-2={remainingSpace}>
-    {#each existingImages as image, i}
-      <div
-        class="inline-flex items-center w-full px-4 py-2 text-sm border-color"
-        class:border-b-2={i < existingImages.length + uploadedImages.length - 1}
-      >
-        <div class="flex flex-row gap-2">
-          <img class="w-10 rounded-sm" alt="Upload" src={image} />
-          <div class="my-auto font-semibold">Geüpload bestand</div>
-        </div>
-        <button
-          class="btn btn-circle btn-xs hover:text-red-500 ml-auto"
-          type="button"
-          on:click={() => removeExistingImage(image)}
-        >
-          <Fa icon={faXmark} />
-        </button>
-      </div>
-    {/each}
-    {#each uploadedImages as file, i}
-      <div
-        class="inline-flex items-center w-full px-4 py-2 text-sm border-color"
-        class:border-b-2={i < uploadedImages.length - 1}
-      >
-        <div class="flex flex-row gap-2">
-          <div class="w-10 rounded-sm h-6 overflow-hidden">
-            {#await readFileAsDataURL(file)}
-              <div
-                class="flex items-center justify-center bg-base-200 w-full h-full"
-              />
-            {:then src}
-              <img class="" alt={file.name} {src} />
-            {:catch error}
-              <div
-                class="tooltip tooltip-right"
-                data-tip="Bestand kan niet getoond worden"
-              >
-                <Fa icon={faFileCircleExclamation} />
-                <div class="hidden">{error}</div>
-              </div>
-            {/await}
-          </div>
-          <div class="my-auto font-semibold">{file.name}</div>
-        </div>
-        <button
-          class="btn btn-circle btn-xs hover:text-red-500 ml-auto"
-          type="button"
-          on:click={() => removeFile(file)}
-        >
-          <Fa icon={faXmark} />
-        </button>
-      </div>
+{#if combinedImages.length}
+  <div
+    class="border-2 border-color rounded-lg input-bordered min-h-[3rem] bg-base-100"
+    class:mt-2={remainingSpace}
+    use:dndzone={{
+      items: dragableImages,
+      dragDisabled: dragDisabled,
+      flipDurationMs: FLIP_DURATION,
+      dropTargetStyle: {},
+    }}
+    on:consider={handleConsider}
+    on:finalize={handleFinalize}
+  >
+    {#each dragableImages as image, i (image)}
+      <DropzoneFilePreview
+        image={image.data}
+        {remove}
+        bind:dragDisabled
+        isLast={i == combinedImages.length - 1}
+      />
     {/each}
   </div>
 {/if}

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { goto } from "$app/navigation"
-  import FormControlDropzone from "$components/formHelpers/FormControlDropzone.svelte"
+  import FormControlDropzoneOld from "$components/formHelpers/FormControlDropzoneOld.svelte"
   import FormControlEditor from "$components/formHelpers/FormControlEditor.svelte"
   import FormControlText from "$components/formHelpers/FormControlText.svelte"
   import PageComponent from "$components/page/Page.svelte"
@@ -109,7 +109,7 @@
       value={title}
       required
     />
-    <FormControlDropzone
+    <FormControlDropzoneOld
       label="Afbeeldingen:"
       bind:uploadedImages
       bind:existingImages

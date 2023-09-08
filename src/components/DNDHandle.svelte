@@ -2,7 +2,7 @@
   import { faGripVertical } from "@fortawesome/free-solid-svg-icons"
   import Fa from "svelte-fa"
 
-  export let dragDisabled = true
+  export let dragDisabled: boolean
 
   function startDrag(e: { preventDefault: () => void }) {
     // Prevent default to prevent lag on touch devices
@@ -16,7 +16,7 @@
     }
   }
   function handleUp() {
-	dragDisabled = true
+    dragDisabled = true
   }
 </script>
 

@@ -22,8 +22,8 @@
   let authors: string[]
   let tags: string[]
   let title: string
-  let uploadedImages: File[] = []
-  let existingImages: string[]
+  let combinedImages: (string | File)[] = []
+
   let content: string
   let createdAt: Dayjs
 
@@ -39,12 +39,10 @@
       title,
       content,
       lastUpdate,
-      uploadedImages,
-      existingImages,
+	  combinedImages,
       article!
     )
     haveValuesBeenSet = false
-    uploadedImages = []
     pushCreatedToast("Artikel gewijzigd", {
       gotoUrl: "/articles/" + article!.id,
     })
@@ -57,14 +55,15 @@
     showPreview = !showPreview
   }
   async function createPreviewArticle() {
-    const newImages = await Promise.all(uploadedImages.map(readFileAsDataURL))
+    // const newImages = await Promise.all(uploadedImages.map(readFileAsDataURL))
+	const newImages: never[] = []
     return new Article(
       "-1",
       createdAt,
       authors,
       tags,
       title,
-      [...existingImages, ...newImages],
+      [...[], ...newImages],
       content,
       lastUpdate
     )
@@ -84,10 +83,11 @@
       authors.push($authStore!.displayName)
     tags = article.tags
     title = article.title
-    existingImages = article.images
     content = article.content
     createdAt = article.createdAt
     lastUpdate = dayjs()
+
+	combinedImages = [...article.images]
     haveValuesBeenSet = true
   }
 
@@ -129,11 +129,7 @@
       bind:value={title}
       required
     />
-    <FormControlDropzone
-      label="Afbeeldingen:"
-      bind:uploadedImages
-      bind:existingImages
-    />
+    <FormControlDropzone label="Afbeeldingen:" bind:combinedImages />
     <FormControlMultiSelect
       label="Categorieën:"
       bind:values={tags}

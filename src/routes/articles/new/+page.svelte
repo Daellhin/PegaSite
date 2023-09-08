@@ -1,7 +1,7 @@
 <script lang="ts">
   import { goto } from "$app/navigation"
   import ArticleComponent from "$components/article/ArticleComponent.svelte"
-  import FormControlDropzone from "$components/formHelpers/FormControlDropzone.svelte"
+  import FormControlDropzoneOld from "$components/formHelpers/FormControlDropzoneOld.svelte"
   import FormControlEditor from "$components/formHelpers/FormControlEditor.svelte"
   import FormControlMultiSelect from "$components/formHelpers/FormControlMultiSelect.svelte"
   import FormControlText from "$components/formHelpers/FormControlText.svelte"
@@ -81,7 +81,7 @@
       value={title}
       required
     />
-    <FormControlDropzone label="Afbeeldingen:" bind:uploadedImages />
+    <FormControlDropzoneOld label="Afbeeldingen:" bind:uploadedImages />
     <FormControlMultiSelect
       label="Categorieën:"
       bind:values={selectedCategories}
