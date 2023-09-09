@@ -12,6 +12,7 @@
   export let dropzoneId = "file-dropzone"
   export let maxAmount = 100
   export let required = false
+  export let sortable = true
 
   $: remainingSpace = maxAmount - combinedImages.length
 
@@ -43,7 +44,7 @@
   }
 
   // -- Drag and drop --
-  let dragDisabled = false
+  let dragDisabled = true
 
   $: dragableImages = combinedImages.map((e) => ({ id: e, data: e }))
 
@@ -113,6 +114,7 @@
         image={image.data}
         {remove}
         bind:dragDisabled
+        dragFullyDisabled={!sortable}
         isLast={i == combinedImages.length - 1}
       />
     {/each}

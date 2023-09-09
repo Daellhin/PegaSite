@@ -7,6 +7,7 @@
   export let required = false
   export let maxAmount = 100
   export let size: "md" | "sm" | "xs" = "sm"
+  export let sortable = true
 </script>
 
 <div
@@ -23,5 +24,5 @@
       {/if}
     </span>
   </label>
-  <Dropzone bind:combinedImages {accept} {required} {maxAmount}  />
+  <Dropzone bind:combinedImages {accept} {required} {maxAmount} {sortable}  />
 </div>

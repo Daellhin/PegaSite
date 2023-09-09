@@ -11,6 +11,7 @@
   export let image: string | File | PreviewableFile
   export let remove: (toRemove: File | string) => void
   export let dragDisabled: boolean
+  export let dragFullyDisabled: boolean
 </script>
 
 <div
@@ -18,7 +19,9 @@
   class:border-b-2={!isLast}
 >
   <div class="flex flex-row gap-2">
-    <DndHandle bind:dragDisabled />
+    {#if !dragFullyDisabled}
+      <DndHandle bind:dragDisabled />
+    {/if}
     {#if image instanceof File}
       <div class="w-10 rounded-sm h-6 overflow-hidden">
         {#await PreviewableFile.getFilePreview(image)}
@@ -53,5 +56,8 @@
 <style lang="postcss">
   .border-color {
     border-color: hsl(var(--bc) / var(--tw-border-opacity));
+  }
+  :global(#dnd-action-dragged-el) {
+    @apply border-2 rounded-lg bg-base-100 !important;
   }
 </style>

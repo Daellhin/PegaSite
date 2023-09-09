@@ -1,6 +1,6 @@
 <script lang="ts">
   import DismissableForm from "$components/DismissableForm.svelte"
-  import FormControlDropzoneOld from "$components/formHelpers/FormControlDropzoneOld.svelte"
+  import FormControlDropzone from "$components/formHelpers/FormControlDropzone.svelte"
   import FormControlText from "$components/formHelpers/FormControlText.svelte"
   import { Sponsor } from "$lib/domain/Sponsor"
   import { sponsorStore } from "$lib/stores/SponsorStore"
@@ -13,9 +13,7 @@
 
   let name = ""
   let url: string
-  let image = Array<File>()
-  let exsitingImage = Array<string>()
-
+  let image: (string | File)[] = []
   let errorMessage = ""
 
   async function saveSponsor() {
@@ -25,6 +23,8 @@
         await sponsorStore.updateSponsor(name, url, image[0], editSponsor)
         pushCreatedToast("Sponsor gewijzigd")
       } else {
+        if (!(image[0] instanceof File))
+          throw new Error("Image must be a file when creating new sponsor")
         const newSponsor = new Sponsor("-1", name, url, "")
         await sponsorStore.createSponsor(newSponsor, image[0])
         pushCreatedToast("Sponsor aangemaakt")
@@ -40,13 +40,11 @@
     if (editSponsor) {
       name = editSponsor.name
       url = editSponsor.url
-      image = []
-      exsitingImage = [editSponsor.imageUrl]
+      image = [editSponsor.imageUrl]
     } else {
       name = ""
       url = ""
       image = []
-      exsitingImage = []
     }
   }
 </script>
@@ -72,10 +70,10 @@
     size="xs"
     required
   />
-  <FormControlDropzoneOld
+  <FormControlDropzone
     label="Afbeelding"
-    bind:uploadedImages={image}
-    bind:existingImages={exsitingImage}
+    bind:combinedImages={image}
+    sortable={false}
     size="xs"
     required
     maxAmount={1}
