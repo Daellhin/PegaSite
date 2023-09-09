@@ -2,8 +2,8 @@
   import { preferencesStore } from "$lib/stores/LocalStorageStores"
   import { clamp } from "$lib/utils/Utils"
   import {
-      faChevronLeft,
-      faChevronRight,
+    faChevronLeft,
+    faChevronRight,
   } from "@fortawesome/free-solid-svg-icons"
   import Fa from "svelte-fa"
 
@@ -22,7 +22,7 @@
     counter = (counter + 1) % images.length
   }
   function previous() {
-    counter = Math.abs(counter - 1) % images.length
+    counter = (counter - 1 + images.length) % images.length
   }
 
   // -- Looping --

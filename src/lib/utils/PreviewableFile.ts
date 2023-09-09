@@ -17,5 +17,12 @@ export class PreviewableFile extends File {
 		}
 		return readFileAsDataURL(file)
 	}
+	
+	static getMixedFilePreview(file: string|File) {
+		if (typeof file === "string") {
+			return file
+		}
+		return this.getFilePreview(file)
+	}
 
 }

@@ -1,20 +1,16 @@
 <script lang="ts">
   import { goto } from "$app/navigation"
   import ArticleComponent from "$components/article/ArticleComponent.svelte"
-  import FormControlDropzone from "$components/formHelpers/FormControlDropzone.svelte"
-  import FormControlEditor from "$components/formHelpers/FormControlEditor.svelte"
-  import FormControlMultiSelect from "$components/formHelpers/FormControlMultiSelect.svelte"
-  import FormControlText from "$components/formHelpers/FormControlText.svelte"
+  import ArticleForm from "$components/article/ArticleForm.svelte"
   import { Article } from "$lib/domain/Article"
-  import { CategoryValues } from "$lib/domain/Category"
   import { articleStore } from "$lib/stores/ArticleStore"
   import { authStore } from "$lib/stores/AuthStore"
   import { pageHeadStore } from "$lib/stores/PageHeadStore"
   import { pushCreatedToast } from "$lib/utils/Toast"
-  import { readFileAsDataURL } from "$lib/utils/Utils"
   import type { Dayjs } from "dayjs"
   import dayjs from "dayjs"
   import type { PageData } from "./$types"
+  import { PreviewableFile } from "$lib/utils/PreviewableFile"
 
   export let data: PageData
 
@@ -28,25 +24,21 @@
   let createdAt: Dayjs
 
   let article: Article | undefined | null
-  let saving = false
 
-  async function updateArticle(event: SubmitEvent) {
-    event.preventDefault()
-    saving = true
+  async function updateArticle() {
     await articleStore.updateArticle(
       authors,
       tags,
       title,
       content,
       lastUpdate,
-	  combinedImages,
+      combinedImages,
       article!
     )
     haveValuesBeenSet = false
     pushCreatedToast("Artikel gewijzigd", {
       gotoUrl: "/articles/" + article!.id,
     })
-    saving = false
   }
 
   // -- Preview --
@@ -55,15 +47,16 @@
     showPreview = !showPreview
   }
   async function createPreviewArticle() {
-    // const newImages = await Promise.all(uploadedImages.map(readFileAsDataURL))
-	const newImages: never[] = []
+    const images = await Promise.all(
+      combinedImages.map(PreviewableFile.getMixedFilePreview)
+    )
     return new Article(
       "-1",
       createdAt,
       authors,
       tags,
       title,
-      [...[], ...newImages],
+      images,
       content,
       lastUpdate
     )
@@ -87,7 +80,7 @@
     createdAt = article.createdAt
     lastUpdate = dayjs()
 
-	combinedImages = [...article.images]
+    combinedImages = [...article.images]
     haveValuesBeenSet = true
   }
 
@@ -122,29 +115,14 @@
     </button>
   </div>
 
-  <form class="flex flex-col gap-2" on:submit={updateArticle}>
-    <FormControlText
-      label="Titel van artikel:"
-      placeholder="Titel"
-      bind:value={title}
-      required
-    />
-    <FormControlDropzone label="Afbeeldingen:" bind:combinedImages />
-    <FormControlMultiSelect
-      label="Categorieën:"
-      bind:values={tags}
-      options={CategoryValues}
-    />
-    <FormControlEditor label="Inhoud van artikel:" bind:value={content} />
-    <button
-      class="btn btn-primary mt-2 max-w-sm disabled:bg-base-200"
-      type="submit"
-      disabled={saving}
-    >
-      Wijzigingen opslaan
-      <span class="loading loading-dots" class:hidden={!saving} />
-    </button>
-  </form>
+  <ArticleForm
+    bind:title
+    bind:content
+    bind:combinedImages
+    bind:tags
+    submitLabel="Wijzig artikel"
+    onSave={updateArticle}
+  />
 {:else}
   <div>"{data.id}": not found</div>
 {/if}
