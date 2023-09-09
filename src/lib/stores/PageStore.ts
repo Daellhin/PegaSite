@@ -8,6 +8,7 @@ import { Timestamp } from 'firebase/firestore'
 import { get, writable } from 'svelte/store'
 import { v4 as uuidv4 } from "uuid"
 import { createMockPageStore } from './mocks/MockPageHeadStore'
+import { blobToWebP } from 'webp-converter-browser'
 
 function createPageStore() {
 	const innerStore = writable<Page[]>([])
@@ -54,31 +55,35 @@ function createPageStore() {
 		return data || null
 	}
 
-	async function updatePage(newTitle: string, newContent: string, uploadedImages: File[], newExcistingImages: string[], page: Page) {
+	async function updatePage(newTitle: string, newContent: string, combinedImages: (string | File)[], page: Page) {
 		if (!browser) return
 
-		let newImages: string[] = []
 		const { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } = await import('firebase/storage')
 		const storage = getStorage()
 
-		// -- Remove images --
-		if (!arraysContainSameElements(page.images, newExcistingImages)) {
-			const imagesToRemove = arrayDifference(page.images, newExcistingImages)
+		// -- Delete images removed by user --
+		const excistingImages = combinedImages.filter((e) => typeof e === 'string') as string[]
+		if (!arraysContainSameElements(page.images, excistingImages)) {
+			const imagesToRemove = arrayDifference(page.images, excistingImages)
 			await Promise.all(imagesToRemove.map(async (image) => {
 				const imageRef = ref(storage, image)
 				await deleteObject(imageRef)
 			}))
 		}
-		newImages = newExcistingImages
-		// -- Upload images --
-		if (uploadedImages) {
-			const uploadedImageLinks = await Promise.all(uploadedImages.map(async (image) => {
-				const storageRef = ref(storage, `page-images/${uuidv4()}`)
-				const snapshot = await uploadBytes(storageRef, image)
-				return await getDownloadURL(snapshot.ref)
-			}))
-			newImages.push(...uploadedImageLinks)
-		}
+
+		// -- Upload images, and replace files with urls --
+		const newImages = await Promise.all(combinedImages.map(async (image) => {
+			// -- Keep existing url --
+			if (!(image instanceof File)) return image
+
+			// -- First convert to webp --
+			const convertedImage = blobToWebP(image, { quality: 90 })
+
+			// -- Next upload and replace with url --
+			const storageRef = ref(storage, `page-images/${uuidv4()}`)
+			const snapshot = await uploadBytes(storageRef, await convertedImage)
+			return getDownloadURL(snapshot.ref)
+		}))
 
 		// -- Update page --
 		const { getFirestore, doc, updateDoc } = await import('firebase/firestore')

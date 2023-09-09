@@ -1,12 +1,11 @@
 <script lang="ts">
-  import FormControlDropzoneOld from "$components/formHelpers/FormControlDropzoneOld.svelte"
+  import FormControlDropzone from "$components/formHelpers/FormControlDropzone.svelte"
   import FormControlEditor from "$components/formHelpers/FormControlEditor.svelte"
   import FormControlText from "$components/formHelpers/FormControlText.svelte"
 
   export let title = ""
   export let content = ""
-  export let uploadedImages: File[] = []
-  export let existingImages: string[]
+  export let combinedImages: (string | File)[] = []
 
   export let submitLabel: string
   export let onSave: () => Promise<void>
@@ -28,10 +27,9 @@
     value={title}
     required
   />
-  <FormControlDropzoneOld
+  <FormControlDropzone
     label="Afbeeldingen:"
-    bind:uploadedImages
-    bind:existingImages
+    bind:combinedImages
   />
   <FormControlEditor label="Inhoud van bericht:" bind:value={content} />
 

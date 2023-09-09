@@ -1,5 +1,6 @@
 import { PAGES_JSON } from '$data/PagesJson'
 import { Page } from '$lib/domain/Page'
+import { PreviewableFile } from '$lib/utils/PreviewableFile'
 import { readFileAsDataURL } from '$lib/utils/Utils'
 import dayjs from 'dayjs'
 import { get, writable } from 'svelte/store'
@@ -21,11 +22,11 @@ export function createMockPageStore() {
 	async function getPageById(id: string) {
 		return get(innerStore).find((e) => e.id === id)
 	}
-	async function updatePage(newTitle: string, newContent: string, uploadedImages: File[], newExcistingImages: string[], page: Page) {
-		const newImages = await Promise.all(uploadedImages.map(readFileAsDataURL))
+	async function updatePage(newTitle: string, newContent: string, combinedImages: (string | File)[], page: Page) {
+		const images = await Promise.all(combinedImages.map(PreviewableFile.getMixedFilePreview))
 		page.title = newTitle
 		page.content = newContent
-		page.images = [...newExcistingImages, ...newImages]
+		page.images = images
 		update((pages) => [...pages])
 	}
 	async function updatePageId(newId: string, oldId: string) {

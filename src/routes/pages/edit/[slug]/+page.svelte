@@ -16,8 +16,7 @@
 
   let title = ""
   let content = ""
-  let uploadedImages: File[] = []
-  let existingImages: string[]
+  export let combinedImages: (string | File)[]
 
   let page: Page | undefined | null
 
@@ -25,12 +24,10 @@
     await pageStore.updatePage(
       title,
       content,
-      uploadedImages,
-      existingImages,
+      combinedImages,
       page!
     )
     haveValuesBeenSet = false
-    uploadedImages = []
     pushCreatedToast("Pagina gewijzigd", { gotoUrl: page!.getUrl() })
   }
 
@@ -40,12 +37,12 @@
     showPreview = !showPreview
   }
   async function createPreviewPage() {
-    const newImages = await Promise.all(uploadedImages.map(readFileAsDataURL))
+    //const newImages = await Promise.all(uploadedImages.map(readFileAsDataURL))
     return new Page(
       "-1",
       dayjs(),
       title,
-      [...existingImages, ...newImages],
+      [],
       content
     )
   }
@@ -61,7 +58,7 @@
   function setValues(page: Page) {
     title = page.title
     content = page.content
-    existingImages = page.images
+    combinedImages = page.images
     haveValuesBeenSet = true
   }
 
@@ -99,8 +96,7 @@
   <PageForm
     bind:title
     bind:content
-    bind:uploadedImages
-    bind:existingImages
+    bind:combinedImages
     submitLabel="Wijzigingen opslaan"
     onSave={updatePage}
   />
