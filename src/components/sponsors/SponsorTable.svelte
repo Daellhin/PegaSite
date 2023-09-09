@@ -16,7 +16,7 @@
   let savingNewOrder = false
 
   // -- Drag and drop --
-  let dragDisabled = false
+  let dragDisabled = true
   $: dragFullyDisabled = searchString.length > 0
 
   $: dragableSponsors = $sponsorStore.map((e) => e.toDragableSponsor())
