@@ -1,9 +1,7 @@
 <script lang="ts">
+  import Carousel from "$components/carousel/Carousel.svelte"
   import { preferencesStore } from "$lib/stores/LocalStorageStores"
-    import { clamp } from "$lib/utils/Utils"
   import {
-    faChevronLeft,
-    faChevronRight,
     faExternalLink,
     faPause,
     faPlay,
@@ -16,41 +14,22 @@
     imageUrl: string
   }
 
-  export let items = Array<Item>()
+  export let sponsors = Array<Item>()
+  export let hideButtons = true
   export let hideIndicators = false
   export let loop = false
   export let duration = 10000
 
   let counter = 0
-  $: counter = clamp(counter, 0, items.length - 1)
 
   function toggleAutoPlay() {
     preferencesStore.set({ autoPlay: !$preferencesStore.autoPlay })
   }
-  function next() {
-    counter = (counter + 1) % items.length
-  }
-  function previous() {
-    counter = (counter - 1) % items.length
-  }
-
-  // -- Looping --
-  let loopTimeout: number
-
-  function setLoop() {
-    clearTimeout(loopTimeout)
-    loopTimeout = window.setTimeout(() => {
-      next()
-      setLoop()
-    }, duration)
-  }
-  $: if (loop && $preferencesStore.autoPlay) setLoop()
-  else clearTimeout(loopTimeout)
 </script>
 
-<!-- Adapted from https://flowbite.com/docs/components/carousel/ -->
 <div class="bg-base-200 rounded-lg p-2 pt-1">
   <div class="box-content">
+    <!-- Loop controls -->
     {#if loop}
       <div class="flex justify-between">
         <hr class="w-full mt-3 border-2 rounded-xl mr-1 border-base-content" />
@@ -67,73 +46,25 @@
         </button>
       </div>
     {/if}
-    <div class="h-56 sm:h-96 lg:h-44 2xl:h-52 overflow-hidden relative rounded">
-      <div id="default-carousel">
-        <!-- Carousel images -->
-        {#each items as item, i}
-          <img
-            src={item.imageUrl}
-            class:opacity-100={counter === i}
-            class:opacity-0={counter !== i}
-            class="absolute duration-1000 ease-in-out transition-opacity top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-            alt="Logo"
-          />
-        {/each}
-        <!-- Slider indicators -->
-        <div
-          class="absolute z-30 flex space-x-3 -translate-x-1/2 bottom-5 left-1/2"
-        >
-          {#each items as _, i}
-            <button
-              type="button"
-              class="w-3 h-3 rounded-full"
-              class:bg-slate-200={counter === i}
-              class:bg-slate-500={counter !== i}
-              on:click={() => (counter = i)}
-            />
-          {/each}
-        </div>
-        <!-- Slider controls -->
-        {#if items.length > 1 && !hideIndicators}
-          <button
-            type="button"
-            class="absolute top-0 left-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
-            on:click={previous}
-          >
-            <span
-              class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none"
-            >
-              <Fa
-                icon={faChevronLeft}
-                class="text-white dark:text-slate-500 text-xl"
-              />
-              <span class="sr-only">Volgende</span>
-            </span>
-          </button>
-          <button
-            type="button"
-            class="absolute top-0 right-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
-            on:click={next}
-          >
-            <span
-              class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none"
-            >
-              <Fa
-                icon={faChevronRight}
-                class="text-white dark:text-slate-500 text-xl"
-              />
-              <span class="sr-only">Vorige</span>
-            </span>
-          </button>
-        {/if}
-      </div>
-    </div>
+    <Carousel
+      images={sponsors.map((e) => ({
+        imageUrl: e.imageUrl,
+        alt: "Logo " + e.name,
+      }))}
+      height="h-56 sm:h-96 lg:h-44 2xl:h-52"
+      {hideButtons}
+      {hideIndicators}
+      {loop}
+      {duration}
+      fillWidth
+    />
   </div>
+  <!-- Sponsor Info -->
   <div class="flex items-center justify-between mt-2">
     <span class="text-lg font-semibold">
-      {items[counter].name}
+      {sponsors[counter].name}
     </span>
-    <a href={items[counter].url} class="btn btn-sm" target="_blank">
+    <a href={sponsors[counter].url} class="btn btn-sm" target="_blank">
       Site
       <Fa icon={faExternalLink} class="text-lg" />
     </a>

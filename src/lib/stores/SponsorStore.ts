@@ -68,31 +68,35 @@ function createSponsorStore() {
 		update((sponsors) => ([...sponsors, sponsor]))
 	}
 
-	async function updateSponsor(newName: string, newUrl: string, newImage: File | undefined, sponsor: Sponsor) {
-		// -- Update image --
-		const { getStorage, ref, uploadBytes } = await import('firebase/storage')
-		const storage = getStorage()
+	async function updateSponsor(newName: string, newUrl: string, newImage: string | File, sponsor: Sponsor) {
+		// -- Upload new image --
+		let newImageUrl = ""
+		if (newImage instanceof File) {
+			const { getStorage, ref, uploadBytes, deleteObject } = await import('firebase/storage')
+			const storage = getStorage()
 
-		if (newImage) {
 			const convertedImage = await blobToWebP(newImage, { quality: WEBP_IMAGE_QUALITY })
 			const imageRef = ref(storage, sponsor.imageUrl)
 			await uploadBytes(imageRef, convertedImage)
+			newImageUrl = `${sponsor.imageUrl}#${new Date().getTime()}` // Force reload cache
 		}
-
 		// -- Update sponsor --
 		const { getFirestore, doc, updateDoc } = await import('firebase/firestore')
 		const { firebaseApp } = await import('$lib/firebase/Firebase')
 		const firestore = getFirestore(firebaseApp)
 
 		const docRef = doc(firestore, Collections.SPONSORS, sponsor.id)
-		await updateDoc(docRef, {
+		let updates: any = {
 			name: newName,
 			url: newUrl
-		})
+		}
+		if (newImageUrl) updates["imageUrl"] = newImageUrl
+		await updateDoc(docRef, updates)
 
 		// -- Update store --
 		sponsor.name = newName
 		sponsor.url = newUrl
+		sponsor.imageUrl = newImageUrl || sponsor.imageUrl
 		update((sponsors) => [...sponsors])
 	}
 
@@ -106,8 +110,7 @@ function createSponsorStore() {
 			await deleteObject(storageRef)
 		} catch (error: any) {
 			// Not existing images can be safely ignored
-			if (error.code !== 'storage/object-not-found')
-				throw error
+			if (error.code !== 'storage/object-not-found') throw error
 		}
 
 		// -- Remove sponsor --

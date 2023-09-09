@@ -2,7 +2,7 @@
   import { faGripVertical } from "@fortawesome/free-solid-svg-icons"
   import Fa from "svelte-fa"
 
-  export let dragDisabled = true
+  export let dragDisabled: boolean
 
   function startDrag(e: { preventDefault: () => void }) {
     // Prevent default to prevent lag on touch devices
@@ -16,13 +16,12 @@
     }
   }
   function handleUp() {
-	dragDisabled = true
+    dragDisabled = true
   }
 </script>
 
-<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-<div
-  role="application"
+<span
+  role="button"
   aria-labelledby="drag-handle"
   tabindex={dragDisabled ? 0 : -1}
   class="my-auto"
@@ -33,4 +32,4 @@
   on:mouseup={handleUp}
 >
   <Fa icon={faGripVertical} class="w-5 h-5" />
-</div>
+</span>

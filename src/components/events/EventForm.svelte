@@ -7,14 +7,14 @@
   import InputCheckbox from "$components/formHelpers/inputs/InputCheckbox.svelte"
   import type { Dayjs } from "dayjs"
 
-  export let submitLabel: string
-
   export let title = ""
   export let info = ""
   export let date: Dayjs
   export let endDate: Dayjs | undefined
   export let duration = ""
   export let location = ""
+
+  export let submitLabel: string
   export let onSave: () => Promise<void>
 
   let multiDay = endDate !== undefined
@@ -60,7 +60,7 @@
   <FormControlEditor label="Info over event:" bind:value={info} />
 
   <button class="btn btn-primary mt-2 max-w-sm" type="submit" disabled={saving}>
-	{submitLabel}
-	<span class="loading loading-ring" class:hidden={!saving} />
+    {submitLabel}
+    <span class="loading loading-ring" class:hidden={!saving} />
   </button>
 </form>

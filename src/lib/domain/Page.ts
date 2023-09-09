@@ -49,11 +49,10 @@ export class Page {
 
     public createCarouselImages() {
         if (!this.images) return []
-        return this.images.map(async (image, index) => {
+        return this.images.map(async (image) => {
             return {
-                id: index,
                 name: "name",
-                imgurl: image
+                imageUrl: image
             }
         })
     }

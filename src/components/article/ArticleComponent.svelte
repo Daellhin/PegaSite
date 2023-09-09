@@ -2,6 +2,7 @@
   import { goto } from "$app/navigation"
   import EditDropdown from "$components/EditDropdown.svelte"
   import UserContentRenderer from "$components/UserContentRenderer.svelte"
+  import Carousel from "$components/carousel/Carousel.svelte"
   import type { Article } from "$lib/domain/Article"
   import { articleStore } from "$lib/stores/ArticleStore"
   import { authStore } from "$lib/stores/AuthStore"
@@ -11,7 +12,6 @@
     faUser,
     faUsers,
   } from "@fortawesome/free-solid-svg-icons"
-  import { Carousel } from "flowbite-svelte"
   import Fa from "svelte-fa"
   import Time from "svelte-time"
 
@@ -37,7 +37,7 @@
   {/if}
 </div>
 
- <!-- Metadata -->
+<!-- Metadata -->
 <div class="flex flex-col gap-1">
   <div class="flex flex-row flex-wrap gap-x-3 ml-1">
     <!-- Last update -->
@@ -70,7 +70,7 @@
       <span class="opacity-60 text-md">{article.authors.join(", ")}</span>
     </div>
   </div>
-  
+
   <div class="flex flex-row gap-2">
     <!-- Tags -->
     {#each article.tags as tag}
@@ -82,25 +82,10 @@
 <!-- Carousel -->
 {#await Promise.all(article.createCarouselImages()) then images}
   {#if images.length > 0}
-    <div class="bg-base-200 my-2 rounded-lg">
-      <div class="mx-auto custom-carousel w-fit">
-        <Carousel
-          divClass=""
-          {images}
-          showCaptions={false}
-          showThumbs={false}
-          showIndicators={images.length > 1}
-          slideControls={images.length > 1}
-        />
-      </div>
+    <div class="my-2">
+      <Carousel {images} />
     </div>
   {/if}
 {/await}
 
 <UserContentRenderer content={article.content} showLinks />
-
-<style lang="postcss">
-  .custom-carousel :global(img) {
-    @apply w-full max-w-[27.5rem] max-h-[27.5rem] rounded-lg;
-  }
-</style>

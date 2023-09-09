@@ -9,7 +9,7 @@
   <h1 class="text-2xl font-bold mb-2">Sponsors</h1>
   {#if sponsors}
     {#if sponsors.length > 0}
-      <SponsorCarousel items={sponsors} loop hideIndicators />
+      <SponsorCarousel {sponsors} loop />
     {:else}
       Geen sponsors gevonden
     {/if}

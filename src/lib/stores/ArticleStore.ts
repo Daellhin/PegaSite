@@ -1,7 +1,7 @@
 import { browser } from '$app/environment'
 import { Article, articleConverter } from '$lib/domain/Article'
 import { Collections, StorageFolders } from '$lib/firebase/Firebase'
-import { arrayDifference, containArraysSameElements } from '$lib/utils/Array'
+import { arrayDifference, arraysContainSameElements } from '$lib/utils/Array'
 import { WEBP_IMAGE_QUALITY } from '$lib/utils/Constants'
 import { convertStringToBool } from '$lib/utils/Utils'
 import type { Dayjs } from 'dayjs'
@@ -127,35 +127,35 @@ function createArticleStore() {
 		return article || null
 	}
 
-	async function updateArticle(newAuthors: string[], newTags: string[], newTitle: string, newContent: string, lastUpdate: Dayjs, uploadedImages: File[], newExcistingImages: string[], article: Article) {
+	async function updateArticle(newAuthors: string[], newTags: string[], newTitle: string, newContent: string, lastUpdate: Dayjs, combinedImages: (string | File)[], article: Article) {
 		if (!browser) return
 
-		let newImages = Array<string>()
 		const { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } = await import('firebase/storage')
 		const storage = getStorage()
 
-		// -- Remove images --
-		if (!containArraysSameElements(article.images, newExcistingImages)) {
-			const imagesToRemove = arrayDifference(article.images, newExcistingImages)
+		// -- Delete images removed by user --
+		const excistingImages = combinedImages.filter((e) => typeof e === 'string') as string[]
+		if (!arraysContainSameElements(article.images, excistingImages)) {
+			const imagesToRemove = arrayDifference(article.images, excistingImages)
 			await Promise.all(imagesToRemove.map(async (image) => {
 				const imageRef = ref(storage, image)
 				await deleteObject(imageRef)
 			}))
 		}
-		newImages = newExcistingImages
-		// -- Upload images --
-		if (uploadedImages) {
-			// -- Convert images --
-			const convertedImages = await Promise.all(
-				uploadedImages.map((e) => blobToWebP(e, { quality: 90 }))
-			)
-			const uploadedImageLinks = await Promise.all(convertedImages.map(async (image) => {
-				const storageRef = ref(storage, `page-images/${uuidv4()}`)
-				const snapshot = await uploadBytes(storageRef, image)
-				return await getDownloadURL(snapshot.ref)
-			}))
-			newImages.push(...uploadedImageLinks)
-		}
+
+		// -- Upload images, and replace files with urls --
+		const newImages = await Promise.all(combinedImages.map(async (image) => {
+			// -- Keep existing url --
+			if (!(image instanceof File)) return image
+
+			// -- First convert to webp --
+			const convertedImage = blobToWebP(image, { quality: 90 })
+
+			// -- Next upload and replace with url --
+			const storageRef = ref(storage, `page-images/${uuidv4()}`)
+			const snapshot = await uploadBytes(storageRef, await convertedImage)
+			return getDownloadURL(snapshot.ref)
+		}))
 
 		// -- Update article --
 		const { getFirestore, doc, updateDoc } = await import('firebase/firestore')
