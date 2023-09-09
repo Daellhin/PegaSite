@@ -1,9 +1,7 @@
 <script lang="ts">
   import { goto } from "$app/navigation"
-  import FormControlDropzoneOld from "$components/formHelpers/FormControlDropzoneOld.svelte"
-  import FormControlEditor from "$components/formHelpers/FormControlEditor.svelte"
-  import FormControlText from "$components/formHelpers/FormControlText.svelte"
   import PageComponent from "$components/page/Page.svelte"
+  import PageForm from "$components/page/PageForm.svelte"
   import { Link } from "$lib/domain/Link"
   import { Page } from "$lib/domain/Page"
   import { authStore } from "$lib/stores/AuthStore"
@@ -22,11 +20,8 @@
   let existingImages: string[]
 
   let page: Page | undefined | null
-  let saving = false
 
-  async function updatePage(event: SubmitEvent) {
-	event.preventDefault()
-    saving = true
+  async function updatePage() {
     await pageStore.updatePage(
       title,
       content,
@@ -37,7 +32,6 @@
     haveValuesBeenSet = false
     uploadedImages = []
     pushCreatedToast("Pagina gewijzigd", { gotoUrl: page!.getUrl() })
-	saving = false
   }
 
   // -- Preview --
@@ -86,7 +80,7 @@
   {:then previewPage}
     <button class="btn btn-primary btn-xs normal-case" on:click={togglePreview}>
       Sluit preview
-    </button>ca
+    </button>
     <div class="md:mx-2 mb-4 sm:mb-10">
       <PageComponent page={previewPage} isPreview={true} />
     </div>
@@ -102,29 +96,14 @@
     </button>
   </div>
 
-  <form class="flex flex-col gap-2" on:submit={updatePage}>
-    <FormControlText
-      label="Titel van pagina:"
-      placeholder="Titel"
-      value={title}
-      required
-    />
-    <FormControlDropzoneOld
-      label="Afbeeldingen:"
-      bind:uploadedImages
-      bind:existingImages
-    />
-    <FormControlEditor label="Inhoud van bericht:" bind:value={content} />
-
-    <button
-      class="btn btn-primary mt-2 max-w-sm disabled:bg-base-200"
-      type="submit"
-      disabled={saving}
-    >
-      Wijzigingen opslaan
-      <span class="loading loading-dots" class:hidden={!saving} />
-    </button>
-  </form>
+  <PageForm
+    bind:title
+    bind:content
+    bind:uploadedImages
+    bind:existingImages
+    submitLabel="Wijzigingen opslaan"
+    onSave={updatePage}
+  />
 {:else}
   <div>"{data.id}": not found</div>
   <button
