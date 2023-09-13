@@ -29,7 +29,7 @@ jobs:
       - name: Checkout code 
         uses: actions/checkout@v4
         with: 
-          ref: main
+          ref: master
       - name: 'Create env file'
         run: |
           echo "${{ secrets.ENV_FILE }}" > .env
