@@ -39,12 +39,10 @@ jobs:
     environment: production
     needs: version-bump
     steps:
-      - name: Debug
-        run: |
-          git status
-          git log -2
       - name: Checkout code 
         uses: actions/checkout@v3
+      - run: git fetch
+      - run: git pull
       - name: Debug
         run: |
           git status
