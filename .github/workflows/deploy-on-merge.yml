@@ -11,7 +11,7 @@ jobs:
     environment: production
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: 'Automated Version Bump'
         uses: 'phips28/gh-action-bump-version@master'
         with:
@@ -20,33 +20,16 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: 'cat package.json'
         run: cat ./package.json
-      - name: 'Output Step'
-        env:
-          NEW_TAG: ${{ steps.version_bump.outputs.newTag }}
-        run: echo "new tag $NEW_TAG"
-      - name: Debug
-        run: |
-          git status
-          git log -2
-      - run: git push
-      - name: Debug
-        run: |
-          git status
-          git log -2      
-            
+
   build-and-deploy:
     runs-on: ubuntu-latest
     environment: production
     needs: version-bump
     steps:
       - name: Checkout code 
-        uses: actions/checkout@v3
-      - run: git fetch
-      - run: git pull
-      - name: Debug
-        run: |
-          git status
-          git log -2
+        uses: actions/checkout@v4
+        with: 
+          ref: main
       - name: 'Create env file'
         run: |
           echo "${{ secrets.ENV_FILE }}" > .env
