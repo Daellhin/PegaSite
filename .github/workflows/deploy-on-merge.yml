@@ -39,7 +39,6 @@ jobs:
     environment: production
     needs: version-bump
     steps:
-      - run: git fetch
       - name: Debug
         run: |
           git status
