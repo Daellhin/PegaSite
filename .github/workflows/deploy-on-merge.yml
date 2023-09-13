@@ -28,6 +28,7 @@ jobs:
         run: |
           git status
           git log -2
+      - run: git push
             
   build-and-deploy:
     runs-on: ubuntu-latest
