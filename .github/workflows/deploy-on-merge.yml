@@ -24,14 +24,23 @@ jobs:
         env:
           NEW_TAG: ${{ steps.version-bump.outputs.newTag }}
         run: echo "new tag $NEW_TAG"
+      - name: Debug
+        run: |
+          git status
+          git log -2
             
   build-and-deploy:
     runs-on: ubuntu-latest
     environment: production
     needs: version-bump
     steps:
+      - run: ls
       - name: Checkout code 
         uses: actions/checkout@v3
+      - name: Debug
+        run: |
+          git status
+          git log -2
       - name: 'Create env file'
         run: |
           echo "${{ secrets.ENV_FILE }}" > .env
