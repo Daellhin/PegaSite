@@ -18,6 +18,12 @@ jobs:
           tag-prefix: 'v'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: 'cat package.json'
+        run: cat ./package.json
+      - name: 'Output Step'
+        env:
+          NEW_TAG: ${{ steps.version-bump.outputs.newTag }}
+        run: echo "new tag $NEW_TAG"
             
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -29,6 +35,8 @@ jobs:
       - name: 'Create env file'
         run: |
           echo "${{ secrets.ENV_FILE }}" > .env
+      - name: 'cat package.json'
+        run: cat ./package.json
       - run: ' npm ci && npm run build'
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
