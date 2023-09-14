@@ -1,51 +1,17 @@
 <script lang="ts">
   import { goto } from "$app/navigation"
   import InfoCard from "$components/InfoCard.svelte"
-  import SortableTableHeaderRow from "$components/table/SortableTableHeaderRow.svelte"
-  import SearchInput from "$components/formHelpers/inputs/SearchInput.svelte"
-  import NewUserForm from "$components/users/NewUserForm.svelte"
-  import UserRow from "$components/users/UserRow.svelte"
-  import type { DbUser } from "$lib/domain/DbUser"
+  import NewUserForm from "$components/users/UserForm.svelte"
+  import UserTable from "$components/users/UserTable.svelte"
   import { authStore } from "$lib/stores/AuthStore"
   import { pageHeadStore } from "$lib/stores/PageHeadStore"
   import { userStore } from "$lib/stores/UserStore"
-  import { SortOrder } from "$lib/domain/dataClasses/SortOrder"
 
   let showForm = false
-  let searchString = ""
-  let sortColumn = ""
-  let sortOrder = SortOrder.None
-
-  $: filteredUsers =
-    $userStore?.filter((user) => user.matchesSearchString(searchString)) || []
-  $: sortedUsers = sort(filteredUsers, sortColumn, sortOrder)
-
-  function sort(users: DbUser[], sortColumn: string, sortOrder: SortOrder) {
-    if (sortOrder.isNone) return [...users]
-    const newArray = [...users]
-    switch (sortColumn) {
-      case "Naam":
-        newArray.sort((a, b) => a.displayName.localeCompare(b.displayName))
-        break
-      case "Email":
-        newArray.sort((a, b) => a.email.localeCompare(b.email))
-        break
-      case "Rol":
-        newArray.sort((a, b) => a.role.localeCompare(b.role))
-        break
-      case "Aangemaakt":
-        newArray.sort((a, b) =>
-          a.creationTimestamp.isAfter(b.creationTimestamp) ? 1 : -1
-        )
-        break
-    }
-    if (sortOrder.isDesc) newArray.reverse()
-    return newArray
-  }
 
   // -- Authguard --
   $: authStore.dbUser.then((dbUser) => {
-    if (!dbUser || dbUser.role != "admin") goto("/")
+    if (!dbUser || !dbUser.roles.includes("admin")) goto("/")
   })
   // -- Page title --
   pageHeadStore.updatePageTitle("Gebruikers")
@@ -73,51 +39,8 @@
   console
 </InfoCard>
 
-<SearchInput
-  class="mt-3"
-  bind:value={searchString}
-  placeholder="Zoek een gebruiker "
-/>
-
 {#if $userStore}
-  <div class="mt-3 grid">
-    <div class="overflow-x-auto rounded-t-lg">
-      <table class="table">
-        <thead class="bg-base-200">
-          <SortableTableHeaderRow
-            columns={[
-              { name: "Nr", dontSort: true },
-              { name: "Naam" },
-              { name: "Email" },
-              { name: "Rol" },
-              { name: "Aangemaakt" },
-            ]}
-            bind:sortColumn
-            bind:sortOrder
-          />
-        </thead>
-        <tbody>
-          {#each sortedUsers as user, n}
-            <UserRow {user} index={n} />
-          {/each}
-        </tbody>
-      </table>
-    </div>
-    <div class="flex items-center justify-between mt-4">
-      <div class="opacity-80">
-        Weergegeven <span class="font-bold opacity-100"
-          >{filteredUsers.length}</span
-        >
-        van
-        <span class="font-bold opacity-100">{$userStore.length}</span>
-      </div>
-      <div class="join">
-        <button class="join-item btn btn-sm">«</button>
-        <button class="join-item btn btn-sm btn-active">1</button>
-        <button class="join-item btn btn-sm">»</button>
-      </div>
-    </div>
-  </div>
+  <UserTable users={$userStore} />
 {:else}
   Loading
 {/if}

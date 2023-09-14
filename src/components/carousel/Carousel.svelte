@@ -16,7 +16,7 @@
   export let duration = 10000
 
   // -- Counter --
-  let counter = 0
+  export let counter = 0
   $: counter = clamp(counter, 0, images.length - 1)
   function next() {
     counter = (counter + 1) % images.length

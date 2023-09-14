@@ -1,23 +1,29 @@
 <script lang="ts">
-  import type { DbUser } from "$lib/domain/DbUser"
+  import { DbUser } from "$lib/domain/DbUser"
   import { userStore } from "$lib/stores/UserStore"
+  import { handleFirebaseError } from "$lib/utils/Firebase"
   import { pushCreatedToast } from "$lib/utils/Toast"
 
   export let index: number
   export let user: DbUser
+  export let saving: boolean
+  export let updateRoleError = ""
 
-  let role = user.role
+  let role = user.getHighestRole()
 
   function blurAfterSelected(event: Event) {
-    (event.target as HTMLElement).parentElement?.blur()
+    ;(event.target as HTMLElement).parentElement?.blur()
   }
   async function updateRole() {
+    saving = true
     try {
-      await userStore.updateUserRole(user.uid, role)
+      const userRoles = DbUser.getAplicableRoles(role)
+      await userStore.updateUserRole(user.uid, userRoles)
       pushCreatedToast("Rol aangepast", { removeLast: true })
     } catch (error) {
-      console.error(error)
+      updateRoleError = handleFirebaseError(error)
     }
+    saving = false
   }
 </script>
 

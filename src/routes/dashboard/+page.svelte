@@ -1,5 +1,6 @@
 <script lang="ts">
   import { goto } from "$app/navigation"
+  import ErrorLine from "$components/ErrorLine.svelte"
   import { authStore } from "$lib/stores/AuthStore"
   import { pageHeadStore } from "$lib/stores/PageHeadStore"
 
@@ -22,7 +23,7 @@
     <a href="/pages/navbar" class="btn btn-primary normal-case">
       Navigatiebalk wijzigen
     </a>
-    {#if user?.role === "admin"}
+    {#if user.roles.includes("admin")}
       <a href="/sponsors" class="btn btn-primary normal-case"
         >Sponsors wijzigen</a
       >
@@ -30,4 +31,6 @@
       >
     {/if}
   </div>
+{:catch error}
+  <ErrorLine {error} logError />
 {/await}
