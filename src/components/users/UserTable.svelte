@@ -34,7 +34,7 @@
         newArray.sort((a, b) => a.email.localeCompare(b.email))
         break
       case "Rol":
-        newArray.sort((a, b) => a.role.localeCompare(b.role))
+        newArray.sort((a, b) => a.getHighestRole().localeCompare(b.getHighestRole()))
         break
       case "Aangemaakt":
         newArray.sort((a, b) =>

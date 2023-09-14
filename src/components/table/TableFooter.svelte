@@ -1,8 +1,8 @@
 <script lang="ts">
+  import ErrorLine from "$components/ErrorLine.svelte"
   import {
-    faAnglesLeft,
-    faAnglesRight,
-    faCircleExclamation,
+      faAnglesLeft,
+      faAnglesRight
   } from "@fortawesome/free-solid-svg-icons"
   import Fa from "svelte-fa"
 
@@ -37,11 +37,6 @@
     {/if}
   </div>
   {#if error}
-    <div class="flex items-center gap-2 text-error">
-      <Fa icon={faCircleExclamation} class="" />
-      <div>
-        {error}
-      </div>
-    </div>
+    <ErrorLine {error} />
   {/if}
 </div>

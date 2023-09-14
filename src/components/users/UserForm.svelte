@@ -2,6 +2,7 @@
   import DismissableForm from "$components/DismissableForm.svelte"
   import FormControlCustomSelect from "$components/formHelpers/FormControlCustomSelect.svelte"
   import FormControlText from "$components/formHelpers/FormControlText.svelte"
+  import { DbUser, type DbUserRole } from "$lib/domain/DbUser"
   import { userStore } from "$lib/stores/UserStore"
   import { handleFirebaseError } from "$lib/utils/Firebase"
   import { pushCreatedToast } from "$lib/utils/Toast"
@@ -11,11 +12,11 @@
 
   let displayName = ""
   let email = ""
-  let rol = ""
+  let role: DbUserRole | "" = ""
   const tempPass = "123456"
   let errorMessage = ""
 
-  const roles = [
+  const allRoles = [
     { label: "Admin", value: "admin" },
     { label: "Editor", value: "editor" },
   ]
@@ -23,16 +24,22 @@
   async function createUser() {
     try {
       errorMessage = ""
-      await userStore.createUser(email, tempPass, rol, displayName)
+      const userRoles = DbUser.getAplicableRoles(role)
+      await userStore.createUser(email, tempPass, userRoles, displayName)
       pushCreatedToast("Gebruiker aangemaakt")
-      showForm = false;
+      showForm = false
     } catch (error) {
       errorMessage = handleFirebaseError(error)
     }
   }
 </script>
 
-<DismissableForm onSubmit={createUser} bind:showForm error={errorMessage} submitLabel="Gebruiker aanmaken">
+<DismissableForm
+  onSubmit={createUser}
+  bind:showForm
+  error={errorMessage}
+  submitLabel="Gebruiker aanmaken"
+>
   <FormControlText
     label="Naam"
     placeholder="Naam"
@@ -49,8 +56,8 @@
     required
   />
   <FormControlCustomSelect
-    bind:value={rol}
-    items={roles}
+    bind:value={role}
+    items={allRoles}
     label="Rol"
     size="xs"
     required

@@ -16,6 +16,8 @@ export function handleFirebaseError(error: any) {
 			return "Probleem met het netwerk"
 		else if (firebaseEror.code === "auth/email-already-in-use")
 			return "Er bestaat al een gebruiker met dit emailadres"
+		else if (firebaseEror.code === "auth/invalid-email")
+			return "Het opgegeven emailadres is ongeldig"
 		else {
 			logFirebaseError(firebaseEror)
 			return firebaseEror.message

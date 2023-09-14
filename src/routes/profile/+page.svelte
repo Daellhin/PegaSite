@@ -67,7 +67,7 @@
     <h1 class="text-2xl font-bold">Profiel</h1>
     {#await authStore.dbUser then dbUser}
       {#if dbUser}
-        <div class="badge badge-primary capitalize">{dbUser.role}</div>
+        <div class="badge badge-primary capitalize">{dbUser.getHighestRole()}</div>
       {/if}
     {/await}
   </div>

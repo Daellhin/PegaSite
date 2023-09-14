@@ -44,7 +44,7 @@ function createAuthStore() {
 		})
 	})
 
-	const dbUser = new Promise<DbUser | undefined>(async (resolve) => {
+	const dbUser = new Promise<DbUser>(async (resolve, reject) => {
 		const { firebaseApp } = await import('$lib/firebase/Firebase')
 		const { getFirestore, doc, getDoc } = await import('firebase/firestore')
 		const firestore = getFirestore(firebaseApp)
@@ -58,9 +58,9 @@ function createAuthStore() {
 					const userData = pageSnap.data()
 
 					if (userData) resolve(userData)
-					else resolve(undefined)
+					else reject(`DbUser with id ${user.uid} not found`)
 				} catch (error) {
-					resolve(undefined)
+					reject(error)
 				}
 				unsub()
 			}

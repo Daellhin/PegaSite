@@ -3,7 +3,6 @@
   import InfoCard from "$components/InfoCard.svelte"
   import NewUserForm from "$components/users/UserForm.svelte"
   import UserTable from "$components/users/UserTable.svelte"
-  import { SortOrder } from "$lib/domain/dataClasses/SortOrder"
   import { authStore } from "$lib/stores/AuthStore"
   import { pageHeadStore } from "$lib/stores/PageHeadStore"
   import { userStore } from "$lib/stores/UserStore"
@@ -12,7 +11,7 @@
 
   // -- Authguard --
   $: authStore.dbUser.then((dbUser) => {
-    if (!dbUser || dbUser.role != "admin") goto("/")
+    if (!dbUser || !dbUser.roles.includes("admin")) goto("/")
   })
   // -- Page title --
   pageHeadStore.updatePageTitle("Gebruikers")

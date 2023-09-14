@@ -2,65 +2,87 @@ import type { Dayjs } from "dayjs"
 import dayjs from "dayjs"
 import type { FirestoreDataConverter } from "firebase/firestore"
 
+export type DbUserRole = "admin" | "editor"
+function getRoleValue(role: DbUserRole) {
+	switch (role) {
+		case "admin": return 2
+		case "editor": return 1
+		default: throw new Error(`Unknown role: ${role}`)
+	}
+}
+
 export interface DbUserJson {
-    role: string
-    email: string
-    displayName: string
-    creationTimestamp: string
+	roles: DbUserRole[]
+	email: string
+	displayName: string
+	creationTimestamp: string
 }
 
 export class DbUser {
-    public searchableString: string
+	public searchableString: string
 
-    constructor(
-        public uid: string,
-        public role: string,
-        public email: string,
-        public displayName: string,
-        public creationTimestamp: Dayjs
-    ) {
-        this.searchableString = `${role.toLowerCase()} ${email.toLowerCase()} ${displayName.toLowerCase()} ${creationTimestamp.format("DD-MM-YYYY")}`
-    }
+	constructor(
+		public uid: string,
+		public roles: DbUserRole[],
+		public email: string,
+		public displayName: string,
+		public creationTimestamp: Dayjs
+	) {
+		this.searchableString = `${roles.join(" ")} ${email} ${displayName} ${creationTimestamp.format("DD-MM-YYYY")}`.toLowerCase()
+	}
 
-    /**
-     * Checks if DbUser matches a search string
-     * - if searchString is undefined, matches all
-     */
-    matchesSearchString(searchString: string) {
-        if (!searchString) {
-            return true
-        }
-        return !searchString
-            .toLowerCase()
-            .split(" ")
-            .map((keyword) => this.searchableString.includes(keyword))
-            .includes(false)
-    }
+	/**
+	 * Checks if DbUser matches a search string
+	 * - if searchString is undefined, matches all
+	 */
+	matchesSearchString(searchString: string) {
+		if (!searchString) {
+			return true
+		}
+		return !searchString
+			.toLowerCase()
+			.split(" ")
+			.map((keyword) => this.searchableString.includes(keyword))
+			.includes(false)
+	}
 
-    static fromJson(uid: string, json: DbUserJson) {
-        return new DbUser(
-            uid,
-            json.role,
-            json.email,
-            json.displayName,
-            dayjs(Number(json.creationTimestamp))
-        )
-    }
+	getHighestRole() {
+		return this.roles
+			.reduce((previous, current) => (getRoleValue(previous) > getRoleValue(current) ? previous : current))
+	}
 
-    toJson() {
-        return {
-            role: this.role,
-            email: this.email,
-            displayName: this.displayName,
-            creationTimestamp: String(this.creationTimestamp.unix())
-        } as DbUserJson
-    }
+	static getAplicableRoles(role: string): DbUserRole[] {
+		switch (role) {
+			case "admin": return [ "admin", "editor"]
+			case "editor": return [ "editor" ]
+			default: throw new Error(`Unknown role: ${role}`)
+		}
+	}
+
+	static fromJson(uid: string, json: DbUserJson) {
+		return new DbUser(
+			uid,
+			json.roles,
+			json.email,
+			json.displayName,
+			dayjs(Number(json.creationTimestamp))
+		)
+	}
+
+	toJson() {
+		return {
+			roles: this.roles,
+			email: this.email,
+			displayName: this.displayName,
+			creationTimestamp: String(this.creationTimestamp.unix())
+		} as DbUserJson
+	}
 }
 
 /**
  * Firestore data converter
  * */
 export const dbUserConverter: FirestoreDataConverter<DbUser> = {
-    toFirestore: (user: DbUser) => user.toJson(),
-    fromFirestore: (snapshot, options) => DbUser.fromJson(snapshot.id, snapshot.data(options) as DbUserJson)
+	toFirestore: (user: DbUser) => user.toJson(),
+	fromFirestore: (snapshot, options) => DbUser.fromJson(snapshot.id, snapshot.data(options) as DbUserJson)
 }
