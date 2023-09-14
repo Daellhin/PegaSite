@@ -1,12 +1,15 @@
 <script lang="ts">
   import SearchInput from "$components/formHelpers/inputs/SearchInput.svelte"
   import SortableTableHeaderRow from "$components/table/SortableTableHeaderRow.svelte"
+  import TablePagination from "$components/table/TableFooter.svelte"
   import UserRow from "$components/users/UserRow.svelte"
   import type { DbUser } from "$lib/domain/DbUser"
   import { SortOrder } from "$lib/domain/dataClasses/SortOrder"
-  import TablePagination from "$components/table/TableFooter.svelte"
 
   export let users: DbUser[]
+
+  let savingRole = false
+  let updateRoleError = ""
 
   // -- Search --
   let searchString = ""
@@ -69,7 +72,12 @@
       </thead>
       <tbody>
         {#each sortedUsers as user, n}
-          <UserRow {user} index={n} />
+          <UserRow
+            {user}
+            index={n}
+            bind:saving={savingRole}
+            bind:updateRoleError
+          />
         {/each}
       </tbody>
     </table>
@@ -77,5 +85,7 @@
   <TablePagination
     filteredLength={filteredUsers.length}
     fullLength={users.length}
+    saving={savingRole}
+    error={updateRoleError}
   />
 </div>
