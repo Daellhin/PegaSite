@@ -47,6 +47,7 @@
       </div>
     {/if}
     <Carousel
+      bind:counter
       images={sponsors.map((e) => ({
         imageUrl: e.imageUrl,
         alt: "Logo " + e.name,
