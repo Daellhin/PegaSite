@@ -5,7 +5,7 @@
 
   export let loginModalID: string
 
-  let username: string
+  let email: string
   let password: string
   let loginError: string | undefined
 
@@ -14,9 +14,9 @@
   async function submitLogin() {
     try {
       loginError = undefined
-      await authStore.signIn(username, password)
+      await authStore.signIn(email, password)
       showModal = false
-      username = ""
+      email = ""
       password = ""
     } catch (error) {
       loginError = handleFirebaseError(error)
@@ -48,8 +48,8 @@
         <form on:submit={submitLogin} class="mb-5 flex flex-col gap-3">
           <input
             type="text"
-            placeholder="Gebruikersnaam"
-            bind:value={username}
+            placeholder="Email"
+            bind:value={email}
             class="input input-bordered w-full"
             class:input-error={loginError}
           />
