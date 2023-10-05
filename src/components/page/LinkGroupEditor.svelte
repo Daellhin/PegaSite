@@ -1,5 +1,5 @@
 <script lang="ts">
-  import SavableTextInput from "$components/formHelpers/inputs/SavableTextInput.svelte"
+  import SavableInput from "$components/formHelpers/inputs/SavableInput.svelte"
   import LinkEditor from "$components/page/LinkEditor.svelte"
   import { Link, type LinkGroup } from "$lib/domain/Link"
   import { navbarStore } from "$lib/stores/NavbarStore"
@@ -43,7 +43,8 @@
 
 <div>
   <div class="mb-2 max-w-xs">
-    <SavableTextInput
+    <SavableInput
+      type="text"
       bind:value={title}
       placeholder="Titel"
       save={updateGroupTitle}

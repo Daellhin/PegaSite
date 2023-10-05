@@ -1,7 +1,7 @@
 <script lang="ts">
   import { goto } from "$app/navigation"
   import FormControlPassword from "$components/formHelpers/FormControlPassword.svelte"
-  import FormControlSavableText from "$components/formHelpers/FormControlSavableText.svelte"
+  import FormControlSavable from "$components/formHelpers/FormControlSavable.svelte"
   import { authStore } from "$lib/stores/AuthStore"
   import { pageHeadStore } from "$lib/stores/PageHeadStore"
 
@@ -15,13 +15,6 @@
     name = $authStore!.displayName || ""
     return true
   }
-  function validate(inner_value: string) {
-    const pattern = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/g
-    if (!inner_value || !inner_value.trim()) return "Email moet ingevuld zijn"
-    if (!inner_value.match(pattern)) return "Email moet geldig zijn"
-    return undefined
-  }
-
   let passEdited1 = false
   let passEdited2 = false
   function validatePassword1(password1: string) {
@@ -39,7 +32,7 @@
   let saving = false
   let loginError = false
   async function updatePassword(event: SubmitEvent) {
-	event.preventDefault()
+    event.preventDefault()
     if (error1 || error2) return
     try {
       saving = true
@@ -67,11 +60,14 @@
     <h1 class="text-2xl font-bold">Profiel</h1>
     {#await authStore.dbUser then dbUser}
       {#if dbUser}
-        <div class="badge badge-primary capitalize">{dbUser.getHighestRole()}</div>
+        <div class="badge badge-primary capitalize">
+          {dbUser.getHighestRole()}
+        </div>
       {/if}
     {/await}
   </div>
-  <FormControlSavableText
+  <FormControlSavable
+    type="text"
     bind:value={name}
     label="Naam"
     placeholder="Naam"
@@ -80,12 +76,12 @@
     required
     tooltip="Artikels aangemaakt onder oude profielnaam zullen deze naam als author behouden"
   />
-  <FormControlSavableText
+  <FormControlSavable
+    type="email"
     bind:value={email}
     label="Email"
     placeholder="Email"
     save={() => authStore.updateCurrentUserEmail(email)}
-    {validate}
     labelClass="font-semibold"
   />
   <form class="mt-5" on:submit={updatePassword}>
@@ -116,7 +112,7 @@
     {/if}
     <button class="btn btn-primary normal-case mt-3">
       Wachtwoord veranderen
-	  <span class="loading loading-dots" class:hidden={!saving} />
+      <span class="loading loading-dots" class:hidden={!saving} />
     </button>
   </form>
 {:else}
