@@ -1,6 +1,6 @@
 <script lang="ts">
   import { handleFirebaseError } from "$lib/utils/Firebase"
-  import { isChild, sleep } from "$lib/utils/Utils"
+  import { isChild } from "$lib/utils/Utils"
   import { validateEmail } from "$lib/utils/Validators"
   import { faCheck, faPen, faXmark } from "@fortawesome/free-solid-svg-icons"
   import Fa from "svelte-fa"

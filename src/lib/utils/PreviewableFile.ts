@@ -1,4 +1,3 @@
-import { extend } from "dayjs"
 import { readFileAsDataURL } from "./Utils"
 
 export class PreviewableFile extends File {

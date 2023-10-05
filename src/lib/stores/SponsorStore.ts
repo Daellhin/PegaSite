@@ -72,7 +72,7 @@ function createSponsorStore() {
 		// -- Upload new image --
 		let newImageUrl = ""
 		if (newImage instanceof File) {
-			const { getStorage, ref, uploadBytes, deleteObject } = await import('firebase/storage')
+			const { getStorage, ref, uploadBytes } = await import('firebase/storage')
 			const storage = getStorage()
 
 			const convertedImage = await blobToWebP(newImage, { quality: WEBP_IMAGE_QUALITY })
@@ -86,7 +86,7 @@ function createSponsorStore() {
 		const firestore = getFirestore(firebaseApp)
 
 		const docRef = doc(firestore, Collections.SPONSORS, sponsor.id)
-		let updates: any = {
+		const updates: any = {
 			name: newName,
 			url: newUrl
 		}

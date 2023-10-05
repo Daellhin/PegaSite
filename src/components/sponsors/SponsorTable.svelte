@@ -87,7 +87,7 @@
         on:consider={handleConsider}
         on:finalize={handleFinalize}
       >
-        {#each filteredSponsors as sponsor, n (sponsor.id)}
+        {#each filteredSponsors as sponsor (sponsor.id)}
           <SponsorRow
             sponsor={sponsor.sponsor}
             editHandler={startEdit}

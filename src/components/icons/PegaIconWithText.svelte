@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import PegaIcon from "$components/icons/PegaIcon.svelte"
 </script>
 

@@ -1,6 +1,5 @@
 <script lang="ts">
   import { goto } from "$app/navigation"
-  import SearchInput from "$components/formHelpers/inputs/SearchInput.svelte"
   import SponsorForm from "$components/sponsors/SponsorForm.svelte"
   import SponsorTable from "$components/sponsors/SponsorTable.svelte"
   import type { Sponsor } from "$lib/domain/Sponsor"
