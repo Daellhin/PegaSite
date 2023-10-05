@@ -8,6 +8,7 @@
   let password2Edited = false
   let saving = false
   let loginError = false
+  let visible = false
 
   // -- Validate passwords --
   function validatePassword(password1: string) {
@@ -47,6 +48,7 @@
     placeholder="Wachtwoord"
     labelClass="font-semibold"
     bind:passEdited={password1Edited}
+    bind:visible
     required
   />
   <FormControlPassword
@@ -55,6 +57,7 @@
     placeholder="Wachtwoord"
     labelClass="font-semibold"
     bind:passEdited={password2Edited}
+    bind:visible
     required
   />
   {#if error1 && password1Edited && password1 != ""}
