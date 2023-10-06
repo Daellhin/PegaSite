@@ -1,7 +1,6 @@
 import { PAGES_JSON } from '$data/PagesJson'
 import { Page } from '$lib/domain/Page'
 import { PreviewableFile } from '$lib/utils/PreviewableFile'
-import { readFileAsDataURL } from '$lib/utils/Utils'
 import dayjs from 'dayjs'
 import { get, writable } from 'svelte/store'
 

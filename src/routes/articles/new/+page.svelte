@@ -8,7 +8,6 @@
   import { pageHeadStore } from "$lib/stores/PageHeadStore"
   import { PreviewableFile } from "$lib/utils/PreviewableFile"
   import { pushCreatedToast } from "$lib/utils/Toast"
-  import { readFileAsDataURL } from "$lib/utils/Utils"
   import dayjs from "dayjs"
 
   let title = ""

@@ -8,7 +8,6 @@
   import { pageHeadStore } from "$lib/stores/PageHeadStore"
   import { pageStore } from "$lib/stores/PageStore"
   import { pushCreatedToast } from "$lib/utils/Toast"
-  import { readFileAsDataURL } from "$lib/utils/Utils"
   import dayjs from "dayjs"
   import type { PageData } from "./$types"
 

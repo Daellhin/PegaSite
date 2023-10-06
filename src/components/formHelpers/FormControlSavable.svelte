@@ -1,15 +1,16 @@
 <script lang="ts">
-  import SavableTextInput from "$components/formHelpers/inputs/SavableTextInput.svelte"
+  import SavableInput from "$components/formHelpers/inputs/SavableInput.svelte"
   import InfoCircle from "$components/icons/Flowbite/InfoCircle.svelte"
   import { v4 as uuidv4 } from "uuid"
 
   export let label: string
-  export let value: string
+  export let value: any
   export let required = false
   export let size: "sm" | "xs" = "sm"
   export let labelClass = ""
   export let disabled = false
 
+  export let type: "text" | "email" | "number" | "password"
   export let placeholder: string
   export let save: () => Promise<void>
   export let validate: (value: string) => string | undefined = () => undefined
@@ -33,12 +34,23 @@
       </span>
     </label>
     {#if tooltip}
-      <div class="tooltip ml-auto tooltip-left sm:tooltip-bottom" data-tip={tooltip}>
+      <div
+        class="tooltip ml-auto tooltip-left sm:tooltip-bottom"
+        data-tip={tooltip}
+      >
         <button class="btn btn-ghost btn-xs btn-circle">
           <InfoCircle class="" />
         </button>
       </div>
     {/if}
   </div>
-  <SavableTextInput bind:value {placeholder} {save} {id} {validate} {disabled} />
+  <SavableInput
+    {id}
+    {type}
+    bind:value
+    {placeholder}
+    {save}
+    {validate}
+    {disabled}
+  />
 </div>

@@ -6,7 +6,7 @@
   import { userStore } from "$lib/stores/UserStore"
   import { handleFirebaseError } from "$lib/utils/Firebase"
   import { pushCreatedToast } from "$lib/utils/Toast"
-  import { emailValidator } from "$lib/utils/Validators"
+  import { validateEmail } from "$lib/utils/Validators"
 
   export let showForm = false
 
@@ -51,7 +51,7 @@
     label="Email"
     placeholder="user@server.com"
     bind:value={email}
-    validator={emailValidator}
+    validator={validateEmail}
     size="xs"
     required
   />
