@@ -54,6 +54,7 @@
   placeholder="Zoek een gebruiker "
 />
 
+
 <div class="mt-3 grid">
   <div class="overflow-x-auto rounded-t-lg">
     <table class="table">

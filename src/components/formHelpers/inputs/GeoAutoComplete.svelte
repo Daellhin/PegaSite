@@ -1,10 +1,11 @@
 <script lang="ts">
-  import FormControlSearchInput from "$components/formHelpers/FormControlSearchInput.svelte"
   import {
     AutocompleteResponse,
     type AutocompleteResponseWrapperJson,
   } from "$lib/domain/geoapify/AutocompleteResponse"
+  import { faSearch } from "@fortawesome/free-solid-svg-icons"
   import { debounce } from "ts-debounce"
+  import FormControlText from "../FormControlText.svelte"
 
   const apiKey = import.meta.env.VITE_GEOAPIFY_APIKEY
   const minAddressLength = 3
@@ -49,8 +50,8 @@
     result: AutocompleteResponse,
     event: MouseEvent
   ) {
-    value = result.formatted;
-    (event.target as HTMLElement).blur()
+    value = result.formatted
+    ;(event.target as HTMLElement).blur()
   }
 
   const onInput = debounce(validateAndFetch, debounceTime)
@@ -62,7 +63,7 @@
   class:max-w-sm={size === "sm"}
   class:max-w-xs={size === "xs"}
 >
-  <FormControlSearchInput
+  <FormControlText
     {label}
     bind:value
     {onInput}
@@ -70,6 +71,7 @@
     {size}
     {placeholder}
     {disabled}
+    icon={faSearch}
   />
   <button
     tabindex="0"

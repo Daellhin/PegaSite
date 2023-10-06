@@ -1,19 +1,25 @@
 <script lang="ts">
+  import type { IconDefinition } from "@fortawesome/free-solid-svg-icons"
+  import Fa from "svelte-fa"
+
   export let label: string
   export let value: string
   export let required = false
+  export let disabled = false
   export let size: "md" | "sm" | "xs" = "sm"
 
   export let placeholder = ""
-  export let disabled = false
   export let labelClass = ""
   export let validator: (value: string) => string | undefined = () => ""
   export let onInput: () => void = () => {}
+  export let icon: IconDefinition | undefined = undefined
+  export let iconPosition: "left" | "right" = "left"
 
   let edited = false
 
   $: inputId = label?.replace(/[ :]/g, "").toLowerCase()
   $: error = validator(value)
+  $: showIcon = $$slots.icon || icon
 </script>
 
 <div
@@ -30,19 +36,36 @@
       {/if}
     </span>
   </label>
-  <input
-    {required}
-    id={inputId}
-    type="text"
-    {placeholder}
-    class="input input-bordered border-2 w-full"
-    class:bg-base-300={disabled}
-    class:text-slate-700={disabled}
-    bind:value
-    on:focusout={() => (edited = true)}
-    on:input={onInput}
-    {disabled}
-  />
+  <div class:relative={showIcon}>
+    {#if showIcon}
+      <div
+        class="absolute inset-y-0 flex items-center pointer-events-none"
+        class:left-0={iconPosition === "left"}
+        class:pl-3={iconPosition === "left"}
+        class:right-0={iconPosition === "right"}
+        class:pr-3={iconPosition === "right"}
+      >
+        <slot name="icon">
+          <Fa {icon} class="text-gray-500" />
+        </slot>
+      </div>
+    {/if}
+    <input
+      {required}
+      id={inputId}
+      type="text"
+      {placeholder}
+      class="input input-bordered border-2 w-full"
+      class:bg-base-300={disabled}
+      class:text-slate-700={disabled}
+      bind:value
+      on:focusout={() => (edited = true)}
+      on:input={onInput}
+      {disabled}
+	  class:pl-9={iconPosition === "left"}
+	  class:pr-9={iconPosition === "right"}
+    />
+  </div>
   {#if error && edited}
     <label class="label" for={inputId}>
       <span class={"label-text alt text-error " + labelClass}>
