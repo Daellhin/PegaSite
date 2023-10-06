@@ -12,14 +12,15 @@
   export let labelClass = ""
   export let validator: (value: string) => string | undefined = () => ""
   export let onInput: () => void = () => {}
-  export let icon: IconDefinition | undefined = undefined
-  export let iconPosition: "left" | "right" = "left"
+  export let iconLeft: IconDefinition | undefined = undefined
+  export let iconRight: IconDefinition | undefined = undefined
 
   let edited = false
 
   $: inputId = label?.replace(/[ :]/g, "").toLowerCase()
   $: error = validator(value)
-  $: showIcon = $$slots.icon || icon
+  $: showIconLeft = $$slots.iconLeft || iconLeft
+  $: showIconRight = $$slots.iconRight || iconLeft
 </script>
 
 <div
@@ -36,17 +37,13 @@
       {/if}
     </span>
   </label>
-  <div class:relative={showIcon}>
-    {#if showIcon}
+  <div class:relative={showIconLeft || showIconRight}>
+    {#if showIconLeft}
       <div
-        class="absolute inset-y-0 flex items-center pointer-events-none"
-        class:left-0={iconPosition === "left"}
-        class:pl-3={iconPosition === "left"}
-        class:right-0={iconPosition === "right"}
-        class:pr-3={iconPosition === "right"}
+        class="absolute inset-y-0 flex items-center pointer-events-none left-0 pl-3"
       >
-        <slot name="icon">
-          <Fa {icon} class="text-gray-500" />
+        <slot name="iconLeft">
+          <Fa icon={iconLeft} class="text-gray-500" />
         </slot>
       </div>
     {/if}
@@ -62,9 +59,18 @@
       on:focusout={() => (edited = true)}
       on:input={onInput}
       {disabled}
-	  class:pl-9={iconPosition === "left"}
-	  class:pr-9={iconPosition === "right"}
+      class:pl-9={showIconLeft}
+      class:pr-9={showIconRight}
     />
+    {#if showIconRight}
+      <div
+        class="absolute inset-y-0 flex items-center pointer-events-none right-0 pr-3"
+      >
+        <slot name="iconRight">
+          <Fa icon={iconRight} class="text-gray-500" />
+        </slot>
+      </div>
+    {/if}
   </div>
   {#if error && edited}
     <label class="label" for={inputId}>

@@ -3,7 +3,7 @@
     AutocompleteResponse,
     type AutocompleteResponseWrapperJson,
   } from "$lib/domain/geoapify/AutocompleteResponse"
-  import { faSearch } from "@fortawesome/free-solid-svg-icons"
+  import { faLock, faSearch } from "@fortawesome/free-solid-svg-icons"
   import { debounce } from "ts-debounce"
   import FormControlText from "../FormControlText.svelte"
 
@@ -22,11 +22,13 @@
   export let debounceTime = 500
 
   let results = Array<AutocompleteResponse>()
+	let loading = false
 
   async function fetchData() {
     const encodedValue = encodeURIComponent(value)
     const url = `https://api.geoapify.com/v1/geocode/autocomplete?text=${encodedValue}&apiKey=${apiKey}&lang=${lang}&limit=${limit}&format=json`
 
+	loading = true
     const response = await fetch(url)
     if (response.ok) {
       const jsonResponse =
@@ -39,7 +41,9 @@
       const jsonResponse = await response.json()
       console.error(jsonResponse)
     }
+	loading = false
   }
+  $: console.log(loading)
 
   async function validateAndFetch() {
     if (value.length > minAddressLength) await fetchData()
@@ -71,8 +75,14 @@
     {size}
     {placeholder}
     {disabled}
-    icon={faSearch}
-  />
+    iconLeft={faSearch}
+  >
+    <span
+      slot="iconRight"
+      class="loading loading-spinner loading-sm"
+      class:hidden={!loading}
+    />
+  </FormControlText>
   <button
     tabindex="0"
     class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-full"
