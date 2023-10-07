@@ -6,12 +6,13 @@
   export let label: string
   export let value: any
   export let required = false
-  export let size: "sm" | "xs" = "sm"
+  export let disabled = false
+  export let size: "full"| "md" | "sm" | "xs" = "sm"
 
   export let placeholder = "Kies"
   export let items = Array<{ label: string; value: any }>()
   export let groupBy: ((e: any) => any) | undefined = undefined
-  export let searchable = false  
+  export let searchable = false
 
   $: selectId = label?.replace(/[ :]/g, "").toLowerCase()
 
@@ -26,6 +27,7 @@
 
 <div
   class="form-control w-full daisyui-themed"
+  class:max-w-md={size === "md"}
   class:max-w-sm={size === "sm"}
   class:max-w-xs={size === "xs"}
 >
@@ -49,6 +51,7 @@
     {floatingConfig}
     {required}
     {searchable}
+    {disabled}
   >
     <div slot="chevron-icon">
       <Fa icon={faChevronDown} class="text-gray-500 text-sm" />

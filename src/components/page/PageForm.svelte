@@ -27,7 +27,7 @@
     value={title}
     required
   />
-  <FormControlDropzone label="Afbeeldingen:" bind:combinedImages />
+  <FormControlDropzone label="Afbeeldingen:" bind:values={combinedImages} />
   <FormControlEditor label="Inhoud van bericht:" bind:value={content} />
 
   <button class="btn btn-primary mt-2 max-w-sm" type="submit" disabled={saving}>

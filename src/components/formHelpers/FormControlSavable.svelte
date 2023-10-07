@@ -6,10 +6,10 @@
   export let label: string
   export let value: any
   export let required = false
-  export let size: "sm" | "xs" = "sm"
-  export let labelClass = ""
   export let disabled = false
-
+  export let size: "full"| "md" | "sm" | "xs" = "sm"
+  
+  export let labelClass = ""
   export let type: "text" | "email" | "number" | "password"
   export let placeholder: string
   export let save: () => Promise<void>
@@ -21,6 +21,7 @@
 
 <div
   class="form-control w-full"
+  class:max-w-md={size === "md"}
   class:max-w-sm={size === "sm"}
   class:max-w-xs={size === "xs"}
 >

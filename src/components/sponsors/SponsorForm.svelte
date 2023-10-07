@@ -72,7 +72,7 @@
   />
   <FormControlDropzone
     label="Afbeelding"
-    bind:combinedImages={image}
+    bind:values={image}
     sortable={false}
     size="xs"
     required

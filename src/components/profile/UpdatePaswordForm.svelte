@@ -47,7 +47,7 @@
     label="Nieuw wachtwoord"
     placeholder="Wachtwoord"
     labelClass="font-semibold"
-    bind:passEdited={password1Edited}
+    bind:edited={password1Edited}
     bind:visible
     required
   />

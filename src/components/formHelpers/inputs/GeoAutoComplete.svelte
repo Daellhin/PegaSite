@@ -1,9 +1,9 @@
 <script lang="ts">
   import {
-    AutocompleteResponse,
-    type AutocompleteResponseWrapperJson,
+      AutocompleteResponse,
+      type AutocompleteResponseWrapperJson,
   } from "$lib/domain/geoapify/AutocompleteResponse"
-  import { faLock, faSearch } from "@fortawesome/free-solid-svg-icons"
+  import { faSearch } from "@fortawesome/free-solid-svg-icons"
   import { debounce } from "ts-debounce"
   import FormControlText from "../FormControlText.svelte"
 

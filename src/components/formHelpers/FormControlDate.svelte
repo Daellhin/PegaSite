@@ -4,7 +4,8 @@
   export let label: string
   export let value: Dayjs
   export let required = false
-  export let size: "sm" | "xs" = "sm"
+  export let disabled = false
+  export let size: "full"| "md" | "sm" | "xs" = "sm"
 
   let dateInternal = value?.format("YYYY-MM-DD")
   $: value = dayjs(dateInternal)
@@ -14,6 +15,7 @@
 
 <div
   class="form-control w-full"
+  class:max-w-md={size === "md"}
   class:max-w-sm={size === "sm"}
   class:max-w-xs={size === "xs"}
 >
@@ -26,10 +28,11 @@
     </span>
   </label>
   <input
-    {required}
     id={inputId}
-    class="input input-bordered border-2 hover:cursor-text"
     type="date"
     bind:value={dateInternal}
+    {required}
+    {disabled}
+    class="input input-bordered border-2 hover:cursor-text"
   />
 </div>

@@ -2,11 +2,13 @@
   import Dropzone from "$components/formHelpers/inputs/Dropzone.svelte"
 
   export let label: string
-  export let combinedImages: (string | File)[]
-  export let accept = "image/*"
+  export let values: (string | File)[]
   export let required = false
+  export let disabled = false
+  export let size: "full"| "md" | "sm" | "xs" = "sm"
+
+  export let accept = "image/*"
   export let maxAmount = 100
-  export let size: "md" | "sm" | "xs" = "sm"
   export let sortable = true
 </script>
 
@@ -24,5 +26,12 @@
       {/if}
     </span>
   </label>
-  <Dropzone bind:combinedImages {accept} {required} {maxAmount} {sortable}  />
+  <Dropzone
+    bind:combinedImages={values}
+    {accept}
+    {required}
+    {maxAmount}
+    {disabled}
+    {sortable}
+  />
 </div>

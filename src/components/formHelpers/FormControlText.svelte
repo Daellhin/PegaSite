@@ -6,16 +6,15 @@
   export let value: string
   export let required = false
   export let disabled = false
-  export let size: "md" | "sm" | "xs" = "sm"
+  export let size: "full"| "md" | "sm" | "xs" = "sm"
 
   export let placeholder = ""
   export let labelClass = ""
+  export let edited = false
   export let validator: (value: string) => string | undefined = () => ""
   export let onInput: () => void = () => {}
   export let iconLeft: IconDefinition | undefined = undefined
   export let iconRight: IconDefinition | undefined = undefined
-
-  let edited = false
 
   $: inputId = label?.replace(/[ :]/g, "").toLowerCase()
   $: error = validator(value)
@@ -48,17 +47,17 @@
       </div>
     {/if}
     <input
-      {required}
       id={inputId}
       type="text"
+      bind:value
       {placeholder}
+      {required}
+      {disabled}
+      on:focusout={() => (edited = true)}
+      on:input={onInput}
       class="input input-bordered border-2 w-full"
       class:bg-base-300={disabled}
       class:text-slate-700={disabled}
-      bind:value
-      on:focusout={() => (edited = true)}
-      on:input={onInput}
-      {disabled}
       class:pl-9={showIconLeft}
       class:pr-9={showIconRight}
     />

@@ -4,7 +4,8 @@
   export let label: string
   export let values: string[]
   export let required = false
-  export let size: "sm" | "xs" = "sm"
+  export let disabled = false
+  export let size: "full"| "md" | "sm" | "xs" = "sm"
 
   export let placeholder = "Kies"
   export let options = Array<string>()
@@ -13,6 +14,7 @@
 
 <div
   class="form-control w-full"
+  class:max-w-md={size === "md"}
   class:max-w-sm={size === "sm"}
   class:max-w-xs={size === "xs"}
 >
@@ -29,6 +31,7 @@
     {options}
     {allowUserOptions}
     {placeholder}
+	{disabled}
   />
 </div>
 
