@@ -1,10 +1,11 @@
 <script lang="ts">
-  import FormControlSearchInput from "$components/formHelpers/FormControlSearchInput.svelte"
   import {
-    AutocompleteResponse,
-    type AutocompleteResponseWrapperJson,
+      AutocompleteResponse,
+      type AutocompleteResponseWrapperJson,
   } from "$lib/domain/geoapify/AutocompleteResponse"
+  import { faSearch } from "@fortawesome/free-solid-svg-icons"
   import { debounce } from "ts-debounce"
+  import FormControlText from "../FormControlText.svelte"
 
   const apiKey = import.meta.env.VITE_GEOAPIFY_APIKEY
   const minAddressLength = 3
@@ -21,11 +22,13 @@
   export let debounceTime = 500
 
   let results = Array<AutocompleteResponse>()
+	let loading = false
 
   async function fetchData() {
     const encodedValue = encodeURIComponent(value)
     const url = `https://api.geoapify.com/v1/geocode/autocomplete?text=${encodedValue}&apiKey=${apiKey}&lang=${lang}&limit=${limit}&format=json`
 
+	loading = true
     const response = await fetch(url)
     if (response.ok) {
       const jsonResponse =
@@ -38,6 +41,7 @@
       const jsonResponse = await response.json()
       console.error(jsonResponse)
     }
+	loading = false
   }
 
   async function validateAndFetch() {
@@ -49,8 +53,8 @@
     result: AutocompleteResponse,
     event: MouseEvent
   ) {
-    value = result.formatted;
-    (event.target as HTMLElement).blur()
+    value = result.formatted
+    ;(event.target as HTMLElement).blur()
   }
 
   const onInput = debounce(validateAndFetch, debounceTime)
@@ -62,7 +66,7 @@
   class:max-w-sm={size === "sm"}
   class:max-w-xs={size === "xs"}
 >
-  <FormControlSearchInput
+  <FormControlText
     {label}
     bind:value
     {onInput}
@@ -70,7 +74,14 @@
     {size}
     {placeholder}
     {disabled}
-  />
+    iconLeft={faSearch}
+  >
+    <span
+      slot="iconRight"
+      class="loading loading-spinner loading-sm"
+      class:hidden={!loading}
+    />
+  </FormControlText>
   <button
     tabindex="0"
     class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-full"

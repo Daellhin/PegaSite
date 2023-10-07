@@ -30,7 +30,7 @@
     value={title}
     required
   />
-  <FormControlDropzone label="Afbeeldingen:" bind:combinedImages />
+  <FormControlDropzone label="Afbeeldingen:" bind:values={combinedImages} />
   <FormControlMultiSelect
     label="Categorieën:"
     bind:values={tags}

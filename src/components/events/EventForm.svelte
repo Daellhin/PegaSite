@@ -5,6 +5,7 @@
   import FormControlText from "$components/formHelpers/FormControlText.svelte"
   import GeoAutoComplete from "$components/formHelpers/inputs/GeoAutoComplete.svelte"
   import InputCheckbox from "$components/formHelpers/inputs/InputCheckbox.svelte"
+  import { handleFirebaseError } from "$lib/utils/Firebase"
   import type { Dayjs } from "dayjs"
 
   export let title = ""
@@ -20,13 +21,18 @@
   let multiDay = endDate !== undefined
   let endDateInner = endDate || date
   let saving = false
+  let formError = ""
 
   $: endDate = multiDay ? endDateInner : undefined
 
   async function onSubmitWrapper(event: SubmitEvent) {
     event.preventDefault()
     saving = true
-    await onSave()
+    try {
+      await onSave()
+    } catch (error) {
+      formError = handleFirebaseError(error)
+    }
     saving = false
   }
 </script>
@@ -63,4 +69,5 @@
     {submitLabel}
     <span class="loading loading-ring" class:hidden={!saving} />
   </button>
+  <p class="text-error">{formError}</p>
 </form>

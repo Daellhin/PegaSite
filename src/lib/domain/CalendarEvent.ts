@@ -64,7 +64,7 @@ export class CalendarEvent {
             location: this.location,
             title: this.title,
             info: this.info,
-            endDate: this.endDate ? Timestamp.fromDate(this.endDate.toDate()) : undefined
+            endDate: this.endDate ? Timestamp.fromDate(this.endDate.toDate()) : null
         } as CalendarEventJson
     }
 }
