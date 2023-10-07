@@ -18,6 +18,10 @@ export function handleFirebaseError(error: any) {
 			return "Er bestaat al een gebruiker met dit emailadres"
 		else if (firebaseEror.code === "auth/invalid-email")
 			return "Het opgegeven emailadres is ongeldig"
+		else if (firebaseEror.code === "invalid-argument") {
+			logFirebaseError(firebaseEror)
+			return "Er ging iets mis bij het opslaan van de gegevens in de databank(code: invalid-argument)"
+		}
 		else {
 			logFirebaseError(firebaseEror)
 			return firebaseEror.message

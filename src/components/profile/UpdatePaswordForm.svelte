@@ -56,7 +56,7 @@
     label="Herhaal wachtwoord"
     placeholder="Wachtwoord"
     labelClass="font-semibold"
-    bind:passEdited={password2Edited}
+    bind:edited={password2Edited}
     bind:visible
     required
   />

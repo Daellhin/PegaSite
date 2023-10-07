@@ -43,7 +43,6 @@
     }
 	loading = false
   }
-  $: console.log(loading)
 
   async function validateAndFetch() {
     if (value.length > minAddressLength) await fetchData()
