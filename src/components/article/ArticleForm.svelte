@@ -1,8 +1,8 @@
 <script lang="ts">
   import FormControlDropzone from "$components/formHelpers/FormControlDropzone.svelte"
-  import FormControlEditor from "$components/formHelpers/FormControlEditor.svelte"
+  import FormControlInput from "$components/formHelpers/FormControlEditor.svelte"
   import FormControlMultiSelect from "$components/formHelpers/FormControlMultiSelect.svelte"
-  import FormControlText from "$components/formHelpers/FormControlText.svelte"
+  import FormControlText from "$components/formHelpers/FormControlInput.svelte"
   import { CategoryValues } from "$lib/domain/Category"
 
   export let title = ""
@@ -36,7 +36,7 @@
     bind:values={tags}
     options={CategoryValues}
   />
-  <FormControlEditor label="Inhoud van artikel:" bind:value={content} />
+  <FormControlInput label="Inhoud van artikel:" bind:value={content} />
 
   <button class="btn btn-primary mt-2 max-w-sm" type="submit" disabled={saving}>
     {submitLabel}

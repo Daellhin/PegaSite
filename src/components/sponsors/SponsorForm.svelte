@@ -1,7 +1,7 @@
 <script lang="ts">
   import DismissableForm from "$components/DismissableForm.svelte"
   import FormControlDropzone from "$components/formHelpers/FormControlDropzone.svelte"
-  import FormControlText from "$components/formHelpers/FormControlText.svelte"
+  import FormControlInput from "$components/formHelpers/FormControlInput.svelte"
   import { Sponsor } from "$lib/domain/Sponsor"
   import { sponsorStore } from "$lib/stores/SponsorStore"
   import { handleFirebaseError } from "$lib/utils/Firebase"
@@ -56,14 +56,14 @@
   submitLabel={editSponsor ? "Wijzigen" : "Aanmaken"}
   {onDismiss}
 >
-  <FormControlText
+  <FormControlInput
     label="Naam"
     placeholder="Naam"
     bind:value={name}
     size="xs"
     required
   />
-  <FormControlText
+  <FormControlInput
     label="Link"
     placeholder="Link"
     bind:value={url}

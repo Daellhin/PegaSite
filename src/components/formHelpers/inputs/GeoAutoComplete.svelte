@@ -5,7 +5,7 @@
   } from "$lib/domain/geoapify/AutocompleteResponse"
   import { faSearch } from "@fortawesome/free-solid-svg-icons"
   import { debounce } from "ts-debounce"
-  import FormControlText from "../FormControlText.svelte"
+  import FormControlInput from "$components/formHelpers/FormControlInput.svelte"
 
   const apiKey = import.meta.env.VITE_GEOAPIFY_APIKEY
   const minAddressLength = 3
@@ -66,7 +66,7 @@
   class:max-w-sm={size === "sm"}
   class:max-w-xs={size === "xs"}
 >
-  <FormControlText
+  <FormControlInput
     {label}
     bind:value
     {onInput}
@@ -81,7 +81,7 @@
       class="loading loading-spinner loading-sm"
       class:hidden={!loading}
     />
-  </FormControlText>
+  </FormControlInput>
   <button
     tabindex="0"
     class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-full"

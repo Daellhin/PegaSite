@@ -2,7 +2,7 @@
   import FormControlDate from "$components/formHelpers/FormControlDate.svelte"
   import FormControlEditor from "$components/formHelpers/FormControlEditor.svelte"
   import FormControlFullDuration from "$components/formHelpers/FormControlFullDuration.svelte"
-  import FormControlText from "$components/formHelpers/FormControlText.svelte"
+  import FormControlInput from "$components/formHelpers/FormControlInput.svelte"
   import GeoAutoComplete from "$components/formHelpers/inputs/GeoAutoComplete.svelte"
   import InputCheckbox from "$components/formHelpers/inputs/InputCheckbox.svelte"
   import { handleFirebaseError } from "$lib/utils/Firebase"
@@ -38,7 +38,7 @@
 </script>
 
 <form class="flex flex-col gap-2" on:submit={onSubmitWrapper}>
-  <FormControlText
+  <FormControlInput
     label="Titel van event:"
     placeholder="Titel"
     bind:value={title}

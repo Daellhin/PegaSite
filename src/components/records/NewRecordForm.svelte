@@ -2,7 +2,7 @@
   import DismisableForm from "$components/DismissableForm.svelte"
   import FormControlCustomSelect from "$components/formHelpers/FormControlCustomSelect.svelte"
   import FormControlDate from "$components/formHelpers/FormControlDate.svelte"
-  import FormControlText from "$components/formHelpers/FormControlText.svelte"
+  import FormControlInput from "$components/formHelpers/FormControlInput.svelte"
   import { RecordInstance } from "$lib/domain/RecordInstance"
   import { AthleticEvent } from "$lib/domain/dataClasses/AthleticEvent"
   import { Category } from "$lib/domain/dataClasses/Category"
@@ -76,21 +76,21 @@
     label="Geslacht"
     size="xs"
   />
-  <FormControlText
+  <FormControlInput
     label="Naam"
     placeholder="Voornaam Naam"
     bind:value={name}
     size="xs"
     required
   />
-  <FormControlText
+  <FormControlInput
     label="Prestatie"
     placeholder="00.00"
     bind:value={result}
     size="xs"
     required
   />
-  <FormControlText
+  <FormControlInput
     label="Locatie"
     placeholder="Locatie"
     bind:value={location}

@@ -51,7 +51,7 @@
 
   // -- Focus --
   function focus() {
-	focused = true
+    focused = true
   }
   function unfocus(e: FocusEvent) {
     if (!isChild(e.relatedTarget, divParent)) focused = false
