@@ -39,6 +39,7 @@
 
 <form class="flex flex-col gap-2" on:submit={onSubmitWrapper}>
   <FormControlInput
+    type="text"
     label="Titel van event:"
     placeholder="Titel"
     bind:value={title}

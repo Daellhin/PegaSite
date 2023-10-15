@@ -1,7 +1,7 @@
 <script lang="ts">
   import {
-      AutocompleteResponse,
-      type AutocompleteResponseWrapperJson,
+    AutocompleteResponse,
+    type AutocompleteResponseWrapperJson,
   } from "$lib/domain/geoapify/AutocompleteResponse"
   import { faSearch } from "@fortawesome/free-solid-svg-icons"
   import { debounce } from "ts-debounce"
@@ -22,13 +22,13 @@
   export let debounceTime = 500
 
   let results = Array<AutocompleteResponse>()
-	let loading = false
+  let loading = false
 
   async function fetchData() {
     const encodedValue = encodeURIComponent(value)
     const url = `https://api.geoapify.com/v1/geocode/autocomplete?text=${encodedValue}&apiKey=${apiKey}&lang=${lang}&limit=${limit}&format=json`
 
-	loading = true
+    loading = true
     const response = await fetch(url)
     if (response.ok) {
       const jsonResponse =
@@ -41,7 +41,7 @@
       const jsonResponse = await response.json()
       console.error(jsonResponse)
     }
-	loading = false
+    loading = false
   }
 
   async function validateAndFetch() {
@@ -67,6 +67,7 @@
   class:max-w-xs={size === "xs"}
 >
   <FormControlInput
+    type="text"
     {label}
     bind:value
     {onInput}

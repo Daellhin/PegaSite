@@ -38,7 +38,11 @@
   }
 </script>
 
-<DismisableForm onSubmit={createRecord} bind:showForm submitLabel="Clubrecord aanmaken">
+<DismisableForm
+  onSubmit={createRecord}
+  bind:showForm
+  submitLabel="Clubrecord aanmaken"
+>
   <FormControlCustomSelect
     bind:value={discipline}
     items={Discipline.Disciplines.map((e) => ({
@@ -77,6 +81,7 @@
     size="xs"
   />
   <FormControlInput
+    type="text"
     label="Naam"
     placeholder="Voornaam Naam"
     bind:value={name}
@@ -84,6 +89,7 @@
     required
   />
   <FormControlInput
+    type="text"
     label="Prestatie"
     placeholder="00.00"
     bind:value={result}
@@ -91,6 +97,7 @@
     required
   />
   <FormControlInput
+    type="text"
     label="Locatie"
     placeholder="Locatie"
     bind:value={location}

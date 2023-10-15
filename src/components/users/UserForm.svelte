@@ -41,6 +41,7 @@
   submitLabel="Gebruiker aanmaken"
 >
   <FormControlInput
+    type="text"
     label="Naam"
     placeholder="Naam"
     bind:value={displayName}
@@ -48,10 +49,11 @@
     required
   />
   <FormControlInput
+    type="text"
     label="Email"
     placeholder="user@server.com"
     bind:value={email}
-    validator={validateEmail}
+    validate={validateEmail}
     size="xs"
     required
   />
@@ -63,6 +65,7 @@
     required
   />
   <FormControlInput
+    type="text"
     label="Tijdelijk wachtwoord"
     value={tempPass}
     size="xs"

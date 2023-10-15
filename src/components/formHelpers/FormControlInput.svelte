@@ -1,25 +1,39 @@
 <script lang="ts">
+  import { validateEmail } from "$lib/utils/Validators"
   import type { IconDefinition } from "@fortawesome/free-solid-svg-icons"
   import Fa from "svelte-fa"
 
   export let label: string
-  export let value: string
+  export let value: any
   export let required = false
   export let disabled = false
-  export let size: "full"| "md" | "sm" | "xs" = "sm"
+  export let size: "full" | "md" | "sm" | "xs" = "sm"
 
+  export let type: "text" | "email"
   export let placeholder = ""
   export let labelClass = ""
   export let edited = false
-  export let validator: (value: string) => string | undefined = () => ""
+  export let validate: (value: string) => string | undefined = () => ""
   export let onInput: () => void = () => {}
   export let iconLeft: IconDefinition | undefined = undefined
   export let iconRight: IconDefinition | undefined = undefined
 
   $: inputId = label?.replace(/[ :]/g, "").toLowerCase()
-  $: error = validator(value)
+  $: error = validate(value)
   $: showIconLeft = $$slots.iconLeft || iconLeft
   $: showIconRight = $$slots.iconRight || iconLeft
+
+  // -- Type --
+  function typeAction(node: HTMLInputElement) {
+    // Replace email type with text type, because browser email validation is kinda crappy
+    if (type === "email") {
+      const oldValidate = validate
+      validate = (value) => validateEmail(value) || oldValidate(value)
+      node.type = "text"
+    } else {
+      node.type = type
+    }
+  }
 </script>
 
 <div
@@ -48,7 +62,7 @@
     {/if}
     <input
       id={inputId}
-      type="text"
+	  use:typeAction
       bind:value
       {placeholder}
       {required}

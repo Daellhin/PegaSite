@@ -57,6 +57,7 @@
   {onDismiss}
 >
   <FormControlInput
+    type="text"
     label="Naam"
     placeholder="Naam"
     bind:value={name}
@@ -64,6 +65,7 @@
     required
   />
   <FormControlInput
+    type="text"
     label="Link"
     placeholder="Link"
     bind:value={url}

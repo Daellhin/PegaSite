@@ -22,6 +22,7 @@
 
 <form class="flex flex-col gap-2" on:submit={onSubmitWrapper}>
   <FormControlInput
+    type="text"
     label="Titel van pagina:"
     placeholder="Titel"
     value={title}
