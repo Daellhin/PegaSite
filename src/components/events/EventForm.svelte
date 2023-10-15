@@ -1,5 +1,4 @@
 <script lang="ts">
-  import FormControlDate from "$components/formHelpers/FormControlDate.svelte"
   import FormControlEditor from "$components/formHelpers/FormControlEditor.svelte"
   import FormControlFullDuration from "$components/formHelpers/FormControlFullDuration.svelte"
   import FormControlInput from "$components/formHelpers/FormControlInput.svelte"
@@ -45,15 +44,17 @@
     bind:value={title}
     required
   />
-  <FormControlDate
+  <FormControlInput
+    type="date"
     label={multiDay ? "Startdatum van event:" : "Datum van event:"}
     bind:value={date}
     required
   />
   <InputCheckbox label="Meerdaags event" bind:value={multiDay} />
   {#if multiDay}
-    <FormControlDate
-      label="Enddatum van event:"
+    <FormControlInput
+      type="date"
+      label="Einddatum van event:"
       bind:value={endDateInner}
       required
     />

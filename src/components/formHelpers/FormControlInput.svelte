@@ -1,6 +1,7 @@
 <script lang="ts">
   import { validateEmail } from "$lib/utils/Validators"
   import type { IconDefinition } from "@fortawesome/free-solid-svg-icons"
+  import dayjs from "dayjs"
   import Fa from "svelte-fa"
 
   export let label: string
@@ -9,7 +10,7 @@
   export let disabled = false
   export let size: "full" | "md" | "sm" | "xs" = "sm"
 
-  export let type: "text" | "email"
+  export let type: "text" | "email" | "date"
   export let placeholder = ""
   export let labelClass = ""
   export let edited = false
@@ -23,7 +24,20 @@
   $: showIconLeft = $$slots.iconLeft || iconLeft
   $: showIconRight = $$slots.iconRight || iconLeft
 
-  // -- Type --
+  // -- Value handling --
+  let internalValue = initValue(value)
+  $: value = formatValue(internalValue)
+
+  function initValue(value: any) {
+    if (type === "date") return value?.format("YYYY-MM-DD")
+    return value
+  }
+  function formatValue(value: any) {
+    if (type === "date") return dayjs(internalValue)
+    return value
+  }
+
+  // -- Type handling --
   function typeAction(node: HTMLInputElement) {
     // Replace email type with text type, because browser email validation is kinda crappy
     if (type === "email") {
@@ -62,14 +76,14 @@
     {/if}
     <input
       id={inputId}
-	  use:typeAction
-      bind:value
+      use:typeAction
+      bind:value={internalValue}
       {placeholder}
       {required}
       {disabled}
       on:focusout={() => (edited = true)}
       on:input={onInput}
-      class="input input-bordered border-2 w-full"
+      class="input input-bordered border-2 w-full hover:cursor-text"
       class:bg-base-300={disabled}
       class:text-slate-700={disabled}
       class:pl-9={showIconLeft}

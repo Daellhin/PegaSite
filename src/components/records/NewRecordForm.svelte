@@ -1,7 +1,6 @@
 <script lang="ts">
   import DismisableForm from "$components/DismissableForm.svelte"
   import FormControlCustomSelect from "$components/formHelpers/FormControlCustomSelect.svelte"
-  import FormControlDate from "$components/formHelpers/FormControlDate.svelte"
   import FormControlInput from "$components/formHelpers/FormControlInput.svelte"
   import { RecordInstance } from "$lib/domain/RecordInstance"
   import { AthleticEvent } from "$lib/domain/dataClasses/AthleticEvent"
@@ -104,5 +103,11 @@
     size="xs"
     required
   />
-  <FormControlDate label="Datum" bind:value={date} size="xs" required />
+  <FormControlInput
+    type="date"
+    label="Datum"
+    size="xs"
+    bind:value={date}
+    required
+  />
 </DismisableForm>
