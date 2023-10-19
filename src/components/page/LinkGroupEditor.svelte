@@ -1,5 +1,5 @@
 <script lang="ts">
-    import FormControlSavable from "$components/formHelpers/FormControlSavable.svelte"
+    import Savable from "$components/formHelpers/SavableInput.svelte"
     import LinkEditor from "$components/page/LinkEditor.svelte"
     import { Link, type LinkGroup } from "$lib/domain/Link"
     import { navbarStore } from "$lib/stores/NavbarStore"
@@ -43,7 +43,7 @@
 
 <div>
   <div class="mb-2 max-w-xs">
-    <FormControlSavable
+    <Savable
       type="text"
       bind:value={title}
       placeholder="Titel"

@@ -1,7 +1,7 @@
 <script lang="ts">
   import DismissableForm from "$components/DismissableForm.svelte"
-  import FormControlDropzone from "$components/formHelpers/FormControlDropzone.svelte"
-  import FormControlInput from "$components/formHelpers/FormControlInput.svelte"
+  import Dropzone from "$components/formHelpers/Dropzone.svelte"
+  import Input from "$components/formHelpers/Input.svelte"
   import { Sponsor } from "$lib/domain/Sponsor"
   import { sponsorStore } from "$lib/stores/SponsorStore"
   import { handleFirebaseError } from "$lib/utils/Firebase"
@@ -56,7 +56,7 @@
   submitLabel={editSponsor ? "Wijzigen" : "Aanmaken"}
   {onDismiss}
 >
-  <FormControlInput
+  <Input
     type="text"
     label="Naam"
     placeholder="Naam"
@@ -64,7 +64,7 @@
     size="xs"
     required
   />
-  <FormControlInput
+  <Input
     type="text"
     label="Link"
     placeholder="Link"
@@ -72,9 +72,9 @@
     size="xs"
     required
   />
-  <FormControlDropzone
+  <Dropzone
     label="Afbeelding"
-    bind:values={image}
+    bind:combinedImages={image}
     sortable={false}
     size="xs"
     required

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import FormControlInput from "$components/formHelpers/FormControlInput.svelte"
+    import Input from "$components/formHelpers/Input.svelte"
   import NewRecordForm from "$components/records/NewRecordForm.svelte"
   import RecordsTable from "$components/records/RecordsList.svelte"
   import { Category } from "$lib/domain/dataClasses/Category"
@@ -33,7 +33,7 @@
 
 <!-- Search -->
 <div class="mt-2">
-  <FormControlInput
+  <Input
     type="text"
     bind:value={searchString}
     placeholder="Zoek een clubrecord"

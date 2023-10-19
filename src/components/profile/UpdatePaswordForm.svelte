@@ -1,5 +1,5 @@
 <script lang="ts">
-  import FormControlInput from "$components/formHelpers/FormControlInput.svelte"
+  import Input from "$components/formHelpers/Input.svelte"
   import { authStore } from "$lib/stores/AuthStore"
 
   let password1 = ""
@@ -42,7 +42,7 @@
 </script>
 
 <form on:submit={updatePassword}>
-  <FormControlInput
+  <Input
     type="password"
     bind:value={password1}
     bind:edited={password1Edited}
@@ -52,7 +52,7 @@
     labelClass="font-semibold"
     required
   />
-  <FormControlInput
+  <Input
     type="password"
     bind:value={password2}
     bind:edited={password2Edited}

@@ -1,7 +1,7 @@
 <script lang="ts">
   import DismisableForm from "$components/DismissableForm.svelte"
-  import FormControlCustomSelect from "$components/formHelpers/FormControlCustomSelect.svelte"
-  import FormControlInput from "$components/formHelpers/FormControlInput.svelte"
+  import CustomSelect from "$components/formHelpers/CustomSelect.svelte"
+  import Input from "$components/formHelpers/Input.svelte"
   import { RecordInstance } from "$lib/domain/RecordInstance"
   import { AthleticEvent } from "$lib/domain/dataClasses/AthleticEvent"
   import { Category } from "$lib/domain/dataClasses/Category"
@@ -42,7 +42,7 @@
   bind:showForm
   submitLabel="Clubrecord aanmaken"
 >
-  <FormControlCustomSelect
+  <CustomSelect
     bind:value={discipline}
     items={Discipline.Disciplines.map((e) => ({
       value: e,
@@ -52,7 +52,7 @@
     label="Disipline"
     size="xs"
   />
-  <FormControlCustomSelect
+  <CustomSelect
     bind:value={athleticEvent}
     items={AthleticEvent.AthleticEvents.map((e) => ({
       value: e,
@@ -61,7 +61,7 @@
     label="Indoor/outdoor"
     size="xs"
   />
-  <FormControlCustomSelect
+  <CustomSelect
     bind:value={category}
     items={Category.Categories.map((e) => ({
       value: e,
@@ -70,7 +70,7 @@
     label="Categorie"
     size="xs"
   />
-  <FormControlCustomSelect
+  <CustomSelect
     bind:value={gender}
     items={Gender.Genders.map((e) => ({
       value: e,
@@ -79,7 +79,7 @@
     label="Geslacht"
     size="xs"
   />
-  <FormControlInput
+  <Input
     type="text"
     label="Naam"
     placeholder="Voornaam Naam"
@@ -87,7 +87,7 @@
     size="xs"
     required
   />
-  <FormControlInput
+  <Input
     type="text"
     label="Prestatie"
     placeholder="00.00"
@@ -95,7 +95,7 @@
     size="xs"
     required
   />
-  <FormControlInput
+  <Input
     type="text"
     label="Locatie"
     placeholder="Locatie"
@@ -103,7 +103,7 @@
     size="xs"
     required
   />
-  <FormControlInput
+  <Input
     type="date"
     label="Datum"
     size="xs"

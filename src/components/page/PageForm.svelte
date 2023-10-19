@@ -1,7 +1,7 @@
 <script lang="ts">
-  import FormControlDropzone from "$components/formHelpers/FormControlDropzone.svelte"
-  import FormControlEditor from "$components/formHelpers/FormControlEditor.svelte"
-  import FormControlInput from "$components/formHelpers/FormControlInput.svelte"
+  import Dropzone from "$components/formHelpers/Dropzone.svelte"
+  import CLEditor from "$components/formHelpers/CLEditor.svelte"
+  import Input from "$components/formHelpers/Input.svelte"
 
   export let title = ""
   export let content = ""
@@ -21,15 +21,15 @@
 </script>
 
 <form class="flex flex-col gap-2" on:submit={onSubmitWrapper}>
-  <FormControlInput
+  <Input
     type="text"
     label="Titel van pagina:"
     placeholder="Titel"
     value={title}
     required
   />
-  <FormControlDropzone label="Afbeeldingen:" bind:values={combinedImages} />
-  <FormControlEditor label="Inhoud van bericht:" bind:value={content} />
+  <Dropzone label="Afbeeldingen:" bind:combinedImages />
+  <CLEditor label="Inhoud van bericht:" bind:value={content} />
 
   <button class="btn btn-primary mt-2 max-w-sm" type="submit" disabled={saving}>
     {submitLabel}

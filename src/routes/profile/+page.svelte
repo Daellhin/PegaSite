@@ -1,6 +1,7 @@
 <script lang="ts">
   import { goto } from "$app/navigation"
-  import FormControlSavable from "$components/formHelpers/FormControlSavable.svelte"
+  import SavableInput from "$components/formHelpers/SavableInput.svelte"
+  import Savable from "$components/formHelpers/SavableInput.svelte"
   import UpdatePaswordForm from "$components/profile/UpdatePaswordForm.svelte"
   import { authStore } from "$lib/stores/AuthStore"
   import { pageHeadStore } from "$lib/stores/PageHeadStore"
@@ -34,8 +35,8 @@
     {/await}
   </div>
   <div>
-	<h-2 class="font-bold text-lg">Gegevens</h-2>
-    <FormControlSavable
+    <h-2 class="font-bold text-lg">Gegevens</h-2>
+    <Savable
       type="text"
       bind:value={name}
       label="Naam"
@@ -45,7 +46,8 @@
       required
       tooltip="Artikels aangemaakt onder oude profielnaam zullen deze naam als auteur behouden"
     />
-    <FormControlSavable
+
+    <SavableInput
       type="email"
       bind:value={email}
       label="Email"

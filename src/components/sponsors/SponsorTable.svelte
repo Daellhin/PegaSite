@@ -1,5 +1,5 @@
 <script lang="ts">
-  import FormControlInput from "$components/formHelpers/FormControlInput.svelte"
+  import Input from "$components/formHelpers/Input.svelte"
   import InfoCircle from "$components/icons/Flowbite/InfoCircle.svelte"
   import SponsorRow from "$components/sponsors/SponsorRow.svelte"
   import TablePagination from "$components/table/TableFooter.svelte"
@@ -50,7 +50,7 @@
 </script>
 
 <div class="mt-2">
-  <FormControlInput
+  <Input
     type="text"
     bind:value={searchString}
     placeholder="Zoek een sponsor"

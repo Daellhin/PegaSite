@@ -1,7 +1,7 @@
 <script lang="ts">
   import DismissableForm from "$components/DismissableForm.svelte"
-  import FormControlCustomSelect from "$components/formHelpers/FormControlCustomSelect.svelte"
-  import FormControlInput from "$components/formHelpers/FormControlInput.svelte"
+  import CustomSelect from "$components/formHelpers/CustomSelect.svelte"
+  import Input from "$components/formHelpers/Input.svelte"
   import { DbUser, type DbUserRole } from "$lib/domain/DbUser"
   import { userStore } from "$lib/stores/UserStore"
   import { handleFirebaseError } from "$lib/utils/Firebase"
@@ -40,7 +40,7 @@
   error={errorMessage}
   submitLabel="Gebruiker aanmaken"
 >
-  <FormControlInput
+  <Input
     type="text"
     label="Naam"
     placeholder="Naam"
@@ -48,7 +48,7 @@
     size="xs"
     required
   />
-  <FormControlInput
+  <Input
     type="text"
     label="Email"
     placeholder="user@server.com"
@@ -57,14 +57,14 @@
     size="xs"
     required
   />
-  <FormControlCustomSelect
+  <CustomSelect
     bind:value={role}
     items={allRoles}
     label="Rol"
     size="xs"
     required
   />
-  <FormControlInput
+  <Input
     type="text"
     label="Tijdelijk wachtwoord"
     value={tempPass}

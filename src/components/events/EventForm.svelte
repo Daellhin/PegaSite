@@ -1,9 +1,9 @@
 <script lang="ts">
-  import FormControlEditor from "$components/formHelpers/FormControlEditor.svelte"
-  import FormControlFullDuration from "$components/formHelpers/FormControlFullDuration.svelte"
-  import FormControlInput from "$components/formHelpers/FormControlInput.svelte"
-  import GeoAutoComplete from "$components/formHelpers/FormControlGeoAutoComplete.svelte"
-  import FormControlInputCheckbox from "$components/formHelpers/FormControlInputCheckbox.svelte"
+  import CLEditor from "$components/formHelpers/CLEditor.svelte"
+  import FullDuration from "$components/formHelpers/FullDuration.svelte"
+  import Input from "$components/formHelpers/Input.svelte"
+  import GeoAutoComplete from "$components/formHelpers/GeoAutoComplete.svelte"
+  import Checkbox from "$components/formHelpers/Checkbox.svelte"
   import { handleFirebaseError } from "$lib/utils/Firebase"
   import type { Dayjs } from "dayjs"
 
@@ -37,35 +37,35 @@
 </script>
 
 <form class="flex flex-col gap-2" on:submit={onSubmitWrapper}>
-  <FormControlInput
+  <Input
     type="text"
     label="Titel van event:"
     placeholder="Titel"
     bind:value={title}
     required
   />
-  <FormControlInput
+  <Input
     type="date"
     label={multiDay ? "Startdatum van event:" : "Datum van event:"}
     bind:value={date}
     required
   />
-  <FormControlInputCheckbox label="Meerdaags event" bind:value={multiDay} />
+  <Checkbox label="Meerdaags event" bind:value={multiDay} />
   {#if multiDay}
-    <FormControlInput
+    <Input
       type="date"
       label="Einddatum van event:"
       bind:value={endDateInner}
       required
     />
   {/if}
-  <FormControlFullDuration
+  <FullDuration
     label="Duur van event:"
     bind:value={duration}
     required
   />
   <GeoAutoComplete label="Locatie van event:" bind:value={location} />
-  <FormControlEditor label="Info over event:" bind:value={info} />
+  <CLEditor label="Info over event:" bind:value={info} />
 
   <button class="btn btn-primary mt-2 max-w-sm" type="submit" disabled={saving}>
     {submitLabel}

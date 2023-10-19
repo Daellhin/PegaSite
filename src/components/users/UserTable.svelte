@@ -1,5 +1,5 @@
 <script lang="ts">
-  import FormControlInput from "$components/formHelpers/FormControlInput.svelte"
+  import Input from "$components/formHelpers/Input.svelte"
   import SortableTableHeaderRow from "$components/table/SortableTableHeaderRow.svelte"
   import TablePagination from "$components/table/TableFooter.svelte"
   import UserRow from "$components/users/UserRow.svelte"
@@ -51,7 +51,7 @@
 </script>
 
 <div class="mt-3">
-  <FormControlInput
+  <Input
     type="text"
     bind:value={searchString}
     placeholder="Zoek een gebruiker"

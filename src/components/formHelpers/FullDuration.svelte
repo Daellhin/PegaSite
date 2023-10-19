@@ -1,5 +1,5 @@
 <script lang="ts">
-  import FormControlInputCheckbox from "$components/formHelpers/FormControlInputCheckbox.svelte"
+  import Checkbox from "$components/formHelpers/Checkbox.svelte"
 
   export let label: string
   export let value: string
@@ -60,7 +60,7 @@
       disabled={fullDay || disabled}
     />
   </div>
-  <FormControlInputCheckbox
+  <Checkbox
     id={inputIdFullDay}
     label="Volledige dag"
     bind:value={fullDay}
