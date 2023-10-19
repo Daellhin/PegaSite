@@ -3,7 +3,7 @@
   import FormControlFullDuration from "$components/formHelpers/FormControlFullDuration.svelte"
   import FormControlInput from "$components/formHelpers/FormControlInput.svelte"
   import GeoAutoComplete from "$components/formHelpers/FormControlGeoAutoComplete.svelte"
-  import InputCheckbox from "$components/formHelpers/inputs/InputCheckbox.svelte"
+  import FormControlInputCheckbox from "$components/formHelpers/FormControlInputCheckbox.svelte"
   import { handleFirebaseError } from "$lib/utils/Firebase"
   import type { Dayjs } from "dayjs"
 
@@ -50,7 +50,7 @@
     bind:value={date}
     required
   />
-  <InputCheckbox label="Meerdaags event" bind:value={multiDay} />
+  <FormControlInputCheckbox label="Meerdaags event" bind:value={multiDay} />
   {#if multiDay}
     <FormControlInput
       type="date"
