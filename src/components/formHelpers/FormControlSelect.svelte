@@ -29,7 +29,7 @@
   <select
     id={selectId}
     {disabled}
-    class="select select-bordered placeholder-style"
+    class="select select-bordered border-2 placeholder-style"
     bind:value
     on:change={removePlaceholderStyle}
     {required}
@@ -38,15 +38,3 @@
     <slot />
   </select>
 </div>
-
-<style>
-  :global(.select) {
-    font-weight: inherit;
-  }
-  select.placeholder-style {
-    color: #9ca3af;
-  }
-  :global(option:not([disabled])) {
-    color: initial;
-  }
-</style>

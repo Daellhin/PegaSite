@@ -1,14 +1,13 @@
 <script lang="ts">
   import { faEye } from "@fortawesome/free-regular-svg-icons"
   import { faEyeSlash } from "@fortawesome/free-solid-svg-icons"
-
   import Fa from "svelte-fa"
 
   export let label: string
   export let value: string
   export let required = false
   export let disabled = false
-  export let size: "full"| "md" | "sm" | "xs" = "sm"
+  export let size: "full" | "md" | "sm" | "xs" = "sm"
 
   export let placeholder: string
   export let labelClass = ""
