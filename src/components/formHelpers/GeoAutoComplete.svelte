@@ -76,6 +76,7 @@
     {placeholder}
     {disabled}
     iconLeft={faSearch}
+    autocomplete="off"
   >
     <span
       slot="iconRight"
@@ -83,7 +84,7 @@
       class:hidden={!loading}
     />
   </Input>
-  <button
+  <ul
     tabindex="0"
     class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-full"
     class:hidden={results.length === 0}
@@ -95,5 +96,5 @@
         </button>
       </li>
     {/each}
-  </button>
+  </ul>
 </div>

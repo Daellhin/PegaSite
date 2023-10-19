@@ -24,6 +24,7 @@
   export let iconRight: IconDefinition | undefined = undefined
   export let toggleText = type === "password"
   export let toggled = false
+  export let autocomplete: string | undefined = undefined
 
   $: inputId = label?.replace(/[ :]/g, "").toLowerCase()
   $: error = validate(value)
@@ -31,16 +32,19 @@
   $: showIconRight = $$slots.iconRight || iconRight || toggleText
 
   // -- Value handling --
-  let internalValue = initValue(value)
-  $: value = formatValue(internalValue)
+  let internalValue = ""
+  $: updateInternal(value)
+  $: updateExternal(internalValue)
 
-  function initValue(value: any) {
-    if (type === "date") return value?.format("YYYY-MM-DD")
-    return value
+  function updateInternal(_: any) {
+    if (value === internalValue) return
+    if (type === "date" && value?.format("YYYY-MM-DD") !== internalValue)
+      internalValue = value?.format("YYYY-MM-DD")
+    else internalValue = value
   }
-  function formatValue(value: any) {
-    if (type === "date") return dayjs(internalValue)
-    return value
+  function updateExternal(_: any) {
+    if (type === "date") value = dayjs(internalValue)
+    else value = internalValue
   }
 
   // -- Type handling --
@@ -95,6 +99,7 @@
       {placeholder}
       {required}
       {disabled}
+      {autocomplete}
       on:focusout={() => (edited = true)}
       on:input={onInput}
       class="input input-bordered border-2 w-full hover:cursor-text"
