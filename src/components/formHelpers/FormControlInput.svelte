@@ -8,7 +8,7 @@
   import dayjs from "dayjs"
   import Fa from "svelte-fa"
 
-  export let label: string
+  export let label = ""
   export let value: any
   export let required = false
   export let disabled = false
@@ -67,14 +67,16 @@
   class:max-w-sm={size === "sm"}
   class:max-w-xs={size === "xs"}
 >
-  <label class="label" for={inputId}>
-    <span class={"label-text " + labelClass}>
-      {label}
-      {#if required}
-        <span class="text-red-500 font-bold">*</span>
-      {/if}
-    </span>
-  </label>
+  {#if label}
+    <label class="label" for={inputId}>
+      <span class={"label-text " + labelClass}>
+        {label}
+        {#if required}
+          <span class="text-red-500 font-bold">*</span>
+        {/if}
+      </span>
+    </label>
+  {/if}
   <div class="relative">
     {#if showIconLeft}
       <div

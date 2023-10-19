@@ -1,10 +1,11 @@
 <script lang="ts">
-  import SearchInput from "$components/formHelpers/inputs/SearchInput.svelte"
+  import FormControlInput from "$components/formHelpers/FormControlInput.svelte"
   import SortableTableHeaderRow from "$components/table/SortableTableHeaderRow.svelte"
   import TablePagination from "$components/table/TableFooter.svelte"
   import UserRow from "$components/users/UserRow.svelte"
   import type { DbUser } from "$lib/domain/DbUser"
   import { SortOrder } from "$lib/domain/dataClasses/SortOrder"
+  import { faSearch } from "@fortawesome/free-solid-svg-icons"
 
   export let users: DbUser[]
 
@@ -34,7 +35,9 @@
         newArray.sort((a, b) => a.email.localeCompare(b.email))
         break
       case "Rol":
-        newArray.sort((a, b) => a.getHighestRole().localeCompare(b.getHighestRole()))
+        newArray.sort((a, b) =>
+          a.getHighestRole().localeCompare(b.getHighestRole())
+        )
         break
       case "Aangemaakt":
         newArray.sort((a, b) =>
@@ -47,12 +50,14 @@
   }
 </script>
 
-<SearchInput
-  id="search"
-  class="mt-3"
-  bind:value={searchString}
-  placeholder="Zoek een gebruiker "
-/>
+<div class="mt-3">
+  <FormControlInput
+    type="text"
+    bind:value={searchString}
+    placeholder="Zoek een gebruiker"
+    iconLeft={faSearch}
+  />
+</div>
 
 <div class="mt-3 grid">
   <div class="overflow-x-auto rounded-t-lg">
