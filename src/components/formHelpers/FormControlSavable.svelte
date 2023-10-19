@@ -7,8 +7,8 @@
   export let value: any
   export let required = false
   export let disabled = false
-  export let size: "full"| "md" | "sm" | "xs" = "sm"
-  
+  export let size: "full" | "md" | "sm" | "xs" = "sm"
+
   export let labelClass = ""
   export let type: "text" | "email" | "number" | "password"
   export let placeholder: string

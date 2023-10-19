@@ -5,7 +5,7 @@
   export let values: string[]
   export let required = false
   export let disabled = false
-  export let size: "full"| "md" | "sm" | "xs" = "sm"
+  export let size: "full" | "md" | "sm" | "xs" = "sm"
 
   export let placeholder = "Kies"
   export let options = Array<string>()
@@ -31,11 +31,10 @@
     {options}
     {allowUserOptions}
     {placeholder}
-	{disabled}
+    {disabled}
   />
 </div>
 
 <style lang="postcss">
   @import "../../css/multiselect.postcss";
-  
 </style>

@@ -5,7 +5,7 @@
   export let value: string
   export let required = false
   export let disabled = false
-  export let size: "full"| "md" | "sm" | "xs" = "sm"
+  export let size: "full" | "md" | "sm" | "xs" = "sm"
 
   export let labelClass = ""
 

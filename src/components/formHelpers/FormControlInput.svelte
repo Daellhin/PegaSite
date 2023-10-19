@@ -1,6 +1,10 @@
 <script lang="ts">
   import { validateEmail } from "$lib/utils/Validators"
-  import type { IconDefinition } from "@fortawesome/free-solid-svg-icons"
+  import {
+    faEye,
+    faEyeSlash,
+    type IconDefinition,
+  } from "@fortawesome/free-solid-svg-icons"
   import dayjs from "dayjs"
   import Fa from "svelte-fa"
 
@@ -10,7 +14,7 @@
   export let disabled = false
   export let size: "full" | "md" | "sm" | "xs" = "sm"
 
-  export let type: "text" | "email" | "date"
+  export let type: "text" | "email" | "date" | "password"
   export let placeholder = ""
   export let labelClass = ""
   export let edited = false
@@ -18,11 +22,13 @@
   export let onInput: () => void = () => {}
   export let iconLeft: IconDefinition | undefined = undefined
   export let iconRight: IconDefinition | undefined = undefined
+  export let toggleText = type === "password"
+  export let toggled = false
 
   $: inputId = label?.replace(/[ :]/g, "").toLowerCase()
   $: error = validate(value)
   $: showIconLeft = $$slots.iconLeft || iconLeft
-  $: showIconRight = $$slots.iconRight || iconLeft
+  $: showIconRight = $$slots.iconRight || iconRight || toggleText
 
   // -- Value handling --
   let internalValue = initValue(value)
@@ -48,6 +54,11 @@
       node.type = type
     }
   }
+
+  // -- Toggle text --
+  let input: HTMLInputElement
+
+  $: if (input?.type) input.type = toggled ? "text" : type
 </script>
 
 <div
@@ -64,10 +75,10 @@
       {/if}
     </span>
   </label>
-  <div class:relative={showIconLeft || showIconRight}>
+  <div class="relative">
     {#if showIconLeft}
       <div
-        class="absolute inset-y-0 flex items-center pointer-events-none left-0 pl-3"
+        class="flex items-center absolute inset-y-0 left-0 pl-3 pointer-events-none"
       >
         <slot name="iconLeft">
           <Fa icon={iconLeft} class="text-gray-500" />
@@ -77,6 +88,7 @@
     <input
       id={inputId}
       use:typeAction
+      bind:this={input}
       bind:value={internalValue}
       {placeholder}
       {required}
@@ -90,11 +102,22 @@
       class:pr-9={showIconRight}
     />
     {#if showIconRight}
-      <div
-        class="absolute inset-y-0 flex items-center pointer-events-none right-0 pr-3"
-      >
+      <div class="flex items-center absolute inset-y-0 right-0 pr-3">
         <slot name="iconRight">
-          <Fa icon={iconRight} class="text-gray-500" />
+          {#if type !== "password"}
+            <Fa icon={iconRight} class="text-gray-500" />
+          {:else}
+            <button
+              type="button"
+              on:click={() => (toggled = !toggled)}
+              tabindex="-1"
+            >
+              <Fa
+                icon={toggled ? faEyeSlash : faEye}
+                class="text-gray-500 w-5"
+              />
+            </button>
+          {/if}
         </slot>
       </div>
     {/if}
