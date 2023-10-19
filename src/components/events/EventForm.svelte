@@ -2,7 +2,7 @@
   import FormControlEditor from "$components/formHelpers/FormControlEditor.svelte"
   import FormControlFullDuration from "$components/formHelpers/FormControlFullDuration.svelte"
   import FormControlInput from "$components/formHelpers/FormControlInput.svelte"
-  import GeoAutoComplete from "$components/formHelpers/inputs/GeoAutoComplete.svelte"
+  import GeoAutoComplete from "$components/formHelpers/FormControlGeoAutoComplete.svelte"
   import InputCheckbox from "$components/formHelpers/inputs/InputCheckbox.svelte"
   import { handleFirebaseError } from "$lib/utils/Firebase"
   import type { Dayjs } from "dayjs"
