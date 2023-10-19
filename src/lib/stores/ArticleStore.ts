@@ -105,7 +105,8 @@ function createArticleStore() {
 		await setDoc(newDocRef, newArticle)
 
 		// -- Update store --
-		update((articles) => ([newArticle, ...articles]))
+		if (get(innerStore))
+			update((articles) => ([newArticle, ...(articles)]))
 	}
 
 	async function getArticleById(id: string) {

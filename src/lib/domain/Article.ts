@@ -45,7 +45,7 @@ export class Article {
             tags: this.tags,
             createdAt: Timestamp.fromDate(this.createdAt.toDate()),
             title: this.title,
-            lastUpdate: this.lastUpdate ? Timestamp.fromDate(this.lastUpdate.toDate()) : undefined
+            lastUpdate: this.lastUpdate ? Timestamp.fromDate(this.lastUpdate.toDate()) : null
         } as ArticleJson
     }
 

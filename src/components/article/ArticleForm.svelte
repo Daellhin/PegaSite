@@ -4,6 +4,7 @@
   import MultiSelect from "$components/formHelpers/MultiSelect.svelte"
   import Input from "$components/formHelpers/Input.svelte"
   import { CategoryValues } from "$lib/domain/Category"
+  import { handleFirebaseError } from "$lib/utils/Firebase"
 
   export let title = ""
   export let content = ""
@@ -14,11 +15,16 @@
   export let onSave: () => Promise<void>
 
   let saving = false
+  let formError = ""
 
   async function onSubmitWrapper(event: SubmitEvent) {
     event.preventDefault()
     saving = true
-    await onSave()
+    try {
+      await onSave()
+    } catch (error) {
+      formError = handleFirebaseError(error)
+    }
     saving = false
   }
 </script>
@@ -43,4 +49,5 @@
     {submitLabel}
     <span class="loading loading-ring" class:hidden={!saving} />
   </button>
+  <p class="text-error">{formError}</p>
 </form>
