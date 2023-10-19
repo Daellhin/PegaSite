@@ -1,7 +1,7 @@
 <script lang="ts">
   import ConfirmModal from "$components/ConfirmModal.svelte"
   import EditDropdown from "$components/EditDropdown.svelte"
-  import SavableInput from "$components/formHelpers/inputs/SavableInput.svelte"
+  import Savable from "$components/formHelpers/SavableInput.svelte"
   import { Link } from "$lib/domain/Link"
 
   export let link: Link
@@ -34,7 +34,7 @@
     {/if}
   </div>
   <div class="flex gap-2 w-full max-w-lg">
-    <SavableInput
+    <Savable
       type="text"
       bind:value={linkTitle}
       placeholder="Titel"

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import FormControlPassword from "$components/formHelpers/FormControlPassword.svelte"
+  import Input from "$components/formHelpers/Input.svelte"
   import { authStore } from "$lib/stores/AuthStore"
 
   let password1 = ""
@@ -8,7 +8,7 @@
   let password2Edited = false
   let saving = false
   let loginError = false
-  let visible = false
+  let toggled = false
 
   // -- Validate passwords --
   function validatePassword(password1: string) {
@@ -42,22 +42,24 @@
 </script>
 
 <form on:submit={updatePassword}>
-  <FormControlPassword
+  <Input
+    type="password"
     bind:value={password1}
+    bind:edited={password1Edited}
+    bind:toggled
     label="Nieuw wachtwoord"
     placeholder="Wachtwoord"
     labelClass="font-semibold"
-    bind:edited={password1Edited}
-    bind:visible
     required
   />
-  <FormControlPassword
+  <Input
+    type="password"
     bind:value={password2}
-    label="Herhaal wachtwoord"
+    bind:edited={password2Edited}
+    bind:toggled
+    label="Nieuw wachtwoord"
     placeholder="Wachtwoord"
     labelClass="font-semibold"
-    bind:edited={password2Edited}
-    bind:visible
     required
   />
   {#if error1 && password1Edited && password1 != ""}

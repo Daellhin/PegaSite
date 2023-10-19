@@ -1,5 +1,5 @@
 <script lang="ts">
-  import SearchInput from "$components/formHelpers/inputs/SearchInput.svelte"
+  import Input from "$components/formHelpers/Input.svelte"
   import InfoCircle from "$components/icons/Flowbite/InfoCircle.svelte"
   import SponsorRow from "$components/sponsors/SponsorRow.svelte"
   import TablePagination from "$components/table/TableFooter.svelte"
@@ -7,6 +7,7 @@
   import type { Sponsor } from "$lib/domain/Sponsor"
   import { sponsorStore } from "$lib/stores/SponsorStore"
   import { FLIP_DURATION } from "$lib/utils/Constants"
+  import { faSearch } from "@fortawesome/free-solid-svg-icons"
   import { dndzone } from "svelte-dnd-action"
 
   export let startEdit: (sponsor: Sponsor) => void
@@ -48,12 +49,14 @@
   }
 </script>
 
-<SearchInput
-  class="mt-2"
-  bind:value={searchString}
-  placeholder="Zoek een sponsor"
-  id="search-sponsor"
-/>
+<div class="mt-2">
+  <Input
+    type="text"
+    bind:value={searchString}
+    placeholder="Zoek een sponsor"
+	iconLeft={faSearch}
+  />
+</div>
 
 <div class="grid relative">
   <div

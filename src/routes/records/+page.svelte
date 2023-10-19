@@ -1,10 +1,11 @@
 <script lang="ts">
-  import SearchInput from "$components/formHelpers/inputs/SearchInput.svelte"
+    import Input from "$components/formHelpers/Input.svelte"
   import NewRecordForm from "$components/records/NewRecordForm.svelte"
   import RecordsTable from "$components/records/RecordsList.svelte"
   import { Category } from "$lib/domain/dataClasses/Category"
   import { clubRecordStore } from "$lib/stores/ClubRecordStore"
   import { pageHeadStore } from "$lib/stores/PageHeadStore"
+  import { faSearch } from "@fortawesome/free-solid-svg-icons"
 
   let searchString = ""
   let showForm = false
@@ -31,11 +32,14 @@
 {/if}
 
 <!-- Search -->
-<SearchInput
-  id="search"
-  bind:value={searchString}
-  placeholder="Zoek een clubrecord"
-/>
+<div class="mt-2">
+  <Input
+    type="text"
+    bind:value={searchString}
+    placeholder="Zoek een clubrecord"
+    iconLeft={faSearch}
+  />
+</div>
 
 <!-- Records -->
 {#if $clubRecordStore}

@@ -1,11 +1,11 @@
 <script lang="ts">
   import {
-      AutocompleteResponse,
-      type AutocompleteResponseWrapperJson,
+    AutocompleteResponse,
+    type AutocompleteResponseWrapperJson,
   } from "$lib/domain/geoapify/AutocompleteResponse"
   import { faSearch } from "@fortawesome/free-solid-svg-icons"
   import { debounce } from "ts-debounce"
-  import FormControlText from "../FormControlText.svelte"
+  import Input from "$components/formHelpers/Input.svelte"
 
   const apiKey = import.meta.env.VITE_GEOAPIFY_APIKEY
   const minAddressLength = 3
@@ -22,13 +22,13 @@
   export let debounceTime = 500
 
   let results = Array<AutocompleteResponse>()
-	let loading = false
+  let loading = false
 
   async function fetchData() {
     const encodedValue = encodeURIComponent(value)
     const url = `https://api.geoapify.com/v1/geocode/autocomplete?text=${encodedValue}&apiKey=${apiKey}&lang=${lang}&limit=${limit}&format=json`
 
-	loading = true
+    loading = true
     const response = await fetch(url)
     if (response.ok) {
       const jsonResponse =
@@ -41,7 +41,7 @@
       const jsonResponse = await response.json()
       console.error(jsonResponse)
     }
-	loading = false
+    loading = false
   }
 
   async function validateAndFetch() {
@@ -66,7 +66,8 @@
   class:max-w-sm={size === "sm"}
   class:max-w-xs={size === "xs"}
 >
-  <FormControlText
+  <Input
+    type="text"
     {label}
     bind:value
     {onInput}
@@ -75,14 +76,15 @@
     {placeholder}
     {disabled}
     iconLeft={faSearch}
+    autocomplete="off"
   >
     <span
       slot="iconRight"
       class="loading loading-spinner loading-sm"
       class:hidden={!loading}
     />
-  </FormControlText>
-  <button
+  </Input>
+  <ul
     tabindex="0"
     class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-full"
     class:hidden={results.length === 0}
@@ -94,5 +96,5 @@
         </button>
       </li>
     {/each}
-  </button>
+  </ul>
 </div>

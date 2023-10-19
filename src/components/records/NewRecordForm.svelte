@@ -1,8 +1,7 @@
 <script lang="ts">
   import DismisableForm from "$components/DismissableForm.svelte"
-  import FormControlCustomSelect from "$components/formHelpers/FormControlCustomSelect.svelte"
-  import FormControlDate from "$components/formHelpers/FormControlDate.svelte"
-  import FormControlText from "$components/formHelpers/FormControlText.svelte"
+  import CustomSelect from "$components/formHelpers/CustomSelect.svelte"
+  import Input from "$components/formHelpers/Input.svelte"
   import { RecordInstance } from "$lib/domain/RecordInstance"
   import { AthleticEvent } from "$lib/domain/dataClasses/AthleticEvent"
   import { Category } from "$lib/domain/dataClasses/Category"
@@ -38,8 +37,12 @@
   }
 </script>
 
-<DismisableForm onSubmit={createRecord} bind:showForm submitLabel="Clubrecord aanmaken">
-  <FormControlCustomSelect
+<DismisableForm
+  onSubmit={createRecord}
+  bind:showForm
+  submitLabel="Clubrecord aanmaken"
+>
+  <CustomSelect
     bind:value={discipline}
     items={Discipline.Disciplines.map((e) => ({
       value: e,
@@ -49,7 +52,7 @@
     label="Disipline"
     size="xs"
   />
-  <FormControlCustomSelect
+  <CustomSelect
     bind:value={athleticEvent}
     items={AthleticEvent.AthleticEvents.map((e) => ({
       value: e,
@@ -58,7 +61,7 @@
     label="Indoor/outdoor"
     size="xs"
   />
-  <FormControlCustomSelect
+  <CustomSelect
     bind:value={category}
     items={Category.Categories.map((e) => ({
       value: e,
@@ -67,7 +70,7 @@
     label="Categorie"
     size="xs"
   />
-  <FormControlCustomSelect
+  <CustomSelect
     bind:value={gender}
     items={Gender.Genders.map((e) => ({
       value: e,
@@ -76,26 +79,35 @@
     label="Geslacht"
     size="xs"
   />
-  <FormControlText
+  <Input
+    type="text"
     label="Naam"
     placeholder="Voornaam Naam"
     bind:value={name}
     size="xs"
     required
   />
-  <FormControlText
+  <Input
+    type="text"
     label="Prestatie"
     placeholder="00.00"
     bind:value={result}
     size="xs"
     required
   />
-  <FormControlText
+  <Input
+    type="text"
     label="Locatie"
     placeholder="Locatie"
     bind:value={location}
     size="xs"
     required
   />
-  <FormControlDate label="Datum" bind:value={date} size="xs" required />
+  <Input
+    type="date"
+    label="Datum"
+    size="xs"
+    bind:value={date}
+    required
+  />
 </DismisableForm>

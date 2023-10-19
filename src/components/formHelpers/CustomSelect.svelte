@@ -7,7 +7,7 @@
   export let value: any
   export let required = false
   export let disabled = false
-  export let size: "full"| "md" | "sm" | "xs" = "sm"
+  export let size: "full" | "md" | "sm" | "xs" = "sm"
 
   export let placeholder = "Kies"
   export let items = Array<{ label: string; value: any }>()
