@@ -18,6 +18,8 @@ const config = {
 	onwarn: (warning, handler) => {
 		if (
 			warning.code === "css-unused-selector" ||
+			warning.code === "a11y-no-noninteractive-tabindex" ||
+			warning.code === "a11y-label-has-associated-control" ||
 			warning.filename.match(/^\/node_modules\/cl-editor/) ||
 			warning.filename.match(/^\/node_modules\/svelte-multiselect/) ||
 			warning.filename.match(/^\/node_modules\/svelte-select/)

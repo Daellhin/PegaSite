@@ -10,10 +10,10 @@
 
 {#if $authStore}
   <div title="Profiel" class="dropdown dropdown-end">
-    <button tabindex="0" class="btn btn-ghost gap-2 normal-case">
+    <label tabindex="0" class="btn btn-ghost gap-2 normal-case">
       <Fa icon={faUser} class="text-xl" />
       <Fa icon={faChevronDown} class="text-gray-500" />
-    </button>
+    </label>
     <ul
       class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
     >
