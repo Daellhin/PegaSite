@@ -1,9 +1,9 @@
 <script lang="ts">
-  import EventCalendar from "$components/events/aside/EventCalendar.svelte"
+  import EventsAside from "$components/events/aside/EventsAside.svelte"
   import Footer from "$components/layout/Footer.svelte"
   import MenuVertical from "$components/layout/MenuVertical.svelte"
   import Navbar from "$components/layout/Navbar.svelte"
-  import Sponsors from "$components/sponsors/SponsorsAside.svelte"
+  import Sponsors from "$components/sponsors/aside/SponsorsAside.svelte"
   import { pageHeadStore } from "$lib/stores/PageHeadStore"
   import { SvelteToast } from "@zerodevx/svelte-toast"
   import "../app.css"
@@ -22,14 +22,16 @@
     <Navbar {drawerID} {loginModalID} />
     <!-- Page content here -->
     <section class="mt-1 mb-10 flex-grow">
-      <div class="grid lg:grid-cols-12 gap-4 lg:gap-4 py-0 px-2 xl:px-4 mx-2 h-full">
+      <div
+        class="grid lg:grid-cols-12 gap-4 lg:gap-4 py-0 px-2 xl:px-4 mx-2 h-full"
+      >
         <main class="lg:col-span-8 xl:col-span-9 h-full">
           <slot />
         </main>
         <hr class="mt-auto lg:hidden" />
         <aside class="lg:col-span-4 xl:col-span-3 md:pt-0 py-0 p-2">
           <div class="flex flex-col gap-3">
-            <EventCalendar />
+            <EventsAside />
             <Sponsors />
           </div>
         </aside>
