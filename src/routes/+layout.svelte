@@ -1,5 +1,5 @@
 <script lang="ts">
-  import EventCalendar from "$components/events/EventCalendarAside.svelte"
+  import EventCalendar from "$components/events/aside/EventCalendar.svelte"
   import Footer from "$components/layout/Footer.svelte"
   import MenuVertical from "$components/layout/MenuVertical.svelte"
   import Navbar from "$components/layout/Navbar.svelte"
