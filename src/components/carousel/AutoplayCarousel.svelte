@@ -14,7 +14,7 @@
     imageUrl: string
   }
 
-  export let sponsors = Array<Item>()
+  export let items = Array<Item>()
   export let hideButtons = true
   export let hideIndicators = false
   export let loop = false
@@ -35,7 +35,7 @@
         <hr class="w-full mt-3 border-2 rounded-xl mr-1 border-base-content" />
         <button
           class="btn btn-ghost btn-xs flex items-center gap-2 mb-1 ml-auto"
-          on:click={() => toggleAutoPlay()}
+          on:click={toggleAutoPlay}
           title={$preferencesStore.autoPlay ? "Pauze" : "Play"}
         >
           <span class=" font-bold">Autoplay</span>
@@ -48,7 +48,7 @@
     {/if}
     <Carousel
       bind:counter
-      images={sponsors.map((e) => ({
+      images={items.map((e) => ({
         imageUrl: e.imageUrl,
         alt: "Logo " + e.name,
       }))}
@@ -63,9 +63,9 @@
   <!-- Sponsor Info -->
   <div class="flex items-center justify-between mt-2">
     <span class="text-lg font-semibold">
-      {sponsors[counter].name}
+      {items[counter].name}
     </span>
-    <a href={sponsors[counter].url} class="btn btn-sm" target="_blank">
+    <a href={items[counter].url} class="btn btn-sm" target="_blank">
       Site
       <Fa icon={faExternalLink} class="text-lg" />
     </a>

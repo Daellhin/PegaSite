@@ -1,5 +1,5 @@
 <script lang="ts">
-  import SponsorCarousel from "$components/sponsors/SponsorCarousel.svelte"
+  import AutoplayCarousel from "$components/carousel/AutoplayCarousel.svelte"
   import { sponsorStore } from "$lib/stores/SponsorStore"
 
   $: sponsors = $sponsorStore
@@ -9,7 +9,7 @@
   <h1 class="text-2xl font-bold mb-2">Sponsors</h1>
   {#if sponsors}
     {#if sponsors.length > 0}
-      <SponsorCarousel {sponsors} loop />
+      <AutoplayCarousel items={sponsors} loop />
     {:else}
       Geen sponsors gevonden
     {/if}
