@@ -18,13 +18,13 @@
 
   async function editWrapper() {
     if (editHandler === undefined) return
-    await editHandler();
-    (document.activeElement as HTMLElement).blur()
+    await editHandler()
+    ;(document.activeElement as HTMLElement).blur()
   }
   async function deleteWrapper() {
     if (deleteHandler === undefined) return
-    await deleteHandler();
-    (document.activeElement as HTMLElement).blur()
+    await deleteHandler()
+    ;(document.activeElement as HTMLElement).blur()
   }
 </script>
 
@@ -32,19 +32,20 @@
   title={disabled ? "Uitgeschakeld" : "Aanpassen"}
   class="dropdown dropdown-end min-w-fit"
   class:static={positionStatic}
+  class:cursor-not-allowed={disabled}
 >
-  <button
-    {disabled}
+  <label
     tabindex="0"
     class="btn btn-ghost gap-2 normal-case flex flex-row text-base"
     class:btn-xs={size === "xs"}
     class:btn-sm={size === "sm"}
     class:btn-md={size === "md"}
     class:bg-transparent={disabled}
+    class:pointer-events-none={disabled}
   >
-    <Fa icon={faPen} class="text-xl" />
+    <Fa icon={faPen} class={"text-xl " + (disabled ? "text-gray-500" : "")} />
     <Fa icon={faChevronDown} class="text-gray-500 hidden sm:block" />
-  </button>
+  </label>
   <ul
     class={"dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box " +
       width}
