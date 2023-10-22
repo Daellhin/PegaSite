@@ -27,6 +27,7 @@
   async function onSubmitWrapper(event: SubmitEvent) {
     event.preventDefault()
     saving = true
+	formError = ""
     try {
       await onSave()
     } catch (error) {

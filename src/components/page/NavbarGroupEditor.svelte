@@ -1,8 +1,9 @@
 <script lang="ts">
-    import Savable from "$components/formHelpers/SavableInput.svelte"
-    import LinkEditor from "$components/page/LinkEditor.svelte"
-    import { Link, type LinkGroup } from "$lib/domain/Link"
-    import { navbarStore } from "$lib/stores/NavbarStore"
+  import DndHandle from "$components/DNDHandle.svelte"
+  import SavableInput from "$components/formHelpers/SavableInput.svelte"
+  import NavbarLinkEditor from "$components/page/NavbarLinkEditor.svelte"
+  import { Link, type LinkGroup } from "$lib/domain/Link"
+  import { navbarStore } from "$lib/stores/NavbarStore"
 
   export let linkGroup: LinkGroup
 
@@ -32,31 +33,33 @@
   async function updateGroupTitle() {
     await navbarStore.updateGroupTitle(title, linkGroup)
   }
-  function validate(inner_value: string) {
+  function validateTitle(inner_value: string) {
     const pattern = /^[a-zA-Z0-9- ]*$/g
     if (!inner_value || !inner_value.trim()) return "Titel moet ingevuld zijn"
     if (!inner_value.match(pattern))
       return "Titel mag enkel cijfers, letters, spaties, - bevatten"
     return undefined
   }
+
+  export let dragDisabled: boolean
 </script>
 
-<div>
-  <div class="mb-2 max-w-xs">
-    <Savable
+<div class="bg-base-100 rounded-lg sm:px-2 py-2">
+  <div class="mb-2 max-w-xs flex gap-2">
+    <DndHandle bind:dragDisabled />
+    <SavableInput
       type="text"
       bind:value={title}
       placeholder="Titel"
       save={updateGroupTitle}
-      {validate}
+      validate={validateTitle}
       inputStyling="text-2xl font-bold"
-      transparent
     />
   </div>
   <div class="ml-2">
     <div class="flex flex-col gap-2">
       {#if linkGroup.links.length === 1}
-        <LinkEditor
+        <NavbarLinkEditor
           link={linkGroup.links[0]}
           isEditable={false}
           {deleteLink}
@@ -64,11 +67,11 @@
         />
       {:else}
         {#each links as link (link.title)}
-          <LinkEditor {link} {deleteLink} saveLink={updateLinkTitle} />
+          <NavbarLinkEditor {link} {deleteLink} saveLink={updateLinkTitle} />
         {/each}
       {/if}
       {#if tempLink}
-        <LinkEditor
+        <NavbarLinkEditor
           link={tempLink}
           deleteLink={deleteTempLink}
           saveLink={createLink}
@@ -83,3 +86,9 @@
     </button>
   </div>
 </div>
+
+<style lang="postcss">
+  :global(#dnd-action-dragged-el) {
+    @apply border-2 !important;
+  }
+</style>

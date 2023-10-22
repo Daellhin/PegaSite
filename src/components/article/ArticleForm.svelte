@@ -20,6 +20,7 @@
   async function onSubmitWrapper(event: SubmitEvent) {
     event.preventDefault()
     saving = true
+    formError = ""
     try {
       await onSave()
     } catch (error) {
@@ -49,5 +50,7 @@
     {submitLabel}
     <span class="loading loading-ring" class:hidden={!saving} />
   </button>
-  <p class="text-error">{formError}</p>
+  {#if formError}
+    <p class="text-error">{formError}</p>
+  {/if}
 </form>

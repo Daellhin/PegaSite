@@ -27,8 +27,8 @@
   async function updatePassword(event: SubmitEvent) {
     event.preventDefault()
     if (error1 || error2) return
+	saving = true
     try {
-      saving = true
       await authStore.updateCurrentUserPassword(password1)
       password1 = ""
       password2 = ""

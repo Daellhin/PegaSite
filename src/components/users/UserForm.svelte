@@ -22,8 +22,8 @@
   ]
 
   async function createUser() {
+	errorMessage = ""
     try {
-      errorMessage = ""
       const userRoles = DbUser.getAplicableRoles(role)
       await userStore.createUser(email, tempPass, userRoles, displayName)
       pushCreatedToast("Gebruiker aangemaakt")

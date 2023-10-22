@@ -14,9 +14,9 @@
 
   const tooltip =
     "Versleep een sponsor met het icoontje naast de naam om de volgorde te wijzigen"
-  let savingNewOrder = false
 
   // -- Drag and drop --
+  let savingNewOrder = false
   let dragDisabled = true
   $: dragFullyDisabled = searchString.length > 0
 
@@ -38,7 +38,7 @@
   // -- Search --
   let searchString = ""
 
-  $: filteredSponsors = searchString
+  $: filteredDragableSponsors = searchString
     ? filterSponsors(searchString)
     : dragableSponsors
 
@@ -90,7 +90,7 @@
         on:consider={handleConsider}
         on:finalize={handleFinalize}
       >
-        {#each filteredSponsors as sponsor (sponsor.id)}
+        {#each filteredDragableSponsors as sponsor (sponsor.id)}
           <SponsorRow
             sponsor={sponsor.sponsor}
             editHandler={startEdit}
@@ -102,7 +102,7 @@
     </table>
   </div>
   <TablePagination
-    filteredLength={filteredSponsors.length}
+    filteredLength={filteredDragableSponsors.length}
     fullLength={dragableSponsors.length}
     saving={savingNewOrder}
   />

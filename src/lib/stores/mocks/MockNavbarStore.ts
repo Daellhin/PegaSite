@@ -33,11 +33,15 @@ export function createMockNavbarStore() {
 		update((linkGroups) => [...linkGroups])
 	}
 
+	async function updateGroupOrder(newLinkGroups: LinkGroup[]) {
+		update((linkGroups) => [...newLinkGroups])
+	}
 	return {
 		subscribe,
 		createLink,
 		updateLinkTitle,
 		updateGroupTitle,
+		updateGroupOrder,
 		deleteLink,
 	}
 }

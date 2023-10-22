@@ -17,8 +17,8 @@
   let errorMessage = ""
 
   async function saveSponsor() {
+	errorMessage = ""
     try {
-      errorMessage = ""
       if (editSponsor) {
         await sponsorStore.updateSponsor(name, url, image[0], editSponsor)
         pushCreatedToast("Sponsor gewijzigd")

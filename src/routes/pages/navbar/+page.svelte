@@ -1,10 +1,40 @@
 <script lang="ts">
   import { goto } from "$app/navigation"
   import InfoCard from "$components/InfoCard.svelte"
-  import LinkGroupEditor from "$components/page/LinkGroupEditor.svelte"
+  import LinkGroupEditor from "$components/page/NavbarGroupEditor.svelte"
   import { authStore } from "$lib/stores/AuthStore"
   import { navbarStore } from "$lib/stores/NavbarStore"
   import { pageHeadStore } from "$lib/stores/PageHeadStore"
+  import { FLIP_DURATION } from "$lib/utils/Constants"
+  import { handleFirebaseError } from "$lib/utils/Firebase"
+  import { dndzone } from "svelte-dnd-action"
+
+  // -- Drag and drop --
+  let savingNewOrder = false
+  let reorderError = ""
+  let dragDisabled = true
+
+  $: dragableLinkGroups = $navbarStore?.map((e) =>
+    e.toDragableDragableLinkGroup()
+  )
+
+  function handleConsider(event: CustomEvent<DndEvent<any>>) {
+    dragableLinkGroups = event.detail.items
+    dragDisabled = true
+  }
+  async function handleFinalize(event: CustomEvent<DndEvent<any>>) {
+    savingNewOrder = true
+    dragDisabled = true
+    reorderError = ""
+    try {
+      dragableLinkGroups = event.detail.items
+      const newSortedLinkGroups = dragableLinkGroups.map((e) => e.linkGroup)
+      await navbarStore.updateGroupOrder(newSortedLinkGroups)
+    } catch (error) {
+      reorderError = handleFirebaseError(error)
+    }
+    savingNewOrder = false
+  }
 
   // -- Authguard --
   $: authStore.known.then(() => {
@@ -22,13 +52,33 @@
 </InfoCard>
 
 {#if $navbarStore}
-  <div class="sm:ml-4 flex flex-col mt-3 gap-5">
-    {#each $navbarStore as linkGroup}
-      <LinkGroupEditor {linkGroup} />
+  <div
+    class="sm:ml-2 flex flex-col mt-3 gap-5"
+    use:dndzone={{
+      items: dragableLinkGroups,
+      dragDisabled: dragDisabled,
+      flipDurationMs: FLIP_DURATION,
+      dropTargetStyle: {},
+    }}
+    on:consider={handleConsider}
+    on:finalize={handleFinalize}
+  >
+    {#each dragableLinkGroups as linkGroup (linkGroup.id)}
+      <LinkGroupEditor linkGroup={linkGroup.linkGroup} bind:dragDisabled />
     {:else}
       Geen links
     {/each}
   </div>
+  {#if savingNewOrder}
+    <div class="mt-2 flex items-center gap-1">
+      Herorderingen worden opgeslagen <span
+        class="loading loading-spinner loading-xs"
+      />
+    </div>
+  {/if}
+  {#if reorderError}
+    <p class="text-error">{reorderError}</p>
+  {/if}
 {:else}
   Loading
 {/if}
