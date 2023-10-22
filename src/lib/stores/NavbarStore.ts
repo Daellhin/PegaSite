@@ -3,7 +3,7 @@ import { Link, LinkGroup } from '$lib/domain/Link'
 import { Collections } from '$lib/firebase/Firebase'
 import { pageStore } from '$lib/stores/PageStore'
 import { convertStringToBool } from '$lib/utils/Utils'
-import { writable } from 'svelte/store'
+import { get, writable } from 'svelte/store'
 import { createMockNavbarStore } from './mocks/MockNavbarStore'
 
 function createNavbarStore() {
@@ -31,8 +31,6 @@ function createNavbarStore() {
 	 * Also creates apropriate page
 	 */
 	async function createLink(link: Link, group: LinkGroup) {
-		if (!browser) return
-
 		// -- Create link --
 		const { getFirestore, doc, updateDoc } = await import('firebase/firestore')
 		const { firebaseApp } = await import('$lib/firebase/Firebase')
@@ -59,7 +57,6 @@ function createNavbarStore() {
 	 * Also updates page id
 	 */
 	async function updateLinkTitle(newTitle: string, link: Link, group: LinkGroup) {
-		if (!browser) return
 		if (link.title === newTitle) return
 
 		// -- Delete link --
@@ -91,7 +88,6 @@ function createNavbarStore() {
 	}
 
 	async function updateGroupTitle(title: string, linkGroup: LinkGroup) {
-		if (!browser) return
 		if (linkGroup.name === title) return
 
 		// -- Delete group --
@@ -116,11 +112,34 @@ function createNavbarStore() {
 		update((linkGroups) => [...linkGroups])
 	}
 
+	async function updateGroupOrder(newLinkGroups: LinkGroup[]) {
+		if (newLinkGroups === get(store)) return
+
+		// -- Update group orders --
+		const { getFirestore, doc, updateDoc } = await import('firebase/firestore')
+		const { firebaseApp } = await import('$lib/firebase/Firebase')
+		const firestore = getFirestore(firebaseApp)
+
+		const linksRef = doc(firestore, Collections.PAGES, "overview")
+		// TODO add transaction
+		await Promise.all(newLinkGroups
+			.filter((linkGroup, i) => linkGroup.order !== i)
+			.map((linkGroup, i) => {
+				const key = `${linkGroup.name}.order`
+				const updateOrderPromise = updateDoc(linksRef, {
+					[key]: i
+				})
+				return updateOrderPromise
+			}))
+
+		// -- Update store --
+		update((linkGroups) => [...newLinkGroups])
+	}
+
 	/**
 	 * Also deletes apropriate page
 	 */
 	async function deleteLink(link: Link, group: LinkGroup) {
-		if (!browser) return
 		if (link.customUrl) return
 
 		// -- Delete link --
@@ -151,6 +170,7 @@ function createNavbarStore() {
 		updateLinkTitle,
 		updateGroupTitle,
 		deleteLink,
+		updateGroupOrder
 	}
 }
 

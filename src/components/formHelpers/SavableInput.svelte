@@ -35,8 +35,9 @@
   async function submitWrapper() {
     if (!errorText) {
       if (dirty) {
+        saving = true
+        errorText = ""
         try {
-          saving = true
           await save()
           oldValue = value
           dirty = false

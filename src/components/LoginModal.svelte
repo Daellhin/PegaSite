@@ -7,13 +7,13 @@
 
   let email: string
   let password: string
-  let loginError: string | undefined
+  let loginError: string
 
   let showModal = false
 
   async function submitLogin() {
+    loginError = ""
     try {
-      loginError = undefined
       await authStore.signIn(email, password)
       showModal = false
       email = ""

@@ -46,6 +46,15 @@ export class Link {
     }
 }
 
+/*** 
+ * Using wrapper interface tot fix problem with svelte-dnd-action.
+ * Dndzone removes class methods when elements are dragged
+ * */
+export interface DragableLinkGroup {
+	id: string
+	linkGroup: LinkGroup
+}
+
 export interface LinkGroupJson {
     name: string
     links: LinkJson[]
@@ -65,6 +74,13 @@ export class LinkGroup {
             json.order
         )
     }
+
+	toDragableDragableLinkGroup() {
+		return {
+			id: this.name,
+			linkGroup: this
+		} as DragableLinkGroup
+	}
 
     toFirebaseJson() {
         const linkMap = this.links.map(link => [link.title, link.toFirebaseJson()])
