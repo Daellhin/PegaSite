@@ -1,7 +1,6 @@
 <script lang="ts">
   import { goto } from "$app/navigation"
   import SavableInput from "$components/formHelpers/SavableInput.svelte"
-  import Savable from "$components/formHelpers/SavableInput.svelte"
   import UpdatePaswordForm from "$components/profile/UpdatePaswordForm.svelte"
   import { authStore } from "$lib/stores/AuthStore"
   import { pageHeadStore } from "$lib/stores/PageHeadStore"
@@ -36,7 +35,7 @@
   </div>
   <div>
     <h-2 class="font-bold text-lg">Gegevens</h-2>
-    <Savable
+    <SavableInput
       type="text"
       bind:value={name}
       label="Naam"

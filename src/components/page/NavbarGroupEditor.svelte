@@ -1,8 +1,8 @@
 <script lang="ts">
-    import Savable from "$components/formHelpers/SavableInput.svelte"
-    import LinkEditor from "$components/page/LinkEditor.svelte"
-    import { Link, type LinkGroup } from "$lib/domain/Link"
-    import { navbarStore } from "$lib/stores/NavbarStore"
+  import SavableInput from "$components/formHelpers/SavableInput.svelte"
+  import NavbarLinkEditor from "$components/page/NavbarLinkEditor.svelte"
+  import { Link, type LinkGroup } from "$lib/domain/Link"
+  import { navbarStore } from "$lib/stores/NavbarStore"
 
   export let linkGroup: LinkGroup
 
@@ -43,7 +43,7 @@
 
 <div>
   <div class="mb-2 max-w-xs">
-    <Savable
+    <SavableInput
       type="text"
       bind:value={title}
       placeholder="Titel"
@@ -56,7 +56,7 @@
   <div class="ml-2">
     <div class="flex flex-col gap-2">
       {#if linkGroup.links.length === 1}
-        <LinkEditor
+        <NavbarLinkEditor
           link={linkGroup.links[0]}
           isEditable={false}
           {deleteLink}
@@ -64,11 +64,11 @@
         />
       {:else}
         {#each links as link (link.title)}
-          <LinkEditor {link} {deleteLink} saveLink={updateLinkTitle} />
+          <NavbarLinkEditor {link} {deleteLink} saveLink={updateLinkTitle} />
         {/each}
       {/if}
       {#if tempLink}
-        <LinkEditor
+        <NavbarLinkEditor
           link={tempLink}
           deleteLink={deleteTempLink}
           saveLink={createLink}
