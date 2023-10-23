@@ -6,34 +6,15 @@
   import { navbarStore } from "$lib/stores/NavbarStore"
 
   export let linkGroup: LinkGroup
+  export let dragDisabled: boolean
 
-  let title = linkGroup.name
-  let tempLink: Link | undefined
+  // -- Link group --
+  let linkGroupName = linkGroup.name
 
-  $: links = linkGroup.links
-
-  async function createLink(newTitle: string, link: Link) {
-    link.title = newTitle
-    await navbarStore.createLink(link, linkGroup)
-    tempLink = undefined
-  }
-  async function updateLinkTitle(newTitle: string, link: Link) {
-    await navbarStore.updateLinkTitle(newTitle, link, linkGroup)
-  }
-  async function deleteLink(link: Link) {
-    await navbarStore.deleteLink(link, linkGroup)
-  }
-  async function createTempLink() {
-    if (tempLink) return
-    tempLink = new Link("", links.length)
-  }
-  function deleteTempLink() {
-    tempLink = undefined
-  }
   async function updateGroupTitle() {
-    await navbarStore.updateGroupTitle(title, linkGroup)
+    await navbarStore.updateGroupTitle(linkGroupName, linkGroup)
   }
-  function validateTitle(inner_value: string) {
+  function validateGroupTitle(inner_value: string) {
     const pattern = /^[a-zA-Z0-9- ]*$/g
     if (!inner_value || !inner_value.trim()) return "Titel moet ingevuld zijn"
     if (!inner_value.match(pattern))
@@ -41,7 +22,27 @@
     return undefined
   }
 
-  export let dragDisabled: boolean
+  // -- Link --
+  let tempLink: Link | undefined
+
+  async function updateLink(newTitle: string, link: Link) {
+    await navbarStore.updateLinkTitle(newTitle, link, linkGroup)
+  }
+  async function deleteLink(link: Link) {
+    await navbarStore.deleteLink(link, linkGroup)
+  }
+  async function createTempLink() {
+    if (tempLink) return
+    tempLink = new Link("", linkGroup.links.length)
+  }
+  function deleteTempLink() {
+    tempLink = undefined
+  }
+  async function createLink(newTitle: string, link: Link) {
+    link.title = newTitle
+    await navbarStore.createLink(link, linkGroup)
+    tempLink = undefined
+  }
 </script>
 
 <div class="bg-base-100 rounded-lg sm:px-2 py-2">
@@ -49,27 +50,23 @@
     <DndHandle bind:dragDisabled />
     <SavableInput
       type="text"
-      bind:value={title}
+      bind:value={linkGroupName}
       placeholder="Titel"
       save={updateGroupTitle}
-      validate={validateTitle}
+      validate={validateGroupTitle}
       inputStyling="text-2xl font-bold"
     />
   </div>
   <div class="ml-2">
     <div class="flex flex-col gap-2">
-      {#if linkGroup.links.length === 1}
+      {#each linkGroup.links as link (link.title)}
         <NavbarLinkEditor
-          link={linkGroup.links[0]}
-          isEditable={false}
+          {link}
+          isEditable={linkGroup.links.length > 1}
           {deleteLink}
-          saveLink={updateLinkTitle}
+          saveLink={updateLink}
         />
-      {:else}
-        {#each links as link (link.title)}
-          <NavbarLinkEditor {link} {deleteLink} saveLink={updateLinkTitle} />
-        {/each}
-      {/if}
+      {/each}
       {#if tempLink}
         <NavbarLinkEditor
           link={tempLink}
