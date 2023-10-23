@@ -20,7 +20,7 @@
   let dragDisabled = true
   $: dragFullyDisabled = searchString.length > 0
 
-  $: dragableSponsors = $sponsorStore.map((e) => e.toDragableSponsor())
+  $: dragableSponsors = $sponsorStore.map((e) => e.toDragableItem())
 
   function handleConsider(event: CustomEvent<DndEvent<any>>) {
     dragableSponsors = event.detail.items
@@ -30,7 +30,7 @@
     savingNewOrder = true
     dragableSponsors = event.detail.items
     dragDisabled = true
-    const newSortedIds = dragableSponsors.map((e) => e.sponsor.id)
+    const newSortedIds = dragableSponsors.map((e) => e.value.id)
     await sponsorStore.updateSponsorsOrder(newSortedIds)
     savingNewOrder = false
   }
@@ -44,7 +44,7 @@
 
   function filterSponsors(searchString: string) {
     return dragableSponsors.filter((sponsor) =>
-      sponsor.sponsor.matchesSearchString(searchString)
+      sponsor.value.matchesSearchString(searchString)
     )
   }
 </script>
@@ -90,9 +90,9 @@
         on:consider={handleConsider}
         on:finalize={handleFinalize}
       >
-        {#each filteredDragableSponsors as sponsor (sponsor.id)}
+        {#each filteredDragableSponsors as dragable (dragable.id)}
           <SponsorRow
-            sponsor={sponsor.sponsor}
+            sponsor={dragable.value}
             editHandler={startEdit}
             bind:dragDisabled
             {dragFullyDisabled}

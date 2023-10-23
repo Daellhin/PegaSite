@@ -15,7 +15,7 @@
   let dragDisabled = true
 
   $: dragableLinkGroups = $navbarStore?.map((e) =>
-    e.toDragableDragableLinkGroup()
+    e.toDragableDragableItem()
   )
 
   function handleConsider(event: CustomEvent<DndEvent<any>>) {
@@ -28,8 +28,8 @@
     reorderError = ""
     try {
       dragableLinkGroups = event.detail.items
-      const newSortedLinkGroups = dragableLinkGroups.map((e) => e.linkGroup)
-      await navbarStore.updateGroupOrder(newSortedLinkGroups)
+      const newSortedLinkGroups = dragableLinkGroups.map((e) => e.value)
+      await navbarStore.updateLinkGroupOrder(newSortedLinkGroups)
     } catch (error) {
       reorderError = handleFirebaseError(error)
     }
@@ -59,12 +59,13 @@
       dragDisabled: dragDisabled,
       flipDurationMs: FLIP_DURATION,
       dropTargetStyle: {},
+	  type: "NavbarGroup"
     }}
     on:consider={handleConsider}
     on:finalize={handleFinalize}
   >
-    {#each dragableLinkGroups as linkGroup (linkGroup.id)}
-      <LinkGroupEditor linkGroup={linkGroup.linkGroup} bind:dragDisabled />
+    {#each dragableLinkGroups as dragable (dragable.id)}
+      <LinkGroupEditor linkGroup={dragable.value} bind:dragDisabled bind:savingNewOrder />
     {:else}
       Geen links
     {/each}
