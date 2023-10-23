@@ -4,9 +4,13 @@
   import NavbarLinkEditor from "$components/page/NavbarLinkEditor.svelte"
   import { Link, type LinkGroup } from "$lib/domain/Link"
   import { navbarStore } from "$lib/stores/NavbarStore"
+  import { FLIP_DURATION } from "$lib/utils/Constants"
+  import { handleFirebaseError } from "$lib/utils/Firebase"
+  import { dndzone } from "svelte-dnd-action"
 
   export let linkGroup: LinkGroup
   export let dragDisabled: boolean
+  export let savingNewOrder = false
 
   // -- Link group --
   let linkGroupName = linkGroup.name
@@ -43,6 +47,28 @@
     await navbarStore.createLink(link, linkGroup)
     tempLink = undefined
   }
+
+  // -- Drag and drop(Links) --
+  let reorderError = ""
+  $: dragableLinks = linkGroup.links.map((e) => e.toDragableDragableItem())
+
+  function handleConsider(event: CustomEvent<DndEvent<any>>) {
+    dragableLinks = event.detail.items
+    dragDisabled = true
+  }
+  async function handleFinalize(event: CustomEvent<DndEvent<any>>) {
+    savingNewOrder = true
+    dragDisabled = true
+    reorderError = ""
+    try {
+      dragableLinks = event.detail.items
+      const newSortedLinks = dragableLinks.map((e) => e.value)
+      await navbarStore.updateLinkOrder(linkGroup, newSortedLinks)
+    } catch (error) {
+      reorderError = handleFirebaseError(error)
+    }
+    savingNewOrder = false
+  }
 </script>
 
 <div class="bg-base-100 rounded-lg sm:px-2 py-2">
@@ -58,13 +84,25 @@
     />
   </div>
   <div class="ml-2">
-    <div class="flex flex-col gap-2">
-      {#each linkGroup.links as link (link.title)}
+    <div
+      class="flex flex-col gap-2"
+      use:dndzone={{
+        items: dragableLinks,
+        dragDisabled: dragDisabled,
+        flipDurationMs: FLIP_DURATION,
+        dropTargetStyle: {},
+        type: "NavbarLink" + linkGroup.name,
+      }}
+      on:consider={handleConsider}
+      on:finalize={handleFinalize}
+    >
+      {#each dragableLinks as dragable (dragable.id)}
         <NavbarLinkEditor
-          {link}
-          isEditable={linkGroup.links.length > 1}
+          link={dragable.value}
+          disabled={linkGroup.links.length > 1}
           {deleteLink}
           saveLink={updateLink}
+          bind:dragDisabled
         />
       {/each}
       {#if tempLink}
@@ -72,6 +110,7 @@
           link={tempLink}
           deleteLink={deleteTempLink}
           saveLink={createLink}
+          dragDisabled={true}
         />
       {/if}
     </div>

@@ -1,13 +1,5 @@
+import type { DragableItem } from "$lib/utils/Types"
 import type { FirestoreDataConverter } from "firebase/firestore"
-
-/*** 
- * Using wrapper interface tot fix problem with svelte-dnd-action.
- * Dndzone removes class methods when elements are dragged
- * */
-export interface DragableSponsor {
-	id: string
-	sponsor: Sponsor
-}
 
 export interface SponsorJson {
 	name: string
@@ -48,11 +40,11 @@ export class Sponsor {
 		} as SponsorJson
 	}
 
-	toDragableSponsor() {
+	toDragableItem() {
 		return {
 			id: this.id,
-			sponsor: this
-		} as DragableSponsor
+			value: this
+		} as DragableItem<Sponsor>
 	}
 
 	/**

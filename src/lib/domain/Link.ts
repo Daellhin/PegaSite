@@ -1,4 +1,5 @@
 import { capitalizeFirstLetter } from "$lib/utils/String"
+import type { DragableItem } from "$lib/utils/Types"
 
 export interface LinkJson {
     title: string
@@ -19,6 +20,13 @@ export class Link {
     getId() {
         return Link.normaliseId(this.title)
     }
+
+	toDragableDragableItem() {
+		return {
+			id: this.title,
+			value: this
+		} as DragableItem<Link>
+	}
 
     toFirebaseJson() {
         return {
@@ -46,15 +54,6 @@ export class Link {
     }
 }
 
-/*** 
- * Using wrapper interface tot fix problem with svelte-dnd-action.
- * Dndzone removes class methods when elements are dragged
- * */
-export interface DragableLinkGroup {
-	id: string
-	linkGroup: LinkGroup
-}
-
 export interface LinkGroupJson {
     name: string
     links: LinkJson[]
@@ -75,11 +74,11 @@ export class LinkGroup {
         )
     }
 
-	toDragableDragableLinkGroup() {
+	toDragableDragableItem() {
 		return {
 			id: this.name,
-			linkGroup: this
-		} as DragableLinkGroup
+			value: this
+		} as DragableItem<LinkGroup>
 	}
 
     toFirebaseJson() {

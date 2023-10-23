@@ -112,10 +112,10 @@ function createNavbarStore() {
 		update((linkGroups) => [...linkGroups])
 	}
 
-	async function updateGroupOrder(newLinkGroups: LinkGroup[]) {
+	async function updateLinkGroupOrder(newLinkGroups: LinkGroup[]) {
 		if (newLinkGroups === get(store)) return
 
-		// -- Update group orders --
+		// -- Update linkGroup orders --
 		const { getFirestore, doc, updateDoc } = await import('firebase/firestore')
 		const { firebaseApp } = await import('$lib/firebase/Firebase')
 		const firestore = getFirestore(firebaseApp)
@@ -134,6 +134,31 @@ function createNavbarStore() {
 
 		// -- Update store --
 		update((linkGroups) => [...newLinkGroups])
+	}
+
+	async function updateLinkOrder(linkGroup: LinkGroup, newLinks: Link[]) {
+		if (linkGroup.links === newLinks) return
+
+		// -- Update link orders --
+		const { getFirestore, doc, updateDoc } = await import('firebase/firestore')
+		const { firebaseApp } = await import('$lib/firebase/Firebase')
+		const firestore = getFirestore(firebaseApp)
+
+		const linksRef = doc(firestore, Collections.PAGES, "overview")
+		// TODO add transaction
+		await Promise.all(newLinks
+			.filter((link, i) => link.order !== i)
+			.map((link, i) => {
+				const key = `${linkGroup.name}.links.${link.title}.order`
+				const updateOrderPromise = updateDoc(linksRef, {
+					[key]: i
+				})
+				return updateOrderPromise
+			}))
+		linkGroup.links = newLinks
+
+		// -- Update store --
+		update((linkGroups) => [...linkGroups])
 	}
 
 	/**
@@ -169,8 +194,9 @@ function createNavbarStore() {
 		createLink,
 		updateLinkTitle,
 		updateGroupTitle,
+		updateLinkGroupOrder,
+		updateLinkOrder,
 		deleteLink,
-		updateGroupOrder
 	}
 }
 

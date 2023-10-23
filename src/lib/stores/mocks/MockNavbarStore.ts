@@ -24,6 +24,12 @@ export function createMockNavbarStore() {
 		linkGroup.name = title
 		update((linkGroups) => [...linkGroups])
 	}
+	async function updateLinkGroupOrder(newLinkGroups: LinkGroup[]) {
+		update((linkGroups) => [...newLinkGroups])
+	}
+	async function updateLinkOrder(linkGroup: LinkGroup, newLinks: Link[]) {
+		update((linkGroups) => [...linkGroups])
+	}
 	/**
 	 * Also deletes apropriate page
 	 */
@@ -33,15 +39,13 @@ export function createMockNavbarStore() {
 		update((linkGroups) => [...linkGroups])
 	}
 
-	async function updateGroupOrder(newLinkGroups: LinkGroup[]) {
-		update((linkGroups) => [...newLinkGroups])
-	}
 	return {
 		subscribe,
 		createLink,
 		updateLinkTitle,
 		updateGroupTitle,
-		updateGroupOrder,
+		updateLinkGroupOrder,
+		updateLinkOrder,
 		deleteLink,
 	}
 }
