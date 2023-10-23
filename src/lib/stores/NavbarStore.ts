@@ -124,9 +124,9 @@ function createNavbarStore() {
 		// TODO add transaction
 		await Promise.all(newLinkGroups
 			.filter((linkGroup, i) => linkGroup.order !== i)
-			.map((linkGroup, i) => {
+			.map(async (linkGroup, i) => {
 				const key = `${linkGroup.name}.order`
-				const updateOrderPromise = updateDoc(linksRef, {
+				const updateOrderPromise = await updateDoc(linksRef, {
 					[key]: i
 				})
 				return updateOrderPromise
@@ -148,9 +148,9 @@ function createNavbarStore() {
 		// TODO add transaction
 		await Promise.all(newLinks
 			.filter((link, i) => link.order !== i)
-			.map((link, i) => {
+			.map(async (link, i) => {
 				const key = `${linkGroup.name}.links.${link.title}.order`
-				const updateOrderPromise = updateDoc(linksRef, {
+				const updateOrderPromise = await updateDoc(linksRef, {
 					[key]: i
 				})
 				return updateOrderPromise
