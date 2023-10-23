@@ -32,22 +32,22 @@
   $: errorText = validate(value)
 
   // -- Submit --
-  async function submitWrapper() {
-    if (!errorText) {
-      if (dirty) {
-        saving = true
-        errorText = ""
-        try {
-          await save()
-          oldValue = value
-          dirty = false
-        } catch (error) {
-          errorText = handleFirebaseError(error)
-        }
-        saving = false
+  async function onSubmitWrapper(event: SubmitEvent) {
+	event.preventDefault()
+    if (errorText) return
+    if (dirty) {
+      saving = true
+      errorText = ""
+      try {
+        await save()
+        oldValue = value
+        dirty = false
+      } catch (error) {
+        errorText = handleFirebaseError(error)
       }
-      focused = false
+      saving = false
     }
+    focused = false
   }
   function reset() {
     value = oldValue
@@ -109,7 +109,7 @@
     class="w-full"
     on:focusin={focus}
     on:focusout={unfocus}
-    on:submit={submitWrapper}
+    on:submit={onSubmitWrapper}
     bind:this={divParent}
   >
     <div class="relative">
