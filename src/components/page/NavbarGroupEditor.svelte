@@ -102,6 +102,7 @@
           {deleteLink}
           saveLink={updateLink}
           bind:dragDisabled
+          onlyLinkInGroup={linkGroup.links.length === 1}
         />
       {/each}
       {#if tempLink}

@@ -7,6 +7,7 @@
 
   export let link: Link
   export let temporary = false
+  export let onlyLinkInGroup = false
   export let deleteLink: (link: Link) => Promise<void> | any
   export let saveLink: (newTitle: string, link: Link) => Promise<void>
   export let dragDisabled: boolean
@@ -52,7 +53,7 @@
         bind:value={linkTitle}
         placeholder="Titel"
         save={saveLinkWrapper}
-        disabled={temporary || link.customUrl != undefined}
+        disabled={temporary || link.customUrl != undefined || onlyLinkInGroup}
       />
       <EditDropdown
         editUrl={link.getUrl(true)}
