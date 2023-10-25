@@ -30,7 +30,7 @@ export function createMockPageStore() {
 	}
 	async function updatePageId(newId: string, oldId: string) {
 		const page = await getPageById(oldId)
-		if (!page) throw new Error(`No page to update at id:${oldId}`)
+		if (!page) return `No page to update at id:${oldId}`
 		page.id = newId
 	}
 	async function deletePage(id: string, _deleteImages = true) {

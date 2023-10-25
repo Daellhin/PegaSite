@@ -111,7 +111,7 @@ function createPageStore() {
 
 		// -- Get page --
 		const page = await getPageById(oldId)
-		if (!page) throw new Error(`No page to update at id:${oldId}`)
+		if (!page) return `No page to update at id:${oldId}`
 
 		// -- Delete page --
 		const deletePagePromise = deletePage(oldId, false)
@@ -128,7 +128,7 @@ function createPageStore() {
 
 		// -- Get page --
 		const page = await getPageById(id)
-		if (!page) throw new Error(`No page to delete at id:${id}`)
+		if (!page) return `No page to delete at id:${id}`
 
 		// -- Delete images --
 		if (deleteImages && page.images) {

@@ -3,19 +3,22 @@
   import Fa from "svelte-fa"
 
   export let dragDisabled: boolean
+  export let disabled = false
 
   function startDrag(e: { preventDefault: () => void }) {
     // Prevent default to prevent lag on touch devices
     // (because of the browser checking for screen scrolling)
     e.preventDefault()
+    if (disabled) return
     dragDisabled = false
   }
   function handleKeyDown(e: { key: string }) {
-    if ((e.key === "Enter" || e.key === " ") && dragDisabled) {
+    if (disabled) return
+    if ((e.key === "Enter" || e.key === " ") && dragDisabled)
       dragDisabled = false
-    }
   }
   function handleUp() {
+    if (disabled) return
     dragDisabled = true
   }
 </script>
@@ -23,9 +26,11 @@
 <span
   role="button"
   aria-labelledby="drag-handle"
-  tabindex={dragDisabled ? 0 : -1}
+  tabindex={dragDisabled && !disabled ? 0 : -1}
   class="my-auto"
-  style={dragDisabled ? "cursor: grab" : "cursor: grabbing"}
+  class:cursor-grab={dragDisabled && !disabled}
+  class:cursor-grabbing={!dragDisabled && !disabled}
+  class:cursor-not-allowed={disabled}
   on:mousedown={startDrag}
   on:touchstart={startDrag}
   on:keydown={handleKeyDown}
