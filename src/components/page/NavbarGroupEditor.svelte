@@ -85,13 +85,13 @@
   </div>
   <div class="ml-2">
     <div
-      class="flex flex-col gap-2"
+      class="flex flex-col"
       use:dndzone={{
         items: dragableLinks,
         dragDisabled: dragDisabled,
         flipDurationMs: FLIP_DURATION,
         dropTargetStyle: {},
-        type: "NavbarLink" + linkGroup.name,
+        type: "NavbarLink",
       }}
       on:consider={handleConsider}
       on:finalize={handleFinalize}

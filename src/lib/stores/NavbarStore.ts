@@ -2,6 +2,7 @@ import { browser } from '$app/environment'
 import { Link, LinkGroup } from '$lib/domain/Link'
 import { Collections } from '$lib/firebase/Firebase'
 import { pageStore } from '$lib/stores/PageStore'
+import { arrayDifference, arrayIntersection } from '$lib/utils/Array'
 import { convertStringToBool } from '$lib/utils/Utils'
 import { get, writable } from 'svelte/store'
 import { createMockNavbarStore } from './mocks/MockNavbarStore'
@@ -27,10 +28,7 @@ function createNavbarStore() {
 	})
 	const { subscribe, update } = store
 
-	/**
-	 * Also creates apropriate page
-	 */
-	async function createLink(link: Link, group: LinkGroup) {
+	async function createLink(link: Link, group: LinkGroup, createPage = true) {
 		// -- Create link --
 		const { getFirestore, doc, updateDoc } = await import('firebase/firestore')
 		const { firebaseApp } = await import('$lib/firebase/Firebase')
@@ -43,7 +41,7 @@ function createNavbarStore() {
 		})
 
 		// -- Create page --
-		const createPagePromise = pageStore.createBlankPage(link.getId(), link.title)
+		const createPagePromise = createPage ? pageStore.createBlankPage(link.getId(), link.title) : Promise.resolve()
 
 		// TODO add transaction
 		await Promise.all([createLinkPromise, createPagePromise])
@@ -139,32 +137,44 @@ function createNavbarStore() {
 	async function updateLinkOrder(linkGroup: LinkGroup, newLinks: Link[]) {
 		if (linkGroup.links === newLinks) return
 
-		// -- Update link orders --
 		const { getFirestore, doc, updateDoc } = await import('firebase/firestore')
 		const { firebaseApp } = await import('$lib/firebase/Firebase')
 		const firestore = getFirestore(firebaseApp)
 
 		const linksRef = doc(firestore, Collections.PAGES, "overview")
-		// TODO add transaction
-		await Promise.all(newLinks
-			.filter((link, i) => link.order !== i)
+
+		// -- Update link order (Local)	--
+		newLinks.forEach((link, i) => link.order = i)
+
+		// -- Remove links from group --
+		const linksToRemove = arrayDifference(linkGroup.links, newLinks)
+		const linksToRemovePromise = linksToRemove.map(async (link) => await deleteLink(link, linkGroup, false))
+
+		// -- Add links to group --
+		const linksToAdd = arrayDifference(newLinks, linkGroup.links)
+		const linksToAddPromise = linksToAdd.map(async (link) => await createLink(link, linkGroup, false))
+
+		// -- Update links orders --
+		const linksToUpdate = arrayIntersection(linkGroup.links, newLinks)
+		const linksToUpdatePromise = linksToUpdate
+			.filter((link, i) => link.order !== newLinks.indexOf(link))
 			.map(async (link, i) => {
 				const key = `${linkGroup.name}.links.${link.title}.order`
-				const updateOrderPromise = await updateDoc(linksRef, {
+				return await updateDoc(linksRef, {
 					[key]: i
 				})
-				return updateOrderPromise
-			}))
+			})
+
+		// TODO add transaction
+		await Promise.all([...linksToRemovePromise, ...linksToAddPromise, ...linksToUpdatePromise])
+
 		linkGroup.links = newLinks
 
 		// -- Update store --
 		update((linkGroups) => [...linkGroups])
 	}
 
-	/**
-	 * Also deletes apropriate page
-	 */
-	async function deleteLink(link: Link, group: LinkGroup) {
+	async function deleteLink(link: Link, group: LinkGroup, deletePage = true) {
 		if (link.customUrl) return
 
 		// -- Delete link --
@@ -179,7 +189,7 @@ function createNavbarStore() {
 		})
 
 		// -- Delete page --
-		const deletePagePromise = pageStore.deletePage(link.getId())
+		const deletePagePromise = deletePage ? pageStore.deletePage(link.getId()) : Promise.resolve()
 
 		// TODO add transaction
 		await Promise.all([deleteLinkPromise, deletePagePromise])
