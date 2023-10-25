@@ -37,7 +37,7 @@
 <div
   class="flex flex-col sm:flex-row sm:items-center sm:gap-2 bg-base-100 rounded-lg py-1"
 >
-  <DndHandle bind:dragDisabled />
+  <DndHandle bind:dragDisabled disabled={temporary} />
   <div class="italic w-72 overflow-hidden text-ellipsis">
     {#if link.customUrl}
       {link.customUrl}
