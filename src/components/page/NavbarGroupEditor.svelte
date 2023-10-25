@@ -99,7 +99,6 @@
       {#each dragableLinks as dragable (dragable.id)}
         <NavbarLinkEditor
           link={dragable.value}
-          disabled={linkGroup.links.length > 1}
           {deleteLink}
           saveLink={updateLink}
           bind:dragDisabled
@@ -111,6 +110,7 @@
           deleteLink={deleteTempLink}
           saveLink={createLink}
           dragDisabled={true}
+          temporary
         />
       {/if}
     </div>

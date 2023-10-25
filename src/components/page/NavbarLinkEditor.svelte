@@ -6,7 +6,7 @@
   import { Link } from "$lib/domain/Link"
 
   export let link: Link
-  export let disabled = true
+  export let temporary = false
   export let deleteLink: (link: Link) => Promise<void> | any
   export let saveLink: (newTitle: string, link: Link) => Promise<void>
   export let dragDisabled: boolean
@@ -17,17 +17,26 @@
   let linkTitle = link.title
   $: linkUrl = Link.normaliseUrl(linkTitle)
 
+  // -- Save --
   async function saveLinkWrapper() {
     linkTitle = linkTitle.trim()
     await saveLink(linkTitle, link)
   }
-  async function deleteLinkAndPageWrapper() {
+  // -- Delete --
+  async function startDelete() {
+    // Skip confirm dialog for temporary links
+    if (temporary) await deleteLinkWrapper()
+    else showModal = true
+  }
+  async function deleteLinkWrapper() {
     showModal = false
     await deleteLink(link)
   }
 </script>
 
-<div class="flex flex-col sm:flex-row sm:items-center sm:gap-2 bg-base-100 rounded-lg py-1">
+<div
+  class="flex flex-col sm:flex-row sm:items-center sm:gap-2 bg-base-100 rounded-lg py-1"
+>
   <DndHandle bind:dragDisabled />
   <div class="italic w-72 overflow-hidden text-ellipsis">
     {#if link.customUrl}
@@ -42,22 +51,18 @@
       bind:value={linkTitle}
       placeholder="Titel"
       save={saveLinkWrapper}
-      disabled={!disabled || link.customUrl != undefined}
+      disabled={temporary || link.customUrl != undefined}
     />
     <EditDropdown
       editUrl={link.getUrl(true)}
-      deleteHandler={() => (showModal = true)}
+      deleteHandler={startDelete}
       disabled={link.customUrl != undefined}
       editPrompt="Pagina aanpassen"
     />
   </div>
 </div>
 
-<ConfirmModal
-  {confirmModalID}
-  onConfirm={deleteLinkAndPageWrapper}
-  bind:showModal
->
+<ConfirmModal {confirmModalID} onConfirm={deleteLinkWrapper} bind:showModal>
   Bent u zeker dat u de <span class="font-semibold">"{link.title}"</span>
   navigatie link en geasocierde
   <span class="font-semibold">"{linkUrl}"</span> pagina wilt verwijderen?
