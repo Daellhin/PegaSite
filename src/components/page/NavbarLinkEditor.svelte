@@ -34,31 +34,33 @@
   }
 </script>
 
-<div
-  class="flex flex-col sm:flex-row sm:items-center sm:gap-2 bg-base-100 rounded-lg py-1"
->
+<div class="flex gap-2 bg-base-100 rounded-lg py-1">
   <DndHandle bind:dragDisabled disabled={temporary} />
-  <div class="italic w-72 overflow-hidden text-ellipsis">
-    {#if link.customUrl}
-      {link.customUrl}
-    {:else}
-      {linkUrl}
-    {/if}
-  </div>
-  <div class="flex gap-2 w-full max-w-lg">
-    <SavableInput
-      type="text"
-      bind:value={linkTitle}
-      placeholder="Titel"
-      save={saveLinkWrapper}
-      disabled={temporary || link.customUrl != undefined}
-    />
-    <EditDropdown
-      editUrl={link.getUrl(true)}
-      deleteHandler={startDelete}
-      disabled={link.customUrl != undefined}
-      editPrompt="Pagina aanpassen"
-    />
+  <div class="flex flex-col sm:flex-row sm:items-center sm:gap-2 w-full">
+    <div>
+      <div class="italic w-72 overflow-hidden text-ellipsis">
+        {#if link.customUrl}
+          {link.customUrl}
+        {:else}
+          {linkUrl}
+        {/if}
+      </div>
+    </div>
+    <div class="flex gap-2 w-full max-w-lg">
+      <SavableInput
+        type="text"
+        bind:value={linkTitle}
+        placeholder="Titel"
+        save={saveLinkWrapper}
+        disabled={temporary || link.customUrl != undefined}
+      />
+      <EditDropdown
+        editUrl={link.getUrl(true)}
+        deleteHandler={startDelete}
+        disabled={link.customUrl != undefined}
+        editPrompt="Pagina aanpassen"
+      />
+    </div>
   </div>
 </div>
 
