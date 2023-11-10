@@ -64,7 +64,7 @@
             <div class="font-bold">{d.result}</div>
             <div>{d.name}</div>
             <div>{d.location}</div>
-            <div>{d.date ? d.date.format("DD/MM/YYYY") : "???"}</div>
+            <div>{d.formattedDate()}</div>
             {#if index === 0 && clubRecord.hasPreviousRecords()}
               <button
                 class="btn btn-xs normal-case hidden sm:block"

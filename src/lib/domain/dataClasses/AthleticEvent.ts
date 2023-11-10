@@ -14,6 +14,10 @@ export class AthleticEvent {
         return this.name.toLowerCase()
     }
 
+	toString() {
+		return this.name
+	}
+
     static match(athleticEvent: string) {
         const result = this.AthleticEvents.find((e) =>
             e.name.toLowerCase() === athleticEvent.toLowerCase()

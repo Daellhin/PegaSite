@@ -25,8 +25,11 @@
     bind:checked={value}
     {required}
     {disabled}
-    class={"border-fix  bg-clip-padding w-6 h-6 bg- hover:cursor-pointer rounded-md  checked:bg-primary " +
+    class={"checkbox checkbox-xs checkbox-primary border-fix  bg-clip-padding  bg- hover:cursor-pointer rounded-md  checked:bg-primary " +
       (disabled ? "border-0 bg-base-200" : "border-2 bg-transparent")}
+	    class:checkbox-md={size === "md"}
+		class:checkbox-sm={size === "sm"}
+		class:checkbox-xs={size === "xs"}
   />
   {#if label}
     <label for={id} class="label p-0" class:opacity-50={disabled}>
