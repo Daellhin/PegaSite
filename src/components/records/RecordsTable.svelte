@@ -1,0 +1,158 @@
+<script lang="ts">
+  import Checkbox from "$components/formHelpers/Checkbox.svelte"
+  import Input from "$components/formHelpers/Input.svelte"
+  import TablePagination from "$components/table/TableFooter.svelte"
+  import TableHeaderRow from "$components/table/TableHeaderRow.svelte"
+  import type { RecordInstance } from "$lib/domain/RecordInstance"
+  import { clubRecordStore } from "$lib/stores/ClubRecordStore"
+  import {
+    faCheck,
+    faPen,
+    faSearch,
+    faXmark,
+  } from "@fortawesome/free-solid-svg-icons"
+  import Fa from "svelte-fa"
+
+  export let startEdit: (record: RecordInstance) => void
+
+  $: allRecords = $clubRecordStore?.flatMap((e) => {
+    e.records.forEach((f) => f.linkClubrecord(e))
+    return e.records
+  })
+  $: filteredRecords = allRecords.filter((e) =>
+    approvedFilter(e, showApproved, showNotApproved)
+  )
+
+  // -- Filters --
+  let showNotApproved = true
+  let showApproved = false
+
+  function approvedFilter(
+    record: RecordInstance,
+    showApproved: boolean,
+    showNotApproved: boolean
+  ) {
+    if (showApproved && showNotApproved) return true
+    if (showApproved && !showNotApproved) return record.checked
+    if (!showApproved && showNotApproved) return !record.checked
+    return true
+  }
+
+  // -- Search --
+  let searchString = ""
+</script>
+
+<div class="mt-2">
+  <Input
+    type="text"
+    bind:value={searchString}
+    placeholder="Zoek een clubrecord"
+    iconLeft={faSearch}
+  />
+</div>
+
+<div class="mt-2 flex gap-2 items-center w-full">
+  <span class="font-bold">Filters: </span>
+  <div class="flex gap-1 whitespace-nowrap">
+    <Checkbox bind:value={showNotApproved} />
+    Niet goedgekeurd
+  </div>
+  <div class="flex gap-1">
+    <Checkbox bind:value={showApproved} />
+    Goedgekeurd
+  </div>
+</div>
+
+<div class="grid relative mt-2">
+  <div class="overflow-x-auto rounded-t-lg">
+    <table class="table static table-xs sm:table-sm md:table-md">
+      <thead class="bg-base-200">
+        <TableHeaderRow
+          columns={[
+            { name: "", class: "xl:hidden" },
+            { name: "Disipline" },
+            { name: "In/outdoor" },
+            { name: "Categorie" },
+            { name: "Geslacht" },
+            { name: "Naam" },
+            { name: "Prestatie" },
+            { name: "Locatie" },
+            { name: "Datum" },
+            { name: "", class: "hidden xl:block" },
+          ]}
+        />
+      </thead>
+      <tbody>
+        {#each filteredRecords as recordInstance}
+          <tr>
+            <td class="flex gap-2 xl:hidden">
+              <button
+                type="button"
+                class="btn btn-sm btn-outline btn-square btn-success"
+                title="Goedkeuren"
+              >
+                <Fa icon={faCheck} />
+              </button>
+              <button
+                type="button"
+                class="btn btn-sm btn-outline btn-square btn-error"
+                title="Afwijzen"
+              >
+                <Fa icon={faXmark} />
+              </button>
+            </td>
+            <td class="first-letter:capitalize">
+              {recordInstance.clubRecord?.discipline}
+            </td>
+            <td>{recordInstance.clubRecord?.athleticEvent}</td>
+            <td>{recordInstance.clubRecord?.category}</td>
+            <td>{recordInstance.clubRecord?.gender}</td>
+            <td class="max-w-xs break-words">
+              {recordInstance.name}
+            </td>
+            <td>{recordInstance.result}</td>
+            <td>{recordInstance.location}</td>
+            <td>{recordInstance.formattedDate()}</td>
+            <td class="gap-2 hidden xl:flex items-center">
+              {#if recordInstance.checked}
+                <div class="flex text-success items-center gap-1">
+                  <Fa icon={faCheck} />
+                  Goedgekeurd
+                </div>
+              {:else}
+                <button
+                  type="button"
+                  class="btn btn-sm btn-outline btn-square btn-success"
+                  title="Goedkeuren"
+                >
+                  <Fa icon={faCheck} />
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-sm btn-outline btn-square btn-error"
+                  title="Afwijzen"
+                >
+                  <Fa icon={faXmark} />
+                </button>
+              {/if}
+
+              <button
+                type="button"
+                class="btn btn-sm btn-ghost btn-square"
+                title="Aanpassen"
+                on:click={() => startEdit(recordInstance)}
+              >
+                <Fa icon={faPen} />
+              </button>
+            </td>
+          </tr>
+        {/each}
+      </tbody>
+    </table>
+  </div>
+  <TablePagination
+    filteredLength={filteredRecords.length}
+    fullLength={allRecords.length}
+    saving={false}
+  />
+</div>
