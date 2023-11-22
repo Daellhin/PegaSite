@@ -19,9 +19,9 @@
     e.records.forEach((f) => f.linkClubrecord(e))
     return e.records
   })
-  $: filteredRecords = allRecords.filter((e) =>
-    approvedFilter(e, showApproved, showNotApproved)
-  )
+  $: filteredRecords = allRecords
+    .filter((e) => approvedFilter(e, showApproved, showNotApproved))
+    .filter((e) => e.matchesSearchString(searchString))
 
   // -- Filters --
   let showNotApproved = true
@@ -30,7 +30,7 @@
   function approvedFilter(
     record: RecordInstance,
     showApproved: boolean,
-    showNotApproved: boolean
+    showNotApproved: boolean,
   ) {
     if (showApproved && showNotApproved) return true
     if (showApproved && !showNotApproved) return record.checked

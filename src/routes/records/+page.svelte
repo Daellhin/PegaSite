@@ -1,7 +1,7 @@
 <script lang="ts">
     import Input from "$components/formHelpers/Input.svelte"
   import NewRecordForm from "$components/records/NewRecordForm.svelte"
-  import RecordsTable from "$components/records/RecordsList.svelte"
+  import RecordsList from "$components/records/RecordsList.svelte"
   import { Category } from "$lib/domain/dataClasses/Category"
   import { clubRecordStore } from "$lib/stores/ClubRecordStore"
   import { pageHeadStore } from "$lib/stores/PageHeadStore"
@@ -45,7 +45,7 @@
 {#if $clubRecordStore}
   {#each Category.Categories as category}
     <div class="mx-auto my-2">
-      <RecordsTable {category} {searchString} />
+      <RecordsList {category} {searchString} />
     </div>
   {/each}
 {:else}
