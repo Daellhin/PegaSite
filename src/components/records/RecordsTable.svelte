@@ -9,9 +9,11 @@
     faCheck,
     faPen,
     faSearch,
+    faTrash,
     faXmark,
   } from "@fortawesome/free-solid-svg-icons"
   import Fa from "svelte-fa"
+  import RecordButtonGroup from "./RecordButtonGroup.svelte"
 
   export let startEdit: (record: RecordInstance) => void
 
@@ -65,11 +67,11 @@
 
 <div class="grid relative mt-2">
   <div class="overflow-x-auto rounded-t-lg">
-    <table class="table static table-xs sm:table-sm md:table-md">
+    <table class="table static table-xs sm:table-sm md:table-md mb-3 xl:mb-0">
       <thead class="bg-base-200">
         <TableHeaderRow
           columns={[
-            { name: "", class: "xl:hidden" },
+            { name: "Status", class: "xl:hidden" },
             { name: "Disipline" },
             { name: "In/outdoor" },
             { name: "Categorie" },
@@ -78,28 +80,19 @@
             { name: "Prestatie" },
             { name: "Locatie" },
             { name: "Datum" },
-            { name: "", class: "hidden xl:block" },
+            { name: "Status", class: "hidden xl:block" },
           ]}
         />
       </thead>
       <tbody>
         {#each filteredRecords as recordInstance}
           <tr>
-            <td class="flex gap-2 xl:hidden">
-              <button
-                type="button"
-                class="btn btn-sm btn-outline btn-square btn-success"
-                title="Goedkeuren"
-              >
-                <Fa icon={faCheck} />
-              </button>
-              <button
-                type="button"
-                class="btn btn-sm btn-outline btn-square btn-error"
-                title="Afwijzen"
-              >
-                <Fa icon={faXmark} />
-              </button>
+            <td class="xl:hidden">
+              <RecordButtonGroup
+                class="flex xl:hidden"
+                {recordInstance}
+                {startEdit}
+              />
             </td>
             <td class="first-letter:capitalize">
               {recordInstance.clubRecord?.discipline}
@@ -107,43 +100,18 @@
             <td>{recordInstance.clubRecord?.athleticEvent}</td>
             <td>{recordInstance.clubRecord?.category}</td>
             <td>{recordInstance.clubRecord?.gender}</td>
-            <td class="max-w-xs break-words">
+            <td class="max-w-xs break-words min-w-[15em]">
               {recordInstance.name}
             </td>
             <td>{recordInstance.result}</td>
             <td>{recordInstance.location}</td>
             <td>{recordInstance.formattedDate()}</td>
-            <td class="gap-2 hidden xl:flex items-center">
-              {#if recordInstance.checked}
-                <div class="flex text-success items-center gap-1">
-                  <Fa icon={faCheck} />
-                  Goedgekeurd
-                </div>
-              {:else}
-                <button
-                  type="button"
-                  class="btn btn-sm btn-outline btn-square btn-success"
-                  title="Goedkeuren"
-                >
-                  <Fa icon={faCheck} />
-                </button>
-                <button
-                  type="button"
-                  class="btn btn-sm btn-outline btn-square btn-error"
-                  title="Afwijzen"
-                >
-                  <Fa icon={faXmark} />
-                </button>
-              {/if}
-
-              <button
-                type="button"
-                class="btn btn-sm btn-ghost btn-square"
-                title="Aanpassen"
-                on:click={() => startEdit(recordInstance)}
-              >
-                <Fa icon={faPen} />
-              </button>
+            <td class="hidden xl:table-cell">
+              <RecordButtonGroup
+                class="hidden xl:flex"
+                {recordInstance}
+                {startEdit}
+              />
             </td>
           </tr>
         {/each}

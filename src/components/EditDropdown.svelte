@@ -10,7 +10,7 @@
   export let editUrl = ""
   export let editHandler: () => Promise<void> | any = () => {}
   export let deleteHandler: (() => Promise<void> | any) | undefined = undefined
-  export let size: "md" | "sm" | "xs" = "md"
+  export let size: "full" | "md" | "sm" | "xs" = "md"
   export let disabled = false
   export let width = "w-52"
   export let editPrompt = "Aanpassen"

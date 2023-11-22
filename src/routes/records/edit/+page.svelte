@@ -6,6 +6,7 @@
   import { authStore } from "$lib/stores/AuthStore"
   import { clubRecordStore } from "$lib/stores/ClubRecordStore"
   import { pageHeadStore } from "$lib/stores/PageHeadStore"
+  import { scrollTop } from "svelte-scrolling"
 
   let showForm = false
   let editRecord: RecordInstance | undefined
@@ -13,6 +14,7 @@
   function startEdit(record: RecordInstance) {
     showForm = true
     editRecord = record
+    scrollTop()
   }
 
   // -- Authguard --
