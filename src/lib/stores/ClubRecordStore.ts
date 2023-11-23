@@ -32,8 +32,6 @@ function createClubRecordStore() {
 	const { subscribe, update } = store
 
 	async function createClubRecord(discipline: Discipline, category: Category, gender: Gender, athleticEvent: AthleticEvent, newRecordInstance: RecordInstance) {
-		if (!browser) return
-
 		// -- Upload record --
 		const { getFirestore, doc, updateDoc, arrayUnion } = await import('firebase/firestore')
 		const { firebaseApp } = await import('$lib/firebase/Firebase')
@@ -57,9 +55,53 @@ function createClubRecordStore() {
 		})
 	}
 
+	async function deleteRecordInstance(recordInstance: RecordInstance) {
+		const { getFirestore, doc, updateDoc, arrayRemove } = await import('firebase/firestore')
+		const { firebaseApp } = await import('$lib/firebase/Firebase')
+		const firestore = getFirestore(firebaseApp)
+
+		const clubrecordsRef = doc(firestore, Collections.CLUB_RECORDS, "singleDocument")
+		const clubrecordKey = `${recordInstance.clubRecord?.gender.keyName}.${recordInstance.clubRecord?.athleticEvent.keyName}.${recordInstance.clubRecord?.discipline.name}.${recordInstance.clubRecord?.category.keyName}`
+		await updateDoc(clubrecordsRef, {
+			[clubrecordKey]: arrayRemove(recordInstance.toJSON())
+		})
+
+		update((clubRecords) => {
+			return [...clubRecords.map((e) => {
+				if (e === recordInstance.clubRecord)
+					e.records = e.records.filter((r) => r !== recordInstance)
+				return e
+			})]
+		})
+	}
+
+	async function approveRecordInstance(recordInstance: RecordInstance) {
+		const { getFirestore, doc, updateDoc, arrayUnion, arrayRemove, runTransaction } = await import('firebase/firestore')
+		const { firebaseApp } = await import('$lib/firebase/Firebase')
+		const firestore = getFirestore(firebaseApp)
+
+		const clubrecordsRef = doc(firestore, Collections.CLUB_RECORDS, "singleDocument")
+		const clubrecordKey = `${recordInstance.clubRecord?.gender.keyName}.${recordInstance.clubRecord?.athleticEvent.keyName}.${recordInstance.clubRecord?.discipline.name}.${recordInstance.clubRecord?.category.keyName}`
+		const recordInstanceKey = `${clubrecordKey}.`
+		await runTransaction(firestore, async (transaction) => {
+			await updateDoc(clubrecordsRef, {
+				[clubrecordKey]: arrayRemove(recordInstance.toJSON())
+			})
+			recordInstance.checked = true
+			await updateDoc(clubrecordsRef, {
+				[clubrecordKey]: arrayUnion(recordInstance.toJSON())
+			})
+		})
+
+		// -- Update store --
+		update((clubRecords) => [...clubRecords])
+	}
+
 	return {
 		subscribe,
 		createClubRecord,
+		deleteRecordInstance,
+		approveRecordInstance
 	}
 }
 

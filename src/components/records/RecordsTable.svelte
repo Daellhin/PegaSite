@@ -5,17 +5,13 @@
   import TableHeaderRow from "$components/table/TableHeaderRow.svelte"
   import type { RecordInstance } from "$lib/domain/RecordInstance"
   import { clubRecordStore } from "$lib/stores/ClubRecordStore"
-  import {
-    faCheck,
-    faPen,
-    faSearch,
-    faTrash,
-    faXmark,
-  } from "@fortawesome/free-solid-svg-icons"
-  import Fa from "svelte-fa"
+  import { faSearch } from "@fortawesome/free-solid-svg-icons"
   import RecordButtonGroup from "./RecordButtonGroup.svelte"
 
-  export let startEdit: (record: RecordInstance) => void
+  export let startEdit: (record: RecordInstance) => Promise<void>
+
+  let saving = false
+  let saveError = ""
 
   $: allRecords = $clubRecordStore?.flatMap((e) => {
     e.records.forEach((f) => f.linkClubrecord(e))
@@ -92,6 +88,8 @@
                 class="flex xl:hidden"
                 {recordInstance}
                 {startEdit}
+                bind:saving
+                bind:saveError
               />
             </td>
             <td class="first-letter:capitalize">
@@ -111,6 +109,8 @@
                 class="hidden xl:flex"
                 {recordInstance}
                 {startEdit}
+                bind:saving
+                bind:saveError
               />
             </td>
           </tr>
@@ -121,6 +121,7 @@
   <TablePagination
     filteredLength={filteredRecords.length}
     fullLength={allRecords.length}
-    saving={false}
+    bind:saving
   />
+  <p class="text-error">{saveError}</p>
 </div>

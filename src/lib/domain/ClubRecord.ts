@@ -22,6 +22,7 @@ export class ClubRecord {
 		public athleticEvent: AthleticEvent,
 		public records: RecordInstance[]
 	) {
+		records.sort((a, b) => (a.date?.isBefore(b.date) ? 1 : -1))
 		this.searchableString = `${discipline.getAllNames().join("")} ${category.getAllNames().join("")} ${gender.getAllNames().join("")} ${athleticEvent} ${records.map((e) => e.searchableString)}`.toLowerCase()
 	}
 
