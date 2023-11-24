@@ -11,7 +11,7 @@
   export let startEdit: (record: RecordInstance) => Promise<void>
 
   let saving = false
-  let saveError = ""
+  let errorMessage = ""
 
   $: allRecords = $clubRecordStore?.flatMap((e) => {
     e.records.forEach((f) => f.linkClubrecord(e))
@@ -89,7 +89,7 @@
                 {recordInstance}
                 {startEdit}
                 bind:saving
-                bind:saveError
+                bind:saveError={errorMessage}
               />
             </td>
             <td class="first-letter:capitalize">
@@ -110,7 +110,7 @@
                 {recordInstance}
                 {startEdit}
                 bind:saving
-                bind:saveError
+                bind:saveError={errorMessage}
               />
             </td>
           </tr>
@@ -123,5 +123,7 @@
     fullLength={allRecords.length}
     bind:saving
   />
-  <p class="text-error">{saveError}</p>
+  {#if errorMessage}
+    <p class="text-error">{errorMessage}</p>
+  {/if}
 </div>

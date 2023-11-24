@@ -1,10 +1,9 @@
 <script lang="ts">
-  import DismissableForm from "$components/DismissableForm.svelte"
+  import DismissibleForm from "$components/DismissibleForm.svelte"
   import Dropzone from "$components/formHelpers/Dropzone.svelte"
   import Input from "$components/formHelpers/Input.svelte"
   import { Sponsor } from "$lib/domain/Sponsor"
   import { sponsorStore } from "$lib/stores/SponsorStore"
-  import { handleFirebaseError } from "$lib/utils/Firebase"
   import { pushCreatedToast } from "$lib/utils/Toast"
 
   export let showForm = false
@@ -14,23 +13,17 @@
   let name = ""
   let url: string
   let image: (string | File)[] = []
-  let errorMessage = ""
 
   async function saveSponsor() {
-	errorMessage = ""
-    try {
-      if (editSponsor) {
-        await sponsorStore.updateSponsor(name, url, image[0], editSponsor)
-        pushCreatedToast("Sponsor gewijzigd")
-      } else {
-        if (!(image[0] instanceof File))
-          throw new Error("Image must be a file when creating new sponsor")
-        const newSponsor = new Sponsor("-1", name, url, "")
-        await sponsorStore.createSponsor(newSponsor, image[0])
-        pushCreatedToast("Sponsor aangemaakt")
-      }
-    } catch (error) {
-      errorMessage = handleFirebaseError(error)
+    if (editSponsor) {
+      await sponsorStore.updateSponsor(name, url, image[0], editSponsor)
+      pushCreatedToast("Sponsor gewijzigd")
+    } else {
+      if (!(image[0] instanceof File))
+        throw new Error("Image must be a file when creating new sponsor")
+      const newSponsor = new Sponsor("-1", name, url, "")
+      await sponsorStore.createSponsor(newSponsor, image[0])
+      pushCreatedToast("Sponsor aangemaakt")
     }
   }
 
@@ -49,10 +42,9 @@
   }
 </script>
 
-<DismissableForm
+<DismissibleForm
   onSubmit={saveSponsor}
   bind:showForm
-  error={errorMessage}
   submitLabel={editSponsor ? "Wijzigen" : "Aanmaken"}
   {onDismiss}
 >
@@ -80,4 +72,4 @@
     required
     maxAmount={1}
   />
-</DismissableForm>
+</DismissibleForm>

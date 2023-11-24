@@ -15,16 +15,16 @@
   export let onSave: () => Promise<void>
 
   let saving = false
-  let formError = ""
+  let errorMessage = ""
 
   async function onSubmitWrapper(event: SubmitEvent) {
     event.preventDefault()
     saving = true
-    formError = ""
+    errorMessage = ""
     try {
       await onSave()
     } catch (error) {
-      formError = handleFirebaseError(error)
+      errorMessage = handleFirebaseError(error)
     }
     saving = false
   }
@@ -50,7 +50,7 @@
     {submitLabel}
     <span class="loading loading-ring" class:hidden={!saving} />
   </button>
-  {#if formError}
-    <p class="text-error">{formError}</p>
+  {#if errorMessage}
+    <p class="text-error">{errorMessage}</p>
   {/if}
 </form>

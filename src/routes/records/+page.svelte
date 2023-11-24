@@ -1,6 +1,6 @@
 <script lang="ts">
     import Input from "$components/formHelpers/Input.svelte"
-  import NewRecordForm from "$components/records/NewRecordForm.svelte"
+  import RecordForm from "$components/records/RecordForm.svelte"
   import RecordsList from "$components/records/RecordsList.svelte"
   import { Category } from "$lib/domain/dataClasses/Category"
   import { clubRecordStore } from "$lib/stores/ClubRecordStore"
@@ -27,7 +27,7 @@
 <!-- Create Record -->
 {#if showForm}
   <div class="mt-2">
-    <NewRecordForm bind:showForm />
+    <RecordForm bind:showForm />
   </div>
 {/if}
 

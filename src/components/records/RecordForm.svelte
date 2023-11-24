@@ -1,5 +1,5 @@
 <script lang="ts">
-  import DismisableForm from "$components/DismissableForm.svelte"
+  import DismissibleForm from "$components/DismissibleForm.svelte"
   import CustomSelect from "$components/formHelpers/CustomSelect.svelte"
   import Input from "$components/formHelpers/Input.svelte"
   import { RecordInstance } from "$lib/domain/RecordInstance"
@@ -33,11 +33,10 @@
       record
     )
     pushCreatedToast("Record aangemaakt")
-    //showForm = false;
   }
 </script>
 
-<DismisableForm
+<DismissibleForm
   onSubmit={createRecord}
   bind:showForm
   submitLabel="Clubrecord aanmaken"
@@ -110,4 +109,4 @@
     bind:value={date}
     required
   />
-</DismisableForm>
+</DismissibleForm>

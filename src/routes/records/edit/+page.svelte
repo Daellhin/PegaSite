@@ -1,6 +1,6 @@
 <script lang="ts">
   import { goto } from "$app/navigation"
-  import NewRecordForm from "$components/records/NewRecordForm.svelte"
+  import RecordForm from "$components/records/RecordForm.svelte"
   import RecordsTable from "$components/records/RecordsTable.svelte"
   import type { RecordInstance } from "$lib/domain/RecordInstance"
   import { authStore } from "$lib/stores/AuthStore"
@@ -32,7 +32,7 @@
 
 {#if showForm}
   <div class="mt-2">
-    <NewRecordForm bind:showForm />
+    <RecordForm bind:showForm />
   </div>
 {/if}
 

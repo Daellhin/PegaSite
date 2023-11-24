@@ -1,11 +1,12 @@
 <script lang="ts">
+  import { handleFirebaseError } from "$lib/utils/Firebase"
   import { faXmark } from "@fortawesome/free-solid-svg-icons"
   import Fa from "svelte-fa"
 
   export let showForm: boolean
   export let onSubmit: () => Promise<void>
   export let submitLabel: string
-  export let error = ""
+  export let errorMessage = ""
   export let onDismiss: () => void = () => {}
 
   let saving = false
@@ -13,7 +14,12 @@
   async function onSubmitWrapper(event: SubmitEvent) {
     event.preventDefault()
     saving = true
-    await onSubmit()
+    errorMessage = ""
+    try {
+      await onSubmit()
+    } catch (error) {
+      errorMessage = handleFirebaseError(error)
+    }
     saving = false
   }
   function dismissForm() {
@@ -40,7 +46,6 @@
   </div>
 
   <div class="mt-4">
-    <div class="text-error">{error}</div>
     <button
       class="btn btn-primary mt-2 max-w-xs w-full md:w-auto"
       type="submit"
@@ -50,4 +55,7 @@
       <span class="loading loading-ring" class:hidden={!saving} />
     </button>
   </div>
+  {#if errorMessage}
+    <p class="text-error">{errorMessage}</p>
+  {/if}
 </form>
