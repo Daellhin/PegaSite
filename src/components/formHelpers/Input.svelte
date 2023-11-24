@@ -1,9 +1,9 @@
 <script lang="ts">
   import { validateEmail } from "$lib/utils/Validators"
   import {
-    faEye,
-    faEyeSlash,
-    type IconDefinition,
+      faEye,
+      faEyeSlash,
+      type IconDefinition,
   } from "@fortawesome/free-solid-svg-icons"
   import dayjs from "dayjs"
   import Fa from "svelte-fa"
@@ -38,9 +38,10 @@
 
   function updateInternal(_: any) {
     if (value === internalValue) return
-    if (type === "date" && value?.format("YYYY-MM-DD") !== internalValue)
-      internalValue = value?.format("YYYY-MM-DD")
-    else internalValue = value
+    if (type === "date") {
+      if (value?.format("YYYY-MM-DD") === internalValue) return
+      internalValue = value.format("YYYY-MM-DD")
+    } else internalValue = value
   }
   function updateExternal(_: any) {
     if (type === "date") value = dayjs(internalValue)
@@ -93,7 +94,7 @@
     {/if}
     <input
       id={inputId}
-      use:typeAction
+	  use:typeAction
       bind:this={input}
       bind:value={internalValue}
       {placeholder}
