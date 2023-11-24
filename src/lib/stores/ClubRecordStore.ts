@@ -97,11 +97,15 @@ function createClubRecordStore() {
 		update((clubRecords) => [...clubRecords])
 	}
 
+	async function updateRecordInstance(discipline: Discipline, category: Category, gender: Gender, athleticEvent: AthleticEvent, oldRecordInstance: RecordInstance) {
+	}
+
 	return {
 		subscribe,
 		createClubRecord,
 		deleteRecordInstance,
-		approveRecordInstance
+		approveRecordInstance,
+		updateRecordInstance
 	}
 }
 

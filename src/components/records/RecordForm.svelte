@@ -12,34 +12,72 @@
   import type { Dayjs } from "dayjs"
 
   export let showForm: boolean
+  export let editRecord: RecordInstance | undefined = undefined
+  export let onDismiss: () => void = () => {}
 
-  let discipline: Discipline
-  let category: Category
-  let gender: Gender
-  let athleticEvent: AthleticEvent
+  let discipline: Discipline | undefined = undefined
+  let category: Category | undefined = undefined
+  let gender: Gender | undefined = undefined
+  let athleticEvent: AthleticEvent | undefined = undefined
 
-  let name: string
-  let result: string
-  let location: string
-  let date: Dayjs
+  let name = ""
+  let result = ""
+  let location = ""
+  let date: Dayjs | undefined = undefined
 
-  async function createRecord() {
-    const record = new RecordInstance(name, result, location, date)
-    await clubRecordStore.createClubRecord(
-      discipline,
-      category,
-      gender,
-      athleticEvent,
-      record
-    )
-    pushCreatedToast("Record aangemaakt")
+  async function saveRecord() {
+    if (editRecord) {
+      await clubRecordStore.updateRecordInstance(
+        discipline!,
+        category!,
+        gender!,
+        athleticEvent!,
+        editRecord,
+      )
+      pushCreatedToast("Record gewijzigd")
+    } else {
+      const record = new RecordInstance(name, result, location, date)
+      await clubRecordStore.createClubRecord(
+        discipline!,
+        category!,
+        gender!,
+        athleticEvent!,
+        record,
+      )
+      pushCreatedToast("Record aangemaakt")
+    }
+  }
+
+  // -- Set editSponsor --
+  $: setSponsor(editRecord)
+  function setSponsor(editRecord: RecordInstance | undefined) {
+    if (editRecord) {
+      discipline = editRecord.clubRecord?.discipline
+      category = editRecord.clubRecord?.category
+      gender = editRecord.clubRecord?.gender
+      athleticEvent = editRecord.clubRecord?.athleticEvent
+      name = editRecord.name
+      result = editRecord.result
+      location = editRecord.location
+      date = editRecord.date
+    } else {
+      discipline = undefined
+      category = undefined
+      gender = undefined
+      athleticEvent = undefined
+      name = ""
+      result = ""
+      location = ""
+      date = undefined
+    }
   }
 </script>
 
 <DismissibleForm
-  onSubmit={createRecord}
+  onSubmit={saveRecord}
   bind:showForm
-  submitLabel="Clubrecord aanmaken"
+  submitLabel={editRecord ? "Wijzigen" : "Aanmaken"}
+  {onDismiss}
 >
   <CustomSelect
     bind:value={discipline}
@@ -102,11 +140,5 @@
     size="xs"
     required
   />
-  <Input
-    type="date"
-    label="Datum"
-    size="xs"
-    bind:value={date}
-    required
-  />
+  <Input type="date" label="Datum" size="xs" bind:value={date} required />
 </DismissibleForm>

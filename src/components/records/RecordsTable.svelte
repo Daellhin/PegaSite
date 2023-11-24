@@ -8,7 +8,7 @@
   import { faSearch } from "@fortawesome/free-solid-svg-icons"
   import RecordButtonGroup from "./RecordButtonGroup.svelte"
 
-  export let startEdit: (record: RecordInstance) => Promise<void>
+  export let startEdit: (record: RecordInstance) => void
 
   let saving = false
   let errorMessage = ""

@@ -32,7 +32,7 @@
 
 {#if showForm}
   <div class="mt-2">
-    <RecordForm bind:showForm />
+    <RecordForm bind:showForm bind:editRecord />
   </div>
 {/if}
 

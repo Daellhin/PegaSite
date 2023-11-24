@@ -16,9 +16,19 @@
 
   $: selectId = label?.replace(/[ :]/g, "").toLowerCase()
 
-  function handleSelect(event: { detail: { label: string; value: any } }) {
-    value = event.detail.value
+  // -- Value handling --
+  let internalValue = { value: undefined, label: "" }
+  $: updateInternal(value)
+  $: updateExternal(internalValue)
+
+  function updateInternal(_: any) {
+    if (value === internalValue.value) return
+    internalValue = { value: value, label: value.adultSingularName }
   }
+  function updateExternal(_: any) {
+    value = internalValue.value
+  }
+
   const floatingConfig = {
     placement: "bottom",
     middleware: [],
@@ -43,7 +53,7 @@
     {items}
     {groupBy}
     id={selectId}
-    on:select={handleSelect}
+    bind:value={internalValue}
     class={"select select-bordered border-2 font-normal " +
       (searchable ? "searchable" : "")}
     showChevron

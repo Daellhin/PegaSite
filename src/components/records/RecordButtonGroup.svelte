@@ -6,7 +6,7 @@
   import { faCheck, faPen, faTrash } from "@fortawesome/free-solid-svg-icons"
   import Fa from "svelte-fa"
 
-  export let startEdit: (record: RecordInstance) => Promise<void>
+  export let startEdit: (record: RecordInstance) => void
   export let recordInstance: RecordInstance
   export let saving = false
   export let saveError = ""
@@ -22,18 +22,6 @@
     saveError = ""
     try {
       await clubRecordStore.approveRecordInstance(recordInstance)
-    } catch (error) {
-      saveError = handleFirebaseError(error)
-    }
-    saving = false
-  }
-
-  // -- Edit --
-  async function startEditWrapper(record: RecordInstance) {
-    saving = true
-    saveError = ""
-    try {
-      await startEdit(record)
     } catch (error) {
       saveError = handleFirebaseError(error)
     }
@@ -85,7 +73,7 @@
     type="button"
     class="btn btn-sm btn-outline btn-square"
     title="Aanpassen"
-    on:click={() => startEditWrapper(recordInstance)}
+    on:click={() => startEdit(recordInstance)}
   >
     <Fa icon={faPen} />
   </button>

@@ -11,7 +11,7 @@
   export let onDismiss: () => void = () => {}
 
   let name = ""
-  let url: string
+  let url = ""
   let image: (string | File)[] = []
 
   async function saveSponsor() {
