@@ -17,16 +17,20 @@
   $: selectId = label?.replace(/[ :]/g, "").toLowerCase()
 
   // -- Value handling --
-  let internalValue = { value: undefined, label: "" }
+  let internalValue: { value: any; label?: any } | undefined = undefined
   $: updateInternal(value)
   $: updateExternal(internalValue)
 
   function updateInternal(_: any) {
-    if (value === internalValue.value) return
-    internalValue = { value: value, label: value.toString() }
+    if (!value) {
+      internalValue = undefined
+    } else {
+      if (value === internalValue?.value) return
+      internalValue = { value: value, label: value.toString() }
+    }
   }
   function updateExternal(_: any) {
-    value = internalValue.value
+    value = internalValue?.value
   }
 
   const floatingConfig = {

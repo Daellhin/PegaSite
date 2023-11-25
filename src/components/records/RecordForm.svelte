@@ -32,6 +32,10 @@
         category!,
         gender!,
         athleticEvent!,
+		name,
+		result,
+		location,
+		date!,
         editRecord,
       )
       pushCreatedToast("Record gewijzigd")

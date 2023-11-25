@@ -5,6 +5,7 @@ import type { AthleticEvent } from '$lib/domain/dataClasses/AthleticEvent'
 import type { Category } from '$lib/domain/dataClasses/Category'
 import type { Discipline } from '$lib/domain/dataClasses/Discipline'
 import type { Gender } from '$lib/domain/dataClasses/Gender'
+import type { Dayjs } from 'dayjs'
 import { writable } from 'svelte/store'
 
 export function createMockClubRecordStore() {
@@ -29,7 +30,7 @@ export function createMockClubRecordStore() {
 	}
 	async function approveRecordInstance(recordInstance: RecordInstance) {
 	}
-	async function updateRecordInstance(discipline: Discipline, category: Category, gender: Gender, athleticEvent: AthleticEvent, oldRecordInstance: RecordInstance) {
+	async function updateRecordInstance(discipline: Discipline, category: Category, gender: Gender, athleticEvent: AthleticEvent, name: string, result: string, location: string, date: Dayjs, recordInstance: RecordInstance) {
 	}
 
 	return {
