@@ -5,7 +5,7 @@
   import { clubRecordStore } from "$lib/stores/ClubRecordStore"
   import { pageHeadStore } from "$lib/stores/PageHeadStore"
 
-  const newRecords = $clubRecordStore
+  $: newRecords = $clubRecordStore
     ?.flatMap((e) => e.records)
     .filter((e) => !e.checked).length
 
@@ -36,12 +36,14 @@
       >
       <a href="/records/edit" class="btn btn-primary normal-case relative"
         >Clubrecords beheren
-        <div
-          title={`${newRecords} nieuwe clubrecords`}
-          class="absolute -top-2 -end-2 inline-flex items-center justify-center w-6 h-6 text-xs font-bold bg-error border-2 border-base-100 rounded-full"
-        >
-          {newRecords}
-        </div>
+        {#if newRecords > 0}
+          <div
+            title={`${newRecords} nieuwe clubrecords`}
+            class="absolute -top-2 -end-2 inline-flex items-center justify-center w-6 h-6 text-xs font-bold bg-error border-2 border-base-100 rounded-full"
+          >
+            {newRecords}
+          </div>
+        {/if}
       </a>
     {/if}
   </div>
