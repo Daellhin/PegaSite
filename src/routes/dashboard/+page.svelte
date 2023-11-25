@@ -29,7 +29,7 @@
       >
       <a href="/users" class="btn btn-primary normal-case">Gebruikers beheren</a
       >
-	  <a href="/records/edit" class="btn btn-primary normal-case">Clubrecords controleren</a
+	  <a href="/records/edit" class="btn btn-primary normal-case">Clubrecords beheren</a
 		>
     {/if}
   </div>
