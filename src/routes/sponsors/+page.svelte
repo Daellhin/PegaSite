@@ -1,7 +1,7 @@
 <script lang="ts">
   import { goto } from "$app/navigation"
   import SponsorForm from "$components/sponsors/SponsorForm.svelte"
-  import SponsorTable from "$components/sponsors/SponsorTable.svelte"
+  import SponsorsTable from "$components/sponsors/SponsorsTable.svelte"
   import type { Sponsor } from "$lib/domain/Sponsor"
   import { authStore } from "$lib/stores/AuthStore"
   import { pageHeadStore } from "$lib/stores/PageHeadStore"
@@ -46,7 +46,7 @@
 
 
 {#if $sponsorStore}
-  <SponsorTable {startEdit} />
+  <SponsorsTable {startEdit} />
 {:else}
   Loading
 {/if}

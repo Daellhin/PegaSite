@@ -12,6 +12,8 @@
   export let dragDisabled: boolean
   export let savingNewOrder = false
 
+  let errorMessage = ""
+
   // -- Link group --
   let linkGroupName = linkGroup.name
 
@@ -49,7 +51,6 @@
   }
 
   // -- Drag and drop(Links) --
-  let reorderError = ""
   $: dragableLinks = linkGroup.links.map((e) => e.toDragableDragableItem())
 
   function handleConsider(event: CustomEvent<DndEvent<any>>) {
@@ -59,13 +60,13 @@
   async function handleFinalize(event: CustomEvent<DndEvent<any>>) {
     savingNewOrder = true
     dragDisabled = true
-    reorderError = ""
+    errorMessage = ""
     try {
       dragableLinks = event.detail.items
       const newSortedLinks = dragableLinks.map((e) => e.value)
       await navbarStore.updateLinkOrder(linkGroup, newSortedLinks)
     } catch (error) {
-      reorderError = handleFirebaseError(error)
+      errorMessage = handleFirebaseError(error)
     }
     savingNewOrder = false
   }
@@ -122,6 +123,9 @@
       Link toevoegen
     </button>
   </div>
+  {#if errorMessage}
+    <p class="text-error">{errorMessage}</p>
+  {/if}
 </div>
 
 <style lang="postcss">

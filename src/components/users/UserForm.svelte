@@ -1,5 +1,5 @@
 <script lang="ts">
-  import DismissableForm from "$components/DismissableForm.svelte"
+  import DismissibleForm from "$components/DismissibleForm.svelte"
   import CustomSelect from "$components/formHelpers/CustomSelect.svelte"
   import Input from "$components/formHelpers/Input.svelte"
   import { DbUser, type DbUserRole } from "$lib/domain/DbUser"
@@ -34,10 +34,10 @@
   }
 </script>
 
-<DismissableForm
+<DismissibleForm
   onSubmit={createUser}
   bind:showForm
-  error={errorMessage}
+  errorMessage={errorMessage}
   submitLabel="Gebruiker aanmaken"
 >
   <Input
@@ -71,4 +71,4 @@
     size="xs"
     disabled
   />
-</DismissableForm>
+</DismissibleForm>

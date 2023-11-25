@@ -11,12 +11,10 @@
 
   // -- Drag and drop --
   let savingNewOrder = false
-  let reorderError = ""
+  let errorMessage = ""
   let dragDisabled = true
 
-  $: dragableLinkGroups = $navbarStore?.map((e) =>
-    e.toDragableDragableItem()
-  )
+  $: dragableLinkGroups = $navbarStore?.map((e) => e.toDragableDragableItem())
 
   function handleConsider(event: CustomEvent<DndEvent<any>>) {
     dragableLinkGroups = event.detail.items
@@ -25,13 +23,13 @@
   async function handleFinalize(event: CustomEvent<DndEvent<any>>) {
     savingNewOrder = true
     dragDisabled = true
-    reorderError = ""
+    errorMessage = ""
     try {
       dragableLinkGroups = event.detail.items
       const newSortedLinkGroups = dragableLinkGroups.map((e) => e.value)
       await navbarStore.updateLinkGroupOrder(newSortedLinkGroups)
     } catch (error) {
-      reorderError = handleFirebaseError(error)
+      errorMessage = handleFirebaseError(error)
     }
     savingNewOrder = false
   }
@@ -59,13 +57,17 @@
       dragDisabled: dragDisabled,
       flipDurationMs: FLIP_DURATION,
       dropTargetStyle: {},
-	  type: "NavbarGroup"
+      type: "NavbarGroup",
     }}
     on:consider={handleConsider}
     on:finalize={handleFinalize}
   >
     {#each dragableLinkGroups as dragable (dragable.id)}
-      <LinkGroupEditor linkGroup={dragable.value} bind:dragDisabled bind:savingNewOrder />
+      <LinkGroupEditor
+        linkGroup={dragable.value}
+        bind:dragDisabled
+        bind:savingNewOrder
+      />
     {:else}
       Geen links
     {/each}
@@ -77,8 +79,8 @@
       />
     </div>
   {/if}
-  {#if reorderError}
-    <p class="text-error">{reorderError}</p>
+  {#if errorMessage}
+    <p class="text-error">{errorMessage}</p>
   {/if}
 {:else}
   Loading

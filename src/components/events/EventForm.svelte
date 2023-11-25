@@ -20,18 +20,18 @@
   let multiDay = endDate !== undefined
   let endDateInner = endDate || date
   let saving = false
-  let formError = ""
+  let errorMessage = ""
 
   $: endDate = multiDay ? endDateInner : undefined
 
   async function onSubmitWrapper(event: SubmitEvent) {
     event.preventDefault()
     saving = true
-	formError = ""
+    errorMessage = ""
     try {
       await onSave()
     } catch (error) {
-      formError = handleFirebaseError(error)
+      errorMessage = handleFirebaseError(error)
     }
     saving = false
   }
@@ -60,17 +60,21 @@
       required
     />
   {/if}
-  <FullDuration
-    label="Duur van event:"
-    bind:value={duration}
-    required
-  />
+  <FullDuration label="Duur van event:" bind:value={duration} required />
   <GeoAutoComplete label="Locatie van event:" bind:value={location} />
   <CLEditor label="Info over event:" bind:value={info} />
 
-  <button class="btn btn-primary mt-2 max-w-sm" type="submit" disabled={saving}>
-    {submitLabel}
-    <span class="loading loading-ring" class:hidden={!saving} />
-  </button>
-  <p class="text-error">{formError}</p>
+  <div class="w-fit" class:hover:cursor-wait={saving}>
+    <button
+      class="btn btn-primary mt-2 max-w-sm"
+      type="submit"
+      disabled={saving}
+    >
+      {submitLabel}
+      <span class="loading loading-ring" class:hidden={!saving} />
+    </button>
+  </div>
+  {#if errorMessage}
+    <p class="text-error">{errorMessage}</p>
+  {/if}
 </form>

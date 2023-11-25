@@ -15,16 +15,16 @@
   export let onSave: () => Promise<void>
 
   let saving = false
-  let formError = ""
+  let errorMessage = ""
 
   async function onSubmitWrapper(event: SubmitEvent) {
     event.preventDefault()
     saving = true
-    formError = ""
+    errorMessage = ""
     try {
       await onSave()
     } catch (error) {
-      formError = handleFirebaseError(error)
+      errorMessage = handleFirebaseError(error)
     }
     saving = false
   }
@@ -46,11 +46,17 @@
   />
   <CLEditor label="Inhoud van artikel:" bind:value={content} />
 
-  <button class="btn btn-primary mt-2 max-w-sm" type="submit" disabled={saving}>
-    {submitLabel}
-    <span class="loading loading-ring" class:hidden={!saving} />
-  </button>
-  {#if formError}
-    <p class="text-error">{formError}</p>
+  <div class="w-fit" class:hover:cursor-wait={saving}>
+    <button
+      class="btn btn-primary mt-2 max-w-sm"
+      type="submit"
+      disabled={saving}
+    >
+      {submitLabel}
+      <span class="loading loading-ring" class:hidden={!saving} />
+    </button>
+  </div>
+  {#if errorMessage}
+    <p class="text-error">{errorMessage}</p>
   {/if}
 </form>

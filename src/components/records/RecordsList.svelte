@@ -1,6 +1,6 @@
 <script lang="ts">
-  import CollapsableList from "$components/records/CollapsableList.svelte"
-  import TabedView from "$components/records/TabedView.svelte"
+  import CollapsableList from "$components/records/RecordTimeline.svelte"
+  import TabedView from "$components/TabedView.svelte"
   import { constructMapWithCategory } from "$lib/domain/ClubRecord"
   import type { Category } from "$lib/domain/dataClasses/Category"
   import { clubRecordStore } from "$lib/stores/ClubRecordStore"
@@ -15,7 +15,7 @@
   $: filteredClubrecords = filterValuesInMap(clubRecords, (e) =>
     e.matchesSearchString(searchString)
   )
-  $: keys = getMapKeys(filteredClubrecords)
+  $: keys = getMapKeys(filteredClubrecords) || []
   $: values = getMapValues(filteredClubrecords)
   $: isSearching = searchString ? true : false
 </script>

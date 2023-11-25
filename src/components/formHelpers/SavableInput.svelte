@@ -33,7 +33,7 @@
 
   // -- Submit --
   async function onSubmitWrapper(event: SubmitEvent) {
-	event.preventDefault()
+    event.preventDefault()
     if (errorText) return
     if (dirty) {
       saving = true
@@ -148,9 +148,9 @@
           {/if}
         </button>
         <button
+          type="button"
           class="btn btn-sm btn-outline btn-square btn-error"
           title="Annuleren"
-          type="button"
           on:click={reset}
         >
           <Fa icon={faXmark} />

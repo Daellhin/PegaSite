@@ -20,14 +20,14 @@
     if (password1 !== password2) return "Wachtwoorden moeten gelijk zijn"
     return undefined
   }
-  $: error1 = validatePassword(password1)
-  $: error2 = validatePasswordsAreEqual(password1, password2)
+  $: errorMessage1 = validatePassword(password1)
+  $: errorMessage2 = validatePasswordsAreEqual(password1, password2)
 
   // -- Update password --
   async function updatePassword(event: SubmitEvent) {
     event.preventDefault()
-    if (error1 || error2) return
-	saving = true
+    if (errorMessage1 || errorMessage2) return
+    saving = true
     try {
       await authStore.updateCurrentUserPassword(password1)
       password1 = ""
@@ -62,17 +62,23 @@
     labelClass="font-semibold"
     required
   />
-  {#if error1 && password1Edited && password1 != ""}
-    <p class="text-error">{error1}</p>
-  {:else if error2 && password2Edited}
-    <p class="text-error">{error2}</p>
+  {#if errorMessage1 && password1Edited && password1 != ""}
+    <p class="text-error">{errorMessage1}</p>
+  {:else if errorMessage2 && password2Edited}
+    <p class="text-error">{errorMessage2}</p>
   {:else if loginError}
     <p class="text-error">
       De sesie is al te lang actief, gelieve eerst opnieuw in te loggen
     </p>
   {/if}
-  <button class="btn btn-primary mt-2 max-w-sm" type="submit" disabled={saving}>
-    Wachtwoord veranderen
-    <span class="loading loading-dots" class:hidden={!saving} />
-  </button>
+  <div class="w-fit" class:hover:cursor-wait={saving}>
+    <button
+      class="btn btn-primary mt-2 max-w-sm"
+      type="submit"
+      disabled={saving}
+    >
+      Wachtwoord veranderen
+      <span class="loading loading-ring" class:hidden={!saving} />
+    </button>
+  </div>
 </form>

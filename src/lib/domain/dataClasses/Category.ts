@@ -40,6 +40,10 @@ export class Category {
         return this.singularName.replace(/ /g, "").toLowerCase()
     }
 
+	toString() {
+		return this.singularName
+	}
+
     static match(categoryToMatch: string) {
         const result = this.Categories.find((category) =>
             category.getAllNames().map(names =>

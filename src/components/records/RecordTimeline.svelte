@@ -15,22 +15,23 @@
   export let forceOpen = false
   $: forceOpen ? open() : collapse()
 
-  let visibleRecordInstances = clubRecord.records.slice(0, 1)
+  let checkedRecordInstances = clubRecord.records.filter((e) => e.checked)
+  let visibleRecordInstances = checkedRecordInstances.slice(0, 1)
   let isCollapsed = true
 
   export function collapse() {
-    visibleRecordInstances = clubRecord.records.slice(0, 1)
+    visibleRecordInstances = checkedRecordInstances.slice(0, 1)
     isCollapsed = true
   }
   export function open() {
-    visibleRecordInstances = clubRecord.records
+    visibleRecordInstances = checkedRecordInstances
     isCollapsed = false
   }
 
   function toggleCollapse() {
     visibleRecordInstances = isCollapsed
-      ? clubRecord.records
-      : clubRecord.records.slice(0, 1)
+      ? checkedRecordInstances
+      : checkedRecordInstances.slice(0, 1)
     isCollapsed = !isCollapsed
   }
 </script>
@@ -48,7 +49,7 @@
                 class="btn btn-xs normal-case sm:hidden"
                 on:click={toggleCollapse}
               >
-                {clubRecord.records.length - 1}&nbsp;eerdere
+                {checkedRecordInstances.length - 1}&nbsp;eerdere
               </button>
             {/if}
           {/if}
@@ -64,13 +65,13 @@
             <div class="font-bold">{d.result}</div>
             <div>{d.name}</div>
             <div>{d.location}</div>
-            <div>{d.date ? d.date.format("DD/MM/YYYY") : "???"}</div>
+            <div>{d.formattedDate()}</div>
             {#if index === 0 && clubRecord.hasPreviousRecords()}
               <button
                 class="btn btn-xs normal-case hidden sm:block"
                 on:click={toggleCollapse}
               >
-                {clubRecord.records.length - 1}&nbsp;eerdere
+                {checkedRecordInstances.length - 1}&nbsp;eerdere
               </button>
             {/if}
           </div>

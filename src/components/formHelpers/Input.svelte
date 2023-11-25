@@ -38,9 +38,13 @@
 
   function updateInternal(_: any) {
     if (value === internalValue) return
-    if (type === "date" && value?.format("YYYY-MM-DD") !== internalValue)
-      internalValue = value?.format("YYYY-MM-DD")
-    else internalValue = value
+    if (type === "date") {
+      if (!value) internalValue = ""
+      else {
+        if (value?.format("YYYY-MM-DD") === internalValue) return
+        internalValue = value.format("YYYY-MM-DD")
+      }
+    } else internalValue = value
   }
   function updateExternal(_: any) {
     if (type === "date") value = dayjs(internalValue)
