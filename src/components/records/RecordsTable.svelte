@@ -82,7 +82,7 @@
       </thead>
       <tbody>
         {#each filteredRecords as recordInstance}
-          <tr>
+          <tr class="border-b border-base-200">
             <td class="xl:hidden">
               <RecordButtonGroup
                 class="flex xl:hidden"

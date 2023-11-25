@@ -1,14 +1,8 @@
 <script lang="ts">
   import ErrorLine from "$components/ErrorLine.svelte"
-  import {
-      faAnglesLeft,
-      faAnglesRight
-  } from "@fortawesome/free-solid-svg-icons"
-  import Fa from "svelte-fa"
 
   export let filteredLength: number
   export let fullLength: number
-  export let showControls = true
   export let saving = false
   export let error = ""
 </script>
@@ -24,17 +18,6 @@
         <span class="loading loading-circle loading-xs ml-1" />
       {/if}
     </div>
-    {#if showControls}
-      <div class="join">
-        <button class="join-item btn btn-sm lin" type="button" disabled>
-          <Fa icon={faAnglesLeft} class="" />
-        </button>
-        <button class="join-item btn btn-sm btn-active" type="button">1</button>
-        <button class="join-item btn btn-sm" type="button" disabled>
-          <Fa icon={faAnglesRight} class="" />
-        </button>
-      </div>
-    {/if}
   </div>
   {#if error}
     <ErrorLine {error} />
