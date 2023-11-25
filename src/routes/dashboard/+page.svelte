@@ -6,7 +6,7 @@
   import { pageHeadStore } from "$lib/stores/PageHeadStore"
 
   const newRecords = $clubRecordStore
-    .flatMap((e) => e.records)
+    ?.flatMap((e) => e.records)
     .filter((e) => !e.checked).length
 
   // Authguard
