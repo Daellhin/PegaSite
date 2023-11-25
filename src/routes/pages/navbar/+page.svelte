@@ -14,9 +14,7 @@
   let errorMessage = ""
   let dragDisabled = true
 
-  $: dragableLinkGroups = $navbarStore?.map((e) =>
-    e.toDragableDragableItem()
-  )
+  $: dragableLinkGroups = $navbarStore?.map((e) => e.toDragableDragableItem())
 
   function handleConsider(event: CustomEvent<DndEvent<any>>) {
     dragableLinkGroups = event.detail.items
@@ -59,13 +57,17 @@
       dragDisabled: dragDisabled,
       flipDurationMs: FLIP_DURATION,
       dropTargetStyle: {},
-	  type: "NavbarGroup"
+      type: "NavbarGroup",
     }}
     on:consider={handleConsider}
     on:finalize={handleFinalize}
   >
     {#each dragableLinkGroups as dragable (dragable.id)}
-      <LinkGroupEditor linkGroup={dragable.value} bind:dragDisabled bind:savingNewOrder />
+      <LinkGroupEditor
+        linkGroup={dragable.value}
+        bind:dragDisabled
+        bind:savingNewOrder
+      />
     {:else}
       Geen links
     {/each}

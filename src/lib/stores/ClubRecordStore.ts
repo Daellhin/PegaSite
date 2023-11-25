@@ -88,7 +88,7 @@ function createClubRecordStore() {
 		const firestore = getFirestore(firebaseApp)
 
 		const clubRecordsRef = doc(firestore, Collections.CLUB_RECORDS, "singleDocument")
-		await runTransaction(firestore, async (transaction) => {
+		await runTransaction(firestore, async () => {
 			const clubrecordKey = `${clubRecord.gender.keyName}.${clubRecord.athleticEvent.keyName}.${clubRecord.discipline.name}.${clubRecord.category.keyName}`
 			await updateDoc(clubRecordsRef, {
 				[clubrecordKey]: arrayRemove(recordInstance.toJSON())
@@ -112,7 +112,7 @@ function createClubRecordStore() {
 		const firestore = getFirestore(firebaseApp)
 
 		const clubRecordsRef = doc(firestore, Collections.CLUB_RECORDS, "singleDocument")
-		await runTransaction(firestore, async (transaction) => {
+		await runTransaction(firestore, async () => {
 			const oldClubrecordKey = `${clubRecord.gender.keyName}.${clubRecord.athleticEvent.keyName}.${clubRecord.discipline.name}.${clubRecord.category.keyName}`
 			await updateDoc(clubRecordsRef, {
 				[oldClubrecordKey]: arrayRemove(recordInstance.toJSON())

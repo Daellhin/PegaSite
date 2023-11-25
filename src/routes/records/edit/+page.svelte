@@ -17,8 +17,8 @@
     scrollTop()
   }
   function startCreate() {
-	showForm = true
-	editRecord = undefined
+    showForm = true
+    editRecord = undefined
   }
 
   // -- Authguard --
@@ -31,14 +31,11 @@
 
 <!-- Title -->
 <div class="flex gap-3 mb-2">
-	<h1 class="text-2xl font-bold">Clubrecords beheren</h1>
-	<button
-	  class="btn btn-sm capitalize btn-primary"
-	  on:click={startCreate}
-	>
-	  Nieuw Record
-	</button>
-  </div>
+  <h1 class="text-2xl font-bold">Clubrecords beheren</h1>
+  <button class="btn btn-sm capitalize btn-primary" on:click={startCreate}>
+    Nieuw Record
+  </button>
+</div>
 
 {#if showForm}
   <div class="mt-2">
