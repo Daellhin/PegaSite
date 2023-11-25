@@ -1,5 +1,6 @@
 <script lang="ts">
   import DismissibleForm from "$components/DismissibleForm.svelte"
+  import InfoCard from "$components/InfoCard.svelte"
   import CustomSelect from "$components/formHelpers/CustomSelect.svelte"
   import Input from "$components/formHelpers/Input.svelte"
   import { RecordInstance } from "$lib/domain/RecordInstance"
@@ -32,10 +33,10 @@
         category!,
         gender!,
         athleticEvent!,
-		name,
-		result,
-		location,
-		date!,
+        name,
+        result,
+        location,
+        date!,
         editRecord,
       )
       pushCreatedToast("Record gewijzigd")
@@ -92,6 +93,7 @@
     groupBy={(e) => e.value.type.name}
     label="Disipline"
     size="xs"
+    required
   />
   <CustomSelect
     bind:value={athleticEvent}
@@ -101,6 +103,7 @@
     }))}
     label="Indoor/outdoor"
     size="xs"
+    required
   />
   <CustomSelect
     bind:value={category}
@@ -110,6 +113,7 @@
     }))}
     label="Categorie"
     size="xs"
+    required
   />
   <CustomSelect
     bind:value={gender}
@@ -119,6 +123,7 @@
     }))}
     label="Geslacht"
     size="xs"
+    required
   />
   <Input
     type="text"
@@ -145,4 +150,10 @@
     required
   />
   <Input type="date" label="Datum" size="xs" bind:value={date} required />
+  {#if !editRecord}
+    <InfoCard class="mt-2 w-fit"
+      >Clubrecords moeten eerst goedgekeurd worden door een aministrator,
+      voordat ze zichtbaar zijn.</InfoCard
+    >
+  {/if}
 </DismissibleForm>

@@ -45,7 +45,7 @@
     <slot />
   </div>
 
-  <div class="mt-4">
+  <div class="mt-3">
     <button
       class="btn btn-primary mt-2 max-w-xs w-full md:w-auto"
       type="submit"
