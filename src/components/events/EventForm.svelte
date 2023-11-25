@@ -64,10 +64,16 @@
   <GeoAutoComplete label="Locatie van event:" bind:value={location} />
   <CLEditor label="Info over event:" bind:value={info} />
 
-  <button class="btn btn-primary mt-2 max-w-sm" type="submit" disabled={saving}>
-    {submitLabel}
-    <span class="loading loading-ring" class:hidden={!saving} />
-  </button>
+  <div class="w-fit" class:hover:cursor-wait={saving}>
+    <button
+      class="btn btn-primary mt-2 max-w-sm"
+      type="submit"
+      disabled={saving}
+    >
+      {submitLabel}
+      <span class="loading loading-ring" class:hidden={!saving} />
+    </button>
+  </div>
   {#if errorMessage}
     <p class="text-error">{errorMessage}</p>
   {/if}

@@ -46,14 +46,16 @@
   </div>
 
   <div class="mt-3">
-    <button
-      class="btn btn-primary mt-2 max-w-xs w-full md:w-auto"
-      type="submit"
-      disabled={saving}
-    >
-      {submitLabel}
-      <span class="loading loading-ring" class:hidden={!saving} />
-    </button>
+    <div class="w-fit" class:hover:cursor-wait={saving}>
+      <button
+        class="btn btn-primary mt-2 max-w-xs w-full md:w-auto"
+        type="submit"
+        disabled={saving}
+      >
+        {submitLabel}
+        <span class="loading loading-ring" class:hidden={!saving} />
+      </button>
+    </div>
   </div>
   {#if errorMessage}
     <p class="text-error">{errorMessage}</p>

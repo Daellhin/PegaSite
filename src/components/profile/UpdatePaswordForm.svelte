@@ -27,7 +27,7 @@
   async function updatePassword(event: SubmitEvent) {
     event.preventDefault()
     if (errorMessage1 || errorMessage2) return
-	saving = true
+    saving = true
     try {
       await authStore.updateCurrentUserPassword(password1)
       password1 = ""
@@ -71,8 +71,14 @@
       De sesie is al te lang actief, gelieve eerst opnieuw in te loggen
     </p>
   {/if}
-  <button class="btn btn-primary mt-2 max-w-sm" type="submit" disabled={saving}>
-    Wachtwoord veranderen
-    <span class="loading loading-dots" class:hidden={!saving} />
-  </button>
+  <div class="w-fit" class:hover:cursor-wait={saving}>
+    <button
+      class="btn btn-primary mt-2 max-w-sm"
+      type="submit"
+      disabled={saving}
+    >
+      Wachtwoord veranderen
+      <span class="loading loading-ring" class:hidden={!saving} />
+    </button>
+  </div>
 </form>

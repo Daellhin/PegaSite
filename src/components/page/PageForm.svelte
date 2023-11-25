@@ -31,8 +31,14 @@
   <Dropzone label="Afbeeldingen:" bind:combinedImages />
   <CLEditor label="Inhoud van bericht:" bind:value={content} />
 
-  <button class="btn btn-primary mt-2 max-w-sm" type="submit" disabled={saving}>
-    {submitLabel}
-    <span class="loading loading-dots" class:hidden={!saving} />
-  </button>
+  <div class="w-fit" class:hover:cursor-wait={saving}>
+    <button
+      class="btn btn-primary mt-2 max-w-sm"
+      type="submit"
+      disabled={saving}
+    >
+      {submitLabel}
+      <span class="loading loading-ring" class:hidden={!saving} />
+    </button>
+  </div>
 </form>
