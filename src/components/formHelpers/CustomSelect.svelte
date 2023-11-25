@@ -23,7 +23,7 @@
 
   function updateInternal(_: any) {
     if (value === internalValue.value) return
-    internalValue = { value: value, label: value.adultSingularName }
+    internalValue = { value: value, label: value.toString() }
   }
   function updateExternal(_: any) {
     value = internalValue.value
