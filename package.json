@@ -46,7 +46,7 @@
 		"@zerodevx/svelte-toast": "^0.9.5",
 		"cl-editor": "^2.3.0",
 		"classnames": "^2.3.2",
-		"daisyui": "^3.9.4",
+		"daisyui": "^4.4.10",
 		"dayjs": "^1.11.10",
 		"firebase": "^10.6.0",
 		"svelte-collapse": "^0.1.2",

@@ -20,7 +20,7 @@
 <div class="flex gap-3">
   <h1 class="text-2xl font-bold mb-1">Gebruikers beheren</h1>
   <button
-    class="btn btn-sm capitalize btn-primary"
+    class="btn btn-sm btn-primary"
     on:click={() => (showForm = !showForm)}
   >
     Nieuwe Gebruiker
