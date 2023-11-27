@@ -4,12 +4,12 @@ module.exports = {
     themes: [
       {
         light: {
-          ...require("daisyui/src/theming/themes")["[data-theme=light]"],
+          ...require("daisyui/src/theming/themes")["light"],
           "primary": "#f9984c",
-          "--pc": "0 0% 100%"
+          "--pc": "0 0 100%"
         },
         dark: {
-          ...require("daisyui/src/theming/themes")["[data-theme=dark]"],
+          ...require("daisyui/src/theming/themes")["dark"],
           "primary": "#f9984c",
         }
       },

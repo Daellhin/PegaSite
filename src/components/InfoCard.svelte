@@ -14,7 +14,7 @@
 
 <style lang="postcss">
   .border-color {
-    border-color: hsl(var(--bc) / var(--tw-border-opacity));
-	--tw-border-opacity: 0.16;
+    border-color: oklch(var(--bc) / var(--tw-border-opacity));
+    --tw-border-opacity: 0.16;
   }
 </style>

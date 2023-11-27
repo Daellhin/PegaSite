@@ -23,7 +23,7 @@
   function onFileInput(e: Event & { currentTarget: HTMLInputElement }) {
     if (!e.currentTarget.files) return
     const newFiles = Array.from(e.currentTarget.files).filter((e) =>
-      e.type.match(accept)
+      e.type.match(accept),
     )
     addFiles(newFiles)
   }
@@ -141,7 +141,8 @@
 
 <style lang="postcss">
   .custom-border-color {
-    border-color: hsl(var(--bc) / var(--tw-border-opacity));
+    border-color: oklch(var(--bc) / var(--tw-border-opacity));
+    --tw-border-opacity: 0.2;
   }
   @media (prefers-color-scheme: dark) {
     .custom-dark-hover:hover {

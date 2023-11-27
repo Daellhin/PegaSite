@@ -36,5 +36,55 @@
 </div>
 
 <style lang="postcss">
-  @import "../../css/multiselect.postcss";
+  /* Integrate svelte-multiselect with Tailwind and dark mode */
+  :global(.multiselect) {
+    @apply input input-bordered border-2 h-fit min-h-[3rem] !important;
+  }
+  :global(.multiselect:focus-within) {
+    /* Add gray outline */
+    outline: 2px solid oklcha(var(--bc) / 0.2);
+    outline-offset: 2px;
+    /* Add blue outline */
+    --tw-ring-inset: var(--tw-empty, /*/ /*/);
+    --tw-ring-offset-width: 0px;
+    --tw-ring-offset-color: #fff;
+    --tw-ring-color: #1c64f2;
+    --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0
+      var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+    --tw-ring-shadow: var(--tw-ring-inset) 0 0 0
+      calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+    box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow),
+      var(--tw-shadow);
+    border-color: #1c64f2 !important;
+  }
+  :global(.multiselect .selected li) {
+    @apply bg-base-200;
+  }
+  :global(.multiselect .selected .remove:is(:hover, :focus) path) {
+    @apply fill-primary;
+  }
+  :global(.multiselect .remove-all:is(:hover, :focus) path) {
+    @apply fill-primary;
+  }
+  :global(.multiselect .options) {
+    @apply bg-base-100 p-2 !important;
+  }
+  :global(.multiselect .options li) {
+    @apply px-4 py-2 rounded-lg !important;
+  }
+  :global(.multiselect .options li:hover) {
+    background-color: oklch(var(--bc) / 0.1);
+  }
+
+  /* Light/Dark theme support */
+  @media (prefers-color-scheme: light) {
+    :global(.multiselect .options li:hover) {
+      background-color: #f2f2f2;
+    }
+  }
+  @media (prefers-color-scheme: dark) {
+    :global(.multiselect .options li:hover) {
+      background-color: #373d49;
+    }
+  }
 </style>

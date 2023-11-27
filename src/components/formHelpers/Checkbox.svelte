@@ -46,6 +46,6 @@
 <style>
   .border-fix {
     --tw-border-opacity: 0.2 !important;
-    border-color: hsl(var(--bc) / var(--tw-border-opacity)) !important;
+    border-color: oklch(var(--bc) / var(--tw-border-opacity)) !important;
   }
 </style>

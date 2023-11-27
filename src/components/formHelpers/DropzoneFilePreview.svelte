@@ -55,7 +55,7 @@
 
 <style lang="postcss">
   .border-color {
-    border-color: hsl(var(--bc) / var(--tw-border-opacity));
+    border-color: oklch(var(--bc) / var(--tw-border-opacity));
   }
   :global(#dnd-action-dragged-el) {
     @apply border-2 rounded-lg bg-base-100 !important;

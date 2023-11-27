@@ -15,7 +15,7 @@
     {#each tabs as tab, index}
       <button
         on:click={() => selectTab(index)}
-        class="tab tab-lifted [--tab-bg:hsl(var(--b2))] border-b-0 [@media(max-width:568px)]:after:hidden [@media(max-width:568px)]:before:hidden [@media(max-width:568px)]:rounded-lg"
+        class="tab tab-lifted [--tab-bg:oklch(var(--b2))] border-b-0 [@media(max-width:568px)]:after:hidden [@media(max-width:568px)]:before:hidden [@media(max-width:568px)]:rounded-lg"
         class:tab-active={currentIndex === index}
       >
         {tab}

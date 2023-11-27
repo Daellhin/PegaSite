@@ -17,7 +17,7 @@
 <div class="flex gap-3 mb-2">
   <h1 class="text-2xl font-bold">Clubrecords</h1>
   <button
-    class="btn btn-sm capitalize btn-primary"
+    class="btn btn-sm btn-primary"
     on:click={() => (showForm = !showForm)}
   >
     Nieuw Record

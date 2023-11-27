@@ -59,7 +59,7 @@
   <h1 class="text-2xl font-bold mb-1">Nieuws</h1>
   {#await authStore.known then _}
     {#if $authStore}
-      <a class="btn btn-sm capitalize btn-primary" href="/articles/new">
+      <a class="btn btn-sm btn-primary" href="/articles/new">
         Nieuw artikel
       </a>
     {/if}
