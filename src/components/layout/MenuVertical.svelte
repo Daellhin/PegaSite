@@ -14,7 +14,7 @@
 </script>
 
 {#if $navbarStore}
-  <ul class="menu p-4 w-80 bg-base-100">
+  <ul class="menu p-4 w-80 bg-base-100 h-full">
     {#each $navbarStore as linkOrGroup}
       <li class="menu-title text-base">
         <span>{linkOrGroup.name}</span>
