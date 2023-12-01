@@ -25,7 +25,7 @@
     bind:checked={value}
     {required}
     {disabled}
-    class="checkbox checkbox-xs checkbox-primary border-2 border-fix rounded-md tick-white bg-clip-padding checked:bg-primary disabled:border-0 disabled:bg-base-200"
+    class="checkbox checkbox-xs !input-bordered checkbox-primary border-2 rounded-md tick-white bg-clip-padding checked:bg-primary disabled:border-0 disabled:bg-base-200"
     class:checkbox-md={size === "md"}
     class:checkbox-sm={size === "sm"}
     class:checkbox-xs={size === "xs"}
@@ -43,11 +43,7 @@
 </div>
 
 <style>
-  .border-fix {
-    --tw-border-opacity: 0.2 !important;
-    border-color: oklch(var(--bc) / var(--tw-border-opacity)) !important;
-  }
   .tick-white {
-    --chkfg: white !important;
+    --chkfg: white;
   }
 </style>

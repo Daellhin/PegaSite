@@ -5,16 +5,9 @@
   export { classList as class }
 </script>
 
-<div class={"alert border-2 border-color w-fit" + classList}>
+<div class={"alert input-bordered border-2 border-color w-fit" + classList}>
   <InfoCircle class="text-xl text-info" />
   <span>
     <slot />
   </span>
 </div>
-
-<style lang="postcss">
-  .border-color {
-    border-color: oklch(var(--bc) / var(--tw-border-opacity));
-    --tw-border-opacity: 0.16;
-  }
-</style>

@@ -115,7 +115,7 @@
   <!-- SelectedImages viewer -->
   {#if combinedImages.length}
     <div
-      class="border-2 border-color rounded-lg input-bordered min-h-[3rem] bg-base-100"
+      class="flex flex-col input-bordered border-2 rounded-lg min-h-[3rem] bg-base-100 justify-center"
       class:mt-2={remainingSpace}
       use:dndzone={{
         items: dragableImages,
@@ -140,10 +140,6 @@
 </div>
 
 <style lang="postcss">
-  .custom-border-color {
-    border-color: oklch(var(--bc) / var(--tw-border-opacity));
-    --tw-border-opacity: 0.2;
-  }
   @media (prefers-color-scheme: dark) {
     .custom-dark-hover:hover {
       background-color: #313741 !important;
