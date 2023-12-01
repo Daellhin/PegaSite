@@ -7,14 +7,14 @@
     {#each $navbarStore as linkGroup}
       {#if linkGroup.links.length === 1}
         <a
-          class="btn normal-case text-[1.1em]"
+          class="btn text-[1.1em] shadow-none"
           href={linkGroup.links[0].getUrl()}
         >
           {linkGroup.links[0].title}
         </a>
       {:else}
         <div class="dropdown dropdown-hover">
-          <label tabindex="0" class="btn normal-case text-[1.1em]">
+          <label tabindex="0" class="btn text-[1.1em] shadow-none">
             {linkGroup.name}
           </label>
           <ul class="dropdown-content z-[1] rounded-box bg-base-100 p-2 shadow-2xl">
