@@ -16,7 +16,7 @@
   {#if !isPreview && $authStore}
     <div class="ml-auto">
       <EditDropdown editUrl={`/pages/edit/${page.id}`} width="w-60">
-        <li><a href="/pages/navbar">Navigatiebalk&nbsp;aanpassen</a></li>
+        <li><a href="/pages/navbar">Paginask&nbsp;aanpassen</a></li>
       </EditDropdown>
     </div>
   {/if}

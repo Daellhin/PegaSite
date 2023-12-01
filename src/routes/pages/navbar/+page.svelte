@@ -39,10 +39,10 @@
     if (!$authStore) goto("/")
   })
   // -- Page title --
-  pageHeadStore.updatePageTitle("Navigatiebalk wijzigen")
+  pageHeadStore.updatePageTitle("Paginas beheren")
 </script>
 
-<h1 class="text-2xl font-bold mb-1">Navigatiebalk wijzigen</h1>
+<h1 class="text-2xl font-bold mb-1">Paginas beheren</h1>
 
 <InfoCard>
   Categoriën met <span class="font-semibold">1</span> link worden samengevouwen.
