@@ -2,6 +2,7 @@
   import ConfirmModal from "$components/ConfirmModal.svelte"
   import EditDropdown from "$components/EditDropdown.svelte"
   import Input from "$components/formHelpers/Input.svelte"
+  import InfoCircle from "$components/icons/Flowbite/InfoCircle.svelte"
   import TableFooter from "$components/table/TableFooter.svelte"
   import TableHeaderRow from "$components/table/TableHeaderRow.svelte"
   import type { Article } from "$lib/domain/Article"
@@ -11,6 +12,8 @@
   } from "$lib/stores/ArticleStore"
   import { handleFirebaseError } from "$lib/utils/Firebase"
   import { faSearch } from "@fortawesome/free-solid-svg-icons"
+
+  const tooltip = "De zoekfunctie doorzoekt enkel de laatste 100 berichten."
 
   const confirmModalID = "confirm-delete-article"
   const paginationSize = 10
@@ -26,10 +29,11 @@
   let page = 0
   $: previousArticles = page * paginationSize
 
-  $: visibleArticles = articles?.slice(
-    previousArticles,
-    previousArticles + paginationSize,
-  )
+  $: visibleArticles = articles
+    ?.filter((e) => e.matchesSearchString(searchString))
+    .slice(previousArticles, previousArticles + paginationSize)
+  $: allArticles = articles
+
   $: hasNextPage = $articleStore?.length > previousArticles + paginationSize
   $: hasPreviousPage = page > 0
 
@@ -68,7 +72,9 @@
 
   // -- Initialisation --
   let initialised = false
+  let searchInitialized = false
   $: if (!initialised && $articleStore) init()
+  $: if (!searchInitialized && searchString) initSearch()
 
   async function init() {
     initialised = true
@@ -85,6 +91,20 @@
       saving = false
     }
   }
+
+  // Load all articles when the search string is initialised
+  async function initSearch() {
+    searchInitialized = true
+    saving = true
+    errorMessage = ""
+    try {
+      await articleStore.loadMoreArticles(100)
+      articlePendingDelete = undefined
+    } catch (error) {
+      errorMessage = handleFirebaseError(error)
+    }
+    saving = false
+  }
 </script>
 
 <!-- Search -->
@@ -97,7 +117,15 @@
   />
 </div>
 
-<div class="grid relative mt-2">
+<div class="grid relative">
+  <div
+    class="tooltip ml-auto tooltip-left sm:tooltip-bottom"
+    data-tip={tooltip}
+  >
+    <button class="btn btn-ghost btn-xs btn-circle">
+      <InfoCircle class="" />
+    </button>
+  </div>
   <div class="overflow-x-auto rounded-t-lg">
     <table class="table static table-xs sm:table-sm md:table-md mb-3 xl:mb-0">
       <thead class="bg-base-200">
@@ -138,11 +166,11 @@
   </div>
   <TableFooter
     filteredLength={visibleArticles.length}
-    fullLength={$articleStore.length}
-    bind:saving
+    fullLength={allArticles.length}
+    {saving}
     pagination
-    bind:hasPrevious={hasPreviousPage}
-    bind:hasNext={hasNextPage}
+    hasPrevious={hasPreviousPage}
+    hasNext={hasNextPage}
     {previous}
     {next}
   />

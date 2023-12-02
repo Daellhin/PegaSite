@@ -56,7 +56,7 @@ function createArticleStore() {
 	})
 	const { subscribe, update } = innerStore
 
-	async function loadMoreArticles() {
+	async function loadMoreArticles(limitValue: number = globalPaginationSize) {
 		if (!browser) return
 		if (!hasMoreDocuments) return
 
@@ -69,7 +69,7 @@ function createArticleStore() {
 			collection(firestore, Collections.ARTICLES),
 			orderBy('createdAt', 'desc'),
 			startAfter(lastRef || null),
-			limit(globalPaginationSize)
+			limit(limitValue)
 		).withConverter(articleConverter)
 		const snapshot = await getDocs(q)
 

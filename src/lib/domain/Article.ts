@@ -13,6 +13,8 @@ export interface ArticleJson {
 }
 
 export class Article {
+    public searchableString: string
+
     constructor(
         public id: string,
         public createdAt: Dayjs,
@@ -22,7 +24,24 @@ export class Article {
         public images: string[],
         public content: string,
         public lastUpdate?: Dayjs
-    ) { }
+    ) {
+
+        this.searchableString = `${title} ${tags.join(" ")} ${authors.join(" ")} ${createdAt.format("YYYY-MM-DD HH:mm")} ${lastUpdate?.format("YYYY-MM-DD HH:mm")}`.toLowerCase()
+
+    }
+
+    /**
+     * Checks if article matches a search string
+     * - if searchString is undefined, matches all
+     */
+    matchesSearchString(searchString: string) {
+        if (!searchString) return true
+        return !searchString
+            .toLowerCase()
+            .split(" ")
+            .map((keyword) => this.searchableString.includes(keyword))
+            .includes(false)
+    }
 
     static fromJson(json: ArticleJson) {
         return new Article(

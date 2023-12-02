@@ -44,17 +44,18 @@
 
   function filterSponsors(searchString: string) {
     return dragableSponsors.filter((sponsor) =>
-      sponsor.value.matchesSearchString(searchString)
+      sponsor.value.matchesSearchString(searchString),
     )
   }
 </script>
 
+<!-- Search -->
 <div class="mt-2">
   <Input
     type="text"
     bind:value={searchString}
     placeholder="Zoek een sponsor"
-	iconLeft={faSearch}
+    iconLeft={faSearch}
   />
 </div>
 

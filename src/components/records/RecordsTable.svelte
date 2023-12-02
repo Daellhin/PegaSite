@@ -12,6 +12,7 @@
 
   let saving = false
   let errorMessage = ""
+  let searchString = ""
 
   $: allRecords = $clubRecordStore?.flatMap((e) => {
     e.records.forEach((f) => f.linkClubrecord(e))
@@ -35,11 +36,9 @@
     if (!showApproved && showNotApproved) return !record.checked
     return true
   }
-
-  // -- Search --
-  let searchString = ""
 </script>
 
+<!-- Search -->
 <div class="mt-2">
   <Input
     type="text"
