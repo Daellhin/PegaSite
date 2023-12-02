@@ -16,7 +16,10 @@ import { createMockArticleStore } from './mocks/MockArticleStore'
  * One article of next batch is always atempted to be loaded. 
  * This is to check if there are items in the next batch
  */
-export const paginationSize = 8
+export let globalPaginationSize = 8
+export function setGlobalPaginationSize(size: number) {
+	globalPaginationSize = size
+}
 
 /**
  * Source: https://www.captaincodeman.com/lazy-loading-and-querying-firestore-with-sveltekit
@@ -37,7 +40,7 @@ function createArticleStore() {
 			const q = query(
 				collection(firestore, Collections.ARTICLES),
 				orderBy('createdAt', 'desc'),
-				limit(paginationSize + 1)
+				limit(globalPaginationSize + 1)
 			).withConverter(articleConverter)
 			const snapshot = await getDocs(q)
 
@@ -47,7 +50,7 @@ function createArticleStore() {
 
 			// -- Setup pagination --
 			lastRef = snapshot.docs.slice(-1)[0]
-			hasMoreDocuments = snapshot.docs.length === paginationSize + 1
+			hasMoreDocuments = snapshot.docs.length === globalPaginationSize + 1
 		}
 		init()
 	})
@@ -65,15 +68,15 @@ function createArticleStore() {
 		const q = query(
 			collection(firestore, Collections.ARTICLES),
 			orderBy('createdAt', 'desc'),
-			startAfter(lastRef),
-			limit(paginationSize)
+			startAfter(lastRef || null),
+			limit(globalPaginationSize)
 		).withConverter(articleConverter)
 		const snapshot = await getDocs(q)
 
 		// -- Update articles --
 		update((articles) => ([...articles, ...snapshot.docs.map(e => e.data())]))
 		lastRef = snapshot.docs.slice(-1)[0]
-		hasMoreDocuments = snapshot.docs.length === paginationSize + 1
+		hasMoreDocuments = snapshot.docs.length === globalPaginationSize + 1
 	}
 
 	async function createArticle(newArticle: Article, images: File[]) {
@@ -124,7 +127,7 @@ function createArticleStore() {
 		const articleSnap = await getDoc(articleRef)
 		const article = articleSnap.data()
 
-		if (article) update((articles) => [...articles, article])
+
 		return article || null
 	}
 

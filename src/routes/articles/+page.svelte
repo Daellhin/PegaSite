@@ -1,28 +1,80 @@
 <script lang="ts">
   import { goto } from "$app/navigation"
-  import Input from "$components/formHelpers/Input.svelte"
-  import TablePagination from "$components/table/TableFooter.svelte"
+  import EditDropdown from "$components/EditDropdown.svelte"
+  import TableFooter from "$components/table/TableFooter.svelte"
   import TableHeaderRow from "$components/table/TableHeaderRow.svelte"
-  import { articleStore } from "$lib/stores/ArticleStore"
+  import type { Article } from "$lib/domain/Article"
+  import {
+    articleStore,
+    setGlobalPaginationSize,
+  } from "$lib/stores/ArticleStore"
   import { authStore } from "$lib/stores/AuthStore"
   import { pageHeadStore } from "$lib/stores/PageHeadStore"
   import { handleFirebaseError } from "$lib/utils/Firebase"
-  import { faSearch } from "@fortawesome/free-solid-svg-icons"
-  import { load } from "../pages/+page"
-  import EditDropdown from "$components/EditDropdown.svelte"
+  import ConfirmModal from "$components/ConfirmModal.svelte"
 
+  const confirmModalID = "confirm-delete-article"
+  let initialised = false
+  $: if (!initialised && $articleStore) init()
+
+  function init() {
+    initialised = true
+    setGlobalPaginationSize(10)
+    if ($articleStore.length < (page + 1) * paginationSize) {
+      saving = true
+      articleStore.loadMoreArticles()
+      saving = false
+    }
+  }
+  let showModal = false
   let searchString = ""
   let saving = false
   let errorMessage = ""
+  let paginationSize = 10
+  let page = 0
 
-  async function loadMoreArticles() {
-    saving = true
+  $: articles = $articleStore
+  $: visibleArticles = articles?.slice(
+    page * paginationSize,
+    (page + 1) * paginationSize,
+  )
+  $: if (!showModal) articlePendingDelete = undefined
+
+  $: hasNextPage = $articleStore
+    ? $articleStore.length > page * paginationSize + paginationSize
+    : false
+  $: hasPreviousPage = page > 0
+
+  async function previous() {
+    if (hasPreviousPage) page--
+  }
+
+  async function next() {
+    if (hasNextPage) saving = true
     try {
       await articleStore.loadMoreArticles()
+      page++
     } catch (error) {
       errorMessage = handleFirebaseError(error)
     }
     saving = false
+  }
+
+  let articlePendingDelete: Article | undefined
+  async function deleteArticle() {
+    saving = true
+    errorMessage = ""
+    try {
+      await articleStore.deleteArticle(articlePendingDelete!)
+      articlePendingDelete = undefined
+    } catch (error) {
+      errorMessage = handleFirebaseError(error)
+    }
+    saving = false
+  }
+  function startDelete(article: Article) {
+    articlePendingDelete = article
+    showModal = true
   }
 
   // -- Authguard --
@@ -31,24 +83,15 @@
   })
   // -- Page title --
   pageHeadStore.updatePageTitle("Clubrecords beheren")
-  articleStore.loadMoreArticles()
 </script>
 
 <!-- Title -->
 <div class="flex gap-3 mb-2">
   <h1 class="text-2xl font-bold">Berichten beheren</h1>
-  <a href="/articles/new" class="btn btn-sm btn-primary">Nieuw Bericht </a>
+  <a href="/articles/new" class="btn btn-sm btn-primary">Nieuw Bericht</a>
 </div>
 
 <!-- Search -->
-<div class="mt-2">
-  <Input
-    type="text"
-    bind:value={searchString}
-    placeholder="Zoek een bericht"
-    iconLeft={faSearch}
-  />
-</div>
 
 {#if $articleStore}
   <div class="grid relative mt-2">
@@ -68,52 +111,50 @@
           />
         </thead>
         <tbody>
-          {#each $articleStore as recordInstance}
+          {#each visibleArticles as article}
             <tr class="border-b border-base-200">
               <td>
                 <img
-                  src={recordInstance.images[0]}
+                  src={article.images[0]}
                   alt="Logo"
                   class="rounded-lg h-20"
                 />
               </td>
-              <td>{recordInstance.title}</td>
-              <td>{recordInstance.authors}</td>
-              <td>{recordInstance.createdAt.format("YYYY-MM-DD HH:mm")}</td>
-              <td>{recordInstance.tags}</td>
-              <td>{recordInstance.lastUpdate?.format("YYYY-MM-DD HH:mm")}</td>
+              <td>{article.title}</td>
+              <td>{article.authors}</td>
+              <td>{article.createdAt.format("YYYY-MM-DD HH:mm")}</td>
+              <td>{article.tags}</td>
+              <td>{article.lastUpdate?.format("YYYY-MM-DD HH:mm")}</td>
               <td>
-                <EditDropdown positionStatic />
+                <EditDropdown
+                  positionStatic
+                  editUrl={"articles/edit/" + article.id}
+                  deleteHandler={() => startDelete(article)}
+                />
               </td>
-              <!-- <td class="first-letter:capitalize">
-                {recordInstance.clubRecord?.discipline}
-              </td>
-              <td>{recordInstance.clubRecord?.athleticEvent}</td>
-              <td>{recordInstance.clubRecord?.category}</td>
-              <td>{recordInstance.clubRecord?.gender}</td>
-              <td class="max-w-xs break-words min-w-[15em]">
-                {recordInstance.name}
-              </td>
-              <td>{recordInstance.result}</td>
-              <td>{recordInstance.location}</td>
-              <td>{recordInstance.formattedDate()}</td> -->
             </tr>
           {/each}
         </tbody>
       </table>
     </div>
-    <TablePagination
-      filteredLength={$articleStore.length}
+    <TableFooter
+      filteredLength={visibleArticles.length}
       fullLength={$articleStore.length}
       bind:saving
+      pagination
+      bind:hasPrevious={hasPreviousPage}
+      bind:hasNext={hasNextPage}
+      {previous}
+      {next}
     />
     {#if errorMessage}
       <p class="text-error">{errorMessage}</p>
     {/if}
   </div>
-  <div class="mt-3">
-    <button type="button" class="btn btn-primary" on:click={loadMoreArticles}
-      >Meer laden</button
-    >
-  </div>
 {/if}
+
+<ConfirmModal {confirmModalID} onConfirm={deleteArticle} bind:showModal>
+  Bent u zeker dat u het bericht
+  <span class="font-semibold">"{articlePendingDelete?.title}"</span>
+  wilt verwijderen?
+</ConfirmModal>

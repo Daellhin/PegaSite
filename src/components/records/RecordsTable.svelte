@@ -1,7 +1,7 @@
 <script lang="ts">
   import Checkbox from "$components/formHelpers/Checkbox.svelte"
   import Input from "$components/formHelpers/Input.svelte"
-  import TablePagination from "$components/table/TableFooter.svelte"
+  import TableFooter from "$components/table/TableFooter.svelte"
   import TableHeaderRow from "$components/table/TableHeaderRow.svelte"
   import type { RecordInstance } from "$lib/domain/RecordInstance"
   import { clubRecordStore } from "$lib/stores/ClubRecordStore"
@@ -118,7 +118,7 @@
       </tbody>
     </table>
   </div>
-  <TablePagination
+  <TableFooter
     filteredLength={filteredRecords.length}
     fullLength={allRecords.length}
     bind:saving

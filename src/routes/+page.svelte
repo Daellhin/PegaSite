@@ -1,7 +1,11 @@
 <script lang="ts">
   import Card from "$components/article/ArticleCard.svelte"
   import LoadingCard from "$components/article/LoadingCard.svelte"
-  import { articleStore, paginationSize } from "$lib/stores/ArticleStore"
+  import {
+    articleStore,
+    globalPaginationSize,
+    setGlobalPaginationSize,
+  } from "$lib/stores/ArticleStore"
   import { authStore } from "$lib/stores/AuthStore"
   import { pageHeadStore } from "$lib/stores/PageHeadStore"
   import { clamp, sizeOfIncreasingFirstSequence } from "$lib/utils/Utils"
@@ -9,12 +13,18 @@
     faArrowLeftLong,
     faArrowRightLong,
   } from "@fortawesome/free-solid-svg-icons"
+  import { onMount } from "svelte"
   import Fa from "svelte-fa"
+
+  onMount(() => {
+    setGlobalPaginationSize(8)
+    articleStore.loadMoreArticles()
+  })
 
   const minArticlesOnPage = 6
   let width = 0
   let pages: number[] = []
-  let articleRefs: HTMLElement[] = Array(paginationSize)
+  let articleRefs: HTMLElement[] = Array(globalPaginationSize)
 
   $: amountOfCardsToShow = width && calculateAmountOfCardsToShow(articleRefs)
   $: hasNextPage = $articleStore
@@ -25,7 +35,7 @@
   $: articlesOnPage =
     $articleStore?.slice(
       articlesOnPreviousPages,
-      articlesOnPreviousPages + amountOfCardsToShow
+      articlesOnPreviousPages + amountOfCardsToShow,
     ) || []
 
   async function next() {
@@ -43,11 +53,15 @@
   }
   function calculateAmountOfCardsToShow(articleRefs: any[]) {
     const distancesFromLeft = articleRefs.map(
-      (e) => e?.getBoundingClientRect().left || 0
+      (e) => e?.getBoundingClientRect().left || 0,
     )
     const maxArticlesToPlaceInRow =
       sizeOfIncreasingFirstSequence(distancesFromLeft) * 2
-    return clamp(maxArticlesToPlaceInRow, minArticlesOnPage, paginationSize)
+    return clamp(
+      maxArticlesToPlaceInRow,
+      minArticlesOnPage,
+      globalPaginationSize,
+    )
   }
 
   // -- Page title --
@@ -59,9 +73,7 @@
   <h1 class="text-2xl font-bold mb-1">Nieuws</h1>
   {#await authStore.known then _}
     {#if $authStore}
-      <a class="btn btn-sm btn-primary" href="/articles/new">
-        Nieuw artikel
-      </a>
+      <a class="btn btn-sm btn-primary" href="/articles/new"> Nieuw artikel </a>
     {/if}
   {/await}
 </div>
@@ -78,7 +90,7 @@
       </div>
     {/each}
   {:else}
-    {#each Array(paginationSize) as _}
+    {#each Array(globalPaginationSize) as _}
       <LoadingCard />
     {/each}
   {/if}

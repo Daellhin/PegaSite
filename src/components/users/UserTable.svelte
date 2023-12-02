@@ -1,7 +1,7 @@
 <script lang="ts">
   import Input from "$components/formHelpers/Input.svelte"
   import SortableTableHeaderRow from "$components/table/SortableTableHeaderRow.svelte"
-  import TablePagination from "$components/table/TableFooter.svelte"
+  import TableFooter from "$components/table/TableFooter.svelte"
   import UserRow from "$components/users/UserRow.svelte"
   import type { DbUser } from "$lib/domain/DbUser"
   import { SortOrder } from "$lib/domain/dataClasses/SortOrder"
@@ -87,7 +87,7 @@
       </tbody>
     </table>
   </div>
-  <TablePagination
+  <TableFooter
     filteredLength={filteredUsers.length}
     fullLength={users.length}
     saving={savingRole}

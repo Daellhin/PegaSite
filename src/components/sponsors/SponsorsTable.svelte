@@ -2,7 +2,7 @@
   import Input from "$components/formHelpers/Input.svelte"
   import InfoCircle from "$components/icons/Flowbite/InfoCircle.svelte"
   import SponsorRow from "$components/sponsors/SponsorRow.svelte"
-  import TablePagination from "$components/table/TableFooter.svelte"
+  import TableFooter from "$components/table/TableFooter.svelte"
   import TableHeaderRow from "$components/table/TableHeaderRow.svelte"
   import type { Sponsor } from "$lib/domain/Sponsor"
   import { sponsorStore } from "$lib/stores/SponsorStore"
@@ -101,7 +101,7 @@
       </tbody>
     </table>
   </div>
-  <TablePagination
+  <TableFooter
     filteredLength={filteredDragableSponsors.length}
     fullLength={dragableSponsors.length}
     saving={savingNewOrder}
