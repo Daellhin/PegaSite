@@ -15,10 +15,14 @@
   } from "@fortawesome/free-solid-svg-icons"
   import { onMount } from "svelte"
   import Fa from "svelte-fa"
+  import { get } from "svelte/store"
 
-  onMount(() => {
+  onMount(async () => {
     setGlobalPaginationSize(8)
-    articleStore.loadMoreArticles()
+    await articleStore.known
+    if (get(articleStore).length < 8) {
+      articleStore.loadMoreArticles()
+    }
   })
 
   const minArticlesOnPage = 6
@@ -26,14 +30,15 @@
   let pages: number[] = []
   let articleRefs: HTMLElement[] = Array(globalPaginationSize)
 
+  $: visibleArticles = $articleStore?.filter((e) => e.visible) || []
   $: amountOfCardsToShow = width && calculateAmountOfCardsToShow(articleRefs)
-  $: hasNextPage = $articleStore
-    ? $articleStore.length > articlesOnPreviousPages + amountOfCardsToShow
+  $: hasNextPage = visibleArticles
+    ? visibleArticles.length > articlesOnPreviousPages + amountOfCardsToShow
     : false
   $: hasPrevPage = pages.length !== 0
   $: articlesOnPreviousPages = pages.reduce((sum, a) => sum + a, 0)
   $: articlesOnPage =
-    $articleStore?.slice(
+    visibleArticles.slice(
       articlesOnPreviousPages,
       articlesOnPreviousPages + amountOfCardsToShow,
     ) || []
@@ -83,42 +88,38 @@
   class="flex gap-4 flex-wrap sm:justify-start justify-center"
   bind:clientWidth={width}
 >
-  {#if $articleStore}
-    {#each articlesOnPage as article, index}
-      <div bind:this={articleRefs[index]}>
-        <Card {article} />
-      </div>
-    {/each}
+  {#each articlesOnPage as article, index}
+    <div bind:this={articleRefs[index]}>
+      <Card {article} />
+    </div>
   {:else}
     {#each Array(globalPaginationSize) as _}
       <LoadingCard />
     {/each}
-  {/if}
+  {/each}
 </div>
 
 <!-- Pagination or error -->
-{#if $articleStore}
-  {#if articlesOnPage}
-    <!-- Pagiation -->
-    <div class="flex space-x-3 mt-3">
-      <button
-        class="btn btn-sm btn-outline normal-case items-center"
-        on:click={previous}
-        disabled={!hasPrevPage}
-      >
-        <Fa icon={faArrowLeftLong} class="mr-2 text-[16px]" />
-        <span>Vorige</span>
-      </button>
-      <button
-        class="btn btn-sm btn-outline normal-case flex items-center"
-        on:click={next}
-        disabled={!hasNextPage}
-      >
-        <span>Volgende</span>
-        <Fa icon={faArrowRightLong} class="ml-2 text-[16px]" />
-      </button>
-    </div>
-  {:else}
-    <div>Geen berichten gevonden</div>
-  {/if}
+{#if articlesOnPage}
+  <!-- Pagiation -->
+  <div class="flex space-x-3 mt-3">
+    <button
+      class="btn btn-sm btn-outline normal-case items-center"
+      on:click={previous}
+      disabled={!hasPrevPage}
+    >
+      <Fa icon={faArrowLeftLong} class="mr-2 text-[16px]" />
+      <span>Vorige</span>
+    </button>
+    <button
+      class="btn btn-sm btn-outline normal-case flex items-center"
+      on:click={next}
+      disabled={!hasNextPage}
+    >
+      <span>Volgende</span>
+      <Fa icon={faArrowRightLong} class="ml-2 text-[16px]" />
+    </button>
+  </div>
+{:else}
+  <div>Geen berichten gevonden</div>
 {/if}

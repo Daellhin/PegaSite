@@ -74,7 +74,7 @@
   <div class="flex flex-row gap-2">
     <!-- Tags -->
     {#each article.tags as tag}
-      <div class="badge badge-primary badge-lg">{tag}</div>
+      <div class="badge badge-primary font-semibold badge-lg">{tag}</div>
     {/each}
   </div>
 </div>

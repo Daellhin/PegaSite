@@ -10,6 +10,8 @@ export function createMockArticleStore() {
     })
     const { subscribe, update } = innerStore
 
+    const known = Promise.resolve()
+
     async function loadMoreArticles() {
         return
     }
@@ -20,10 +22,13 @@ export function createMockArticleStore() {
         const exsistingArticle = get(innerStore).find((e) => e.id === id)
         return exsistingArticle || null
     }
-    async function updateArticle(_newAuthors: string[], _newTags: string[], _newTitle: string, _newContent: string, _lastUpdate: Dayjs, _combinedImages: (string|File)[], _article: Article) {
+    async function updateArticle(_newAuthors: string[], _newTags: string[], _newTitle: string, _newContent: string, _lastUpdate: Dayjs, _combinedImages: (string | File)[], _visible:boolean, _article: Article) {
     }
     async function deleteArticle(article: Article) {
         update((articles) => (articles.filter((e) => e.id !== article.id)))
+    }
+    function updateVisibility(article: Article) {
+        update((articles) => [...articles])
     }
 
     return {
@@ -32,6 +37,8 @@ export function createMockArticleStore() {
         createArticle,
         getArticleById,
         updateArticle,
+        updateVisibility,
         deleteArticle,
+        known
     }
 }

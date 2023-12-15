@@ -51,7 +51,7 @@
       <!-- Tags -->
       <div class="card-actions justify-end">
         {#each article.tags as tag}
-          <div class="badge badge-outline">{tag}</div>
+          <div class="badge badge-primary font-semibold">{tag}</div>
         {/each}
       </div>
     </div>

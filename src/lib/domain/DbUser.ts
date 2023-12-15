@@ -51,10 +51,15 @@ export class DbUser {
 			.reduce((previous, current) => (getRoleValue(previous) > getRoleValue(current) ? previous : current))
 	}
 
+	isAdmin() {
+		console.log(this.roles)
+		return this.roles.includes("admin")
+	}
+
 	static getAplicableRoles(role: string): DbUserRole[] {
 		switch (role) {
-			case "admin": return [ "admin", "editor"]
-			case "editor": return [ "editor" ]
+			case "admin": return ["admin", "editor"]
+			case "editor": return ["editor"]
 			default: throw new Error(`Unknown role: ${role}`)
 		}
 	}

@@ -1,6 +1,7 @@
 <script lang="ts">
   import ConfirmModal from "$components/ConfirmModal.svelte"
   import EditDropdown from "$components/EditDropdown.svelte"
+  import Checkbox from "$components/formHelpers/Checkbox.svelte"
   import Input from "$components/formHelpers/Input.svelte"
   import InfoCircle from "$components/icons/Flowbite/InfoCircle.svelte"
   import TableFooter from "$components/table/TableFooter.svelte"
@@ -41,17 +42,11 @@
     if (hasPreviousPage) page--
   }
   async function next() {
-    if (hasNextPage) {
-      saving = true
-      errorMessage = ""
-      try {
-        await articleStore.loadMoreArticles()
-        page++
-      } catch (error) {
-        errorMessage = handleFirebaseError(error)
-      }
-      saving = false
-    }
+    if (!hasNextPage) return
+    saveWrapper(async () => {
+      await articleStore.loadMoreArticles()
+      page++
+    })
   }
 
   // -- Edit articles --
@@ -59,15 +54,20 @@
   $: if (!showModal) articlePendingDelete = undefined
 
   async function deleteArticle() {
-    console.log("deleteArticle")
-    saving = true
-    errorMessage = ""
-
-    saving = false
+    if (!articlePendingDelete) return
+    const article = articlePendingDelete
+    saveWrapper(async () => {
+      await articleStore.deleteArticle(article)
+    })
   }
   function startDelete(article: Article) {
     articlePendingDelete = article
     showModal = true
+  }
+  async function updateVisibility(article: Article) {
+    saveWrapper(async () => {
+      await articleStore.updateVisibility(article)
+    })
   }
 
   // -- Initialisation --
@@ -79,27 +79,28 @@
   async function init() {
     initialised = true
     setGlobalPaginationSize(10)
-    if ($articleStore.length < (page + 1) * paginationSize) {
-      saving = true
-      errorMessage = ""
-      try {
-        await articleStore.loadMoreArticles()
-        articlePendingDelete = undefined
-      } catch (error) {
-        errorMessage = handleFirebaseError(error)
-      }
-      saving = false
-    }
+    if ($articleStore.length < (page + 1) * paginationSize) return
+    saveWrapper(async () => {
+      await articleStore.loadMoreArticles()
+      articlePendingDelete = undefined
+    })
   }
 
   // Load all articles when the search string is initialised
   async function initSearch() {
-    searchInitialized = true
+    saveWrapper(async () => {
+      searchInitialized = true
+      await articleStore.loadMoreArticles(100)
+      articlePendingDelete = undefined
+    })
+  }
+
+  // -- Util --
+  async function saveWrapper(func: () => Promise<void>) {
     saving = true
     errorMessage = ""
     try {
-      await articleStore.loadMoreArticles(100)
-      articlePendingDelete = undefined
+      await func()
     } catch (error) {
       errorMessage = handleFirebaseError(error)
     }
@@ -137,6 +138,7 @@
             { name: "Angemaakt" },
             { name: "Tags" },
             { name: "Gewijzigd" },
+            { name: "Zichtbaar" },
             { name: "" },
           ]}
         />
@@ -150,8 +152,25 @@
             <td>{article.title}</td>
             <td>{article.authors}</td>
             <td>{article.createdAt.format("YYYY-MM-DD HH:mm")}</td>
-            <td>{article.tags}</td>
+            <td>
+              <div class="flex gap-1 flex-wrap my-auto h-full">
+                {#each article.tags as tag}
+                  <div
+                    class="badge badge-primary font-semibold whitespace-nowrap"
+                  >
+                    {tag}
+                  </div>
+                {/each}
+              </div>
+            </td>
             <td>{article.lastUpdate?.format("YYYY-MM-DD HH:mm")}</td>
+            <td>
+              <Checkbox
+                bind:value={article.visible}
+                onInput={() => updateVisibility(article)}
+                inputClass="mx-auto"
+              ></Checkbox>
+            </td>
             <td>
               <EditDropdown
                 positionStatic

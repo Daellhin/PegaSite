@@ -44,7 +44,7 @@
     </a>
   </div>
 
-  {#if user.roles.includes("admin")}
+  {#if user?.isAdmin()}
     <div class="flex items-center gap-2 mb-2 mt-4">
       <Fa icon={faUserShield} class="w-6 h-6" />
       <h2 class="text-xl font-bold">Voor Admins</h2>

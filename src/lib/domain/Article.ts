@@ -10,6 +10,7 @@ export interface ArticleJson {
     images: string[]
     content: string
     lastUpdate: Timestamp | undefined
+    visible: boolean
 }
 
 export class Article {
@@ -23,11 +24,10 @@ export class Article {
         public title: string,
         public images: string[],
         public content: string,
-        public lastUpdate?: Dayjs
+        public visible: boolean,
+        public lastUpdate?: Dayjs,
     ) {
-
         this.searchableString = `${title} ${tags.join(" ")} ${authors.join(" ")} ${createdAt.format("YYYY-MM-DD HH:mm")} ${lastUpdate?.format("YYYY-MM-DD HH:mm")}`.toLowerCase()
-
     }
 
     /**
@@ -52,6 +52,7 @@ export class Article {
             json.title,
             json.images,
             json.content,
+            json.visible,
             json.lastUpdate ? dayjs(json.lastUpdate.toMillis()) : undefined
         )
     }
@@ -64,6 +65,7 @@ export class Article {
             tags: this.tags,
             createdAt: Timestamp.fromDate(this.createdAt.toDate()),
             title: this.title,
+            visible: this.visible,
             lastUpdate: this.lastUpdate ? Timestamp.fromDate(this.lastUpdate.toDate()) : null
         } as ArticleJson
     }

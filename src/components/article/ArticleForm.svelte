@@ -5,11 +5,13 @@
   import Input from "$components/formHelpers/Input.svelte"
   import { CategoryValues } from "$lib/domain/Category"
   import { handleFirebaseError } from "$lib/utils/Firebase"
+    import Checkbox from "$components/formHelpers/Checkbox.svelte"
 
   export let title = ""
   export let content = ""
   export let combinedImages: (string | File)[] = []
   export let tags: string[] = []
+  export let visible = true
 
   export let submitLabel: string
   export let onSave: () => Promise<void>
@@ -38,13 +40,14 @@
     value={title}
     required
   />
+  <Checkbox label="Zichtbaar" bind:value={visible} />
+
   <Dropzone label="Afbeeldingen:" bind:combinedImages />
   <MultiSelect
     label="Categorieën:"
     bind:values={tags}
     options={CategoryValues}
-  />
-  <CLEditor label="Inhoud van artikel:" bind:value={content} />
+  />  <CLEditor label="Inhoud van artikel:" bind:value={content} />
 
   <div class="w-fit" class:hover:cursor-wait={saving}>
     <button
