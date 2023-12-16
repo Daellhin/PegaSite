@@ -19,7 +19,7 @@ export interface DbUserJson {
 }
 
 export class DbUser {
-	public searchableString: string
+	public searchableString = ""
 
 	constructor(
 		public uid: string,
@@ -28,7 +28,11 @@ export class DbUser {
 		public displayName: string,
 		public creationTimestamp: Dayjs
 	) {
-		this.searchableString = `${roles.join(" ")} ${email} ${displayName} ${creationTimestamp.format("DD-MM-YYYY")}`.toLowerCase()
+		this.updateSearchableString()
+	}
+
+	updateSearchableString() {
+		this.searchableString = `${this.roles.join(" ")} ${this.email} ${this.displayName} ${this.creationTimestamp.format("DD-MM-YYYY")}`.toLowerCase()
 	}
 
 	/**
