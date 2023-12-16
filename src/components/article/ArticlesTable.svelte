@@ -178,7 +178,9 @@
             <td>
               <img src={article.images[0]} alt="Logo" class="rounded-lg h-20" />
             </td>
-            <td>{article.title}</td>
+            <td>
+              <a href="/articles/{article.id}" class="link">{article.title}</a>
+            </td>
             <td>{article.authors}</td>
             <td>{article.createdAt.format("YYYY-MM-DD HH:mm")}</td>
             <td>
