@@ -31,7 +31,8 @@
   $: previousArticles = page * paginationSize
 
   $: visibleArticles = articles
-    ?.filter((e) => e.matchesSearchString(searchString))
+    ?.filter((e) => visibleFilter(e, showVisible, showHidden))
+    .filter((e) => e.matchesSearchString(searchString))
     .slice(previousArticles, previousArticles + paginationSize)
   $: allArticles = articles
 
@@ -47,6 +48,21 @@
       await articleStore.loadMoreArticles()
       page++
     })
+  }
+
+  // -- Filters --
+  let showHidden = true
+  let showVisible = true
+
+  function visibleFilter(
+    article: Article,
+    showVisible: boolean,
+    showHidden: boolean,
+  ) {
+    if (showVisible && showHidden) return true
+    if (showVisible && !showHidden) return article.visible
+    if (!showVisible && showHidden) return !article.visible
+    return true
   }
 
   // -- Edit articles --
@@ -116,6 +132,19 @@
     placeholder="Zoek een bericht"
     iconLeft={faSearch}
   />
+</div>
+
+<!-- Filters -->
+<div class="mt-2 flex gap-2 items-center w-full">
+  <span class="font-bold">Filters: </span>
+  <div class="flex gap-1 whitespace-nowrap">
+    <Checkbox bind:value={showVisible} />
+    Zichtbaar
+  </div>
+  <div class="flex gap-1">
+    <Checkbox bind:value={showHidden} />
+    Verborgen
+  </div>
 </div>
 
 <div class="grid relative">

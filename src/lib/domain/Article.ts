@@ -31,7 +31,7 @@ export class Article {
     }
 
     updateSearchableString() {
-        this.searchableString = `${this.title} ${this.tags.join(" ")} ${this.authors.join(" ")} ${this.createdAt.format("YYYY-MM-DD HH:mm")} ${this.lastUpdate?.format("YYYY-MM-DD HH:mm")} ${this.visible ? "zichtbaar" : "verborgen"}`.toLowerCase()
+        this.searchableString = `${this.title} ${this.tags.join(" ")} ${this.authors.join(" ")} ${this.createdAt.format("YYYY-MM-DD HH:mm")} ${this.lastUpdate?.format("YYYY-MM-DD HH:mm")}`.toLowerCase()
     }
 
     /**

@@ -48,6 +48,7 @@
   />
 </div>
 
+<!-- Filters -->
 <div class="mt-2 flex gap-2 items-center w-full">
   <span class="font-bold">Filters: </span>
   <div class="flex gap-1 whitespace-nowrap">
