@@ -56,7 +56,6 @@ export class DbUser {
 	}
 
 	isAdmin() {
-		console.log(this.roles)
 		return this.roles.includes("admin")
 	}
 
