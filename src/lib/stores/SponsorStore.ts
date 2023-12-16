@@ -97,6 +97,7 @@ function createSponsorStore() {
 		sponsor.name = newName
 		sponsor.url = newUrl
 		sponsor.imageUrl = newImageUrl || sponsor.imageUrl
+		sponsor.updateSearchableString()
 		update((sponsors) => [...sponsors])
 	}
 

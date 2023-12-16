@@ -8,7 +8,7 @@ export interface SponsorJson {
 }
 
 export class Sponsor {
-	public searchableString: string
+	public searchableString = ""
 
 	constructor(
 		public id: string,
@@ -16,7 +16,11 @@ export class Sponsor {
 		public url: string,
 		public imageUrl: string,
 	) {
-		this.searchableString = `${name.toLowerCase()} ${url.toLowerCase()}`
+		this.updateSearchableString()
+	}
+
+	updateSearchableString() {
+		this.searchableString = `${this.name.toLowerCase()} ${this.url.toLowerCase()}`
 	}
 
 	static clone(sponsor: Sponsor) {
