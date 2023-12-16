@@ -125,6 +125,7 @@
         class:pl-9={transparent}
         class:bg-base-200={!transparent}
         class:input-error={errorText}
+        class:pr-20={focused || dirty || saving}
         class={"input pr-20 w-full hover:bg-base-300 focus:bg-base-300 " +
           inputStyling}
         use:typeAction

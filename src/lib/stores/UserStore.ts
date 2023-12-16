@@ -69,7 +69,10 @@ function createUserStore() {
 		// -- Update store --
 		update((users) => {
 			const user = users.find(u => u.uid === uid)
-			if (user) user.roles = roles
+			if (user) {
+				user.roles = roles
+				user.updateSearchableString()
+			}
 			return [...users]
 		})
 	}

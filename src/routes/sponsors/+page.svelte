@@ -28,11 +28,11 @@
     if (!$authStore) goto("/")
   })
   // -- Page title --
-  pageHeadStore.updatePageTitle("Sponsors wijzigen")
+  pageHeadStore.updatePageTitle("Sponsors beheren")
 </script>
 
 <div class="flex gap-3">
-  <h1 class="text-2xl font-bold mb-1">Sponsors wijzigen</h1>
+  <h1 class="text-2xl font-bold mb-1">Sponsors beheren</h1>
   <button class="btn btn-sm btn-primary" on:click={showFormHandler}>
     Nieuwe Sponsor
   </button>

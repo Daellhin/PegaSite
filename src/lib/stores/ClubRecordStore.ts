@@ -122,6 +122,7 @@ function createClubRecordStore() {
 			recordInstance.result = result
 			recordInstance.location = location
 			recordInstance.date = date
+			recordInstance.updateSearchableString()
 			await updateDoc(clubRecordsRef, {
 				[newClubrecordKey]: arrayUnion(recordInstance.toJSON())
 			})

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Input from "$components/formHelpers/Input.svelte"
+  import Input from "$components/formHelpers/Input.svelte"
   import RecordForm from "$components/records/RecordForm.svelte"
   import RecordsList from "$components/records/RecordsList.svelte"
   import { Category } from "$lib/domain/dataClasses/Category"

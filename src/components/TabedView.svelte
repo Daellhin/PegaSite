@@ -11,11 +11,11 @@
 </script>
 
 <div class="grid">
-  <div class="tabs z-10 -mb-px border-b-0">
+  <div class="flex flex-wrap tabs tabs-lifted z-10 -mb-px border-b-0">
     {#each tabs as tab, index}
       <button
         on:click={() => selectTab(index)}
-        class="tab tab-lifted [--tab-bg:oklch(var(--b2))] border-b-0 [@media(max-width:568px)]:after:hidden [@media(max-width:568px)]:before:hidden [@media(max-width:568px)]:rounded-lg"
+        class="tab whitespace-nowrap [--tab-bg:oklch(var(--b2))] border-b-0 [@media(max-width:568px)]:before:hidden [@media(max-width:568px)]:rounded-lg"
         class:tab-active={currentIndex === index}
       >
         {tab}

@@ -13,7 +13,7 @@ export interface ClubRecordJson {
 }
 
 export class ClubRecord {
-	public searchableString: string
+	public searchableString = ""
 
 	constructor(
 		public discipline: Discipline,
@@ -23,7 +23,11 @@ export class ClubRecord {
 		public records: RecordInstance[]
 	) {
 		records.sort((a, b) => (a.date?.isBefore(b.date) ? 1 : -1))
-		this.searchableString = `${discipline.getAllNames().join("")} ${category.getAllNames().join("")} ${gender.getAllNames().join("")} ${athleticEvent} ${records.map((e) => e.searchableString)}`.toLowerCase()
+		this.updateSearchableString()
+	}
+
+	updateSearchableString() {
+		this.searchableString = `${this.discipline.getAllNames().join("")} ${this.category.getAllNames().join("")} ${this.gender.getAllNames().join("")} ${this.athleticEvent} ${this.records.map((e) => e.searchableString)}`.toLowerCase()
 	}
 
 	hasPreviousRecords() {

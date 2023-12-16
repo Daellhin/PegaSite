@@ -1,7 +1,7 @@
 <script lang="ts">
   import Checkbox from "$components/formHelpers/Checkbox.svelte"
   import Input from "$components/formHelpers/Input.svelte"
-  import TablePagination from "$components/table/TableFooter.svelte"
+  import TableFooter from "$components/table/TableFooter.svelte"
   import TableHeaderRow from "$components/table/TableHeaderRow.svelte"
   import type { RecordInstance } from "$lib/domain/RecordInstance"
   import { clubRecordStore } from "$lib/stores/ClubRecordStore"
@@ -12,6 +12,7 @@
 
   let saving = false
   let errorMessage = ""
+  let searchString = ""
 
   $: allRecords = $clubRecordStore?.flatMap((e) => {
     e.records.forEach((f) => f.linkClubrecord(e))
@@ -35,11 +36,9 @@
     if (!showApproved && showNotApproved) return !record.checked
     return true
   }
-
-  // -- Search --
-  let searchString = ""
 </script>
 
+<!-- Search -->
 <div class="mt-2">
   <Input
     type="text"
@@ -49,6 +48,7 @@
   />
 </div>
 
+<!-- Filters -->
 <div class="mt-2 flex gap-2 items-center w-full">
   <span class="font-bold">Filters: </span>
   <div class="flex gap-1 whitespace-nowrap">
@@ -118,7 +118,7 @@
       </tbody>
     </table>
   </div>
-  <TablePagination
+  <TableFooter
     filteredLength={filteredRecords.length}
     fullLength={allRecords.length}
     bind:saving

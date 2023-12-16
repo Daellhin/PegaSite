@@ -19,7 +19,7 @@ export interface DbUserJson {
 }
 
 export class DbUser {
-	public searchableString: string
+	public searchableString = ""
 
 	constructor(
 		public uid: string,
@@ -28,7 +28,11 @@ export class DbUser {
 		public displayName: string,
 		public creationTimestamp: Dayjs
 	) {
-		this.searchableString = `${roles.join(" ")} ${email} ${displayName} ${creationTimestamp.format("DD-MM-YYYY")}`.toLowerCase()
+		this.updateSearchableString()
+	}
+
+	updateSearchableString() {
+		this.searchableString = `${this.roles.join(" ")} ${this.email} ${this.displayName} ${this.creationTimestamp.format("DD-MM-YYYY")}`.toLowerCase()
 	}
 
 	/**
@@ -51,10 +55,15 @@ export class DbUser {
 			.reduce((previous, current) => (getRoleValue(previous) > getRoleValue(current) ? previous : current))
 	}
 
+	isAdmin() {
+		console.log(this.roles)
+		return this.roles.includes("admin")
+	}
+
 	static getAplicableRoles(role: string): DbUserRole[] {
 		switch (role) {
-			case "admin": return [ "admin", "editor"]
-			case "editor": return [ "editor" ]
+			case "admin": return ["admin", "editor"]
+			case "editor": return ["editor"]
 			default: throw new Error(`Unknown role: ${role}`)
 		}
 	}

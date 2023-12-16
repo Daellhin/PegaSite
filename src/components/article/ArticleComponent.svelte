@@ -8,6 +8,7 @@
   import { authStore } from "$lib/stores/AuthStore"
   import { faCalendar } from "@fortawesome/free-regular-svg-icons"
   import {
+    faEyeSlash,
     faPenToSquare,
     faUser,
     faUsers,
@@ -23,6 +24,13 @@
     goto("/")
   }
 </script>
+
+<!-- Visibility -->
+{#if !article.visible}
+  <div class="flex items-center gap-2 underline mb-[-6px]">
+    <Fa icon={faEyeSlash} class="" /> Dit artikel is niet zichtbaar!
+  </div>
+{/if}
 
 <!-- Title -->
 <div class="flex flex-row items-center">
@@ -71,10 +79,10 @@
     </div>
   </div>
 
+  <!-- Tags -->
   <div class="flex flex-row gap-2">
-    <!-- Tags -->
     {#each article.tags as tag}
-      <div class="badge badge-primary badge-lg">{tag}</div>
+      <div class="badge badge-primary font-semibold badge-lg">{tag}</div>
     {/each}
   </div>
 </div>

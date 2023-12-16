@@ -12,7 +12,7 @@ export interface RecordInstanceJson {
 }
 
 export class RecordInstance {
-	public searchableString: string
+	public searchableString = ""
 	public clubRecord: ClubRecord | undefined
 	public extendedSearchableString: string | undefined
 
@@ -23,7 +23,11 @@ export class RecordInstance {
 		public date?: Dayjs,
 		public checked: boolean = false
 	) {
-		this.searchableString = `${name} ${result} ${location} ${date?.format("DD/MM/YYYY")}`.toLowerCase()
+		this.updateSearchableString()
+	}
+
+	updateSearchableString() {
+		this.searchableString = `${this.name} ${this.result} ${this.location} ${this.date?.format("DD/MM/YYYY")}`.toLowerCase()
 	}
 
 	linkClubrecord(clubRecord: ClubRecord) {

@@ -5,56 +5,51 @@ import { arrayDifference, arraysContainSameElements } from '$lib/utils/Array'
 import { WEBP_IMAGE_QUALITY } from '$lib/utils/Constants'
 import { convertStringToBool } from '$lib/utils/Utils'
 import type { Dayjs } from 'dayjs'
-import { Timestamp, type QueryDocumentSnapshot } from 'firebase/firestore'
+import { Timestamp, type QueryDocumentSnapshot, where } from 'firebase/firestore'
 import { get, writable } from 'svelte/store'
 import { v4 as uuidv4 } from 'uuid'
 import { blobToWebP } from 'webp-converter-browser'
 import { createMockArticleStore } from './mocks/MockArticleStore'
+import { authStore } from './AuthStore'
+import load from 'ngraph.fromjson'
 
 /**
  * Pagination size is used to load articles in batches. 
  * One article of next batch is always atempted to be loaded. 
  * This is to check if there are items in the next batch
  */
-export const paginationSize = 8
+export let globalPaginationSize = 8
+export function setGlobalPaginationSize(size: number) {
+	globalPaginationSize = size
+}
 
 /**
  * Source: https://www.captaincodeman.com/lazy-loading-and-querying-firestore-with-sveltekit
  */
 function createArticleStore() {
-	let lastRef: QueryDocumentSnapshot<Article>
+	let lastRef: QueryDocumentSnapshot<Article> | undefined
 	let hasMoreDocuments = true
 
 	const innerStore = writable<Article[]>(undefined, set => {
 		async function init() {
 			if (!browser) return
-
-			// -- Load articles --
-			const { firebaseApp } = await import('$lib/firebase/Firebase')
-			const { getFirestore, collection, query, orderBy, limit, getDocs } = await import('firebase/firestore')
-			const firestore = getFirestore(firebaseApp)
-
-			const q = query(
-				collection(firestore, Collections.ARTICLES),
-				orderBy('createdAt', 'desc'),
-				limit(paginationSize + 1)
-			).withConverter(articleConverter)
-			const snapshot = await getDocs(q)
-
-			// -- Set store --
-			const articles = snapshot.docs.map(e => e.data())
-			set(articles)
-
-			// -- Setup pagination --
-			lastRef = snapshot.docs.slice(-1)[0]
-			hasMoreDocuments = snapshot.docs.length === paginationSize + 1
+			await loadMoreArticles()
 		}
 		init()
 	})
 	const { subscribe, update } = innerStore
 
-	async function loadMoreArticles() {
-		if (!browser) return
+	const known = new Promise<void>(resolve => {
+		let unsub = () => { }
+		unsub = subscribe(articles => {
+			if (articles !== undefined) {
+				resolve()
+				unsub()
+			}
+		})
+	})
+
+	async function loadMoreArticles(limitValue: number = globalPaginationSize) {
 		if (!hasMoreDocuments) return
 
 		// -- Load articles --
@@ -62,23 +57,30 @@ function createArticleStore() {
 		const { getFirestore, collection, query, orderBy, limit, getDocs, startAfter } = await import('firebase/firestore')
 		const firestore = getFirestore(firebaseApp)
 
-		const q = query(
-			collection(firestore, Collections.ARTICLES),
-			orderBy('createdAt', 'desc'),
-			startAfter(lastRef),
-			limit(paginationSize)
-		).withConverter(articleConverter)
-		const snapshot = await getDocs(q)
+		// For admins, load both hidden and visible articles, but make sure visible articles reach limit value
+		await authStore.known
+		const user = get(authStore)
+		const newArticles = Array<Article>()
+		do {
+			const q = query(
+				collection(firestore, Collections.ARTICLES),
+				orderBy('createdAt', 'desc'),
+				...(user ? [] : [where('visible', '==', true)]),
+				...(lastRef ? [startAfter(lastRef)] : []),
+				limit(limitValue)
+			).withConverter(articleConverter)
+			const snapshot = await getDocs(q)
+			newArticles.push(...snapshot.docs.map(e => e.data()))
+			lastRef = snapshot.docs.at(-1)
+			hasMoreDocuments = snapshot.docs.length === globalPaginationSize + 1
+			console.log('a')
+		} while (hasMoreDocuments && newArticles.filter(e => e.visible).length < limitValue)
 
 		// -- Update articles --
-		update((articles) => ([...articles, ...snapshot.docs.map(e => e.data())]))
-		lastRef = snapshot.docs.slice(-1)[0]
-		hasMoreDocuments = snapshot.docs.length === paginationSize + 1
+		update((articles) => ([...(articles || []), ...newArticles]))
 	}
 
 	async function createArticle(newArticle: Article, images: File[]) {
-		if (!browser) return
-
 		// -- Convert images --
 		const convertedImages = await Promise.all(
 			images.map((e) => blobToWebP(e, { quality: WEBP_IMAGE_QUALITY }))
@@ -110,8 +112,6 @@ function createArticleStore() {
 	}
 
 	async function getArticleById(id: string) {
-		if (!browser) return
-
 		const exsistingArticle = get(innerStore).find((e) => e.id === id)
 		if (exsistingArticle) return exsistingArticle
 
@@ -124,13 +124,11 @@ function createArticleStore() {
 		const articleSnap = await getDoc(articleRef)
 		const article = articleSnap.data()
 
-		if (article) update((articles) => [...articles, article])
+
 		return article || null
 	}
 
-	async function updateArticle(newAuthors: string[], newTags: string[], newTitle: string, newContent: string, lastUpdate: Dayjs, combinedImages: (string | File)[], article: Article) {
-		if (!browser) return
-
+	async function updateArticle(newAuthors: string[], newTags: string[], newTitle: string, newContent: string, lastUpdate: Dayjs, combinedImages: (string | File)[], visible:boolean, article: Article) {
 		const { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } = await import('firebase/storage')
 		const storage = getStorage()
 
@@ -170,7 +168,8 @@ function createArticleStore() {
 			title: newTitle,
 			content: newContent,
 			lastUpdate: new Timestamp(Math.round(Date.now() / 1000), 0),
-			images: newImages
+			images: newImages,
+			visible: visible
 		})
 
 		// -- Update store --
@@ -180,12 +179,12 @@ function createArticleStore() {
 		article.content = newContent
 		article.images = newImages
 		article.lastUpdate = lastUpdate
-		update((pages) => [...pages])
+		article.visible = visible
+		article.updateSearchableString()
+		update((articles) => [...articles])
 	}
 
 	async function deleteArticle(article: Article) {
-		if (!browser) return
-
 		// -- Remove images --
 		const { getStorage, ref, deleteObject } = await import('firebase/storage')
 		const storage = getStorage()
@@ -212,13 +211,31 @@ function createArticleStore() {
 		update((articles) => (articles.filter((e) => e.id !== article.id)))
 	}
 
+	async function updateVisibility(article: Article) {
+		// -- Update article --
+		const { getFirestore, doc, updateDoc } = await import('firebase/firestore')
+		const { firebaseApp } = await import('$lib/firebase/Firebase')
+		const firestore = getFirestore(firebaseApp)
+
+		const linksRef = doc(firestore, Collections.ARTICLES, article.id)
+		await updateDoc(linksRef, {
+			visible: article.visible
+		})
+
+		article.updateSearchableString()
+		// -- Update store --
+		update((pages) => [...pages])
+	}
+
 	return {
 		subscribe,
 		loadMoreArticles,
 		createArticle,
 		getArticleById,
 		updateArticle,
+		updateVisibility,
 		deleteArticle,
+		known
 	}
 }
 

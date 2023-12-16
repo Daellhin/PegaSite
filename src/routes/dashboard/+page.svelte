@@ -4,6 +4,12 @@
   import { authStore } from "$lib/stores/AuthStore"
   import { clubRecordStore } from "$lib/stores/ClubRecordStore"
   import { pageHeadStore } from "$lib/stores/PageHeadStore"
+  import {
+    faUserCheck,
+    faUserPen,
+    faUserShield,
+  } from "@fortawesome/free-solid-svg-icons"
+  import Fa from "svelte-fa"
 
   $: newRecords = $clubRecordStore
     ?.flatMap((e) => e.records)
@@ -21,16 +27,31 @@
 {#await authStore.dbUser}
   Loading
 {:then user}
+  <div class="flex items-center gap-2 mb-2">
+    <Fa icon={faUserPen} class="w-6 h-6" />
+    <h2 class="text-xl font-bold">Voor Editors</h2>
+  </div>
+
   <div class="flex gap-2 flex-wrap">
     <a href="/articles/new" class="btn btn-primary normal-case">Nieuw bericht</a
     >
+    <a href="/articles" class="btn btn-primary normal-case">Berichten beheren</a>
     <a href="/events/new" class="btn btn-primary normal-case">Nieuw event</a>
+    <a href="/events" class="btn btn-primary normal-case">Events beheren</a>
+
     <a href="/pages/navbar" class="btn btn-primary normal-case">
-      Navigatiebalk wijzigen
+      Paginas beheren
     </a>
-    {#if user.roles.includes("admin")}
+  </div>
+
+  {#if user?.isAdmin()}
+    <div class="flex items-center gap-2 mb-2 mt-4">
+      <Fa icon={faUserShield} class="w-6 h-6" />
+      <h2 class="text-xl font-bold">Voor Admins</h2>
+    </div>
+    <div class="flex gap-2 flex-wrap mt-2">
       <a href="/sponsors" class="btn btn-primary normal-case"
-        >Sponsors wijzigen</a
+        >Sponsors beheren</a
       >
       <a href="/users" class="btn btn-primary normal-case">Gebruikers beheren</a
       >
@@ -45,8 +66,8 @@
           </div>
         {/if}
       </a>
-    {/if}
-  </div>
+    </div>
+  {/if}
 {:catch error}
   <ErrorLine {error} logError />
 {/await}

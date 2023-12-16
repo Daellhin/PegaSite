@@ -19,6 +19,7 @@
   let tags: string[]
   let title: string
   let combinedImages: (string | File)[] = []
+  let visible: boolean
 
   let content: string
   let createdAt: Dayjs
@@ -33,7 +34,8 @@
       content,
       lastUpdate,
       combinedImages,
-      article!
+      visible,
+      article!,
     )
     haveValuesBeenSet = false
     pushCreatedToast("Artikel gewijzigd", {
@@ -48,7 +50,7 @@
   }
   async function createPreviewArticle() {
     const images = await Promise.all(
-      combinedImages.map(PreviewableFile.getMixedFilePreview)
+      combinedImages.map(PreviewableFile.getMixedFilePreview),
     )
     return new Article(
       "-1",
@@ -58,7 +60,8 @@
       title,
       images,
       content,
-      lastUpdate
+      visible,
+      lastUpdate,
     )
   }
 
@@ -79,7 +82,7 @@
     content = article.content
     createdAt = article.createdAt
     lastUpdate = dayjs()
-
+    visible = article.visible
     combinedImages = [...article.images]
     haveValuesBeenSet = true
   }
@@ -120,6 +123,7 @@
     bind:content
     bind:combinedImages
     bind:tags
+    bind:visible
     submitLabel="Wijzig artikel"
     onSave={updateArticle}
   />

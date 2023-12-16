@@ -1,7 +1,7 @@
 <script lang="ts">
   import Input from "$components/formHelpers/Input.svelte"
   import SortableTableHeaderRow from "$components/table/SortableTableHeaderRow.svelte"
-  import TablePagination from "$components/table/TableFooter.svelte"
+  import TableFooter from "$components/table/TableFooter.svelte"
   import UserRow from "$components/users/UserRow.svelte"
   import type { DbUser } from "$lib/domain/DbUser"
   import { SortOrder } from "$lib/domain/dataClasses/SortOrder"
@@ -36,12 +36,12 @@
         break
       case "Rol":
         newArray.sort((a, b) =>
-          a.getHighestRole().localeCompare(b.getHighestRole())
+          a.getHighestRole().localeCompare(b.getHighestRole()),
         )
         break
       case "Aangemaakt":
         newArray.sort((a, b) =>
-          a.creationTimestamp.isAfter(b.creationTimestamp) ? 1 : -1
+          a.creationTimestamp.isAfter(b.creationTimestamp) ? 1 : -1,
         )
         break
     }
@@ -50,6 +50,7 @@
   }
 </script>
 
+<!-- Search -->
 <div class="mt-3">
   <Input
     type="text"
@@ -87,7 +88,7 @@
       </tbody>
     </table>
   </div>
-  <TablePagination
+  <TableFooter
     filteredLength={filteredUsers.length}
     fullLength={users.length}
     saving={savingRole}
