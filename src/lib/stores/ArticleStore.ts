@@ -5,13 +5,12 @@ import { arrayDifference, arraysContainSameElements } from '$lib/utils/Array'
 import { WEBP_IMAGE_QUALITY } from '$lib/utils/Constants'
 import { convertStringToBool } from '$lib/utils/Utils'
 import type { Dayjs } from 'dayjs'
-import { Timestamp, type QueryDocumentSnapshot, where } from 'firebase/firestore'
+import { Timestamp, where, type QueryDocumentSnapshot } from 'firebase/firestore'
 import { get, writable } from 'svelte/store'
 import { v4 as uuidv4 } from 'uuid'
 import { blobToWebP } from 'webp-converter-browser'
-import { createMockArticleStore } from './mocks/MockArticleStore'
 import { authStore } from './AuthStore'
-import load from 'ngraph.fromjson'
+import { createMockArticleStore } from './mocks/MockArticleStore'
 
 /**
  * Pagination size is used to load articles in batches. 
@@ -128,7 +127,7 @@ function createArticleStore() {
 		return article || null
 	}
 
-	async function updateArticle(newAuthors: string[], newTags: string[], newTitle: string, newContent: string, lastUpdate: Dayjs, combinedImages: (string | File)[], visible:boolean, article: Article) {
+	async function updateArticle(newAuthors: string[], newTags: string[], newTitle: string, newContent: string, lastUpdate: Dayjs, combinedImages: (string | File)[], visible: boolean, article: Article) {
 		const { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } = await import('firebase/storage')
 		const storage = getStorage()
 
