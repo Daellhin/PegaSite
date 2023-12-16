@@ -72,7 +72,6 @@ function createArticleStore() {
 			newArticles.push(...snapshot.docs.map(e => e.data()))
 			lastRef = snapshot.docs.at(-1)
 			hasMoreDocuments = snapshot.docs.length === globalPaginationSize + 1
-			console.log('a')
 		} while (hasMoreDocuments && newArticles.filter(e => e.visible).length < limitValue)
 
 		// -- Update articles --
