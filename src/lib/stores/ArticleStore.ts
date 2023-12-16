@@ -180,6 +180,7 @@ function createArticleStore() {
 		article.images = newImages
 		article.lastUpdate = lastUpdate
 		article.visible = visible
+		article.updateSearchableString()
 		update((articles) => [...articles])
 	}
 
@@ -221,6 +222,7 @@ function createArticleStore() {
 			visible: article.visible
 		})
 
+		article.updateSearchableString()
 		// -- Update store --
 		update((pages) => [...pages])
 	}

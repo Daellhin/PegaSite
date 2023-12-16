@@ -14,7 +14,7 @@ export interface ArticleJson {
 }
 
 export class Article {
-    public searchableString: string
+    public searchableString = ""
 
     constructor(
         public id: string,
@@ -27,7 +27,11 @@ export class Article {
         public visible: boolean,
         public lastUpdate?: Dayjs,
     ) {
-        this.searchableString = `${title} ${tags.join(" ")} ${authors.join(" ")} ${createdAt.format("YYYY-MM-DD HH:mm")} ${lastUpdate?.format("YYYY-MM-DD HH:mm")}`.toLowerCase()
+        this.updateSearchableString()
+    }
+
+    updateSearchableString() {
+        this.searchableString = `${this.title} ${this.tags.join(" ")} ${this.authors.join(" ")} ${this.createdAt.format("YYYY-MM-DD HH:mm")} ${this.lastUpdate?.format("YYYY-MM-DD HH:mm")} ${this.visible ? "zichtbaar" : "verborgen"}`.toLowerCase()
     }
 
     /**
