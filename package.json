@@ -23,7 +23,7 @@
 		"autoprefixer": "^10.4.16",
 		"eslint": "^8.56.0",
 		"eslint-plugin-svelte": "^2.35.1",
-		"firebase-tools": "^12.9.1",
+		"firebase-tools": "^13.0.2",
 		"postcss": "^8.4.32",
 		"postcss-nesting": "^12.0.2",
 		"svelte": "^4.2.8",
