@@ -2,7 +2,7 @@ import { browser } from '$app/environment'
 import { CalendarEvent, calendarEventConverter } from '$lib/domain/CalendarEvent'
 import { Collections } from '$lib/firebase/Firebase'
 import { convertStringToBool } from '$lib/utils/Utils'
-import dayjs, { Dayjs } from 'dayjs'
+import dayjs, { type Dayjs } from 'dayjs'
 import { get, writable } from 'svelte/store'
 import { createMockCalendarEventStore } from './mocks/MockCalendarEventStore'
 
