@@ -46,7 +46,6 @@
 		"@popperjs/core": "^2.11.8",
 		"@zerodevx/svelte-toast": "^0.9.5",
 		"cl-editor": "^2.3.0",
-		"classnames": "^2.5.1",
 		"daisyui": "^4.6.2",
 		"dayjs": "^1.11.10",
 		"firebase": "^10.8.0",
