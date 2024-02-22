@@ -16,7 +16,7 @@
     <p>
       Copyright © {new Date().getFullYear()} - AC Pegasus Londerzeel
       <br />
-      <a href="/" class="link-hover">Versie: {version}</a>,
+      <a href="https://github.com/Daellhin/PegaSite/releases" target="_blank" class="link-hover">Versie: {version}</a>,
       <a href="/" class="link-hover">Ontwerp: Lorin Speybrouck</a>
     </p>
   </div>
