@@ -17,7 +17,7 @@
           <label tabindex="0" class="btn text-[1.1em] shadow-none">
             {linkGroup.name}
           </label>
-          <ul class="dropdown-content z-[1] rounded-box bg-base-100 p-2 shadow-2xl">
+          <ul class="dropdown-content z-10 rounded-box bg-base-100 p-2 shadow-2xl">
             {#each linkGroup.links as linkInner}
               <li>
                 <a class="text-[15px]" href={linkInner.getUrl()}>
