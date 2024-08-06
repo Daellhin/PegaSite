@@ -3,7 +3,7 @@
   export { classList as class }
 
   export let showMore = false
-  export let startHeightPx = 200
+  export let startHeightPx = 300
 
   let container: HTMLElement
 </script>
@@ -24,7 +24,7 @@
   />
   {#if container?.clientHeight > startHeightPx}
     <button
-      class="btn btn-neutral btn-sm mt-2 mx-auto"
+      class="btn btn-neutral btn-sm mt-3 mx-auto"
       on:click={() => (showMore = !showMore)}
     >
       Toon {showMore ? "minder" : "meer"}

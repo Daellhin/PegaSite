@@ -115,34 +115,31 @@
   }
 
   let toggle = false
+  let innerWidth: any
 
   // -- Page title --
   pageHeadStore.updatePageTitle("Foto's")
 </script>
 
+<svelte:window bind:innerWidth />
+
 <div class="flex gap-3 mb-2">
   <h1 class="text-2xl font-bold">Foto's</h1>
 </div>
 
-<ShowMore class="mb-4">
-  <p class="w-96">
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
-    non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
-    non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-  </p>
-</ShowMore>
+<ul class="menu bg-base-200 rounded-box mb-4">
+  <li>
+    <h2 class="menu-title">Albums</h2>
+    <ul>
+      <li><a class="btn btn-ghost h-9 min-h-min justify-start w-fit" href="#1">{"Atletiekstage 2024 - Dag 1"}</a></li>
+      <li><a class="btn btn-ghost h-9 min-h-min justify-start w-fit" href="#2">{"Atletiekstage 2024 - Dag 1"}</a></li>
+      <li><a class="btn btn-ghost h-9 min-h-min justify-start w-fit" href="#3">{"Atletiekstage 2024 - Dag 1"}</a></li>
+    </ul>
+  </li>
+</ul>
 
-{#each Array(3) as item}
-  <div class="mb-4">
+{#each Array(3) as item, index}
+  <div class="mb-4" id={index.toString()}>
     <div>
       <div class="flex">
         <div class="min-w-fit font-semibold text-xl">
@@ -176,20 +173,22 @@
     </div>
 
     <div class="mt-2">
-      <Masonry items={imageLinks} {minColWidth} {maxColWidth} {gap} let:item>
-        <a
-          class="imageAnchor"
-          href={item.url}
-          data-img={item.url}
-          data-thumb={item.url}
-          on:click={openGallery}
-        >
-          <img
-            src={item.url}
-            class="h-full w-full object-cover object-center rounded-lg"
-          />
-        </a>
-      </Masonry>
+      <ShowMore startHeightPx={innerWidth < 472 ? 700 : 500}>
+        <Masonry items={imageLinks} {minColWidth} {maxColWidth} {gap} let:item>
+          <a
+            class="imageAnchor"
+            href={item.url}
+            data-img={item.url}
+            data-thumb={item.url}
+            on:click={openGallery}
+          >
+            <img
+              src={item.url}
+              class="h-full w-full object-cover object-center rounded-lg"
+            />
+          </a>
+        </Masonry>
+      </ShowMore>
     </div>
   </div>
 {/each}
