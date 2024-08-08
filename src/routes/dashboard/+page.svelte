@@ -45,7 +45,7 @@
       Paginas beheren
     </a>
     <a href="/photos/new" class="btn btn-primary normal-case">
-      Nieuw foto album
+      Nieuw fotoalbum
     </a>
   </div>
 

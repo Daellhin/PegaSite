@@ -22,13 +22,13 @@
       errorMessage = handleFirebaseError(error)
     }
   }
-
-  // -- Page title --
-  $: article && pageHeadStore.updatePageTitle(article.title)
+  
   // -- Authguard --
   $: authStore.known.then(() => {
     if (!article?.visible && !$authStore) goto("/")
   })
+  // -- Page title --
+  $: article && pageHeadStore.updatePageTitle(article.title)
 </script>
 
 {#if article === undefined}

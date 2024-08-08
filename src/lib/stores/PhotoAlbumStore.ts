@@ -1,12 +1,10 @@
 import { browser } from '$app/environment'
-import { Article } from '$lib/domain/Article'
 import { PhotoAlbum, photoAlbumConverter, type PhotoAlbumJson } from '$lib/domain/PhotoAlbum'
 import { Collections, StorageFolders } from '$lib/firebase/Firebase'
 import { arrayDifference, arraysContainSameElements } from '$lib/utils/Array'
 import { WEBP_IMAGE_QUALITY } from '$lib/utils/Constants'
 import { convertStringToBool } from '$lib/utils/Utils'
 import type { Dayjs } from 'dayjs'
-import { Timestamp } from 'firebase/firestore'
 import { writable } from 'svelte/store'
 import { v4 as uuidv4 } from 'uuid'
 import { blobToWebP } from 'webp-converter-browser'
@@ -27,13 +25,6 @@ function createPhotoAlbumStore() {
 			const photoAlbumsRef = collection(firestore, Collections.PHOTO_ALBUMS)
 			const photoAlbumsSnap = await getDocs(photoAlbumsRef)
 			const photoAlbums = photoAlbumsSnap.docs.map(e => PhotoAlbum.fromJson(e.id, e.data() as PhotoAlbumJson))
-
-			// -- Sort Sponsors --
-			// const orderingRef = doc(firestore, Collections.ORDERINGS, Collections.SPONSORS)
-			// const orderingSnap = await getDoc(orderingRef)
-			// const ordering = orderingSnap.data() as OrderingJson | undefined
-			// if (!ordering) throw new Error(`Sort order ${Collections.SPONSORS} not found`)
-			// sortSponsors(sponsors, ordering.ids)
 
 			// -- Set store --
 			set(photoAlbums)
@@ -72,31 +63,14 @@ function createPhotoAlbumStore() {
 		update((photoAlbums) => ([newPhotoAlbum, ...(photoAlbums || [])]))
 	}
 
-	// async function getArticleById(id: string) {
-	// 	const exsistingArticle = get(innerStore).find((e) => e.id === id)
-	// 	if (exsistingArticle) return exsistingArticle
-
-	// 	// -- Load page --
-	// 	const { firebaseApp } = await import('$lib/firebase/Firebase')
-	// 	const { getFirestore, doc, getDoc } = await import('firebase/firestore')
-	// 	const firestore = getFirestore(firebaseApp)
-
-	// 	const articleRef = doc(firestore, Collections.ARTICLES, id).withConverter(articleConverter)
-	// 	const articleSnap = await getDoc(articleRef)
-	// 	const article = articleSnap.data()
-
-
-	// 	return article || null
-	// }
-
-	async function updatePhotoAlbum(newAuthors: string[], newTags: string[], newTitle: string, newContent: string, lastUpdate: Dayjs, combinedImages: (string | File)[], visible: boolean, article: Article) {
+	async function updatePhotoAlbum(newTitle: string,newVisible: boolean, newAuthor: string, newAuthorUrl: string, newDate: Dayjs, combinedImages: (string | File)[], photoAlbum: PhotoAlbum) {
 		const { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } = await import('firebase/storage')
 		const storage = getStorage()
 
 		// -- Delete images removed by user --
 		const excistingImages = combinedImages.filter((e) => typeof e === 'string') as string[]
-		if (!arraysContainSameElements(article.images, excistingImages)) {
-			const imagesToRemove = arrayDifference(article.images, excistingImages)
+		if (!arraysContainSameElements(photoAlbum.imageUrls, excistingImages)) {
+			const imagesToRemove = arrayDifference(photoAlbum.imageUrls, excistingImages)
 			await Promise.all(imagesToRemove.map(async (image) => {
 				const imageRef = ref(storage, image)
 				await deleteObject(imageRef)
@@ -109,7 +83,7 @@ function createPhotoAlbumStore() {
 			if (!(image instanceof File)) return image
 
 			// -- First convert to webp --
-			const convertedImage = blobToWebP(image, { quality: 90 })
+			const convertedImage = blobToWebP(image, { quality: WEBP_IMAGE_QUALITY })
 
 			// -- Next upload and replace with url --
 			const storageRef = ref(storage, `page-images/${uuidv4()}`)
@@ -117,32 +91,29 @@ function createPhotoAlbumStore() {
 			return getDownloadURL(snapshot.ref)
 		}))
 
-		// -- Update article --
+		// -- Update photo album --
 		const { getFirestore, doc, updateDoc } = await import('firebase/firestore')
 		const { firebaseApp } = await import('$lib/firebase/Firebase')
 		const firestore = getFirestore(firebaseApp)
 
-		const linksRef = doc(firestore, Collections.ARTICLES, article.id)
+		const linksRef = doc(firestore, Collections.PHOTO_ALBUMS, photoAlbum.id)
 		await updateDoc(linksRef, {
-			authors: newAuthors,
-			tags: newTags,
 			title: newTitle,
-			content: newContent,
-			lastUpdate: new Timestamp(Math.round(Date.now() / 1000), 0),
-			images: newImages,
-			visible: visible
+			visible: newVisible,
+			author: newAuthor,
+			authorUrl: newAuthorUrl,
+			imageUrls: newImages
 		})
 
 		// -- Update store --
-		article.authors = newAuthors
-		article.tags = newTags
-		article.title = newTitle
-		article.content = newContent
-		article.images = newImages
-		article.lastUpdate = lastUpdate
-		article.visible = visible
-		article.updateSearchableString()
-		update((articles) => [...articles])
+		photoAlbum.title = newTitle
+		photoAlbum.visible = newVisible
+		photoAlbum.author = newAuthor
+		photoAlbum.authorUrl = newAuthorUrl
+		photoAlbum.imageUrls = newImages
+
+		photoAlbum.updateSearchableString()
+		update((photoAlbums) => [...photoAlbums])
 	}
 
 	async function deletePhotoAlbum(photoAlbum: PhotoAlbum) {
@@ -172,26 +143,25 @@ function createPhotoAlbumStore() {
 		update((photoAlbums) => (photoAlbums.filter((e) => e.id !== photoAlbum.id)))
 	}
 
-	async function updateVisibility(article: Article) {
-		// -- Update article --
+	async function updateVisibility(photoAlbum: PhotoAlbum) {
+		// -- Update photo album --
 		const { getFirestore, doc, updateDoc } = await import('firebase/firestore')
 		const { firebaseApp } = await import('$lib/firebase/Firebase')
 		const firestore = getFirestore(firebaseApp)
 
-		const linksRef = doc(firestore, Collections.ARTICLES, article.id)
+		const linksRef = doc(firestore, Collections.PHOTO_ALBUMS, photoAlbum.id)
 		await updateDoc(linksRef, {
-			visible: article.visible
+			visible: photoAlbum.visible
 		})
 
-		article.updateSearchableString()
+		photoAlbum.updateSearchableString()
 		// -- Update store --
-		update((pages) => [...pages])
+		update((photoAlbums) => [...photoAlbums])
 	}
 
 	return {
 		subscribe,
 		createPhotoAlbum,
-		//getArticleById,
 		updatePhotoAlbum,
 		updateVisibility,
 		deletePhotoAlbum,

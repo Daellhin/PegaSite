@@ -106,7 +106,7 @@
         class="absolute top-0 h-full w-full opacity-0 -z-10"
         {accept}
         multiple
-        {required}
+        required={required && combinedImages.length < 0}
         {disabled}
       />
     </label>

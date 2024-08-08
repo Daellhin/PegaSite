@@ -4,7 +4,6 @@
   import Input from "$components/formHelpers/Input.svelte"
   import { handleFirebaseError } from "$lib/utils/Firebase"
   import type { Dayjs } from "dayjs"
-    import dayjs from "dayjs"
 
   export let title = ""
   export let combinedImages: (string | File)[] = []

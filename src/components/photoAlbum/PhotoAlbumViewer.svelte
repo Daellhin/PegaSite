@@ -16,6 +16,7 @@
   import { photoAlbumStore } from "$lib/stores/PhotoAlbumStore"
 
   export let photoAlbum: PhotoAlbum
+  export let preview = false
 
   // -- Delete --
   const confirmModalID = "confirmPhotoAlbumDelete"
@@ -91,18 +92,24 @@
         {photoAlbum.imageUrls.length > 1 ? "afbeeldingen" : "afbeelding"}</span
       >
     </div>
-    <div class="flex gap-1 items-center">
-      <div class="h-3 my-auto" title="Fotograaf">
-        <Fa icon={faCameraRetro} />
+    {#if photoAlbum.author}
+      <div class="flex gap-1 items-center">
+        <div class="h-3 my-auto" title="Fotograaf">
+          <Fa icon={faCameraRetro} />
+        </div>
+        {#if photoAlbum.authorUrl}
+          <a href={photoAlbum.authorUrl} class="opacity-60 link">
+            {photoAlbum.author}
+          </a>
+        {:else}
+          <span class="opacity-60">{photoAlbum.author}</span>
+        {/if}
       </div>
-      <a href={photoAlbum.authorUrl} class="opacity-60 link"
-        >{photoAlbum.author}</a
-      >
-    </div>
-    {#if $authStore}
+    {/if}
+    {#if $authStore && !preview}
       <EditDropdown
         class="ml-auto"
-        editUrl={"/articles/edit/" + 1}
+        editUrl={"/photos/edit/" + photoAlbum.id}
         deleteHandler={startDelete}
         size="sm"
       />
@@ -138,7 +145,9 @@
 
 <ConfirmModal {confirmModalID} onConfirm={deletePhotoAlbum} bind:showModal>
   Bent u zeker dat u het <span class="font-semibold">"{photoAlbum.title}"</span>
-  foto album en <span class="font-semibold">"{photoAlbum.imageUrls.length}"</span> geasocierde fotos wilt verwijderen?
+  fotoalbum en
+  <span class="font-semibold">"{photoAlbum.imageUrls.length}"</span> geasocierde
+  fotos wilt verwijderen?
 </ConfirmModal>
 
 <style lang="postcss">
