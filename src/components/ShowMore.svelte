@@ -12,7 +12,7 @@
 <div class={"flex flex-col w-fit h-fit " + classList}>
   <div
     class="overflow-hidden"
-    style={`max-height: ${showMore || contentFits ? "none" : startHeightPx + "px"}`}
+    style={`max-height: ${showMore ? "none" : startHeightPx + "px"}`}
   >
     <div bind:this={container}>
       <slot />
@@ -20,8 +20,8 @@
   </div>
   <div
     class="relative h-16 w-full -mt-16 bg-gradient-to-b from-transparent"
-    class:to-base-100={!showMore}
-    class:to-transparent={showMore}
+    class:to-base-100={!showMore && !contentFits}
+    class:to-transparent={showMore || contentFits}
   />
   {#if !contentFits}
     <button
