@@ -1,4 +1,7 @@
 <script lang="ts">
+  import ConfirmModal from "$components/ConfirmModal.svelte"
+
+  import EditDropdown from "$components/EditDropdown.svelte"
   import ShowMore from "$components/ShowMore.svelte"
   import type { PhotoAlbum } from "$lib/domain/PhotoAlbum"
   import { faCalendar } from "@fortawesome/free-regular-svg-icons"
@@ -9,9 +12,24 @@
   import Fa from "svelte-fa"
   import Time from "svelte-time/Time.svelte"
   import BiggerPictureThumbnails from "./thumbnails.svelte"
+  import { authStore } from "$lib/stores/AuthStore"
+  import { photoAlbumStore } from "$lib/stores/PhotoAlbumStore"
 
   export let photoAlbum: PhotoAlbum
 
+  // -- Delete --
+  const confirmModalID = "confirmPhotoAlbumDelete"
+  let showModal = false
+
+  async function startDelete() {
+    showModal = true
+  }
+  async function deletePhotoAlbum() {
+    showModal = false
+    await photoAlbumStore.deletePhotoAlbum(photoAlbum)
+  }
+
+  // -- Bigger picture --
   const minColWidth = 200
   const maxColWidth = 800
   const gap = 20
@@ -48,43 +66,50 @@
 <svelte:window bind:innerWidth />
 
 <div class="mb-4" id={photoAlbum.id}>
-  <div>
-    <div class="flex">
-      <div class="min-w-fit font-semibold text-xl">
-        <span class="capitalize">{photoAlbum.title}</span>
-      </div>
-      <hr class="my-auto ml-3 w-full h-[1.5px] bg-gray-200" />
+  <!-- Title -->
+  <div class="flex">
+    <div class="min-w-fit font-semibold text-xl">
+      <span class="capitalize">{photoAlbum.title}</span>
     </div>
-    <!-- Tags -->
-    <div class="flex gap-2">
-      <div class="flex flex-row gap-1 items-center">
-        <div class="h-3 my-auto" title="Datum">
-          <Fa icon={faCalendar} />
-        </div>
-        <Time class="opacity-60" timestamp={photoAlbum.date} />
-      </div>
-      <div class="flex flex-row gap-1 items-center">
-        <div class="h-3 my-auto" title="Aantal afbeeldingen">
-          <Fa icon={faImage} />
-        </div>
-        <span class="opacity-60"
-          >{photoAlbum.imageUrls.length}
-          {photoAlbum.imageUrls.length > 1
-            ? "afbeeldingen"
-            : "afbeelding"}</span
-        >
-      </div>
-      <div class="flex flex-row gap-1 items-center">
-        <div class="h-3 my-auto" title="Fotograaf">
-          <Fa icon={faCameraRetro} />
-        </div>
-        <a href={photoAlbum.authorUrl} class="opacity-60 link"
-          >{photoAlbum.author}</a
-        >
-      </div>
-    </div>
+    <hr class="my-auto ml-3 w-full h-[1.5px] bg-gray-200" />
   </div>
 
+  <!-- Data -->
+  <div class="flex gap-2">
+    <div class="flex gap-1 items-center">
+      <div class="h-3 my-auto" title="Datum">
+        <Fa icon={faCalendar} />
+      </div>
+      <Time class="opacity-60" timestamp={photoAlbum.date} />
+    </div>
+    <div class="flex gap-1 items-center">
+      <div class="h-3 my-auto" title="Aantal afbeeldingen">
+        <Fa icon={faImage} />
+      </div>
+      <span class="opacity-60"
+        >{photoAlbum.imageUrls.length}
+        {photoAlbum.imageUrls.length > 1 ? "afbeeldingen" : "afbeelding"}</span
+      >
+    </div>
+    <div class="flex gap-1 items-center">
+      <div class="h-3 my-auto" title="Fotograaf">
+        <Fa icon={faCameraRetro} />
+      </div>
+      <a href={photoAlbum.authorUrl} class="opacity-60 link"
+        >{photoAlbum.author}</a
+      >
+    </div>
+    {#if $authStore}
+      <EditDropdown
+        class="ml-auto"
+        editUrl={"/articles/edit/" + 1}
+        deleteHandler={startDelete}
+        size="sm"
+      />
+    {/if}
+  </div>
+
+  <!-- Images -->
   <div class="mt-2">
     <ShowMore startHeightPx={innerWidth < 472 ? 700 : 500}>
       <Masonry
@@ -110,6 +135,11 @@
     </ShowMore>
   </div>
 </div>
+
+<ConfirmModal {confirmModalID} onConfirm={deletePhotoAlbum} bind:showModal>
+  Bent u zeker dat u het <span class="font-semibold">"{photoAlbum.title}"</span>
+  foto album en <span class="font-semibold">"{photoAlbum.imageUrls.length}"</span> geasocierde fotos wilt verwijderen?
+</ConfirmModal>
 
 <style lang="postcss">
   :global(.bp-wrap img) {

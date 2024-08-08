@@ -33,14 +33,19 @@
   </div>
 
   <div class="flex gap-2 flex-wrap">
-    <a href="/articles/new" class="btn btn-primary normal-case">Nieuw bericht</a
-    >
-    <a href="/articles" class="btn btn-primary normal-case">Berichten beheren</a>
-    <a href="/events/new" class="btn btn-primary normal-case">Nieuw event</a>
-    <a href="/events" class="btn btn-primary normal-case">Events beheren</a>
-
+    <a href="/articles/new" class="btn btn-primary normal-case">
+      Nieuw bericht
+    </a>
+    <a href="/articles" class="btn btn-primary normal-case">
+      Berichten beheren
+    </a>
+    <a href="/events/new" class="btn btn-primary normal-case"> Nieuw event </a>
+    <a href="/events" class="btn btn-primary normal-case"> Events beheren </a>
     <a href="/pages/navbar" class="btn btn-primary normal-case">
       Paginas beheren
+    </a>
+    <a href="/photos/new" class="btn btn-primary normal-case">
+      Nieuw foto album
     </a>
   </div>
 

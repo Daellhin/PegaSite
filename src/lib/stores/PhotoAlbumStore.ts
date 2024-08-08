@@ -145,12 +145,12 @@ function createPhotoAlbumStore() {
 		update((articles) => [...articles])
 	}
 
-	async function deletePhotoAlbum(article: Article) {
+	async function deletePhotoAlbum(photoAlbum: PhotoAlbum) {
 		// -- Remove images --
 		const { getStorage, ref, deleteObject } = await import('firebase/storage')
 		const storage = getStorage()
 
-		await Promise.all(article.images.map(async (image) => {
+		await Promise.all(photoAlbum.imageUrls.map(async (image) => {
 			try {
 				const storageRef = ref(storage, image)
 				await deleteObject(storageRef)
@@ -161,15 +161,15 @@ function createPhotoAlbumStore() {
 			}
 		}))
 
-		// -- Remove article --
+		// -- Remove photo album --
 		const { getFirestore, doc, deleteDoc } = await import('firebase/firestore')
 		const { firebaseApp } = await import('$lib/firebase/Firebase')
 		const firestore = getFirestore(firebaseApp)
 
-		await deleteDoc(doc(firestore, Collections.ARTICLES, article.id))
+		await deleteDoc(doc(firestore, Collections.PHOTO_ALBUMS, photoAlbum.id))
 
 		// -- Remove from store --
-		update((articles) => (articles.filter((e) => e.id !== article.id)))
+		update((photoAlbums) => (photoAlbums.filter((e) => e.id !== photoAlbum.id)))
 	}
 
 	async function updateVisibility(article: Article) {

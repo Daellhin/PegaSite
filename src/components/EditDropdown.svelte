@@ -16,6 +16,9 @@
   export let editPrompt = "Aanpassen"
   export let positionStatic = false
 
+  let classList = ""
+  export { classList as class }
+
   async function editWrapper() {
     if (editHandler === undefined) return
     await editHandler()
@@ -30,7 +33,7 @@
 
 <div
   title={disabled ? "Uitgeschakeld" : "Aanpassen"}
-  class="dropdown dropdown-end min-w-fit"
+  class={"dropdown dropdown-end min-w-fit " + classList}
   class:static={positionStatic}
   class:cursor-not-allowed={disabled}
 >
