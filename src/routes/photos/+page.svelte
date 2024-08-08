@@ -1,14 +1,16 @@
 <script lang="ts">
   import { pageHeadStore } from "$lib/stores/PageHeadStore"
-  import { faImage, faCameraRetro } from "@fortawesome/free-solid-svg-icons"
   import { faCalendar } from "@fortawesome/free-regular-svg-icons"
+  import { faCameraRetro, faImage } from "@fortawesome/free-solid-svg-icons"
 
+  import { authStore } from "$lib/stores/AuthStore"
+  import { photoAlbumStore } from "$lib/stores/PhotoAlbumStore"
   import "bigger-picture/css"
   import { onMount } from "svelte"
   import Masonry from "svelte-bricks"
   import Fa from "svelte-fa"
-  import BiggerPictureThumbnails from "./thumbnails.svelte"
   import ShowMore from "../../components/ShowMore.svelte"
+  import BiggerPictureThumbnails from "./thumbnails.svelte"
   const [minColWidth, maxColWidth, gap] = [200, 800, 20]
 
   let biggerPictureInstance: any
@@ -92,7 +94,6 @@
       id: 18,
     },
   ]
-  $: indexes = Array.from(Array(imageLinks.length).keys())
 
   onMount(() => {
     biggerPictureInstance = new BiggerPictureThumbnails({
@@ -114,8 +115,9 @@
     })
   }
 
-  let toggle = false
   let innerWidth: any
+
+  $: photoAlbums = $photoAlbumStore || []
 
   // -- Page title --
   pageHeadStore.updatePageTitle("Foto's")
@@ -123,75 +125,96 @@
 
 <svelte:window bind:innerWidth />
 
+<!-- Title -->
 <div class="flex gap-3 mb-2">
-  <h1 class="text-2xl font-bold">Foto's</h1>
+  <h1 class="text-2xl font-bold mb-1">Foto's</h1>
+  {#await authStore.known then _}
+    {#if $authStore}
+      <a class="btn btn-sm btn-primary" href="/photos/new"> Nieuw album </a>
+    {/if}
+  {/await}
 </div>
 
-<ul class="menu bg-base-200 rounded-box mb-4">
-  <li>
-    <h2 class="menu-title">Albums</h2>
-    <ul>
-      <li><a class="btn btn-ghost h-9 min-h-min justify-start w-fit" href="#1">{"Atletiekstage 2024 - Dag 1"}</a></li>
-      <li><a class="btn btn-ghost h-9 min-h-min justify-start w-fit" href="#2">{"Atletiekstage 2024 - Dag 1"}</a></li>
-      <li><a class="btn btn-ghost h-9 min-h-min justify-start w-fit" href="#3">{"Atletiekstage 2024 - Dag 1"}</a></li>
-    </ul>
-  </li>
-</ul>
+{#if $photoAlbumStore}
+  <ul class="menu bg-base-200 rounded-box mb-4">
+    <li>
+      <h2 class="menu-title">Albums</h2>
+      <ul>
+        {#each photoAlbums as photoAlbum}
+          <li>
+            <a class="btn btn-ghost h-9 min-h-min justify-start w-fit" href="#1"
+              >{photoAlbum.title}</a
+            >
+          </li>
+        {/each}
+      </ul>
+    </li>
+  </ul>
 
-{#each Array(3) as item, index}
-  <div class="mb-4" id={index.toString()}>
-    <div>
-      <div class="flex">
-        <div class="min-w-fit font-semibold text-xl">
-          <span class="capitalize">{"Atletiekstage 2024 - Dag 1"}</span>
+  {#each Array(3) as item, index}
+    <div class="mb-4" id={index.toString()}>
+      <div>
+        <div class="flex">
+          <div class="min-w-fit font-semibold text-xl">
+            <span class="capitalize">{"Atletiekstage 2024 - Dag 1"}</span>
+          </div>
+          <hr class="my-auto ml-3 w-full h-[1.5px] bg-gray-200" />
         </div>
-        <hr class="my-auto ml-3 w-full h-[1.5px] bg-gray-200" />
+        <!-- Tags -->
+        <div class="flex gap-2">
+          <div class="flex flex-row gap-1 items-center">
+            <div class="h-3 my-auto">
+              <Fa icon={faCalendar} />
+            </div>
+            <span class="opacity-60">17 augustus</span>
+          </div>
+          <div class="flex flex-row gap-1 items-center">
+            <div class="h-3 my-auto">
+              <Fa icon={faImage} />
+            </div>
+            <span class="opacity-60">{26} afbeeldingen</span>
+          </div>
+          <div class="flex flex-row gap-1 items-center">
+            <div class="h-3 my-auto" title="Fotograaf">
+              <Fa icon={faCameraRetro} />
+            </div>
+            <a
+              href={"https://www.instagram.com/phcture/"}
+              class="opacity-60 link">{"Valerie"}</a
+            >
+          </div>
+        </div>
       </div>
-      <!-- Tags -->
-      <div class="flex gap-2">
-        <div class="flex flex-row gap-1 items-center">
-          <div class="h-3 my-auto">
-            <Fa icon={faCalendar} />
-          </div>
-          <span class="opacity-60">17 augustus</span>
-        </div>
-        <div class="flex flex-row gap-1 items-center">
-          <div class="h-3 my-auto">
-            <Fa icon={faImage} />
-          </div>
-          <span class="opacity-60">{26} afbeeldingen</span>
-        </div>
-        <div class="flex flex-row gap-1 items-center">
-          <div class="h-3 my-auto" title="Fotograaf">
-            <Fa icon={faCameraRetro} />
-          </div>
-          <a href={"https://www.instagram.com/phcture/"} class="opacity-60 link"
-            >{"Valerie"}</a
+
+      <div class="mt-2">
+        <ShowMore startHeightPx={innerWidth < 472 ? 700 : 500}>
+          <Masonry
+            items={imageLinks}
+            {minColWidth}
+            {maxColWidth}
+            {gap}
+            let:item
           >
-        </div>
+            <a
+              class="imageAnchor"
+              href={item.url}
+              data-img={item.url}
+              data-thumb={item.url}
+              on:click={openGallery}
+            >
+              <img
+                src={item.url}
+                class="h-full w-full object-cover object-center rounded-lg"
+              />
+            </a>
+          </Masonry>
+        </ShowMore>
       </div>
     </div>
-
-    <div class="mt-2">
-      <ShowMore startHeightPx={innerWidth < 472 ? 700 : 500}>
-        <Masonry items={imageLinks} {minColWidth} {maxColWidth} {gap} let:item>
-          <a
-            class="imageAnchor"
-            href={item.url}
-            data-img={item.url}
-            data-thumb={item.url}
-            on:click={openGallery}
-          >
-            <img
-              src={item.url}
-              class="h-full w-full object-cover object-center rounded-lg"
-            />
-          </a>
-        </Masonry>
-      </ShowMore>
-    </div>
-  </div>
-{/each}
+  {/each}
+{:else}
+  Loading
+{/if}
 
 <style lang="postcss">
   :global(.bp-wrap img) {
@@ -199,18 +222,5 @@
   }
   :global(.bp-wrap .bp-img) {
     @apply bg-none !important;
-  }
-
-  /* Animate open */
-  .toggelable-container {
-    display: grid;
-    grid-template-rows: 0fr;
-    transition: grid-template-rows 0.5s ease-out;
-  }
-  .toggelable-container.is-open {
-    grid-template-rows: 1fr;
-  }
-  .toggelable-container-inner {
-    overflow: hidden;
   }
 </style>

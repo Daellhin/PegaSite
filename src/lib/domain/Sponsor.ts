@@ -1,7 +1,9 @@
 import type { DragableItem } from "$lib/utils/Types"
 import type { FirestoreDataConverter } from "firebase/firestore"
 
+
 export interface SponsorJson {
+    // id: string // id comes from the firebase Document ID
 	name: string
 	url: string
 	imageUrl: string

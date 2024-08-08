@@ -1,7 +1,6 @@
 <script lang="ts">
   import AutoplayCarousel from "$components/carousel/AutoplayCarousel.svelte"
   import LoadingAutoplayCarousel from "$components/carousel/LoadingAutoplayCarousel.svelte"
-
   import { sponsorStore } from "$lib/stores/SponsorStore"
 
   $: sponsors = $sponsorStore

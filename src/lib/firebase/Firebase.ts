@@ -23,6 +23,7 @@ export class Collections {
     static readonly USERS = "users"
     static readonly SPONSORS = "sponsors"
 	static readonly ORDERINGS = "orderings"
+    static readonly PHOTO_ALBUMS = "photo-albums"
 }
 
 /**
@@ -30,5 +31,6 @@ export class Collections {
  */
 export class StorageFolders {
     static readonly ARTICLE_IMAGES = "article-images"
+    static readonly PHOTO_ALBUM_IMAGES = "photo-album-images"
     static readonly SPONSOR_IMAGES = "sponsor-images"
 }

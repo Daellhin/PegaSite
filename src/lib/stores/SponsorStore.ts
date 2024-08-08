@@ -64,7 +64,7 @@ function createSponsorStore() {
 		const existingSortedIds = get(store).map((e) => e.id)
 		await updateSponsorsOrder([...existingSortedIds, newDocRef.id])
 
-		// -- Update store --
+		// -- Update store(new item last) --
 		update((sponsors) => ([...sponsors, sponsor]))
 	}
 
