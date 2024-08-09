@@ -136,6 +136,7 @@
           <img
             src={item}
             class="h-full w-full object-cover object-center rounded-lg"
+            loading="lazy"
           />
         </a>
       </Masonry>
