@@ -24,6 +24,7 @@ export class Collections {
     static readonly SPONSORS = "sponsors"
 	static readonly ORDERINGS = "orderings"
     static readonly PHOTO_ALBUMS = "photo-albums"
+    static readonly ANNOUNCEMENTS = "announcements"
 }
 
 /**

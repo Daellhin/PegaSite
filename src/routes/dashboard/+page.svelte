@@ -44,6 +44,9 @@
     <a href="/pages/navbar" class="btn btn-primary normal-case">
       Paginas beheren
     </a>
+    <a href="/announcements" class="btn btn-primary normal-case">
+      Aankondigingen beheren
+    </a>
     <a href="/photos/new" class="btn btn-primary normal-case">
       Nieuw fotoalbum
     </a>
