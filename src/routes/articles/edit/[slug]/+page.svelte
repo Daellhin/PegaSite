@@ -48,7 +48,7 @@
   function togglePreview() {
     showPreview = !showPreview
   }
-  async function createPreviewArticle() {
+  async function createPreview() {
     const images = await Promise.all(
       combinedImages.map(PreviewableFile.getMixedFilePreview),
     )
@@ -97,7 +97,7 @@
 
 {#if showPreview}
   <!-- Article preview -->
-  {#await createPreviewArticle()}
+  {#await createPreview()}
     <div>Loadig</div>
   {:then previewArticle}
     <button class="btn btn-primary btn-xs normal-case" on:click={togglePreview}>

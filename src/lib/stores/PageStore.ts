@@ -9,6 +9,7 @@ import { get, writable } from 'svelte/store'
 import { v4 as uuidv4 } from "uuid"
 import { createMockPageStore } from './mocks/MockPageHeadStore'
 import { blobToWebP } from 'webp-converter-browser'
+import { WEBP_IMAGE_QUALITY } from '$lib/utils/Constants'
 
 function createPageStore() {
 	const innerStore = writable<Page[]>([])
@@ -77,7 +78,7 @@ function createPageStore() {
 			if (!(image instanceof File)) return image
 
 			// -- First convert to webp --
-			const convertedImage = blobToWebP(image, { quality: 90 })
+			const convertedImage = blobToWebP(image, { quality: WEBP_IMAGE_QUALITY })
 
 			// -- Next upload and replace with url --
 			const storageRef = ref(storage, `page-images/${uuidv4()}`)

@@ -1,19 +1,24 @@
 <script lang="ts">
   import DndHandle from "$components/DNDHandle.svelte"
   import EditDropdown from "$components/EditDropdown.svelte"
+  import Checkbox from "$components/formHelpers/Checkbox.svelte"
   import type { Sponsor } from "$lib/domain/Sponsor"
-  import { sponsorStore } from "$lib/stores/SponsorStore"
 
   export let sponsor: Sponsor
-  export let editHandler: (sponer: Sponsor) => Promise<void> | any
+  export let editHandler: (sponser: Sponsor) => Promise<void> | any
+  export let deleteHandler: (sponser: Sponsor) => Promise<void> | any
+  export let updateVisibilityHandler: (sponser: Sponsor) => Promise<void> | any
   export let dragDisabled: boolean
   export let dragFullyDisabled = false
 
   function editWrapper() {
     editHandler(sponsor)
   }
-  async function deleteSponsor() {
-    await sponsorStore.deleteSponsor(sponsor)
+  function deleteWrapper() {
+    deleteHandler(sponsor)
+  }
+  function updateVisibilityWrapper() {
+    updateVisibilityHandler(sponsor)
   }
 </script>
 
@@ -29,9 +34,16 @@
     <img src={sponsor.imageUrl} alt="Logo" class="rounded-lg h-20" />
   </td>
   <td>
+    <Checkbox
+      bind:value={sponsor.visible}
+      onInput={updateVisibilityWrapper}
+      inputClass="mx-auto"
+    />
+  </td>
+  <td>
     <EditDropdown
       editHandler={editWrapper}
-      deleteHandler={deleteSponsor}
+      deleteHandler={deleteWrapper}
       positionStatic
     />
   </td>

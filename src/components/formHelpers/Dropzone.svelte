@@ -83,7 +83,7 @@
       on:drop={onFileDrop}
       on:dragover={(e) => ignoreDragOver(e, disabled)}
       id={dropzoneId}
-      class="cursor-pointer input-bordered border-2 custom-border-color border-dashed rounded-lg bg-base-200"
+      class="relative cursor-pointer input-bordered border-2 custom-border-color border-dashed rounded-lg bg-base-200"
       class:cursor-not-allowed={disabled}
       class:hover:bg-base-300={!disabled}
       class:custom-dark-hover={!disabled}
@@ -103,10 +103,10 @@
         id={dropzoneId}
         type="file"
         on:input={onFileInput}
-        class="hidden"
+        class="absolute top-0 h-full w-full opacity-0 -z-10"
         {accept}
         multiple
-        {required}
+        required={required && combinedImages.length < 0}
         {disabled}
       />
     </label>

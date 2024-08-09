@@ -1,4 +1,5 @@
 <script lang="ts">
+  import AnnouncementViewer from "$components/announcements/AnnouncementViewer.svelte"
   import Card from "$components/article/ArticleCard.svelte"
   import LoadingCard from "$components/article/LoadingCard.svelte"
   import {
@@ -81,6 +82,11 @@
       <a class="btn btn-sm btn-primary" href="/articles/new"> Nieuw artikel </a>
     {/if}
   {/await}
+</div>
+
+<!-- Announcements -->
+<div class="mb-3">
+  <AnnouncementViewer />
 </div>
 
 <!-- Articles or loading -->

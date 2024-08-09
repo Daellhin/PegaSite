@@ -146,7 +146,7 @@ function createArticleStore() {
 			if (!(image instanceof File)) return image
 
 			// -- First convert to webp --
-			const convertedImage = blobToWebP(image, { quality: 90 })
+			const convertedImage = blobToWebP(image, { quality: WEBP_IMAGE_QUALITY })
 
 			// -- Next upload and replace with url --
 			const storageRef = ref(storage, `page-images/${uuidv4()}`)
