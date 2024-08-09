@@ -1,4 +1,5 @@
 <script lang="ts">
+  import ConfirmModal from "$components/ConfirmModal.svelte"
   import Input from "$components/formHelpers/Input.svelte"
   import InfoCircle from "$components/icons/Flowbite/InfoCircle.svelte"
   import SponsorRow from "$components/sponsors/SponsorRow.svelte"
@@ -7,6 +8,7 @@
   import type { Sponsor } from "$lib/domain/Sponsor"
   import { sponsorStore } from "$lib/stores/SponsorStore"
   import { FLIP_DURATION } from "$lib/utils/Constants"
+  import { handleFirebaseError } from "$lib/utils/Firebase"
   import { faSearch } from "@fortawesome/free-solid-svg-icons"
   import { dndzone } from "svelte-dnd-action"
 
@@ -14,6 +16,7 @@
 
   const tooltip =
     "Versleep een sponsor met het icoontje naast de naam om de volgorde te wijzigen"
+  const confirmModalID = "confirm-delete-article"
 
   // -- Drag and drop --
   let savingNewOrder = false
@@ -35,6 +38,29 @@
     savingNewOrder = false
   }
 
+  // -- Edit articles --
+  let showModal = false
+  let sponsorPendingDelete: Sponsor | undefined
+  $: if (!showModal) sponsorPendingDelete = undefined
+
+  async function deleteSponsor() {
+    if (!sponsorPendingDelete) return
+    const sponsor = sponsorPendingDelete
+    saveWrapper(async () => {
+      await sponsorStore.deleteSponsor(sponsor)
+    })
+    showModal = false
+  }
+  function startDelete(sponsor: Sponsor) {
+    sponsorPendingDelete = sponsor
+    showModal = true
+  }
+  async function updateVisibility(sponsor: Sponsor) {
+    saveWrapper(async () => {
+      await sponsorStore.updateVisibility(sponsor)
+    })
+  }
+
   // -- Search --
   let searchString = ""
 
@@ -46,6 +72,21 @@
     return dragableSponsors.filter((sponsor) =>
       sponsor.value.matchesSearchString(searchString),
     )
+  }
+
+  // -- Util --
+  let saving = false
+  let errorMessage = ""
+
+  async function saveWrapper(func: () => Promise<void>) {
+    saving = true
+    errorMessage = ""
+    try {
+      await func()
+    } catch (error) {
+      errorMessage = handleFirebaseError(error)
+    }
+    saving = false
   }
 </script>
 
@@ -77,6 +118,7 @@
             { name: "Naam" },
             { name: "Website" },
             { name: "Afbeelding" },
+            { name: "Zichtbaar" },
             { name: "" },
           ]}
         />
@@ -95,6 +137,8 @@
           <SponsorRow
             sponsor={dragable.value}
             editHandler={startEdit}
+            deleteHandler={startDelete}
+            updateVisibilityHandler={updateVisibility}
             bind:dragDisabled
             {dragFullyDisabled}
           />
@@ -105,6 +149,15 @@
   <TableFooter
     filteredLength={filteredDragableSponsors.length}
     fullLength={dragableSponsors.length}
-    saving={savingNewOrder}
+    saving={savingNewOrder || saving}
   />
+  {#if errorMessage}
+    <p class="text-error">{errorMessage}</p>
+  {/if}
 </div>
+
+<ConfirmModal {confirmModalID} onConfirm={deleteSponsor} bind:showModal>
+  Bent u zeker dat u de sponsor
+  <span class="font-semibold">"{sponsorPendingDelete?.name}"</span>
+  wilt verwijderen?
+</ConfirmModal>

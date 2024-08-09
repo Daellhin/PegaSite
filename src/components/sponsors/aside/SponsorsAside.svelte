@@ -3,7 +3,7 @@
   import LoadingAutoplayCarousel from "$components/carousel/LoadingAutoplayCarousel.svelte"
   import { sponsorStore } from "$lib/stores/SponsorStore"
 
-  $: sponsors = $sponsorStore
+  $: sponsors = $sponsorStore?.filter((e) => e.visible === true)
 </script>
 
 <div>

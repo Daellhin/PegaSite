@@ -22,6 +22,11 @@
 
   let counter = 0
 
+  $: carouselImages = items.map((e) => ({
+    imageUrl: e.imageUrl,
+    alt: "Logo " + e.name,
+  }))
+
   function toggleAutoPlay() {
     preferencesStore.set({ autoPlay: !$preferencesStore.autoPlay })
   }
@@ -48,10 +53,7 @@
     {/if}
     <Carousel
       bind:counter
-      images={items.map((e) => ({
-        imageUrl: e.imageUrl,
-        alt: "Logo " + e.name,
-      }))}
+      images={carouselImages}
       height="h-56 sm:h-96 lg:h-44 2xl:h-52"
       {hideButtons}
       {hideIndicators}

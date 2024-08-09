@@ -7,6 +7,7 @@ export interface SponsorJson {
 	name: string
 	url: string
 	imageUrl: string
+	visible: boolean
 }
 
 export class Sponsor {
@@ -17,12 +18,13 @@ export class Sponsor {
 		public name: string,
 		public url: string,
 		public imageUrl: string,
+		public visible: boolean
 	) {
 		this.updateSearchableString()
 	}
 
 	updateSearchableString() {
-		this.searchableString = `${this.name.toLowerCase()} ${this.url.toLowerCase()}`
+		this.searchableString = `${this.name.toLowerCase()} ${this.url.toLowerCase()} ${this.visible? "zichtbaar": "verborgen"}`
 	}
 
 	static clone(sponsor: Sponsor) {
@@ -30,19 +32,21 @@ export class Sponsor {
 			sponsor.id,
 			sponsor.name,
 			sponsor.url,
-			sponsor.imageUrl
+			sponsor.imageUrl,
+			sponsor.visible
 		)
 	}
 
 	static fromJson(id: string, json: SponsorJson) {
-		return new Sponsor(id, json.name, json.url, json.imageUrl)
+		return new Sponsor(id, json.name, json.url, json.imageUrl, json.visible)
 	}
 
 	toJson() {
 		return {
 			name: this.name,
 			url: this.url,
-			imageUrl: this.imageUrl
+			imageUrl: this.imageUrl,
+			visible: this.visible
 		} as SponsorJson
 	}
 

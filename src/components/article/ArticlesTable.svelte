@@ -200,7 +200,7 @@
                 bind:value={article.visible}
                 onInput={() => updateVisibility(article)}
                 inputClass="mx-auto"
-              ></Checkbox>
+              />
             </td>
             <td>
               <EditDropdown

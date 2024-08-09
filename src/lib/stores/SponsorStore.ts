@@ -68,7 +68,7 @@ function createSponsorStore() {
 		update((sponsors) => ([...sponsors, sponsor]))
 	}
 
-	async function updateSponsor(newName: string, newUrl: string, newImage: string | File, sponsor: Sponsor) {
+	async function updateSponsor(newName: string, newUrl: string, newImage: string | File, newVisible: boolean, sponsor: Sponsor) {
 		// -- Upload new image --
 		let newImageUrl = ""
 		if (newImage instanceof File) {
@@ -88,7 +88,8 @@ function createSponsorStore() {
 		const docRef = doc(firestore, Collections.SPONSORS, sponsor.id)
 		const updates: any = {
 			name: newName,
-			url: newUrl
+			url: newUrl,
+			visible: newVisible
 		}
 		if (newImageUrl) updates["imageUrl"] = newImageUrl
 		await updateDoc(docRef, updates)
@@ -146,6 +147,22 @@ function createSponsorStore() {
 		update((sponsors) => [...sponsors])
 	}
 
+	async function updateVisibility(sponsor: Sponsor) {
+		// -- Update article --
+		const { getFirestore, doc, updateDoc } = await import('firebase/firestore')
+		const { firebaseApp } = await import('$lib/firebase/Firebase')
+		const firestore = getFirestore(firebaseApp)
+
+		const linksRef = doc(firestore, Collections.SPONSORS, sponsor.id)
+		await updateDoc(linksRef, {
+			visible: sponsor.visible
+		})
+
+		sponsor.updateSearchableString()
+		// -- Update store --
+		update((pages) => [...pages])
+	}
+
 	function sortSponsors(sponsors: Sponsor[], sortedIds: string[]) {
 		const sortMap = new Map(sortedIds.map((e, i) => [e, i] as [string, number]))
 		sponsors.sort((a, b) => {
@@ -162,7 +179,8 @@ function createSponsorStore() {
 		createSponsor,
 		updateSponsor,
 		deleteSponsor,
-		updateSponsorsOrder
+		updateSponsorsOrder,
+		updateVisibility
 	}
 }
 

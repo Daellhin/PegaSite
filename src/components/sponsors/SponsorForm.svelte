@@ -1,5 +1,6 @@
 <script lang="ts">
   import DismissibleForm from "$components/DismissibleForm.svelte"
+  import Checkbox from "$components/formHelpers/Checkbox.svelte"
   import Dropzone from "$components/formHelpers/Dropzone.svelte"
   import Input from "$components/formHelpers/Input.svelte"
   import { Sponsor } from "$lib/domain/Sponsor"
@@ -13,15 +14,16 @@
   let name = ""
   let url = ""
   let image: (string | File)[] = []
+  let visible = true
 
   async function saveSponsor() {
     if (editSponsor) {
-      await sponsorStore.updateSponsor(name, url, image[0], editSponsor)
+      await sponsorStore.updateSponsor(name, url, image[0], visible, editSponsor)
       pushCreatedToast("Sponsor gewijzigd")
     } else {
       if (!(image[0] instanceof File))
         throw new Error("Image must be a file when creating new sponsor")
-      const newSponsor = new Sponsor("-1", name, url, "")
+      const newSponsor = new Sponsor("-1", name, url, "", visible)
       await sponsorStore.createSponsor(newSponsor, image[0])
       pushCreatedToast("Sponsor aangemaakt")
     }
@@ -34,10 +36,12 @@
       name = editSponsor.name
       url = editSponsor.url
       image = [editSponsor.imageUrl]
+      visible = editSponsor.visible
     } else {
       name = ""
       url = ""
       image = []
+      visible = true
     }
   }
 </script>
@@ -72,4 +76,5 @@
     required
     maxAmount={1}
   />
+  <Checkbox label="Zichtbaar" bind:value={visible} />
 </DismissibleForm>

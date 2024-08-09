@@ -6,6 +6,7 @@
   import "bigger-picture/css"
 
   $: photoAlbums = $photoAlbumStore || []
+  $: filteredPhotoAlbums = photoAlbums.filter((e) => e.visible)
 
   // -- Page title --
   pageHeadStore.updatePageTitle("Foto's")
@@ -26,7 +27,7 @@
     <li>
       <h2 class="menu-title">Albums</h2>
       <ul>
-        {#each photoAlbums as photoAlbum}
+        {#each filteredPhotoAlbums as photoAlbum}
           <li>
             <a
               class="btn btn-ghost h-9 min-h-min justify-start w-fit"
@@ -38,7 +39,7 @@
     </li>
   </ul>
 
-  {#each photoAlbums as photoAlbum}
+  {#each filteredPhotoAlbums as photoAlbum}
     <PhotoAlbumViewer {photoAlbum} />
   {/each}
 {:else}
