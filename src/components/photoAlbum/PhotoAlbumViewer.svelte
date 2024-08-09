@@ -5,7 +5,11 @@
   import ShowMore from "$components/ShowMore.svelte"
   import type { PhotoAlbum } from "$lib/domain/PhotoAlbum"
   import { faCalendar } from "@fortawesome/free-regular-svg-icons"
-  import { faCameraRetro, faImage } from "@fortawesome/free-solid-svg-icons"
+  import {
+    faCameraRetro,
+    faDownload,
+    faImage,
+  } from "@fortawesome/free-solid-svg-icons"
   import "bigger-picture/css"
   import { onMount } from "svelte"
   import Masonry from "svelte-bricks"
@@ -14,6 +18,7 @@
   import BiggerPictureThumbnails from "./thumbnails.svelte"
   import { authStore } from "$lib/stores/AuthStore"
   import { photoAlbumStore } from "$lib/stores/PhotoAlbumStore"
+  import JSZip from "jszip"
 
   export let photoAlbum: PhotoAlbum
   export let preview = false
@@ -61,6 +66,30 @@
       items: imageAnchors,
       el: e.currentTarget!,
     })
+  }
+
+  async function downloadHandler() {
+    const zip = new JSZip()
+    const imgFolder = zip.folder("images")
+    if (!imgFolder) throw new Error("No image folder")
+
+    for (const [index, url] of photoAlbum.imageUrls.entries()) {
+      const response = await fetch(url)
+      const blob = await response.blob()
+      imgFolder.file(`image${index + 1}.jpg`, blob)
+    }
+
+    const content = await zip.generateAsync({ type: "blob" })
+    saveAs(content, "images.zip")
+  }
+
+  function saveAs(blob: Blob, name: string) {
+    var a = document.createElement("a")
+    document.body.append(a)
+    a.download = name
+    a.href = URL.createObjectURL(blob)
+    a.click()
+    a.remove()
   }
 </script>
 
@@ -112,7 +141,14 @@
         editUrl={"/photos/edit/" + photoAlbum.id}
         deleteHandler={startDelete}
         size="sm"
-      />
+      >
+        <li class="flex flex-row gap-1">
+          <button on:click={downloadHandler} class="w-full">
+            <Fa icon={faDownload} class="text-lg" />
+            Album downloaden
+          </button>
+        </li>
+      </EditDropdown>
     {/if}
   </div>
 
