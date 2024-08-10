@@ -15,7 +15,7 @@
 </script>
 
 <div
-  class="flex items-center w-full pl-2 pr-3 py-2 text-sm max-w-sm gap-2"
+  class="flex items-center w-full pl-2 pr-3 py-2 text-sm max-w-sm gap-2 input-bordered"
   class:border-b-2={!isLast}
 >
   {#if !dragFullyDisabled}
