@@ -4,21 +4,22 @@
   import EditDropdown from "$components/EditDropdown.svelte"
   import ShowMore from "$components/ShowMore.svelte"
   import type { PhotoAlbum } from "$lib/domain/PhotoAlbum"
+  import { authStore } from "$lib/stores/AuthStore"
+  import { photoAlbumStore } from "$lib/stores/PhotoAlbumStore"
+  import { pushCreatedToast } from "$lib/utils/Toast"
   import { faCalendar } from "@fortawesome/free-regular-svg-icons"
   import {
-    faCameraRetro,
-    faDownload,
-    faImage,
+      faCameraRetro,
+      faDownload,
+      faImage,
   } from "@fortawesome/free-solid-svg-icons"
   import "bigger-picture/css"
+  import JSZip from "jszip"
   import { onMount } from "svelte"
   import Masonry from "svelte-bricks"
   import Fa from "svelte-fa"
   import Time from "svelte-time/Time.svelte"
   import BiggerPictureThumbnails from "./thumbnails.svelte"
-  import { authStore } from "$lib/stores/AuthStore"
-  import { photoAlbumStore } from "$lib/stores/PhotoAlbumStore"
-  import JSZip from "jszip"
 
   export let photoAlbum: PhotoAlbum
   export let preview = false
@@ -31,8 +32,10 @@
     showModal = true
   }
   async function deletePhotoAlbum() {
+    const title = photoAlbum.title
     showModal = false
     await photoAlbumStore.deletePhotoAlbum(photoAlbum)
+    pushCreatedToast(`Photoalbum "${title}" verwijderd`)
   }
 
   // -- Bigger picture --
