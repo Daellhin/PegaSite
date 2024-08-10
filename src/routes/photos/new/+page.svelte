@@ -66,7 +66,7 @@
     if (!$authStore) goto("/")
   })
   // -- Page title --
-  pageHeadStore.updatePageTitle("Foto's beheren")
+  pageHeadStore.updatePageTitle("Nieuw Fotoalbum")
 </script>
 
 {#if showPreview}
@@ -84,7 +84,7 @@
 {:else}
   <!-- Photo album editor -->
   <div class="flex flex-row gap-3 items-center mb-1">
-    <h1 class="text-2xl font-bold">Fotoalbum wijzigen</h1>
+    <h1 class="text-2xl font-bold">Nieuw Fotoalbum</h1>
     <button class="btn btn-primary btn-xs normal-case" on:click={togglePreview}>
       Toon preview
     </button>

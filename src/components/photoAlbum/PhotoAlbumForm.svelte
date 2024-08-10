@@ -4,6 +4,7 @@
   import Input from "$components/formHelpers/Input.svelte"
   import { handleFirebaseError } from "$lib/utils/Firebase"
   import type { Dayjs } from "dayjs"
+  import { onMount } from "svelte"
 
   export let title = ""
   export let combinedImages: (string | File)[] = []
@@ -29,6 +30,15 @@
     }
     saving = false
   }
+
+  // -- Prevent user accidentally leaving page when form is saving --
+  onMount(() => {
+    window.addEventListener("beforeunload", (e) => {
+      if (saving) {
+        e.preventDefault()
+      }
+    })
+  })
 </script>
 
 <form class="flex flex-col gap-2" on:submit={onSubmitWrapper}>
@@ -40,12 +50,7 @@
     required
   />
   <Checkbox label="Zichtbaar" bind:value={visible} />
-  <Input
-    type="date"
-    label="Datum van album:"
-    bind:value={date}
-    required
-  />
+  <Input type="date" label="Datum van album:" bind:value={date} required />
 
   <Input
     type="text"
