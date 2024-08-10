@@ -3,9 +3,9 @@
   import { FLIP_DURATION } from "$lib/utils/Constants"
   import { PreviewableFile } from "$lib/utils/PreviewableFile"
   import { getFilesFromDragEvent, ignoreDragOver } from "$lib/utils/Utils"
+  import byteSize from "byte-size"
   import { dndzone } from "svelte-dnd-action"
   import DropzoneFilePreview from "./DropzoneFilePreview.svelte"
-
   export let label: string
   export let combinedImages: (string | File)[]
   export let required = false
@@ -61,6 +61,14 @@
     dragDisabled = true
     combinedImages = dragableImages.map((e) => e.data)
   }
+  $: fileSize = combinedImages
+    ?.map((e) => {
+      if (e instanceof File) {
+        return e.size
+      }
+      return 0
+    })
+    .reduce((prev, current) => prev + current, 0)
 </script>
 
 <div
@@ -110,6 +118,13 @@
         {disabled}
       />
     </label>
+  {/if}
+  {#if combinedImages.length > 0}
+    <div class="opacity-60">
+      Afbeeldingen:
+      <span class="font-bold">{combinedImages.length}</span>, totale grootte:
+      <span class="font-bold">{byteSize(fileSize)}</span>
+    </div>
   {/if}
 
   <!-- SelectedImages viewer -->
