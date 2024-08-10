@@ -4,9 +4,9 @@
   let classList = ""
   export { classList as class }
 
-  let container: HTMLElement
+  let clientHeight: number
 
-  $: contentFits = container?.clientHeight < startHeightPx
+  $: contentFits = clientHeight <= startHeightPx
 </script>
 
 <div class={"flex flex-col w-fit h-fit " + classList}>
@@ -14,7 +14,7 @@
     class="overflow-hidden"
     style={`max-height: ${showMore ? "none" : startHeightPx + "px"}`}
   >
-    <div bind:this={container}>
+    <div bind:clientHeight>
       <slot />
     </div>
   </div>
