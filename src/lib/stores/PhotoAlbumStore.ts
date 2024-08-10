@@ -63,7 +63,7 @@ function createPhotoAlbumStore() {
 		update((photoAlbums) => ([newPhotoAlbum, ...(photoAlbums || [])]))
 	}
 
-	async function updatePhotoAlbum(newTitle: string,newVisible: boolean, newAuthor: string, newAuthorUrl: string, newDate: Dayjs, combinedImages: (string | File)[], photoAlbum: PhotoAlbum) {
+	async function updatePhotoAlbum(newTitle: string, newVisible: boolean, newAuthor: string, newAuthorUrl: string, newDate: Dayjs, combinedImages: (string | File)[], photoAlbum: PhotoAlbum) {
 		const { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } = await import('firebase/storage')
 		const storage = getStorage()
 
@@ -72,8 +72,14 @@ function createPhotoAlbumStore() {
 		if (!arraysContainSameElements(photoAlbum.imageUrls, excistingImages)) {
 			const imagesToRemove = arrayDifference(photoAlbum.imageUrls, excistingImages)
 			await Promise.all(imagesToRemove.map(async (image) => {
-				const imageRef = ref(storage, image)
-				await deleteObject(imageRef)
+				try {
+					const imageRef = ref(storage, image)
+					await deleteObject(imageRef)
+				} catch (error: any) {
+					// Not existing images can be safely ignored
+					if (error.code !== 'storage/object-not-found')
+						throw error
+				}
 			}))
 		}
 
