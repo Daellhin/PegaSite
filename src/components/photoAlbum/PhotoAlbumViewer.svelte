@@ -50,7 +50,7 @@
     })
     imageAnchors = Array.from(
       document.querySelectorAll<HTMLAnchorElement>(
-        `.imageAnchor.${photoAlbum.id}`,
+        `.imageAnchor.ID-${photoAlbum.id}`,
       ),
     )
   })
@@ -58,7 +58,7 @@
   function openGallery(e: MouseEvent) {
     imageAnchors = Array.from(
       document.querySelectorAll<HTMLAnchorElement>(
-        `.imageAnchor.${photoAlbum.id}`,
+        `.imageAnchor.ID-${photoAlbum.id}`,
       ),
     )
     e.preventDefault()
@@ -163,7 +163,7 @@
         let:item
       >
         <a
-          class={"imageAnchor " + photoAlbum.id}
+          class={`imageAnchor ID-${photoAlbum.id}`}
           href={item}
           data-img={item}
           data-thumb={item}
