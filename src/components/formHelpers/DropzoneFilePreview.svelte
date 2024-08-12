@@ -49,10 +49,10 @@
     <Fa icon={image} />
   {/if}
   <div class="my-auto font-semibold">{imageName}</div>
-  <div class="min-w-6">
+  <div class="min-w-6 ml-auto">
     {#if !saving}
       <button
-        class="btn btn-circle btn-xs hover:text-red-500 ml-auto"
+        class="btn btn-circle btn-xs hover:text-red-500"
         type="button"
         on:click={remove}
       >

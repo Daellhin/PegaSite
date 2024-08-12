@@ -1,6 +1,6 @@
 <script lang="ts">
   import DismissibleForm from "$components/DismissibleForm.svelte"
-  import InfoCard from "$components/InfoCard.svelte"
+  import InfoCard from "$components/alerts/InfoCard.svelte"
   import CustomSelect from "$components/formHelpers/CustomSelect.svelte"
   import Input from "$components/formHelpers/Input.svelte"
   import { RecordInstance } from "$lib/domain/RecordInstance"

@@ -105,5 +105,7 @@
     submitLabel="Album aanmaken"
     onSave={savePhotoAlbum}
     progress={$progressStore}
+    stopAfterSave
+    savedMessage={"Album succesvol aangemaakt"}
   />
 {/if}
