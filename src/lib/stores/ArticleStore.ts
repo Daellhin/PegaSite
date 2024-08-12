@@ -149,7 +149,7 @@ function createArticleStore() {
 			const convertedImage = blobToWebP(image, { quality: WEBP_IMAGE_QUALITY })
 
 			// -- Next upload and replace with url --
-			const storageRef = ref(storage, `page-images/${uuidv4()}`)
+			const storageRef = ref(storage, `${StorageFolders.ARTICLE_IMAGES}/${uuidv4()}`)
 			const snapshot = await uploadBytes(storageRef, await convertedImage)
 			return getDownloadURL(snapshot.ref)
 		}))
