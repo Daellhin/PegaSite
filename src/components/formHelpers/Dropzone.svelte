@@ -17,7 +17,7 @@
   export let size: "full" | "md" | "sm" | "xs" = "sm"
 
   export let accept = "image/*"
-  export let maxAmount = 100
+  export let maxAmount = 1000
   export let sortable = true
   export let dropzoneId = "file-dropzone"
   export let disablePreviews = false
