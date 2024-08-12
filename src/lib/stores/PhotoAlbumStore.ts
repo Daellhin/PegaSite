@@ -100,7 +100,10 @@ function createPhotoAlbumStore() {
 		const newImages = await Promise.all(combinedImages.map(async (image, index) => {
 			return limit(async () => {
 				// -- Keep existing url --
-				if (!(image instanceof File)) return image
+				if (!(image instanceof File)) {
+					progressStore.update((progress) => [...progress.map((e, i) => i === index ? UploadProgress.DONE : e)])
+					return image
+				}
 				progressStore.update((progress) => [...progress.map((e, i) => i === index ? UploadProgress.CONVERTING : e)])
 
 				// -- First convert to webp --
