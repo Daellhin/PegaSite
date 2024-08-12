@@ -39,6 +39,7 @@
       visible,
     )
     await photoAlbumStore.createPhotoAlbum(newPhotoAlbum, images, progressStore)
+    combinedImages = newPhotoAlbum.imageUrls
     pushCreatedToast("Fotoalbum aangemaakt", {
       gotoUrl: `/photos/#${newPhotoAlbum.id}`,
     })

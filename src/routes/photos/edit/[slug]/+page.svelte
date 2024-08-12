@@ -40,6 +40,7 @@
       photoAlbum,
       progressStore,
     )
+    combinedImages = photoAlbum.imageUrls
     pushCreatedToast("Fotoalbum bijgewerkt", {
       gotoUrl: `/photos/#${photoAlbum.id}`,
     })
