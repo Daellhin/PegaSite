@@ -1,11 +1,15 @@
 <script lang="ts">
   import CloudIcon from "$components/icons/Flowbite/CloudIcon.svelte"
+
   import { FLIP_DURATION } from "$lib/utils/Constants"
   import { PreviewableFile } from "$lib/utils/PreviewableFile"
+  import type { UploadProgress } from "$lib/utils/UploadProgress"
   import { getFilesFromDragEvent, ignoreDragOver } from "$lib/utils/Utils"
+  import { faImage } from "@fortawesome/free-solid-svg-icons"
   import byteSize from "byte-size"
   import { dndzone } from "svelte-dnd-action"
   import DropzoneFilePreview from "./DropzoneFilePreview.svelte"
+
   export let label: string
   export let combinedImages: (string | File)[]
   export let required = false
@@ -16,6 +20,9 @@
   export let maxAmount = 100
   export let sortable = true
   export let dropzoneId = "file-dropzone"
+  export let disablePreviews = false
+  export let saving = false
+  export let progress: UploadProgress[] | undefined = undefined
 
   $: remainingSpace = maxAmount - combinedImages.length
 
@@ -43,8 +50,9 @@
       ...newPreviewableFiles.slice(0, remainingSpace),
     ]
   }
-  function remove(toRemove: File | string) {
-    combinedImages = combinedImages.filter((e) => e != toRemove)
+  function remove(index: number) {
+    combinedImages.splice(index, 1)
+    combinedImages = combinedImages
   }
 
   // -- Drag and drop --
@@ -143,11 +151,16 @@
     >
       {#each dragableImages as image, i (image)}
         <DropzoneFilePreview
-          image={image.data}
-          {remove}
+          image={disablePreviews ? faImage : image.data}
+          imageName={image.data instanceof File
+            ? image.data.name
+            : "Geüpload bestand"}
+          remove={() => remove(i)}
           bind:dragDisabled
           dragFullyDisabled={!sortable}
           isLast={i == combinedImages.length - 1}
+          progress={progress?.[i] || undefined}
+          {saving}
         />
       {/each}
     </div>

@@ -3,6 +3,7 @@
   import Dropzone from "$components/formHelpers/Dropzone.svelte"
   import Input from "$components/formHelpers/Input.svelte"
   import { handleFirebaseError } from "$lib/utils/Firebase"
+  import type { UploadProgress } from "$lib/utils/UploadProgress"
   import type { Dayjs } from "dayjs"
   import { onMount } from "svelte"
 
@@ -15,6 +16,7 @@
 
   export let submitLabel: string
   export let onSave: () => Promise<void>
+  export let progress: UploadProgress[]
 
   let saving = false
   let errorMessage = ""
@@ -65,7 +67,14 @@
     bind:value={authorUrl}
   />
 
-  <Dropzone label="Afbeeldingen:" bind:combinedImages required />
+  <Dropzone
+    label="Afbeeldingen:"
+    bind:combinedImages
+    required
+    disablePreviews
+    {progress}
+    {saving}
+  />
 
   <div class="w-fit" class:hover:cursor-wait={saving}>
     <button

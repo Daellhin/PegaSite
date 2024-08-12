@@ -8,8 +8,12 @@
   import { photoAlbumStore } from "$lib/stores/PhotoAlbumStore"
   import { PreviewableFile } from "$lib/utils/PreviewableFile"
   import { pushCreatedToast } from "$lib/utils/Toast"
+  import type { UploadProgress } from "$lib/utils/UploadProgress"
   import type { Dayjs } from "dayjs"
   import dayjs from "dayjs"
+  import { writable } from "svelte/store"
+
+  const progressStore = writable([] as UploadProgress[])
 
   let title = ""
   let combinedImages: (string | File)[] = []
@@ -34,7 +38,7 @@
       [],
       visible,
     )
-    await photoAlbumStore.createPhotoAlbum(newPhotoAlbum, images)
+    await photoAlbumStore.createPhotoAlbum(newPhotoAlbum, images, progressStore)
     pushCreatedToast("Fotoalbum aangemaakt", {
       gotoUrl: `/photos/#${newPhotoAlbum.id}`,
     })
@@ -99,5 +103,6 @@
     bind:date
     submitLabel="Album aanmaken"
     onSave={savePhotoAlbum}
+    progress={$progressStore}
   />
 {/if}

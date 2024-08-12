@@ -1,17 +1,23 @@
 <script lang="ts">
   import DndHandle from "$components/DNDHandle.svelte"
   import { PreviewableFile } from "$lib/utils/PreviewableFile"
+  import { UploadProgress, toString } from "$lib/utils/UploadProgress"
   import {
+    faCheck,
     faFileCircleExclamation,
     faXmark,
+    type IconDefinition,
   } from "@fortawesome/free-solid-svg-icons"
   import Fa from "svelte-fa"
 
   export let isLast = false
-  export let image: string | File | PreviewableFile
-  export let remove: (toRemove: File | string) => void
+  export let image: string | File | IconDefinition
+  export let imageName: string
+  export let remove: () => void
   export let dragDisabled: boolean
   export let dragFullyDisabled: boolean
+  export let saving = false
+  export let progress: UploadProgress | undefined = undefined
 </script>
 
 <div
@@ -37,18 +43,34 @@
         </div>
       {/await}
     </div>
-    <div class="my-auto font-semibold">{image.name}</div>
-  {:else}
+  {:else if typeof image === "string"}
     <img class="w-10 rounded-sm" alt="Upload" src={image} />
-    <div class="my-auto font-semibold">Geüpload bestand</div>
+  {:else}
+    <Fa icon={image} />
   {/if}
-  <button
-    class="btn btn-circle btn-xs hover:text-red-500 ml-auto"
-    type="button"
-    on:click={() => remove(image)}
-  >
-    <Fa icon={faXmark} />
-  </button>
+  <div class="my-auto font-semibold">{imageName}</div>
+  <div class="min-w-6">
+    {#if !saving}
+      <button
+        class="btn btn-circle btn-xs hover:text-red-500 ml-auto"
+        type="button"
+        on:click={remove}
+      >
+        <Fa icon={faXmark} />
+      </button>
+    {:else if progress !== undefined}
+      <div title={toString(progress)}>
+        {#if progress === UploadProgress.CONVERTING || progress === UploadProgress.UPLOADING}
+          <span
+            class="loading loading-ring loading-sm"
+            title={toString(progress)}
+          />
+        {:else if progress === UploadProgress.DONE}
+          <Fa icon={faCheck} color="green" />
+        {/if}
+      </div>
+    {/if}
+  </div>
 </div>
 
 <style lang="postcss">
