@@ -7,9 +7,6 @@ import { get, writable } from 'svelte/store'
 import { v4 as uuidv4 } from "uuid"
 import { blobToWebP } from 'webp-converter-browser'
 
-/**
- * Store that handles managing users, meant for use by admin users
- */
 function createSponsorStore() {
 	const store = writable<(Sponsor)[]>(undefined, set => {
 		async function init() {
@@ -148,7 +145,7 @@ function createSponsorStore() {
 	}
 
 	async function updateVisibility(sponsor: Sponsor) {
-		// -- Update article --
+		// -- Update sponsors --
 		const { getFirestore, doc, updateDoc } = await import('firebase/firestore')
 		const { firebaseApp } = await import('$lib/firebase/Firebase')
 		const firestore = getFirestore(firebaseApp)
@@ -159,8 +156,9 @@ function createSponsorStore() {
 		})
 
 		sponsor.updateSearchableString()
+
 		// -- Update store --
-		update((pages) => [...pages])
+		update((sponsors) => [...sponsors])
 	}
 
 	function sortSponsors(sponsors: Sponsor[], sortedIds: string[]) {

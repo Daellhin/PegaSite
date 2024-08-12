@@ -222,7 +222,7 @@ function createArticleStore() {
 
 		article.updateSearchableString()
 		// -- Update store --
-		update((pages) => [...pages])
+		update((articles) => [...articles])
 	}
 
 	return {

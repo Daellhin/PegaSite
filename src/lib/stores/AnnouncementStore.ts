@@ -107,7 +107,7 @@ function createAnnouncementStore() {
 	}
 
 	async function updateAnnouncementVisibility(announcement: Announcement) {
-		// -- Update article --
+		// -- Update announcement --
 		const { getFirestore, doc, updateDoc } = await import('firebase/firestore')
 		const { firebaseApp } = await import('$lib/firebase/Firebase')
 		const firestore = getFirestore(firebaseApp)
@@ -119,7 +119,7 @@ function createAnnouncementStore() {
 
 		announcement.updateSearchableString()
 		// -- Update store --
-		update((pages) => [...pages])
+		update((announcements) => [...announcements])
 	}
 
 	// function sortAnnouncements(announcements: Announcement[], sortedIds: string[]) {
