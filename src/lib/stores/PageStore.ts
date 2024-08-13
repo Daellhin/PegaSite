@@ -1,15 +1,15 @@
 import { browser } from '$app/environment'
 import { Page, pageConverter } from '$lib/domain/Page'
-import { Collections } from '$lib/firebase/Firebase'
+import { Collections, StorageFolders } from '$lib/firebase/Firebase'
 import { arrayDifference, arraysContainSameElements } from '$lib/utils/Array'
+import { WEBP_IMAGE_QUALITY } from '$lib/utils/Constants'
 import { convertStringToBool } from '$lib/utils/Utils'
 import dayjs from 'dayjs'
 import { Timestamp } from 'firebase/firestore'
 import { get, writable } from 'svelte/store'
 import { v4 as uuidv4 } from "uuid"
-import { createMockPageStore } from './mocks/MockPageHeadStore'
 import { blobToWebP } from 'webp-converter-browser'
-import { WEBP_IMAGE_QUALITY } from '$lib/utils/Constants'
+import { createMockPageStore } from './mocks/MockPageHeadStore'
 
 function createPageStore() {
 	const innerStore = writable<Page[]>([])
@@ -81,7 +81,7 @@ function createPageStore() {
 			const convertedImage = blobToWebP(image, { quality: WEBP_IMAGE_QUALITY })
 
 			// -- Next upload and replace with url --
-			const storageRef = ref(storage, `page-images/${uuidv4()}`)
+			const storageRef = ref(storage, `${StorageFolders.PAGE_IMAGES}/${uuidv4()}`)
 			const snapshot = await uploadBytes(storageRef, await convertedImage)
 			return getDownloadURL(snapshot.ref)
 		}))

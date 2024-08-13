@@ -1,5 +1,5 @@
 <script lang="ts">
-  import InfoCard from "$components/InfoCard.svelte"
+  import InfoCard from "$components/alerts/InfoCard.svelte"
 </script>
 
 <h1 class="text-2xl font-bold">Niet geïmplementeerd</h1>

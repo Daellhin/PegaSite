@@ -3,8 +3,11 @@ import { PhotoAlbum, photoAlbumConverter, type PhotoAlbumJson } from '$lib/domai
 import { Collections, StorageFolders } from '$lib/firebase/Firebase'
 import { arrayDifference, arraysContainSameElements } from '$lib/utils/Array'
 import { WEBP_IMAGE_QUALITY } from '$lib/utils/Constants'
+import { UploadProgress } from '$lib/utils/UploadProgress'
 import { convertStringToBool } from '$lib/utils/Utils'
 import type { Dayjs } from 'dayjs'
+import pLimit from 'p-limit'
+import type { Writable } from 'svelte/store'
 import { writable } from 'svelte/store'
 import { v4 as uuidv4 } from 'uuid'
 import { blobToWebP } from 'webp-converter-browser'
@@ -13,13 +16,15 @@ import { blobToWebP } from 'webp-converter-browser'
  * Source: https://www.captaincodeman.com/lazy-loading-and-querying-firestore-with-sveltekit
  */
 function createPhotoAlbumStore() {
+	const maxConcurrentUploads = 4
+
 	const store = writable<(PhotoAlbum)[]>(undefined, set => {
 		async function init() {
 			if (!browser) return
 
 			// -- Load PhotoAlbums --
 			const { firebaseApp } = await import('$lib/firebase/Firebase')
-			const { getFirestore, getDocs, getDoc, doc, collection } = await import('firebase/firestore')
+			const { getFirestore, getDocs, collection } = await import('firebase/firestore')
 			const firestore = getFirestore(firebaseApp)
 
 			const photoAlbumsRef = collection(firestore, Collections.PHOTO_ALBUMS)
@@ -33,20 +38,35 @@ function createPhotoAlbumStore() {
 	})
 	const { subscribe, update } = store
 
-	async function createPhotoAlbum(newPhotoAlbum: PhotoAlbum, images: File[]) {
-		// -- Convert images --
-		const convertedImages = await Promise.all(
-			images.map((e) => blobToWebP(e, { quality: WEBP_IMAGE_QUALITY }))
-		)
+	function updateStoreAtIndex(progressStore: Writable<UploadProgress[]>, index: number, value: UploadProgress) {
+		progressStore.update((progress) => {
+			progress[index] = value
+			return [...progress]
+		})
+	}
 
-		// -- Upload images --
+	async function createPhotoAlbum(newPhotoAlbum: PhotoAlbum, images: File[], progressStore: Writable<UploadProgress[]>) {
 		const { getStorage, ref, uploadBytes, getDownloadURL } = await import('firebase/storage')
 		const storage = getStorage()
 
-		const uploadedImageLinks = await Promise.all(convertedImages.map(async (image) => {
-			const storageRef = ref(storage, `${StorageFolders.PHOTO_ALBUM_IMAGES}/${uuidv4()}`)
-			const snapshot = await uploadBytes(storageRef, image)
-			return await getDownloadURL(snapshot.ref)
+		// -- Convert and upload images, and replace files with urls(limits the amount of concurent tasks) --
+		progressStore.set(images.map(() => UploadProgress.NOT_STARTED))
+		const limit = pLimit(maxConcurrentUploads)
+
+		const uploadedImageLinks = await Promise.all(images.map(async (image, index) => {
+			return limit(async () => {
+				// -- First convert to webp --
+				updateStoreAtIndex(progressStore, index, UploadProgress.CONVERTING)
+				const convertedImage = await blobToWebP(image, { quality: WEBP_IMAGE_QUALITY })
+				updateStoreAtIndex(progressStore, index, UploadProgress.UPLOADING)
+
+				// -- Next upload and replace with url --
+				const storageRef = ref(storage, `${StorageFolders.PHOTO_ALBUM_IMAGES}/${uuidv4()}`)
+				const snapshot = await uploadBytes(storageRef, convertedImage)
+				const url = await getDownloadURL(snapshot.ref)
+				updateStoreAtIndex(progressStore, index, UploadProgress.DONE)
+				return url
+			})
 		}))
 		newPhotoAlbum.imageUrls = uploadedImageLinks
 
@@ -63,14 +83,14 @@ function createPhotoAlbumStore() {
 		update((photoAlbums) => ([newPhotoAlbum, ...(photoAlbums || [])]))
 	}
 
-	async function updatePhotoAlbum(newTitle: string, newVisible: boolean, newAuthor: string, newAuthorUrl: string, newDate: Dayjs, combinedImages: (string | File)[], photoAlbum: PhotoAlbum) {
+	async function updatePhotoAlbum(newTitle: string, newVisible: boolean, newAuthor: string, newAuthorUrl: string, newDate: Dayjs, combinedImages: (string | File)[], photoAlbum: PhotoAlbum, progressStore: Writable<UploadProgress[]>) {
 		const { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } = await import('firebase/storage')
 		const storage = getStorage()
 
 		// -- Delete images removed by user --
-		const excistingImages = combinedImages.filter((e) => typeof e === 'string') as string[]
-		if (!arraysContainSameElements(photoAlbum.imageUrls, excistingImages)) {
-			const imagesToRemove = arrayDifference(photoAlbum.imageUrls, excistingImages)
+		const existingImages = combinedImages.filter((e) => typeof e === 'string') as string[]
+		if (!arraysContainSameElements(photoAlbum.imageUrls, existingImages)) {
+			const imagesToRemove = arrayDifference(photoAlbum.imageUrls, existingImages)
 			await Promise.all(imagesToRemove.map(async (image) => {
 				try {
 					const imageRef = ref(storage, image)
@@ -83,18 +103,30 @@ function createPhotoAlbumStore() {
 			}))
 		}
 
-		// -- Upload images, and replace files with urls --
-		const newImages = await Promise.all(combinedImages.map(async (image) => {
-			// -- Keep existing url --
-			if (!(image instanceof File)) return image
+		// -- Convert and upload images, and replace files with urls(limits the amount of concurent tasks) --
+		progressStore.set(combinedImages.map(() => UploadProgress.NOT_STARTED))
+		const limit = pLimit(maxConcurrentUploads)
 
-			// -- First convert to webp --
-			const convertedImage = blobToWebP(image, { quality: WEBP_IMAGE_QUALITY })
+		const newImages = await Promise.all(combinedImages.map(async (image, index) => {
+			return limit(async () => {
+				// -- Keep existing url --
+				if (!(image instanceof File)) {
+					updateStoreAtIndex(progressStore, index, UploadProgress.DONE)
+					return image
+				}
+				updateStoreAtIndex(progressStore, index, UploadProgress.CONVERTING)
 
-			// -- Next upload and replace with url --
-			const storageRef = ref(storage, `page-images/${uuidv4()}`)
-			const snapshot = await uploadBytes(storageRef, await convertedImage)
-			return getDownloadURL(snapshot.ref)
+				// -- First convert to webp --
+				const convertedImage = await blobToWebP(image, { quality: WEBP_IMAGE_QUALITY })
+				updateStoreAtIndex(progressStore, index, UploadProgress.UPLOADING)
+
+				// -- Next upload and replace with url --
+				const storageRef = ref(storage, `${StorageFolders.PHOTO_ALBUM_IMAGES}/${uuidv4()}`)
+				const snapshot = await uploadBytes(storageRef, convertedImage)
+				const url = await getDownloadURL(snapshot.ref)
+				updateStoreAtIndex(progressStore, index, UploadProgress.DONE)
+				return url
+			})
 		}))
 
 		// -- Update photo album --

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { goto } from "$app/navigation"
-  import InfoCard from "$components/InfoCard.svelte"
+  import InfoCard from "$components/alerts/InfoCard.svelte"
   import NewUserForm from "$components/users/UserForm.svelte"
   import UserTable from "$components/users/UserTable.svelte"
   import { authStore } from "$lib/stores/AuthStore"

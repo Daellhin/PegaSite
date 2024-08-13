@@ -12,9 +12,13 @@
   import type { Dayjs } from "dayjs"
   import Fa from "svelte-fa"
   import Time from "svelte-time/Time.svelte"
+  import { writable } from "svelte/store"
   import type { PageData } from "./$types"
+  import type { UploadProgress } from "$lib/utils/UploadProgress"
 
   export let data: PageData
+
+  const progressStore = writable([] as UploadProgress[])
 
   let title = ""
   let combinedImages: (string | File)[] = []
@@ -34,7 +38,9 @@
       date,
       combinedImages,
       photoAlbum,
+      progressStore,
     )
+    combinedImages = photoAlbum.imageUrls
     pushCreatedToast("Fotoalbum bijgewerkt", {
       gotoUrl: `/photos/#${photoAlbum.id}`,
     })
@@ -135,6 +141,7 @@
     bind:authorUrl
     bind:date
     submitLabel="Album wijzigen"
+    progress={$progressStore}
     onSave={savePhotoAlbum}
   />
 {:else}

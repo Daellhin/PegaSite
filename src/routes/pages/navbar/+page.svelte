@@ -1,6 +1,6 @@
 <script lang="ts">
   import { goto } from "$app/navigation"
-  import InfoCard from "$components/InfoCard.svelte"
+  import InfoCard from "$components/alerts/InfoCard.svelte"
   import LinkGroupEditor from "$components/page/NavbarGroupEditor.svelte"
   import { authStore } from "$lib/stores/AuthStore"
   import { navbarStore } from "$lib/stores/NavbarStore"

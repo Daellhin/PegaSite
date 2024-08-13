@@ -1,5 +1,5 @@
 <script lang="ts">
-  import InfoCard from "$components/InfoCard.svelte"
+  import InfoCard from "$components/alerts/InfoCard.svelte"
   import { Announcement } from "$lib/domain/Announcement"
 
   export let annoucement: Announcement
