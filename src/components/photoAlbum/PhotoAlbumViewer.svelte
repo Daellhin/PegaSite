@@ -1,6 +1,5 @@
 <script lang="ts">
   import ConfirmModal from "$components/ConfirmModal.svelte"
-
   import EditDropdown from "$components/EditDropdown.svelte"
   import ShowMore from "$components/ShowMore.svelte"
   import type { PhotoAlbum } from "$lib/domain/PhotoAlbum"
@@ -9,9 +8,9 @@
   import { pushCreatedToast } from "$lib/utils/Toast"
   import { faCalendar } from "@fortawesome/free-regular-svg-icons"
   import {
-      faCameraRetro,
-      faDownload,
-      faImage,
+    faCameraRetro,
+    faDownload,
+    faImage,
   } from "@fortawesome/free-solid-svg-icons"
   import "bigger-picture/css"
   import JSZip from "jszip"
@@ -156,7 +155,7 @@
   </div>
 
   <!-- Images -->
-  <div class="mt-2">
+  <!-- <div class="mt-2">
     <ShowMore startHeightPx={innerWidth < 472 ? 700 : 500}>
       <Masonry
         items={photoAlbum.imageUrls}
@@ -180,7 +179,7 @@
         </a>
       </Masonry>
     </ShowMore>
-  </div>
+  </div> -->
 </div>
 
 <ConfirmModal {confirmModalID} onConfirm={deletePhotoAlbum} bind:showModal>
