@@ -20,6 +20,10 @@
   import Time from "svelte-time/Time.svelte"
   import BiggerPictureThumbnails from "./thumbnails.svelte"
 
+  import pkg from "file-saver"
+  import pLimit from "p-limit"
+  const { saveAs } = pkg
+
   export let photoAlbum: PhotoAlbum
   export let preview = false
 
@@ -72,26 +76,21 @@
 
   async function downloadHandler() {
     const zip = new JSZip()
-    const imgFolder = zip.folder("images")
-    if (!imgFolder) throw new Error("No image folder")
+    const limit = pLimit(1)
 
-    for (const [index, url] of photoAlbum.imageUrls.entries()) {
-      const response = await fetch(url)
-      const blob = await response.blob()
-      imgFolder.file(`image${index + 1}.jpg`, blob)
-    }
+    await Promise.all(
+      photoAlbum.imageUrls.map(async (url, index) => {
+        return limit(async () => {
+          const response = await fetch(url)
+          const blob = await response.blob()
+          console.log(`finished:  ${index + 1}/${photoAlbum.imageUrls.length}`)
+          zip.file(`image${index + 1}.webp`, blob)
+        })
+      }),
+    )
 
     const content = await zip.generateAsync({ type: "blob" })
-    saveAs(content, "images.zip")
-  }
-
-  function saveAs(blob: Blob, name: string) {
-    var a = document.createElement("a")
-    document.body.append(a)
-    a.download = name
-    a.href = URL.createObjectURL(blob)
-    a.click()
-    a.remove()
+    saveAs(content, `${photoAlbum.title}.zip`)
   }
 </script>
 
