@@ -76,10 +76,12 @@
 
   // -- Download --
   let downloading = false
+  let amountFinished = 0
 
   async function downloadHandler() {
-    (document.activeElement as HTMLElement).blur()
+    ;(document.activeElement as HTMLElement).blur()
     downloading = true
+    amountFinished = 0
     const zip = new JSZip()
     const limit = pLimit(4)
 
@@ -88,7 +90,7 @@
         return limit(async () => {
           const response = await fetch(url)
           const blob = await response.blob()
-          console.log(`finished:  ${index + 1}/${photoAlbum.imageUrls.length}`)
+          amountFinished++
           zip.file(`image${index + 1}.webp`, blob)
         })
       }),
@@ -121,14 +123,14 @@
   </div>
 
   <!-- Data -->
-  <div class="flex gap-2">
-    <div class="flex gap-1 items-center">
+  <div class="flex gap-2 flex-wrap">
+    <div class="flex gap-1 items-center shrink-0">
       <div class="h-3 my-auto" title="Datum">
         <Fa icon={faCalendar} />
       </div>
       <Time class="opacity-60" timestamp={photoAlbum.date} />
     </div>
-    <div class="flex gap-1 items-center">
+    <div class="flex gap-1 items-center shrink-0">
       <div class="h-3 my-auto" title="Aantal afbeeldingen">
         <Fa icon={faImage} />
       </div>
@@ -138,7 +140,7 @@
       >
     </div>
     {#if photoAlbum.author}
-      <div class="flex gap-1 items-center">
+      <div class="flex gap-1 items-center shrink-0">
         <div class="h-3 my-auto" title="Fotograaf">
           <Fa icon={faCameraRetro} />
         </div>
@@ -151,6 +153,21 @@
         {/if}
       </div>
     {/if}
+    {#if downloading}
+      <div class="flex gap-1 items-center shrink-0 h-auto">
+        <progress
+          class="progress progress-primary w-56 mt-1 ml-2"
+          value={(amountFinished / photoAlbum.imageUrls.length) * 100}
+          max={100}
+          title="Downloaden"
+        ></progress>
+        <span class="font-semibold ml-2"
+          >{amountFinished} / {photoAlbum.imageUrls.length}</span
+        >
+        Voltooid
+      </div>
+    {/if}
+
     {#if $authStore && !preview}
       <EditDropdown
         class="ml-auto"
