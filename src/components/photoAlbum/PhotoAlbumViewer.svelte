@@ -20,6 +20,10 @@
   import Time from "svelte-time/Time.svelte"
   import BiggerPictureThumbnails from "./thumbnails.svelte"
 
+  import pkg from "file-saver"
+  import pLimit from "p-limit"
+  const { saveAs } = pkg
+
   export let photoAlbum: PhotoAlbum
   export let preview = false
 
@@ -70,29 +74,41 @@
     })
   }
 
-  async function downloadHandler() {
-    const zip = new JSZip()
-    const imgFolder = zip.folder("images")
-    if (!imgFolder) throw new Error("No image folder")
+  // -- Download --
+  let downloading = false
+  let amountFinished = 0
 
-    for (const [index, url] of photoAlbum.imageUrls.entries()) {
-      const response = await fetch(url)
-      const blob = await response.blob()
-      imgFolder.file(`image${index + 1}.jpg`, blob)
-    }
+  async function downloadHandler() {
+    ;(document.activeElement as HTMLElement).blur()
+    downloading = true
+    amountFinished = 0
+    const zip = new JSZip()
+    const limit = pLimit(4)
+
+    await Promise.all(
+      photoAlbum.imageUrls.map(async (url, index) => {
+        return limit(async () => {
+          const response = await fetch(url)
+          const blob = await response.blob()
+          amountFinished++
+          zip.file(`image${index + 1}.webp`, blob)
+        })
+      }),
+    )
 
     const content = await zip.generateAsync({ type: "blob" })
-    saveAs(content, "images.zip")
+    saveAs(content, `${photoAlbum.title}.zip`)
+    downloading = false
   }
 
-  function saveAs(blob: Blob, name: string) {
-    var a = document.createElement("a")
-    document.body.append(a)
-    a.download = name
-    a.href = URL.createObjectURL(blob)
-    a.click()
-    a.remove()
-  }
+  onMount(() => {
+    // Prevent user accidentally leaving page when album is downloading
+    window.addEventListener("beforeunload", (e) => {
+      if (downloading) {
+        e.preventDefault()
+      }
+    })
+  })
 </script>
 
 <svelte:window bind:innerWidth />
@@ -107,14 +123,14 @@
   </div>
 
   <!-- Data -->
-  <div class="flex gap-2">
-    <div class="flex gap-1 items-center">
+  <div class="flex gap-2 flex-wrap">
+    <div class="flex gap-1 items-center shrink-0">
       <div class="h-3 my-auto" title="Datum">
         <Fa icon={faCalendar} />
       </div>
       <Time class="opacity-60" timestamp={photoAlbum.date} />
     </div>
-    <div class="flex gap-1 items-center">
+    <div class="flex gap-1 items-center shrink-0">
       <div class="h-3 my-auto" title="Aantal afbeeldingen">
         <Fa icon={faImage} />
       </div>
@@ -124,7 +140,7 @@
       >
     </div>
     {#if photoAlbum.author}
-      <div class="flex gap-1 items-center">
+      <div class="flex gap-1 items-center shrink-0">
         <div class="h-3 my-auto" title="Fotograaf">
           <Fa icon={faCameraRetro} />
         </div>
@@ -137,6 +153,21 @@
         {/if}
       </div>
     {/if}
+    {#if downloading}
+      <div class="flex gap-1 items-center shrink-0 h-auto">
+        <progress
+          class="progress progress-primary w-56 mt-1 ml-2"
+          value={(amountFinished / photoAlbum.imageUrls.length) * 100}
+          max={100}
+          title="Downloaden"
+        ></progress>
+        <span class="font-semibold ml-2"
+          >{amountFinished} / {photoAlbum.imageUrls.length}</span
+        >
+        Voltooid
+      </div>
+    {/if}
+
     {#if $authStore && !preview}
       <EditDropdown
         class="ml-auto"
