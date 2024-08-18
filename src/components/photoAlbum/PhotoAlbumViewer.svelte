@@ -81,7 +81,7 @@
     (document.activeElement as HTMLElement).blur()
     downloading = true
     const zip = new JSZip()
-    const limit = pLimit(1)
+    const limit = pLimit(4)
 
     await Promise.all(
       photoAlbum.imageUrls.map(async (url, index) => {
