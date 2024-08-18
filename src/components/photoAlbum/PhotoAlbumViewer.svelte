@@ -74,7 +74,11 @@
     })
   }
 
+  // -- Download --
+  let downloading = false
+
   async function downloadHandler() {
+    downloading = true
     const zip = new JSZip()
     const limit = pLimit(1)
 
@@ -91,7 +95,17 @@
 
     const content = await zip.generateAsync({ type: "blob" })
     saveAs(content, `${photoAlbum.title}.zip`)
+    downloading = false
   }
+
+  onMount(() => {
+    // Prevent user accidentally leaving page when album is downloading
+    window.addEventListener("beforeunload", (e) => {
+      if (downloading) {
+        e.preventDefault()
+      }
+    })
+  })
 </script>
 
 <svelte:window bind:innerWidth />
