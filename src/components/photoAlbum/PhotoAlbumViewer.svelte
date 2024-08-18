@@ -78,6 +78,7 @@
   let downloading = false
 
   async function downloadHandler() {
+    (document.activeElement as HTMLElement).blur()
     downloading = true
     const zip = new JSZip()
     const limit = pLimit(1)
