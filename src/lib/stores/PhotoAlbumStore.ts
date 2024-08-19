@@ -1,6 +1,7 @@
 import { browser } from '$app/environment'
 import { PhotoAlbum, photoAlbumConverter, type PhotoAlbumJson } from '$lib/domain/PhotoAlbum'
 import { Collections, StorageFolders } from '$lib/firebase/Firebase'
+import generateImageThumbnail from '$lib/generateImageThumbnail/image-thumbnail'
 import { arrayDifference, arraysContainSameElements } from '$lib/utils/Array'
 import { WEBP_IMAGE_QUALITY } from '$lib/utils/Constants'
 import { UploadProgress } from '$lib/utils/UploadProgress'
@@ -58,12 +59,25 @@ function createPhotoAlbumStore() {
 				// -- First convert to webp --
 				updateStoreAtIndex(progressStore, index, UploadProgress.CONVERTING)
 				const convertedImage = await blobToWebP(image, { quality: WEBP_IMAGE_QUALITY })
+
+				// -- Next create thumbnail --
+				const thumbnail = await generateImageThumbnail(image, {
+					width: 540,
+					height: 540,
+					maintainAspectRatio: true,
+					type: 'image/webp',
+					quality: 0.5
+				})
 				updateStoreAtIndex(progressStore, index, UploadProgress.UPLOADING)
 
 				// -- Next upload and replace with url --
-				const storageRef = ref(storage, `${StorageFolders.PHOTO_ALBUM_IMAGES}/${uuidv4()}`)
-				const snapshot = await uploadBytes(storageRef, convertedImage)
+				const imageId = uuidv4()
+				const storageRefImages = ref(storage, `${StorageFolders.PHOTO_ALBUM_IMAGES}/${imageId}`)
+				const storageRefThumbnails = ref(storage, `${StorageFolders.PHOTO_ALBUM_THUMBNAILS}/${imageId}`)
+				const snapshotPromise = uploadBytes(storageRefThumbnails, thumbnail)
+				const snapshot = await uploadBytes(storageRefImages, convertedImage)
 				const url = await getDownloadURL(snapshot.ref)
+				await snapshotPromise // Upload thumbnail in parallel
 				updateStoreAtIndex(progressStore, index, UploadProgress.DONE)
 				return url
 			})
