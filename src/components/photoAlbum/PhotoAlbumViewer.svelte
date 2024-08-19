@@ -19,9 +19,10 @@
   import Fa from "svelte-fa"
   import Time from "svelte-time/Time.svelte"
   import BiggerPictureThumbnails from "./thumbnails.svelte"
+  import { StorageFolders } from "$lib/firebase/Firebase"
+  import pLimit from "p-limit"
 
   import pkg from "file-saver"
-  import pLimit from "p-limit"
   const { saveAs } = pkg
 
   export let photoAlbum: PhotoAlbum
@@ -109,6 +110,14 @@
       }
     })
   })
+
+  const firebaseStorageUrl =
+    "https://firebasestorage.googleapis.com/v0/b/pega-site.appspot.com/o/"
+  $: thumbnails = photoAlbum.imageUrls.map(
+    (e) =>
+      `${firebaseStorageUrl}${StorageFolders.PHOTO_ALBUM_THUMBNAILS}${e.match(/%.*\?/)?.[0]}alt=media`,
+  )
+  $: indexes = Array(thumbnails?.length).map((arg, index) => index)
 </script>
 
 <svelte:window bind:innerWidth />
@@ -186,31 +195,32 @@
   </div>
 
   <!-- Images -->
-  <!-- <div class="mt-2">
+  <div class="mt-2">
     <ShowMore startHeightPx={innerWidth < 472 ? 700 : 500}>
       <Masonry
-        items={photoAlbum.imageUrls}
+        items={thumbnails}
         {minColWidth}
         {maxColWidth}
         {gap}
         let:item
+        let:idx
       >
         <a
           class={`imageAnchor ID-${photoAlbum.id}`}
-          href={item}
-          data-img={item}
-          data-thumb={item}
+          href={photoAlbum.imageUrls?.[idx]}
+          data-img={photoAlbum.imageUrls?.[idx]}
+          data-thumb={thumbnails?.[idx]}
           on:click={openGallery}
         >
           <img
-            src={item}
+            src={thumbnails?.[idx]}
             class="h-full w-full object-cover object-center rounded-lg"
             loading="lazy"
           />
         </a>
       </Masonry>
     </ShowMore>
-  </div> -->
+  </div>
 </div>
 
 <ConfirmModal {confirmModalID} onConfirm={deletePhotoAlbum} bind:showModal>
