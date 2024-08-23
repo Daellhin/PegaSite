@@ -1,15 +1,20 @@
 <script lang="ts">
   import { faImage } from "@fortawesome/free-solid-svg-icons"
+  import "bigger-picture/css"
+  import { onMount } from "svelte"
   import Fa from "svelte-fa"
+  import BiggerPictureThumbnails from "./thumbnails.svelte"
 
+  export let thumbnails: string[]
   export let images: string[]
+  export let id: string
 
   let innerWidth = 0
   let imageWidths = [] as number[]
   let imageHeights = [] as number[]
 
   $: gridCols = getGridCols(innerWidth)
-  $: gridSpan2 = calculateGridSpans(images, gridCols)
+  $: gridSpan2 = calculateGridSpans(thumbnails, gridCols)
 
   function getGridCols(screenWidth: number) {
     switch (true) {
@@ -46,25 +51,55 @@
       return span2
     })
   }
+
+  // -- Bigger picture --
+  const minColWidth = 200
+  const maxColWidth = 800
+  const gap = 20
+
+  let biggerPictureInstance: BiggerPictureThumbnails
+  let imageAnchors: HTMLAnchorElement[]
+
+  onMount(() => {
+    biggerPictureInstance = new BiggerPictureThumbnails({
+      target: document.body,
+    })
+    imageAnchors = Array.from(
+      document.querySelectorAll<HTMLAnchorElement>(`#${id} .imageAnchor`),
+    )
+  })
+
+  function openGallery(e: MouseEvent) {
+    imageAnchors = Array.from(
+      document.querySelectorAll<HTMLAnchorElement>(`#${id} .imageAnchor`),
+    )
+    e.preventDefault()
+    biggerPictureInstance.open({
+      items: imageAnchors,
+      el: e.currentTarget!,
+    })
+  }
 </script>
 
-{gridCols}
 <svelte:window bind:innerWidth />
 
-<div class="block mx-auto w-full randomiser">
-  <div
+<div {id} class="mx-auto w-full">
+  <a
     class="grid grid-cols-1 min-[425px]:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-8 gap-2 md:gap-4"
   >
-    {#each images as image, index}
-      <div
-        class="relative flex h-48 items-end overflow-hidden rounded-lg md:h-80"
+    {#each thumbnails as thumbnail, index}
+      <a
+        href={images[index]}
+        data-img={images[index]}
+        data-thumb={thumbnail}
+        on:click={openGallery}
+        class="imageAnchor relative flex h-48 items-end overflow-hidden rounded-lg md:h-80"
         class:md:col-span-2={gridSpan2[index]}
       >
         <img
           loading="lazy"
-          src={image}
+          src={thumbnail}
           class="absolute inset-0 h-full w-full object-cover object-center"
-          title={`${imageWidths[index]}x${imageHeights[index]}=${gridSpan2[index]}`}
           bind:naturalWidth={imageWidths[index]}
           bind:naturalHeight={imageHeights[index]}
         />
@@ -73,7 +108,7 @@
         >
           <Fa icon={faImage} size="lg" />
         </div>
-      </div>
+      </a>
     {/each}
-  </div>
+  </a>
 </div>

@@ -9,9 +9,9 @@
   import { pushCreatedToast } from "$lib/utils/Toast"
   import { faCalendar } from "@fortawesome/free-regular-svg-icons"
   import {
-    faCameraRetro,
-    faDownload,
-    faImage,
+      faCameraRetro,
+      faDownload,
+      faImage,
   } from "@fortawesome/free-solid-svg-icons"
   import "bigger-picture/css"
   import JSZip from "jszip"
@@ -196,7 +196,11 @@
   <!-- Images -->
   <div class="mt-2">
     <ShowMore startHeightPx={innerWidth < 472 ? 700 : 500}>
-      <ImageGallery images={thumbnails} />
+      <ImageGallery
+        {thumbnails}
+        id={photoAlbum.id}
+        images={photoAlbum.imageUrls}
+      />
     </ShowMore>
   </div>
 </div>
