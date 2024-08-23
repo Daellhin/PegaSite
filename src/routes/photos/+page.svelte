@@ -1,5 +1,4 @@
 <script lang="ts">
-  import InfoCard from "$components/alerts/InfoCard.svelte"
   import PhotoAlbumViewer from "$components/photoAlbum/PhotoAlbumViewer.svelte"
   import { authStore } from "$lib/stores/AuthStore"
   import { pageHeadStore } from "$lib/stores/PageHeadStore"
@@ -22,16 +21,6 @@
     {/if}
   {/await}
 </div>
-
-<InfoCard class="w-full mb-2">
-  <div>
-    <h3 class="font-bold">🚧Pagina in aanbouw🚧</h3>
-    <div class="text-xs">
-      Foto's kunnen nog niet beken worden, enkel administrators kunnen albums
-      downloaden
-    </div>
-  </div>
-</InfoCard>
 
 {#if $photoAlbumStore}
   <ul class="menu bg-base-200 rounded-box mb-4">

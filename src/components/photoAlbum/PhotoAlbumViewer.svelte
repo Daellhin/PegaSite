@@ -3,6 +3,7 @@
   import EditDropdown from "$components/EditDropdown.svelte"
   import ShowMore from "$components/ShowMore.svelte"
   import type { PhotoAlbum } from "$lib/domain/PhotoAlbum"
+  import { StorageFolders } from "$lib/firebase/Firebase"
   import { authStore } from "$lib/stores/AuthStore"
   import { photoAlbumStore } from "$lib/stores/PhotoAlbumStore"
   import { pushCreatedToast } from "$lib/utils/Toast"
@@ -14,15 +15,14 @@
   } from "@fortawesome/free-solid-svg-icons"
   import "bigger-picture/css"
   import JSZip from "jszip"
+  import pLimit from "p-limit"
   import { onMount } from "svelte"
-  import Masonry from "svelte-bricks"
   import Fa from "svelte-fa"
   import Time from "svelte-time/Time.svelte"
   import BiggerPictureThumbnails from "./thumbnails.svelte"
-  import { StorageFolders } from "$lib/firebase/Firebase"
-  import pLimit from "p-limit"
 
   import pkg from "file-saver"
+  import ImageGallery from "./ImageGallery.svelte"
   const { saveAs } = pkg
 
   export let photoAlbum: PhotoAlbum
@@ -117,7 +117,6 @@
     (e) =>
       `${firebaseStorageUrl}${StorageFolders.PHOTO_ALBUM_THUMBNAILS}${e.match(/%.*\?/)?.[0]}alt=media`,
   )
-  $: indexes = Array(thumbnails?.length).map((arg, index) => index)
 </script>
 
 <svelte:window bind:innerWidth />
@@ -197,28 +196,7 @@
   <!-- Images -->
   <div class="mt-2">
     <ShowMore startHeightPx={innerWidth < 472 ? 700 : 500}>
-      <Masonry
-        items={thumbnails}
-        {minColWidth}
-        {maxColWidth}
-        {gap}
-        let:item
-        let:idx
-      >
-        <a
-          class={`imageAnchor ID-${photoAlbum.id}`}
-          href={photoAlbum.imageUrls?.[idx]}
-          data-img={photoAlbum.imageUrls?.[idx]}
-          data-thumb={thumbnails?.[idx]}
-          on:click={openGallery}
-        >
-          <img
-            src={thumbnails?.[idx]}
-            class="h-full w-full object-cover object-center rounded-lg"
-            loading="lazy"
-          />
-        </a>
-      </Masonry>
+      <ImageGallery images={thumbnails} />
     </ShowMore>
   </div>
 </div>
