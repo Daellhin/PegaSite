@@ -16,7 +16,11 @@
         "destination": "/fallback.html"
       },
       {
-        "source": "/pages/edit/**",
+        "source": "/events/**",
+        "destination": "/fallback.html"
+      },
+      {
+        "source": "/photos/**",
         "destination": "/fallback.html"
       }
     ],
