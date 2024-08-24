@@ -1,6 +1,6 @@
 {
 	"name": "pegasite",
-	"version": "0.11.0",
+	"version": "0.11.1",
 	"private": true,
 	"scripts": {
 		"dev": "vite dev",
@@ -56,7 +56,7 @@
 		"firebase": "^10.12.5",
 		"jszip": "^3.10.1",
 		"p-limit": "^6.1.0",
-	 "svelte-collapse": "^0.1.2",
+		"svelte-collapse": "^0.1.2",
 		"svelte-local-storage-store": "^0.6.4",
 		"svelte-multiselect": "^10.3.0",
 		"svelte-scrolling": "^1.4.0",
