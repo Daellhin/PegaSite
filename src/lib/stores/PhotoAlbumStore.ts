@@ -171,6 +171,7 @@ function createPhotoAlbumStore() {
 			visible: newVisible,
 			author: newAuthor,
 			authorUrl: newAuthorUrl,
+			date: newDate.toDate(),
 			imageIds: uploadedImageIds
 		})
 
@@ -179,6 +180,7 @@ function createPhotoAlbumStore() {
 		photoAlbum.visible = newVisible
 		photoAlbum.author = newAuthor
 		photoAlbum.authorUrl = newAuthorUrl
+		photoAlbum.date = newDate
 		photoAlbum.imageIds = uploadedImageIds
 
 		photoAlbum.updateSearchableString()

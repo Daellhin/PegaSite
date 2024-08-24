@@ -130,7 +130,7 @@
     <div class="h-3 my-auto" title="Datum">
       <Fa icon={faCalendar} />
     </div>
-    <Time timestamp={photoAlbum.date} />
+    <Time timestamp={photoAlbum.createdAt} />
   </div>
 
   <PhotoAlbumForm

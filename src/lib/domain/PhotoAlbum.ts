@@ -60,7 +60,7 @@ export class PhotoAlbum {
         return new PhotoAlbum(
             id,
             dayjs(json.createdAt.toMillis()),
-            dayjs(json.createdAt.toMillis()),
+            dayjs(json.date.toMillis()),
             json.author,
             json.authorUrl,
             json.title,
