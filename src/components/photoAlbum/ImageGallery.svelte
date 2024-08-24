@@ -4,7 +4,7 @@
   import { onMount } from "svelte"
   import Fa from "svelte-fa"
   import BiggerPictureThumbnails from "./thumbnails.svelte"
-    import byteSize from "byte-size"
+  import byteSize from "byte-size"
 
   export let thumbnailUrls: string[]
   export let imageUrls: string[]
@@ -15,7 +15,12 @@
   let imageHeights = [] as number[]
 
   $: gridCols = getGridCols(innerWidth)
-  $: gridSpan2 = calculateGridSpans(thumbnailUrls, gridCols)
+  $: gridSpan2 = calculateGridSpans(
+    thumbnailUrls,
+    gridCols,
+    imageWidths,
+    imageHeights,
+  )
 
   function getGridCols(screenWidth: number) {
     switch (true) {
@@ -36,7 +41,12 @@
     }
   }
 
-  function calculateGridSpans(images: string[], gridCols: number) {
+  function calculateGridSpans(
+    images: string[],
+    gridCols: number,
+    imageWidths: number[],
+    imageHeights: number[],
+  ) {
     if (innerWidth < 0) return Array(images.length).fill(false)
 
     let currentRowFill = 0
@@ -100,7 +110,6 @@
           bind:naturalWidth={imageWidths[index]}
           bind:naturalHeight={imageHeights[index]}
         />
-
         <div
           class="flex items-center justify-center w-full h-full bg-base-300 rounded-t-lg"
         >
