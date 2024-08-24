@@ -23,5 +23,5 @@
 </div>
 
 {#if $articleStore}
-  <ArticlesTable articles={$articleStore}></ArticlesTable>
+  <ArticlesTable articles={$articleStore}/>
 {/if}

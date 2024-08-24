@@ -40,7 +40,7 @@
       photoAlbum,
       progressStore,
     )
-    combinedImages = photoAlbum.imageUrls
+    combinedImages = photoAlbum.imageIds
     pushCreatedToast("Fotoalbum bijgewerkt", {
       gotoUrl: `/photos/#${photoAlbum.id}`,
     })
@@ -84,7 +84,7 @@
   }
   function setValues(photoAlbum: PhotoAlbum) {
     title = photoAlbum.title
-    combinedImages = photoAlbum.imageUrls
+    combinedImages = photoAlbum.imageIds
     visible = photoAlbum.visible
     author = photoAlbum.author
     authorUrl = photoAlbum.authorUrl

@@ -4,9 +4,10 @@
   import { onMount } from "svelte"
   import Fa from "svelte-fa"
   import BiggerPictureThumbnails from "./thumbnails.svelte"
+    import byteSize from "byte-size"
 
-  export let thumbnails: string[]
-  export let images: string[]
+  export let thumbnailUrls: string[]
+  export let imageUrls: string[]
   export let id: string
 
   let innerWidth = 0
@@ -14,7 +15,7 @@
   let imageHeights = [] as number[]
 
   $: gridCols = getGridCols(innerWidth)
-  $: gridSpan2 = calculateGridSpans(thumbnails, gridCols)
+  $: gridSpan2 = calculateGridSpans(thumbnailUrls, gridCols)
 
   function getGridCols(screenWidth: number) {
     switch (true) {
@@ -53,10 +54,6 @@
   }
 
   // -- Bigger picture --
-  const minColWidth = 200
-  const maxColWidth = 800
-  const gap = 20
-
   let biggerPictureInstance: BiggerPictureThumbnails
   let imageAnchors: HTMLAnchorElement[]
 
@@ -65,13 +62,13 @@
       target: document.body,
     })
     imageAnchors = Array.from(
-      document.querySelectorAll<HTMLAnchorElement>(`#${id} .imageAnchor`),
+      document.querySelectorAll<HTMLAnchorElement>(`#ID-${id} .imageAnchor`),
     )
   })
 
   function openGallery(e: MouseEvent) {
     imageAnchors = Array.from(
-      document.querySelectorAll<HTMLAnchorElement>(`#${id} .imageAnchor`),
+      document.querySelectorAll<HTMLAnchorElement>(`#ID-${id} .imageAnchor`),
     )
     e.preventDefault()
     biggerPictureInstance.open({
@@ -83,14 +80,14 @@
 
 <svelte:window bind:innerWidth />
 
-<div {id} class="mx-auto w-full">
+<div id={`ID-${id}`} class="mx-auto w-full">
   <a
     class="grid grid-cols-1 min-[425px]:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-8 gap-2 md:gap-4"
   >
-    {#each thumbnails as thumbnail, index}
+    {#each thumbnailUrls as thumbnail, index}
       <a
-        href={images[index]}
-        data-img={images[index]}
+        href={imageUrls[index]}
+        data-img={imageUrls[index]}
         data-thumb={thumbnail}
         on:click={openGallery}
         class="imageAnchor relative flex h-48 items-end overflow-hidden rounded-lg md:h-80"
@@ -103,6 +100,7 @@
           bind:naturalWidth={imageWidths[index]}
           bind:naturalHeight={imageHeights[index]}
         />
+
         <div
           class="flex items-center justify-center w-full h-full bg-base-300 rounded-t-lg"
         >

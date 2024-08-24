@@ -3,7 +3,7 @@ import { PhotoAlbum, photoAlbumConverter, type PhotoAlbumJson } from '$lib/domai
 import { Collections, StorageFolders } from '$lib/firebase/Firebase'
 import generateImageThumbnail from '$lib/generateImageThumbnail/image-thumbnail'
 import { arrayDifference, arraysContainSameElements } from '$lib/utils/Array'
-import { WEBP_IMAGE_QUALITY } from '$lib/utils/Constants'
+import { WEBP_IMAGE_QUALITY, WEBP_THUMBNAIL_QUALITY } from '$lib/utils/Constants'
 import { UploadProgress } from '$lib/utils/UploadProgress'
 import { convertStringToBool } from '$lib/utils/Utils'
 import type { Dayjs } from 'dayjs'
@@ -47,42 +47,45 @@ function createPhotoAlbumStore() {
 	}
 
 	async function createPhotoAlbum(newPhotoAlbum: PhotoAlbum, images: File[], progressStore: Writable<UploadProgress[]>) {
-		const { getStorage, ref, uploadBytes, getDownloadURL } = await import('firebase/storage')
+		const { getStorage, ref, uploadBytes } = await import('firebase/storage')
 		const storage = getStorage()
 
 		// -- Convert and upload images, and replace files with urls(limits the amount of concurent tasks) --
 		progressStore.set(images.map(() => UploadProgress.NOT_STARTED))
 		const limit = pLimit(maxConcurrentUploads)
 
-		const uploadedImageLinks = await Promise.all(images.map(async (image, index) => {
+		let size = 0
+		const uploadedImageIds = await Promise.all(images.map(async (image, index) => {
 			return limit(async () => {
-				// -- First convert to webp --
+				// -- Convert to webp --
 				updateStoreAtIndex(progressStore, index, UploadProgress.CONVERTING)
 				const convertedImage = await blobToWebP(image, { quality: WEBP_IMAGE_QUALITY })
+				size += convertedImage.size
 
-				// -- Next create thumbnail --
+				// -- Create thumbnail --
 				const thumbnail = await generateImageThumbnail(image, {
-					width: 540,
-					height: 540,
+					width: 900,
+					height: 900,
 					maintainAspectRatio: true,
 					type: 'image/webp',
-					quality: 0.5
+					quality: WEBP_THUMBNAIL_QUALITY
 				})
+				size += thumbnail.size
 				updateStoreAtIndex(progressStore, index, UploadProgress.UPLOADING)
 
-				// -- Next upload and replace with url --
+				// -- Upload --
 				const imageId = uuidv4()
 				const storageRefImages = ref(storage, `${StorageFolders.PHOTO_ALBUM_IMAGES}/${imageId}`)
 				const storageRefThumbnails = ref(storage, `${StorageFolders.PHOTO_ALBUM_THUMBNAILS}/${imageId}`)
-				const snapshotPromise = uploadBytes(storageRefThumbnails, thumbnail)
-				const snapshot = await uploadBytes(storageRefImages, convertedImage)
-				const url = await getDownloadURL(snapshot.ref)
-				await snapshotPromise // Upload thumbnail in parallel
+				await Promise.all([
+					uploadBytes(storageRefThumbnails, thumbnail),
+					uploadBytes(storageRefImages, convertedImage)
+				])
 				updateStoreAtIndex(progressStore, index, UploadProgress.DONE)
-				return url
+				return imageId
 			})
 		}))
-		newPhotoAlbum.imageUrls = uploadedImageLinks
+		newPhotoAlbum.imageIds = uploadedImageIds
 
 		// -- Upload photo album --
 		const { getFirestore, collection, doc, setDoc } = await import('firebase/firestore')
@@ -95,6 +98,7 @@ function createPhotoAlbumStore() {
 
 		// -- Update store(new item first) --
 		update((photoAlbums) => ([newPhotoAlbum, ...(photoAlbums || [])]))
+		return size
 	}
 
 	async function updatePhotoAlbum(newTitle: string, newVisible: boolean, newAuthor: string, newAuthorUrl: string, newDate: Dayjs, combinedImages: (string | File)[], photoAlbum: PhotoAlbum, progressStore: Writable<UploadProgress[]>) {
@@ -103,8 +107,8 @@ function createPhotoAlbumStore() {
 
 		// -- Delete images removed by user --
 		const existingImages = combinedImages.filter((e) => typeof e === 'string') as string[]
-		if (!arraysContainSameElements(photoAlbum.imageUrls, existingImages)) {
-			const imagesToRemove = arrayDifference(photoAlbum.imageUrls, existingImages)
+		if (!arraysContainSameElements(photoAlbum.imageIds, existingImages)) {
+			const imagesToRemove = arrayDifference(photoAlbum.imageIds, existingImages)
 			await Promise.all(imagesToRemove.map(async (image) => {
 				try {
 					const imageRef = ref(storage, image)
@@ -121,25 +125,38 @@ function createPhotoAlbumStore() {
 		progressStore.set(combinedImages.map(() => UploadProgress.NOT_STARTED))
 		const limit = pLimit(maxConcurrentUploads)
 
-		const newImages = await Promise.all(combinedImages.map(async (image, index) => {
+		const uploadedImageIds = await Promise.all(combinedImages.map(async (image, index) => {
 			return limit(async () => {
 				// -- Keep existing url --
 				if (!(image instanceof File)) {
 					updateStoreAtIndex(progressStore, index, UploadProgress.DONE)
 					return image
 				}
-				updateStoreAtIndex(progressStore, index, UploadProgress.CONVERTING)
 
-				// -- First convert to webp --
+				// -- Convert to webp --
+				updateStoreAtIndex(progressStore, index, UploadProgress.CONVERTING)
 				const convertedImage = await blobToWebP(image, { quality: WEBP_IMAGE_QUALITY })
+
+				// -- Create thumbnail --
+				const thumbnail = await generateImageThumbnail(image, {
+					width: 540,
+					height: 540,
+					maintainAspectRatio: true,
+					type: 'image/webp',
+					quality: WEBP_THUMBNAIL_QUALITY
+				})
 				updateStoreAtIndex(progressStore, index, UploadProgress.UPLOADING)
 
-				// -- Next upload and replace with url --
-				const storageRef = ref(storage, `${StorageFolders.PHOTO_ALBUM_IMAGES}/${uuidv4()}`)
-				const snapshot = await uploadBytes(storageRef, convertedImage)
-				const url = await getDownloadURL(snapshot.ref)
+				// -- Upload --
+				const imageId = uuidv4()
+				const storageRefImages = ref(storage, `${StorageFolders.PHOTO_ALBUM_IMAGES}/${imageId}`)
+				const storageRefThumbnails = ref(storage, `${StorageFolders.PHOTO_ALBUM_THUMBNAILS}/${imageId}`)
+				await Promise.all([
+					uploadBytes(storageRefThumbnails, thumbnail),
+					uploadBytes(storageRefImages, convertedImage)
+				])
 				updateStoreAtIndex(progressStore, index, UploadProgress.DONE)
-				return url
+				return imageId
 			})
 		}))
 
@@ -154,7 +171,7 @@ function createPhotoAlbumStore() {
 			visible: newVisible,
 			author: newAuthor,
 			authorUrl: newAuthorUrl,
-			imageUrls: newImages
+			imageIds: uploadedImageIds
 		})
 
 		// -- Update store --
@@ -162,7 +179,7 @@ function createPhotoAlbumStore() {
 		photoAlbum.visible = newVisible
 		photoAlbum.author = newAuthor
 		photoAlbum.authorUrl = newAuthorUrl
-		photoAlbum.imageUrls = newImages
+		photoAlbum.imageIds = uploadedImageIds
 
 		photoAlbum.updateSearchableString()
 		update((photoAlbums) => [...photoAlbums])
@@ -173,7 +190,18 @@ function createPhotoAlbumStore() {
 		const { getStorage, ref, deleteObject } = await import('firebase/storage')
 		const storage = getStorage()
 
-		await Promise.all(photoAlbum.imageUrls.map(async (image) => {
+		await Promise.all(photoAlbum.getImageUrls().map(async (image) => {
+			try {
+				const storageRef = ref(storage, image)
+				await deleteObject(storageRef)
+			} catch (error: any) {
+				// Not existing images can be safely ignored
+				if (error.code !== 'storage/object-not-found')
+					throw error
+			}
+		}))
+
+		await Promise.all(photoAlbum.getThumbnailUrls().map(async (image) => {
 			try {
 				const storageRef = ref(storage, image)
 				await deleteObject(storageRef)
