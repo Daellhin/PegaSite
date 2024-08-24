@@ -9,6 +9,7 @@
   import { PreviewableFile } from "$lib/utils/PreviewableFile"
   import { pushCreatedToast } from "$lib/utils/Toast"
   import type { UploadProgress } from "$lib/utils/UploadProgress"
+  import byteSize from "byte-size"
   import type { Dayjs } from "dayjs"
   import dayjs from "dayjs"
   import { writable } from "svelte/store"
@@ -38,10 +39,14 @@
       [],
       visible,
     )
-    await photoAlbumStore.createPhotoAlbum(newPhotoAlbum, images, progressStore)
-    combinedImages = newPhotoAlbum.imageUrls
-    pushCreatedToast("Fotoalbum aangemaakt", {
-      gotoUrl: `/photos/#${newPhotoAlbum.id}`,
+    const size = await photoAlbumStore.createPhotoAlbum(
+      newPhotoAlbum,
+      images,
+      progressStore,
+    )
+    combinedImages = newPhotoAlbum.imageIds
+    pushCreatedToast(`Fotoalbum aangemaakt (${byteSize(size)})`, {
+      gotoUrl: `/photos/#${newPhotoAlbum.id}`,  
     })
   }
 

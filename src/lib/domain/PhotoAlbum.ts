@@ -1,3 +1,4 @@
+import { StorageFolders } from "$lib/firebase/Firebase"
 import dayjs, { type Dayjs } from "dayjs"
 import { Timestamp, type FirestoreDataConverter } from "firebase/firestore"
 
@@ -8,7 +9,7 @@ export interface PhotoAlbumJson {
     author: string
     authorUrl: string
     title: string
-    imageUrls: string[]
+    imageIds: string[]
     visible: boolean
 }
 
@@ -22,7 +23,7 @@ export class PhotoAlbum {
         public author: string,
         public authorUrl: string,
         public title: string,
-        public imageUrls: string[],
+        public imageIds: string[],
         public visible: boolean
     ) {
         this.updateSearchableString()
@@ -45,6 +46,16 @@ export class PhotoAlbum {
             .includes(false)
     }
 
+    getImageUrls() {
+        const firebaseStorageUrl = "https://firebasestorage.googleapis.com/v0/b/pega-site.appspot.com/o/"
+        return this.imageIds.map((e) => `${firebaseStorageUrl}${StorageFolders.PHOTO_ALBUM_IMAGES}%2F${e}?alt=media`)
+    }
+
+    getThumbnailUrls() {
+        const firebaseStorageUrl = "https://firebasestorage.googleapis.com/v0/b/pega-site.appspot.com/o/"
+        return this.imageIds.map((e) => `${firebaseStorageUrl}${StorageFolders.PHOTO_ALBUM_THUMBNAILS}%2F${e}?alt=media`)
+    }
+
     static fromJson(id: string, json: PhotoAlbumJson) {
         return new PhotoAlbum(
             id,
@@ -53,7 +64,7 @@ export class PhotoAlbum {
             json.author,
             json.authorUrl,
             json.title,
-            json.imageUrls,
+            json.imageIds,
             json.visible
         )
     }
@@ -64,7 +75,7 @@ export class PhotoAlbum {
             author: this.author,
             authorUrl: this.authorUrl,
             title: this.title,
-            imageUrls: this.imageUrls,
+            imageIds: this.imageIds,
             visible: this.visible,
         } as PhotoAlbumJson
     }

@@ -14,18 +14,20 @@
   } from "@fortawesome/free-solid-svg-icons"
   import "bigger-picture/css"
   import JSZip from "jszip"
+  import pLimit from "p-limit"
   import { onMount } from "svelte"
-  import Masonry from "svelte-bricks"
   import Fa from "svelte-fa"
   import Time from "svelte-time/Time.svelte"
-  import BiggerPictureThumbnails from "./thumbnails.svelte"
 
   import pkg from "file-saver"
-  import pLimit from "p-limit"
+  import ImageGallery from "./ImageGallery.svelte"
   const { saveAs } = pkg
 
   export let photoAlbum: PhotoAlbum
   export let preview = false
+
+  $: imageUrls = photoAlbum.getImageUrls()
+  $: thumbnailUrls = photoAlbum.getThumbnailUrls()
 
   // -- Delete --
   const confirmModalID = "confirmPhotoAlbumDelete"
@@ -41,39 +43,6 @@
     pushCreatedToast(`Photoalbum "${title}" verwijderd`)
   }
 
-  // -- Bigger picture --
-  const minColWidth = 200
-  const maxColWidth = 800
-  const gap = 20
-
-  let biggerPictureInstance: BiggerPictureThumbnails
-  let imageAnchors: HTMLAnchorElement[]
-  let innerWidth: number
-
-  onMount(() => {
-    biggerPictureInstance = new BiggerPictureThumbnails({
-      target: document.body,
-    })
-    imageAnchors = Array.from(
-      document.querySelectorAll<HTMLAnchorElement>(
-        `.imageAnchor.ID-${photoAlbum.id}`,
-      ),
-    )
-  })
-
-  function openGallery(e: MouseEvent) {
-    imageAnchors = Array.from(
-      document.querySelectorAll<HTMLAnchorElement>(
-        `.imageAnchor.ID-${photoAlbum.id}`,
-      ),
-    )
-    e.preventDefault()
-    biggerPictureInstance.open({
-      items: imageAnchors,
-      el: e.currentTarget!,
-    })
-  }
-
   // -- Download --
   let downloading = false
   let amountFinished = 0
@@ -86,7 +55,7 @@
     const limit = pLimit(4)
 
     await Promise.all(
-      photoAlbum.imageUrls.map(async (url, index) => {
+      imageUrls.map(async (url, index) => {
         return limit(async () => {
           const response = await fetch(url)
           const blob = await response.blob()
@@ -111,8 +80,6 @@
   })
 </script>
 
-<svelte:window bind:innerWidth />
-
 <div class="mb-4" id={photoAlbum.id}>
   <!-- Title -->
   <div class="flex">
@@ -135,8 +102,8 @@
         <Fa icon={faImage} />
       </div>
       <span class="opacity-60"
-        >{photoAlbum.imageUrls.length}
-        {photoAlbum.imageUrls.length > 1 ? "afbeeldingen" : "afbeelding"}</span
+        >{imageUrls.length}
+        {imageUrls.length > 1 ? "afbeeldingen" : "afbeelding"}</span
       >
     </div>
     {#if photoAlbum.author}
@@ -157,13 +124,13 @@
       <div class="flex gap-1 items-center shrink-0 h-auto">
         <progress
           class="progress progress-primary w-56 mt-1 ml-2"
-          value={(amountFinished / photoAlbum.imageUrls.length) * 100}
+          value={(amountFinished / imageUrls.length) * 100}
           max={100}
           title="Downloaden"
-        ></progress>
-        <span class="font-semibold ml-2"
-          >{amountFinished} / {photoAlbum.imageUrls.length}</span
-        >
+        />
+        <span class="font-semibold ml-2">
+          {amountFinished} / {imageUrls.length}
+        </span>
         Voltooid
       </div>
     {/if}
@@ -186,38 +153,18 @@
   </div>
 
   <!-- Images -->
-  <!-- <div class="mt-2">
+  <div class="mt-2">
     <ShowMore startHeightPx={innerWidth < 472 ? 700 : 500}>
-      <Masonry
-        items={photoAlbum.imageUrls}
-        {minColWidth}
-        {maxColWidth}
-        {gap}
-        let:item
-      >
-        <a
-          class={`imageAnchor ID-${photoAlbum.id}`}
-          href={item}
-          data-img={item}
-          data-thumb={item}
-          on:click={openGallery}
-        >
-          <img
-            src={item}
-            class="h-full w-full object-cover object-center rounded-lg"
-            loading="lazy"
-          />
-        </a>
-      </Masonry>
+      <ImageGallery {thumbnailUrls} id={photoAlbum.id} {imageUrls} />
     </ShowMore>
-  </div> -->
+  </div>
 </div>
 
 <ConfirmModal {confirmModalID} onConfirm={deletePhotoAlbum} bind:showModal>
   Bent u zeker dat u het <span class="font-semibold">"{photoAlbum.title}"</span>
   fotoalbum en
-  <span class="font-semibold">"{photoAlbum.imageUrls.length}"</span> geasocierde
-  fotos wilt verwijderen?
+  <span class="font-semibold">"{imageUrls.length}"</span> geasocierde fotos wilt
+  verwijderen?
 </ConfirmModal>
 
 <style lang="postcss">

@@ -9,7 +9,7 @@
   $: contentFits = clientHeight <= startHeightPx
 </script>
 
-<div class={"flex flex-col w-fit h-fit " + classList}>
+<div class={"flex flex-col " + classList}>
   <div
     class="overflow-hidden"
     style={`max-height: ${showMore ? "none" : startHeightPx + "px"}`}

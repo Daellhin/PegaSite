@@ -1,13 +1,13 @@
 <script lang="ts">
-  import InfoCard from "$components/alerts/InfoCard.svelte"
   import PhotoAlbumViewer from "$components/photoAlbum/PhotoAlbumViewer.svelte"
   import { authStore } from "$lib/stores/AuthStore"
   import { pageHeadStore } from "$lib/stores/PageHeadStore"
   import { photoAlbumStore } from "$lib/stores/PhotoAlbumStore"
   import "bigger-picture/css"
 
-  $: photoAlbums = $photoAlbumStore || []
-  $: filteredPhotoAlbums = photoAlbums.filter((e) => e.visible)
+  $: photoAlbums = ($photoAlbumStore || [])
+    .filter((e) => e.visible)
+    .sort((a, b) => (a.date.isAfter(b.date) ? 1 : -1))
 
   // -- Page title --
   pageHeadStore.updatePageTitle("Foto's")
@@ -23,36 +23,30 @@
   {/await}
 </div>
 
-<InfoCard class="w-full mb-2">
-  <div>
-    <h3 class="font-bold">🚧Pagina in aanbouw🚧</h3>
-    <div class="text-xs">
-      Foto's kunnen nog niet beken worden, enkel administrators kunnen albums
-      downloaden
-    </div>
-  </div>
-</InfoCard>
-
 {#if $photoAlbumStore}
-  <ul class="menu bg-base-200 rounded-box mb-4">
-    <li>
-      <h2 class="menu-title">Albums</h2>
-      <ul>
-        {#each filteredPhotoAlbums as photoAlbum}
-          <li>
-            <a
-              class="btn btn-ghost h-9 min-h-min justify-start w-fit"
-              href={"#" + photoAlbum.id}>{photoAlbum.title}</a
-            >
-          </li>
-        {/each}
-      </ul>
-    </li>
-  </ul>
+  {#if photoAlbums.length > 0}
+    <ul class="menu bg-base-200 rounded-box mb-4">
+      <li>
+        <h2 class="menu-title">Albums</h2>
+        <ul>
+          {#each photoAlbums as photoAlbum}
+            <li>
+              <a
+                class="btn btn-ghost h-9 min-h-min justify-start w-fit"
+                href={"#" + photoAlbum.id}>{photoAlbum.title}</a
+              >
+            </li>
+          {/each}
+        </ul>
+      </li>
+    </ul>
 
-  {#each filteredPhotoAlbums as photoAlbum}
-    <PhotoAlbumViewer {photoAlbum} />
-  {/each}
+    {#each photoAlbums as photoAlbum}
+      <PhotoAlbumViewer {photoAlbum} />
+    {/each}
+  {:else}
+    Geen foto albums
+  {/if}
 {:else}
   Loading
 {/if}

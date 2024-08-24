@@ -33,6 +33,7 @@ export class Collections {
 export class StorageFolders {
     static readonly ARTICLE_IMAGES = "article-images"
     static readonly PHOTO_ALBUM_IMAGES = "photo-album-images"
+    static readonly PHOTO_ALBUM_THUMBNAILS = "photo-album-thumbnails"
     static readonly SPONSOR_IMAGES = "sponsor-images"
     static readonly PAGE_IMAGES = "page-images"
 }
