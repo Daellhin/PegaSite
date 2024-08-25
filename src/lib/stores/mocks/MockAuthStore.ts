@@ -5,9 +5,7 @@ import type { User } from 'firebase/auth'
 import { writable } from 'svelte/store'
 
 export function createMockAuthStore() {
-    const store = writable<User | null>(undefined, set => {
-        set({} as User)
-    })
+    const store = writable<User | null>({} as User)
     const { subscribe, update } = store
 
     const known = Promise.resolve()

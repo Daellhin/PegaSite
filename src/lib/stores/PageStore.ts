@@ -165,6 +165,7 @@ function createPageStore() {
 }
 
 const useMock = convertStringToBool(import.meta.env.VITE_USEMOCKING)
+if (useMock) console.warn("Mocking is on")
 export const pageStore = useMock ?
 	createMockPageStore() :
 	createPageStore()

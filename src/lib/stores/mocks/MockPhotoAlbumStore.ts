@@ -1,44 +1,71 @@
-import { ARTICLES_JSON } from '$data/ArticlesJson'
-import { Article } from '$lib/domain/Article'
+import { PhotoAlbum } from '$lib/domain/PhotoAlbum'
+import { UploadProgress } from '$lib/utils/UploadProgress'
+import { sleep } from '$lib/utils/Utils'
 import type { Dayjs } from 'dayjs'
-import { get, writable } from 'svelte/store'
+import saveAs from 'file-saver'
+import JSZip from 'jszip'
+import pLimit from 'p-limit'
+import type { Writable } from 'svelte/store'
+import { writable } from 'svelte/store'
 
-export function createMockArticleStore() {
-    const innerStore = writable<Article[]>(undefined, set => {
-        const articles = ARTICLES_JSON.map(Article.fromJson)
-        set(articles)
-    })
-    const { subscribe, update } = innerStore
+export function createMockPhotoAlbumStore() {
+	const maxConcurrentUploads = 4
 
-    const known = Promise.resolve()
+	const store = writable<(PhotoAlbum)[]>([])
+	const { subscribe, update } = store
 
-    async function loadMoreArticles() {
-        return
-    }
-    async function createArticle(newArticle: Article, _images: File[]) {
-        update((articles) => ([newArticle, ...articles]))
-    }
-    async function getArticleById(id: string) {
-        const exsistingArticle = get(innerStore).find((e) => e.id === id)
-        return exsistingArticle || null
-    }
-    async function updateArticle(_newAuthors: string[], _newTags: string[], _newTitle: string, _newContent: string, _lastUpdate: Dayjs, _combinedImages: (string | File)[], _visible:boolean, _article: Article) {
-    }
-    async function deleteArticle(article: Article) {
-        update((articles) => (articles.filter((e) => e.id !== article.id)))
-    }
-    function updateVisibility(article: Article) {
-        update((articles) => [...articles])
-    }
+	async function createPhotoAlbum(newPhotoAlbum: PhotoAlbum, images: File[], progressStore: Writable<UploadProgress[]>) {
+		update((photoAlbums) => ([newPhotoAlbum, ...(photoAlbums || [])]))
+		return 0
+	}
 
-    return {
-        subscribe,
-        loadMoreArticles,
-        createArticle,
-        getArticleById,
-        updateArticle,
-        updateVisibility,
-        deleteArticle,
-        known
-    }
+	async function updatePhotoAlbum(newTitle: string, newVisible: boolean, newAuthor: string, newAuthorUrl: string, newDate: Dayjs, combinedImages: (string | File)[], photoAlbum: PhotoAlbum, progressStore: Writable<UploadProgress[]>) {
+		const existingImages = combinedImages.filter((e) => typeof e === 'string') as string[]
+
+		photoAlbum.title = newTitle
+		photoAlbum.visible = newVisible
+		photoAlbum.author = newAuthor
+		photoAlbum.authorUrl = newAuthorUrl
+		photoAlbum.date = newDate
+		photoAlbum.imageIds = existingImages
+		photoAlbum.updateSearchableString()
+
+		update((photoAlbums) => [...photoAlbums])
+	}
+
+	async function deletePhotoAlbum(photoAlbum: PhotoAlbum) {
+		await sleep(1000)
+		update((photoAlbums) => (photoAlbums.filter((e) => e.id !== photoAlbum.id)))
+	}
+
+	async function updateVisibility(photoAlbum: PhotoAlbum) {
+		photoAlbum.updateSearchableString()
+		await sleep(1000)
+		update((photoAlbums) => [...photoAlbums])
+	}
+
+	async function downloadZip(photoAlbum: PhotoAlbum, progressStore: Writable<number>) {
+		progressStore.set(0)
+		const zip = new JSZip()
+		const limit = pLimit(4)
+
+		await Promise.all(
+			photoAlbum.getImageUrls().map(async (url, index) => limit(async () => {
+				await sleep(1000)
+				progressStore.update((progress) => progress + 1)
+			}))
+		)
+
+		const content = await zip.generateAsync({ type: "blob" })
+		saveAs(content, `${photoAlbum.title}.zip`)
+	}
+
+	return {
+		subscribe,
+		createPhotoAlbum,
+		updatePhotoAlbum,
+		updateVisibility,
+		deletePhotoAlbum,
+		downloadZip
+	}
 }

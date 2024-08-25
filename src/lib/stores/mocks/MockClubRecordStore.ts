@@ -9,10 +9,7 @@ import type { Dayjs } from 'dayjs'
 import { writable } from 'svelte/store'
 
 export function createMockClubRecordStore() {
-	const store = writable<ClubRecord[]>(undefined, set => {
-		const clubRecords = CLUB_RECORDS_JSON.map(ClubRecord.fromJSON)
-		set(clubRecords)
-	})
+	const store = writable<ClubRecord[]>(CLUB_RECORDS_JSON.map(ClubRecord.fromJSON))
 	const { subscribe, update } = store
 
 	async function createClubRecord(discipline: Discipline, category: Category, gender: Gender, athleticEvent: AthleticEvent, newRecordInstance: RecordInstance) {

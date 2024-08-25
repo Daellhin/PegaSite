@@ -4,10 +4,7 @@ import type { Dayjs } from 'dayjs'
 import { get, writable } from 'svelte/store'
 
 export function createMockCalendarEventStore() {
-    const store = writable<CalendarEvent[]>(undefined, set => {
-        const calendarEvents = EVENTS_JSON.map(CalendarEvent.fromJson)
-        set(calendarEvents)
-    })
+    const store = writable<CalendarEvent[]>(EVENTS_JSON.map(CalendarEvent.fromJson))
     const { subscribe, update } = store
 
     async function createCalendarEvent(newCalendarEvent: CalendarEvent) {
