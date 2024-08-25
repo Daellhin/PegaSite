@@ -13,15 +13,11 @@
     faImage,
   } from "@fortawesome/free-solid-svg-icons"
   import "bigger-picture/css"
-  import JSZip from "jszip"
-  import pLimit from "p-limit"
   import { onMount } from "svelte"
   import Fa from "svelte-fa"
   import Time from "svelte-time/Time.svelte"
-
-  import pkg from "file-saver"
+  import { writable } from "svelte/store"
   import ImageGallery from "./ImageGallery.svelte"
-  const { saveAs } = pkg
 
   export let photoAlbum: PhotoAlbum
   export let preview = false
@@ -45,37 +41,23 @@
 
   // -- Download --
   let downloading = false
-  let amountFinished = 0
+  let progressStore = writable(0)
 
   async function downloadHandler() {
     ;(document.activeElement as HTMLElement).blur()
     downloading = true
-    amountFinished = 0
-    const zip = new JSZip()
-    const limit = pLimit(4)
-
-    await Promise.all(
-      imageUrls.map(async (url, index) => {
-        return limit(async () => {
-          const response = await fetch(url)
-          const blob = await response.blob()
-          amountFinished++
-          zip.file(`image${index + 1}.webp`, blob)
-        })
-      }),
-    )
-
-    const content = await zip.generateAsync({ type: "blob" })
-    saveAs(content, `${photoAlbum.title}.zip`)
+    try {
+      await photoAlbumStore.downloadZip(photoAlbum, progressStore)
+    } catch (error) {
+      console.error(error)
+    }
     downloading = false
   }
 
   onMount(() => {
     // Prevent user accidentally leaving page when album is downloading
     window.addEventListener("beforeunload", (e) => {
-      if (downloading) {
-        e.preventDefault()
-      }
+      if (downloading) e.preventDefault()
     })
   })
 </script>
@@ -124,12 +106,12 @@
       <div class="flex gap-1 items-center shrink-0 h-auto">
         <progress
           class="progress progress-primary w-56 mt-1 ml-2"
-          value={(amountFinished / imageUrls.length) * 100}
+          value={($progressStore / imageUrls.length) * 100}
           max={100}
           title="Downloaden"
         />
         <span class="font-semibold ml-2">
-          {amountFinished} / {imageUrls.length}
+          {$progressStore} / {imageUrls.length}
         </span>
         Voltooid
       </div>

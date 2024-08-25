@@ -7,6 +7,8 @@ import { WEBP_IMAGE_QUALITY, WEBP_THUMBNAIL_QUALITY } from '$lib/utils/Constants
 import { UploadProgress } from '$lib/utils/UploadProgress'
 import { convertStringToBool } from '$lib/utils/Utils'
 import type { Dayjs } from 'dayjs'
+import saveAs from 'file-saver'
+import JSZip from 'jszip'
 import pLimit from 'p-limit'
 import type { Writable } from 'svelte/store'
 import { writable } from 'svelte/store'
@@ -241,12 +243,33 @@ function createPhotoAlbumStore() {
 		update((photoAlbums) => [...photoAlbums])
 	}
 
+	async function downloadZip(photoAlbum: PhotoAlbum, progressStore: Writable<number>) {
+		progressStore.set(0)
+		const zip = new JSZip()
+		const limit = pLimit(4)
+
+		await Promise.all(
+			photoAlbum.getImageUrls().map(async (url, index) => {
+				return limit(async () => {
+					const response = await fetch(url)
+					const blob = await response.blob()
+					progressStore.update((progress) => progress + 1)
+					zip.file(`afbeelding${index + 1}.webp`, blob)
+				})
+			}),
+		)
+
+		const content = await zip.generateAsync({ type: "blob" })
+		saveAs(content, `${photoAlbum.title}.zip`)
+	}
+
 	return {
 		subscribe,
 		createPhotoAlbum,
 		updatePhotoAlbum,
 		updateVisibility,
 		deletePhotoAlbum,
+		downloadZip
 	}
 }
 
