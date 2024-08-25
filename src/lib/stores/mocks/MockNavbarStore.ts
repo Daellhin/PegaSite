@@ -9,9 +9,7 @@ export function createMockNavbarStore() {
 		set(links)
 	})
 	const { subscribe, update } = store
-	/**
-	 * Also creates apropriate page
-	 */
+
 	async function createLink(link: Link, group: LinkGroup) {
 		group.links.push(link)
 		update((linkGroups) => [...linkGroups])
@@ -30,9 +28,6 @@ export function createMockNavbarStore() {
 	async function updateLinkOrder(linkGroup: LinkGroup, newLinks: Link[]) {
 		update((linkGroups) => [...linkGroups])
 	}
-	/**
-	 * Also deletes apropriate page
-	 */
 	async function deleteLink(link: Link, group: LinkGroup) {
 		pageStore.deletePage(link.getId())
 		group.links = group.links.filter((e) => e !== link)

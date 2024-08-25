@@ -131,6 +131,7 @@ function createAuthStore() {
 }
 
 const useMock = convertStringToBool(import.meta.env.VITE_USEMOCKING)
+if (useMock) console.warn("Mocking is on")
 /**
  * Store that handles authentication, and profile updates for current user
  */

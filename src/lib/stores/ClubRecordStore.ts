@@ -155,6 +155,7 @@ function createClubRecordStore() {
 }
 
 const useMock = convertStringToBool(import.meta.env.VITE_USEMOCKING)
+if (useMock) console.warn("Mocking is on")
 export const clubRecordStore = useMock ?
 	createMockClubRecordStore() :
 	createClubRecordStore()

@@ -1,4 +1,4 @@
-import { StorageFolders } from "$lib/firebase/Firebase"
+import { createFirebaseStorageUrl, StorageFolders } from "$lib/firebase/Firebase"
 import dayjs, { type Dayjs } from "dayjs"
 import { Timestamp, type FirestoreDataConverter } from "firebase/firestore"
 
@@ -47,13 +47,11 @@ export class PhotoAlbum {
     }
 
     getImageUrls() {
-        const firebaseStorageUrl = "https://firebasestorage.googleapis.com/v0/b/pega-site.appspot.com/o/"
-        return this.imageIds.map((e) => `${firebaseStorageUrl}${StorageFolders.PHOTO_ALBUM_IMAGES}%2F${e}?alt=media`)
+        return this.imageIds.map((e) => createFirebaseStorageUrl(StorageFolders.PHOTO_ALBUM_IMAGES, e))
     }
 
     getThumbnailUrls() {
-        const firebaseStorageUrl = "https://firebasestorage.googleapis.com/v0/b/pega-site.appspot.com/o/"
-        return this.imageIds.map((e) => `${firebaseStorageUrl}${StorageFolders.PHOTO_ALBUM_THUMBNAILS}%2F${e}?alt=media`)
+        return this.imageIds.map((e) => createFirebaseStorageUrl(StorageFolders.PHOTO_ALBUM_THUMBNAILS, e))
     }
 
     static fromJson(id: string, json: PhotoAlbumJson) {

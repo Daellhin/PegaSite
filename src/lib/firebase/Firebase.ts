@@ -37,3 +37,9 @@ export class StorageFolders {
     static readonly SPONSOR_IMAGES = "sponsor-images"
     static readonly PAGE_IMAGES = "page-images"
 }
+
+export const FIRBASE_STORAGE_URL = "https://firebasestorage.googleapis.com/v0/b/pega-site.appspot.com/o/"
+
+export function createFirebaseStorageUrl(storageFolder: string, fileName: string) {
+    return `${FIRBASE_STORAGE_URL}${storageFolder}%2F${fileName}?alt=media`
+}

@@ -6,6 +6,8 @@ import { WEBP_IMAGE_QUALITY } from '$lib/utils/Constants'
 import { get, writable } from 'svelte/store'
 import { v4 as uuidv4 } from "uuid"
 import { blobToWebP } from 'webp-converter-browser'
+import { createMockSponsorStore } from './mocks/MockSponsorStore'
+import { convertStringToBool } from '$lib/utils/Utils'
 
 function createSponsorStore() {
 	const store = writable<(Sponsor)[]>(undefined, set => {
@@ -182,4 +184,8 @@ function createSponsorStore() {
 	}
 }
 
-export const sponsorStore = createSponsorStore()
+const useMock = convertStringToBool(import.meta.env.VITE_USEMOCKING)
+if (useMock) console.warn("Mocking is on")
+export const sponsorStore = useMock ?
+	createMockSponsorStore() :
+	createSponsorStore()

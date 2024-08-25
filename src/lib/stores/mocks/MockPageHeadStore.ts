@@ -5,10 +5,7 @@ import dayjs from 'dayjs'
 import { get, writable } from 'svelte/store'
 
 export function createMockPageStore() {
-	const innerStore = writable<Page[]>(undefined, set => {
-		const pages = PAGES_JSON.map(Page.fromJson)
-		set(pages)
-	})
+	const innerStore = writable<Page[]>(PAGES_JSON.map(Page.fromJson))
 	const { subscribe, update } = innerStore
 
 	async function createBlankPage(id: string, title: string) {

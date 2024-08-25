@@ -43,3 +43,11 @@ export function getMapValues<K, V>(map: Map<K, V[]> | undefined) {
 	if (!map) return undefined
 	return Array.from(map).map(([, value]) => value)
 }
+
+export function partition<T>(array: T[], predicate: (e: T) => boolean) {
+	const pass = [] as T[]
+	const fail = [] as T[]
+	array.forEach((e) => (predicate(e) ? pass : fail).push(e))
+	return [pass, fail]
+  }
+  

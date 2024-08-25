@@ -2,7 +2,9 @@ import { browser } from '$app/environment'
 import { Announcement, announcementConverter, type AnnouncementJson } from '$lib/domain/Announcement'
 import type { OrderingJson } from '$lib/domain/Ordering'
 import { Collections } from '$lib/firebase/Firebase'
+import { convertStringToBool } from '$lib/utils/Utils'
 import { writable } from 'svelte/store'
+import { createMockAnnouncementStore } from './mocks/MockAnnouncementStore'
 
 function createAnnouncementStore() {
 	const store = writable<(Announcement)[]>(undefined, set => {
@@ -50,7 +52,7 @@ function createAnnouncementStore() {
 		update((anouncements) => ([...anouncements, announcement]))
 	}
 
-	async function updateAnnouncement(newTitle: string, newContent: string, newVisible:boolean, newDismissable: boolean, announcement: Announcement) {
+	async function updateAnnouncement(newTitle: string, newContent: string, newVisible: boolean, newDismissable: boolean, announcement: Announcement) {
 		// -- Update Announcement --
 		const { getFirestore, doc, updateDoc } = await import('firebase/firestore')
 		const { firebaseApp } = await import('$lib/firebase/Firebase')
@@ -143,4 +145,8 @@ function createAnnouncementStore() {
 	}
 }
 
-export const announcementStore = createAnnouncementStore()
+const useMock = convertStringToBool(import.meta.env.VITE_USEMOCKING)
+if (useMock) console.warn("Mocking is on")
+export const announcementStore = useMock ?
+	createMockAnnouncementStore() :
+	createAnnouncementStore()
