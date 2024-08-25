@@ -23,11 +23,11 @@ export function createMockClubRecordStore() {
 			return [...clubRecords]
 		})
 	}
-	async function deleteRecordInstance(recordInstance: RecordInstance) {
+	async function deleteRecordInstance(_recordInstance: RecordInstance) {
 	}
-	async function approveRecordInstance(recordInstance: RecordInstance) {
+	async function approveRecordInstance(_recordInstance: RecordInstance) {
 	}
-	async function updateRecordInstance(discipline: Discipline, category: Category, gender: Gender, athleticEvent: AthleticEvent, name: string, result: string, location: string, date: Dayjs, recordInstance: RecordInstance) {
+	async function updateRecordInstance(_discipline: Discipline, _category: Category, _gender: Gender, _athleticEvent: AthleticEvent, _name: string, _result: string, _location: string, _date: Dayjs, _recordInstance: RecordInstance) {
 	}
 
 	return {

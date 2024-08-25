@@ -4,7 +4,6 @@
   import { onMount } from "svelte"
   import Fa from "svelte-fa"
   import BiggerPictureThumbnails from "./thumbnails.svelte"
-  import byteSize from "byte-size"
 
   export let thumbnailUrls: string[]
   export let imageUrls: string[]

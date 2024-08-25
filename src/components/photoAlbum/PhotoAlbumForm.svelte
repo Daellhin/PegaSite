@@ -1,13 +1,12 @@
 <script lang="ts">
+  import SuccesCard from "$components/alerts/SuccesCard.svelte"
   import Checkbox from "$components/formHelpers/Checkbox.svelte"
   import Dropzone from "$components/formHelpers/Dropzone.svelte"
   import Input from "$components/formHelpers/Input.svelte"
-  import InfoCard from "$components/alerts/InfoCard.svelte"
   import { handleFirebaseError } from "$lib/utils/Firebase"
   import type { UploadProgress } from "$lib/utils/UploadProgress"
   import type { Dayjs } from "dayjs"
   import { onMount } from "svelte"
-    import SuccesCard from "$components/alerts/SuccesCard.svelte"
 
   export let title = ""
   export let combinedImages: (string | File)[] = []

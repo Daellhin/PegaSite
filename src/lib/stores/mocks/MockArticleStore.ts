@@ -24,7 +24,7 @@ export function createMockArticleStore() {
     async function deleteArticle(article: Article) {
         update((articles) => (articles.filter((e) => e.id !== article.id)))
     }
-    function updateVisibility(article: Article) {
+    function updateVisibility(_article: Article) {
         update((articles) => [...articles])
     }
 

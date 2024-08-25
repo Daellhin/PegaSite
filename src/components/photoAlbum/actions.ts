@@ -1,4 +1,4 @@
-let resizeObserver: ResizeObserver;
+let resizeObserver: ResizeObserver
 
 export function resize(node: Element) {
   if (!resizeObserver) {
@@ -14,8 +14,8 @@ export function resize(node: Element) {
       })
     })
   }
-  
-  resizeObserver.observe(node);
+
+  resizeObserver.observe(node)
   return {
     destroy() {
       resizeObserver.unobserve(node)

@@ -131,7 +131,7 @@ function createNavbarStore() {
 			}))
 
 		// -- Update store --
-		update((linkGroups) => [...newLinkGroups])
+		update(() => [...newLinkGroups])
 	}
 
 	async function updateLinkOrder(linkGroup: LinkGroup, newLinks: Link[]) {
@@ -157,7 +157,7 @@ function createNavbarStore() {
 		// -- Update links orders --
 		const linksToUpdate = arrayIntersection(linkGroup.links, newLinks)
 		const linksToUpdatePromise = linksToUpdate
-			.filter((link, i) => link.order !== newLinks.indexOf(link))
+			.filter((link) => link.order !== newLinks.indexOf(link))
 			.map(async (link, i) => {
 				const key = `${linkGroup.name}.links.${link.title}.order`
 				return await updateDoc(linksRef, {

@@ -1,8 +1,7 @@
 <script lang="ts">
   import { goto } from "$app/navigation"
   import AnnouncementForm from "$components/announcements/AnnouncementForm.svelte"
-    import AnnouncementTable from "$components/announcements/AnnouncementTable.svelte"
-  import AnnounementComponent from "$components/announcements/AnnounementComponent.svelte"
+  import AnnouncementTable from "$components/announcements/AnnouncementTable.svelte"
   import { Announcement } from "$lib/domain/Announcement"
   import { authStore } from "$lib/stores/AuthStore"
   import { pageHeadStore } from "$lib/stores/PageHeadStore"

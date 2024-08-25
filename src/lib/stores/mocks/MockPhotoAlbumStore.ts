@@ -9,17 +9,17 @@ import type { Writable } from 'svelte/store'
 import { writable } from 'svelte/store'
 
 export function createMockPhotoAlbumStore() {
-	const maxConcurrentUploads = 4
+	//const maxConcurrentUploads = 4
 
 	const store = writable<(PhotoAlbum)[]>([])
 	const { subscribe, update } = store
 
-	async function createPhotoAlbum(newPhotoAlbum: PhotoAlbum, images: File[], progressStore: Writable<UploadProgress[]>) {
+	async function createPhotoAlbum(newPhotoAlbum: PhotoAlbum, _images: File[], _progressStore: Writable<UploadProgress[]>) {
 		update((photoAlbums) => ([newPhotoAlbum, ...(photoAlbums || [])]))
 		return 0
 	}
 
-	async function updatePhotoAlbum(newTitle: string, newVisible: boolean, newAuthor: string, newAuthorUrl: string, newDate: Dayjs, combinedImages: (string | File)[], photoAlbum: PhotoAlbum, progressStore: Writable<UploadProgress[]>) {
+	async function updatePhotoAlbum(newTitle: string, newVisible: boolean, newAuthor: string, newAuthorUrl: string, newDate: Dayjs, combinedImages: (string | File)[], photoAlbum: PhotoAlbum, _progressStore: Writable<UploadProgress[]>) {
 		const existingImages = combinedImages.filter((e) => typeof e === 'string') as string[]
 
 		photoAlbum.title = newTitle
@@ -50,7 +50,7 @@ export function createMockPhotoAlbumStore() {
 		const limit = pLimit(4)
 
 		await Promise.all(
-			photoAlbum.getImageUrls().map(async (url, index) => limit(async () => {
+			photoAlbum.getImageUrls().map(async (_url, _index) => limit(async () => {
 				await sleep(1000)
 				progressStore.update((progress) => progress + 1)
 			}))

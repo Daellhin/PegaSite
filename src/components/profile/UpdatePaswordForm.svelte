@@ -36,6 +36,7 @@
       password2Edited = false
     } catch (error) {
       loginError = true
+      console.error(error)
     }
     saving = false
   }

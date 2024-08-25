@@ -1,12 +1,9 @@
 <script lang="ts">
   import { goto } from "$app/navigation"
-  import {
-    articleStore,
-    setGlobalPaginationSize,
-  } from "$lib/stores/ArticleStore"
+  import ArticlesTable from "$components/article/ArticlesTable.svelte"
+  import { articleStore } from "$lib/stores/ArticleStore"
   import { authStore } from "$lib/stores/AuthStore"
   import { pageHeadStore } from "$lib/stores/PageHeadStore"
-  import ArticlesTable from "$components/article/ArticlesTable.svelte"
 
   // -- Authguard --
   $: authStore.known.then(() => {
@@ -23,5 +20,5 @@
 </div>
 
 {#if $articleStore}
-  <ArticlesTable articles={$articleStore}/>
+  <ArticlesTable articles={$articleStore} />
 {/if}
