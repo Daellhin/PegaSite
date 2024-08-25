@@ -1,9 +1,8 @@
 <script lang="ts">
   import ErrorLine from "$components/ErrorLine.svelte"
-  import { faLess } from "@fortawesome/free-brands-svg-icons"
   import {
-    faAnglesLeft,
-    faAnglesRight,
+      faAnglesLeft,
+      faAnglesRight,
   } from "@fortawesome/free-solid-svg-icons"
   import Fa from "svelte-fa"
 

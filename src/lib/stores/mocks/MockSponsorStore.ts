@@ -5,8 +5,8 @@ export function createMockSponsorStore() {
 	const store = writable<(Sponsor)[]>([])
 	const { subscribe, update } = store
 
-	async function createSponsor(sponsor: Sponsor, image: File) {
-		const existingSortedIds = get(store).map((e) => e.id)
+	async function createSponsor(sponsor: Sponsor, _image: File) {
+		//const existingSortedIds = get(store).map((e) => e.id)
 		// await updateSponsorsOrder([...existingSortedIds, newDocRef.id])
 
 		update((sponsors) => ([...sponsors, sponsor]))
@@ -15,7 +15,7 @@ export function createMockSponsorStore() {
 	async function updateSponsor(newName: string, newUrl: string, newImage: string | File, newVisible: boolean, sponsor: Sponsor) {
 		sponsor.name = newName
 		sponsor.url = newUrl
-		sponsor.imageUrl = sponsor.imageUrl
+		//sponsor.imageUrl = sponsor.imageUrl
 		sponsor.updateSearchableString()
 
 		update((sponsors) => [...sponsors])

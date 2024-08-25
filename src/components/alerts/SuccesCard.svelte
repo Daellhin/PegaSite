@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { faCheckCircle, faCircle } from "@fortawesome/free-regular-svg-icons"
+	import { faCheckCircle } from "@fortawesome/free-regular-svg-icons"
 	import Fa from "svelte-fa"
   
 	let classList = ""

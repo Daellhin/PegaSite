@@ -1,6 +1,5 @@
 import { browser } from '$app/environment'
 import { Announcement, announcementConverter, type AnnouncementJson } from '$lib/domain/Announcement'
-import type { OrderingJson } from '$lib/domain/Ordering'
 import { Collections } from '$lib/firebase/Firebase'
 import { convertStringToBool } from '$lib/utils/Utils'
 import { writable } from 'svelte/store'
@@ -13,7 +12,7 @@ function createAnnouncementStore() {
 
 			// -- Load Announcement --
 			const { firebaseApp } = await import('$lib/firebase/Firebase')
-			const { getFirestore, getDocs, getDoc, doc, collection } = await import('firebase/firestore')
+			const { getFirestore, getDocs, collection } = await import('firebase/firestore')
 			const firestore = getFirestore(firebaseApp)
 
 			const announcementsRef = collection(firestore, Collections.ANNOUNCEMENTS)
@@ -93,20 +92,20 @@ function createAnnouncementStore() {
 		//await updateAnnouncementOrder(existingSortedIds)
 	}
 
-	async function updateAnnouncementOrder(newSortedIds: string[]) {
-		// -- Update ordering --
-		const { firebaseApp } = await import('$lib/firebase/Firebase')
-		const { getFirestore, doc, updateDoc } = await import('firebase/firestore')
-		const firestore = getFirestore(firebaseApp)
+	// async function updateAnnouncementOrder(newSortedIds: string[]) {
+	// 	// -- Update ordering --
+	// 	const { firebaseApp } = await import('$lib/firebase/Firebase')
+	// 	const { getFirestore, doc, updateDoc } = await import('firebase/firestore')
+	// 	const firestore = getFirestore(firebaseApp)
 
-		const docRef = doc(firestore, Collections.ORDERINGS, Collections.ANNOUNCEMENTS)
-		await updateDoc(docRef, {
-			ids: newSortedIds,
-		})
+	// 	const docRef = doc(firestore, Collections.ORDERINGS, Collections.ANNOUNCEMENTS)
+	// 	await updateDoc(docRef, {
+	// 		ids: newSortedIds,
+	// 	})
 
-		// -- Update store --
-		update((announcements) => [...announcements])
-	}
+	// 	// -- Update store --
+	// 	update((announcements) => [...announcements])
+	// }
 
 	async function updateAnnouncementVisibility(announcement: Announcement) {
 		// -- Update announcement --

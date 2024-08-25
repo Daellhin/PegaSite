@@ -29,7 +29,7 @@ function createArticleStore() {
 	let lastRef: QueryDocumentSnapshot<Article> | undefined
 	let hasMoreDocuments = true
 
-	const innerStore = writable<Article[]>(undefined, set => {
+	const innerStore = writable<Article[]>(undefined, () => {
 		async function init() {
 			if (!browser) return
 			await loadMoreArticles()

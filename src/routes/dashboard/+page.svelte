@@ -5,9 +5,8 @@
   import { clubRecordStore } from "$lib/stores/ClubRecordStore"
   import { pageHeadStore } from "$lib/stores/PageHeadStore"
   import {
-    faUserCheck,
-    faUserPen,
-    faUserShield,
+      faUserPen,
+      faUserShield
   } from "@fortawesome/free-solid-svg-icons"
   import Fa from "svelte-fa"
 
