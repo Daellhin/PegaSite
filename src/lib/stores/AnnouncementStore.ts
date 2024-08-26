@@ -145,7 +145,7 @@ function createAnnouncementStore() {
 }
 
 const useMock = convertStringToBool(import.meta.env.VITE_USEMOCKING)
-if (useMock) console.warn("Mocking is on")
+if (useMock) console.warn("Mocking is on for AnnouncementStore")
 export const announcementStore = useMock ?
 	createMockAnnouncementStore() :
 	createAnnouncementStore()

@@ -211,7 +211,7 @@ function createNavbarStore() {
 }
 
 const useMock = convertStringToBool(import.meta.env.VITE_USEMOCKING)
-if (useMock) console.warn("Mocking is on")
+if (useMock) console.warn("Mocking is on for NavbarStore")
 export const navbarStore = useMock ?
 	createMockNavbarStore() :
 	createNavbarStore()
