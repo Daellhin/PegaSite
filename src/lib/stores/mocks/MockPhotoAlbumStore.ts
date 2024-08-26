@@ -1,4 +1,6 @@
 import { PhotoAlbum } from '$lib/domain/PhotoAlbum'
+import { MAX_CONCURRENT_UPLOADS } from '$lib/utils/Constants'
+import { updateStoreAtIndex } from '$lib/utils/Svelte'
 import { UploadProgress } from '$lib/utils/UploadProgress'
 import { sleep } from '$lib/utils/Utils'
 import type { Dayjs } from 'dayjs'
@@ -7,30 +9,48 @@ import JSZip from 'jszip'
 import pLimit from 'p-limit'
 import type { Writable } from 'svelte/store'
 import { writable } from 'svelte/store'
+import { v4 as uuidv4 } from 'uuid'
+
+async function convertAndUploadImages(combinedImages: (string | File)[], progressStore: Writable<UploadProgress[]>) {
+	const limit = pLimit(MAX_CONCURRENT_UPLOADS)
+	progressStore.set(combinedImages.map(() => UploadProgress.NOT_STARTED))
+
+	const uploadedImageIds = await Promise.all(combinedImages.map(async (_, index) => {
+		return limit(async () => {
+			await sleep(1000)
+			updateStoreAtIndex(progressStore, index, UploadProgress.DONE)
+			return uuidv4()
+		})
+	}))
+	return { uploadedImageIds, size: 0 }
+}
 
 export function createMockPhotoAlbumStore() {
-	//const maxConcurrentUploads = 4
-
 	const store = writable<(PhotoAlbum)[]>([])
 	const { subscribe, update } = store
 
-	async function createPhotoAlbum(newPhotoAlbum: PhotoAlbum, _images: File[], _progressStore: Writable<UploadProgress[]>) {
+	async function createPhotoAlbum(newPhotoAlbum: PhotoAlbum, images: File[], _progressStore: Writable<UploadProgress[]>, progressStore: Writable<UploadProgress[]>) {
+		const { uploadedImageIds, size } = await convertAndUploadImages(images, progressStore)
+
+		newPhotoAlbum.imageIds = uploadedImageIds
+
 		update((photoAlbums) => ([newPhotoAlbum, ...(photoAlbums || [])]))
 		return 0
 	}
 
-	async function updatePhotoAlbum(newTitle: string, newVisible: boolean, newAuthor: string, newAuthorUrl: string, newDate: Dayjs, combinedImages: (string | File)[], photoAlbum: PhotoAlbum, _progressStore: Writable<UploadProgress[]>) {
-		const existingImages = combinedImages.filter((e) => typeof e === 'string') as string[]
+	async function updatePhotoAlbum(newTitle: string, newVisible: boolean, newAuthor: string, newAuthorUrl: string, newDate: Dayjs, combinedImages: (string | File)[], photoAlbum: PhotoAlbum, progressStore: Writable<UploadProgress[]>) {
+		const { uploadedImageIds, size } = await convertAndUploadImages(combinedImages, progressStore)
 
 		photoAlbum.title = newTitle
 		photoAlbum.visible = newVisible
 		photoAlbum.author = newAuthor
 		photoAlbum.authorUrl = newAuthorUrl
 		photoAlbum.date = newDate
-		photoAlbum.imageIds = existingImages
+		photoAlbum.imageIds = uploadedImageIds
 		photoAlbum.updateSearchableString()
 
 		update((photoAlbums) => [...photoAlbums])
+		return size
 	}
 
 	async function deletePhotoAlbum(photoAlbum: PhotoAlbum) {
@@ -41,6 +61,7 @@ export function createMockPhotoAlbumStore() {
 	async function updateVisibility(photoAlbum: PhotoAlbum) {
 		photoAlbum.updateSearchableString()
 		await sleep(1000)
+
 		update((photoAlbums) => [...photoAlbums])
 	}
 

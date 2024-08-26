@@ -3,7 +3,7 @@ import { PhotoAlbum, photoAlbumConverter, type PhotoAlbumJson } from '$lib/domai
 import { Collections, createFirebaseStorageUrl, StorageFolders } from '$lib/firebase/Firebase'
 import generateImageThumbnail from '$lib/generateImageThumbnail/image-thumbnail'
 import { arrayDifference, arraysContainSameElements } from '$lib/utils/Array'
-import { WEBP_IMAGE_QUALITY, WEBP_THUMBNAIL_QUALITY } from '$lib/utils/Constants'
+import { MAX_CONCURRENT_UPLOADS, WEBP_IMAGE_QUALITY, WEBP_THUMBNAIL_QUALITY } from '$lib/utils/Constants'
 import { UploadProgress } from '$lib/utils/UploadProgress'
 import { convertStringToBool } from '$lib/utils/Utils'
 import type { Dayjs } from 'dayjs'
@@ -15,21 +15,13 @@ import { writable } from 'svelte/store'
 import { v4 as uuidv4 } from 'uuid'
 import { blobToWebP } from 'webp-converter-browser'
 import { createMockPhotoAlbumStore } from './mocks/MockPhotoAlbumStore'
-
-const maxConcurrentUploads = 4
-
-function updateStoreAtIndex(progressStore: Writable<UploadProgress[]>, index: number, value: UploadProgress) {
-	progressStore.update((progress) => {
-		progress[index] = value
-		return [...progress]
-	})
-}
+import { updateStoreAtIndex } from '$lib/utils/Svelte'
 
 async function convertAndUploadImages(combinedImages: (string | File)[], progressStore: Writable<UploadProgress[]>) {
 	const { getStorage, ref, uploadBytes } = await import('firebase/storage')
 
 	const storage = getStorage()
-	const limit = pLimit(maxConcurrentUploads)
+	const limit = pLimit(MAX_CONCURRENT_UPLOADS)
 	let size = 0
 	progressStore.set(combinedImages.map(() => UploadProgress.NOT_STARTED))
 
