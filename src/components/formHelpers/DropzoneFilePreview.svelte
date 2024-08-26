@@ -49,7 +49,7 @@
     <Fa icon={image} />
   {/if}
   <div class="my-auto font-semibold">{imageName}</div>
-  <div class="min-w-6 ml-auto">
+  <div class="min-w-6 h-6 ml-auto">
     {#if !saving}
       <button
         class="btn btn-circle btn-xs hover:text-red-500"
@@ -59,11 +59,11 @@
         <Fa icon={faXmark} />
       </button>
     {:else if progress !== undefined}
-      <div title={toString(progress)}>
+      <div class="flex items-center" title={toString(progress)}>
         {#if progress === UploadProgress.CONVERTING || progress === UploadProgress.UPLOADING}
           <span
             class="loading loading-ring loading-sm"
-            title={toString(progress)}
+           
           />
         {:else if progress === UploadProgress.DONE}
           <Fa icon={faCheck} color="green" />

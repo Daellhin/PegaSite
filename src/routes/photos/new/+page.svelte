@@ -8,7 +8,7 @@
   import { photoAlbumStore } from "$lib/stores/PhotoAlbumStore"
   import { PreviewableFile } from "$lib/utils/PreviewableFile"
   import { pushCreatedToast } from "$lib/utils/Toast"
-  import type { UploadProgress } from "$lib/utils/UploadProgress"
+  import { UploadProgress } from "$lib/utils/UploadProgress"
   import byteSize from "byte-size"
   import type { Dayjs } from "dayjs"
   import dayjs from "dayjs"
@@ -39,6 +39,7 @@
       [],
       visible,
     )
+    progressStore.set(combinedImages.map(() => UploadProgress.NOT_STARTED))
     const size = await photoAlbumStore.createPhotoAlbum(
       newPhotoAlbum,
       images,

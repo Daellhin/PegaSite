@@ -23,7 +23,6 @@ async function convertAndUploadImages(combinedImages: (string | File)[], progres
 	const storage = getStorage()
 	const limit = pLimit(MAX_CONCURRENT_UPLOADS)
 	let size = 0
-	progressStore.set(combinedImages.map(() => UploadProgress.NOT_STARTED))
 
 	const uploadedImageIds = await Promise.all(combinedImages.map(async (image, index) => {
 		return limit(async () => {

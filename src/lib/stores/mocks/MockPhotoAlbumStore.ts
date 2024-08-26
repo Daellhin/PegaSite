@@ -18,6 +18,7 @@ async function convertAndUploadImages(combinedImages: (string | File)[], progres
 
 	const uploadedImageIds = await Promise.all(combinedImages.map(async (_, index) => {
 		return limit(async () => {
+			updateStoreAtIndex(progressStore, index, UploadProgress.CONVERTING)
 			await sleep(1000)
 			updateStoreAtIndex(progressStore, index, UploadProgress.DONE)
 			return uuidv4()
@@ -30,7 +31,7 @@ export function createMockPhotoAlbumStore() {
 	const store = writable<(PhotoAlbum)[]>(PHOTO_ALBUMS_JSON.map((e, index) => PhotoAlbum.fromJson(index.toString(), e)))
 	const { subscribe, update } = store
 
-	async function createPhotoAlbum(newPhotoAlbum: PhotoAlbum, images: File[], _progressStore: Writable<UploadProgress[]>, progressStore: Writable<UploadProgress[]>) {
+	async function createPhotoAlbum(newPhotoAlbum: PhotoAlbum, images: File[], progressStore: Writable<UploadProgress[]>) {
 		const { uploadedImageIds, size } = await convertAndUploadImages(images, progressStore)
 
 		newPhotoAlbum.imageIds = uploadedImageIds
