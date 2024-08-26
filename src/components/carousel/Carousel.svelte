@@ -5,6 +5,7 @@
     faChevronLeft,
     faChevronRight,
   } from "@fortawesome/free-solid-svg-icons"
+  import { onMount } from "svelte"
   import Fa from "svelte-fa"
 
   export let images: { imageUrl: string; alt?: string }[]
@@ -27,6 +28,9 @@
 
   // -- Looping --
   let loopTimeout: number
+  let mounted = false
+
+  onMount(() => (mounted = true))
 
   function setLoop() {
     clearTimeout(loopTimeout)
@@ -35,7 +39,7 @@
       setLoop()
     }, duration)
   }
-  $: if (loop && $preferencesStore.autoPlay) setLoop()
+  $: if (mounted && loop && $preferencesStore.autoPlay) setLoop()
   else clearTimeout(loopTimeout)
 </script>
 
@@ -57,9 +61,7 @@
   {/each}
   <!-- Slide indicators -->
   {#if images.length > 1 && !hideIndicators}
-    <div
-      class="absolute flex space-x-3 -translate-x-1/2 bottom-5 left-1/2"
-    >
+    <div class="absolute flex space-x-3 -translate-x-1/2 bottom-5 left-1/2">
       {#each images as _, i}
         <button
           type="button"

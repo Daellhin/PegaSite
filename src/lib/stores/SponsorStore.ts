@@ -185,7 +185,7 @@ function createSponsorStore() {
 }
 
 const useMock = convertStringToBool(import.meta.env.VITE_USEMOCKING)
-if (useMock) console.warn("Mocking is on")
+if (useMock) console.warn("Mocking is on for SponsorStore")
 export const sponsorStore = useMock ?
 	createMockSponsorStore() :
 	createSponsorStore()

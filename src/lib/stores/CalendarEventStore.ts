@@ -109,7 +109,7 @@ function createCalendarEventStore() {
 }
 
 const useMock = convertStringToBool(import.meta.env.VITE_USEMOCKING)
-if (useMock) console.warn("Mocking is on")
+if (useMock) console.warn("Mocking is on for CalendarEventStore")
 export const calendarEventStore = useMock ?
 	createMockCalendarEventStore() :
 	createCalendarEventStore()

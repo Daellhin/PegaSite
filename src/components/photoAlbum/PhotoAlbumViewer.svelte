@@ -22,6 +22,8 @@
   export let photoAlbum: PhotoAlbum
   export let preview = false
 
+  let innerWidth: number
+
   $: imageUrls = photoAlbum.getImageUrls()
   $: thumbnailUrls = photoAlbum.getThumbnailUrls()
 
@@ -61,6 +63,8 @@
     })
   })
 </script>
+
+<svelte:window bind:innerWidth />
 
 <div class="mb-4" id={photoAlbum.id}>
   <!-- Title -->

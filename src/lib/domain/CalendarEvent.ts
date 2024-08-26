@@ -10,7 +10,7 @@ export interface CalendarEventJson {
     location: string
     title: string
     info: string
-    endDate: Timestamp|undefined
+    endDate: Timestamp | undefined
 }
 
 export class CalendarEvent {
