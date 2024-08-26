@@ -2,7 +2,7 @@ import type { PhotoAlbumJson } from "$lib/domain/PhotoAlbum"
 import { Timestamp } from "firebase/firestore"
 
 export const PHOTO_ALBUM: PhotoAlbumJson = {
-    // id: "1",
+    // id: "0",
     createdAt: new Timestamp(Math.round(Date.now() / 1000), 0),
     date: new Timestamp(Math.round(Date.now() / 1000), 0),
     author: "Author",
@@ -12,4 +12,4 @@ export const PHOTO_ALBUM: PhotoAlbumJson = {
     visible: true,
 }
 
-export const PHOTO_ALBUM_JSON: PhotoAlbumJson[] = [PHOTO_ALBUM]
+export const PHOTO_ALBUMS_JSON: PhotoAlbumJson[] = [PHOTO_ALBUM]

@@ -1,4 +1,4 @@
-import { PHOTO_ALBUM_JSON } from '$data/PhotoAlbumsJson'
+import { PHOTO_ALBUMS_JSON } from '$data/PhotoAlbumsJson'
 import { PhotoAlbum } from '$lib/domain/PhotoAlbum'
 import { MAX_CONCURRENT_UPLOADS } from '$lib/utils/Constants'
 import { updateStoreAtIndex } from '$lib/utils/Svelte'
@@ -27,7 +27,7 @@ async function convertAndUploadImages(combinedImages: (string | File)[], progres
 }
 
 export function createMockPhotoAlbumStore() {
-	const store = writable<(PhotoAlbum)[]>(PHOTO_ALBUM_JSON.map((e, index) => PhotoAlbum.fromJson(index.toString(), e)))
+	const store = writable<(PhotoAlbum)[]>(PHOTO_ALBUMS_JSON.map((e, index) => PhotoAlbum.fromJson(index.toString(), e)))
 	const { subscribe, update } = store
 
 	async function createPhotoAlbum(newPhotoAlbum: PhotoAlbum, images: File[], _progressStore: Writable<UploadProgress[]>, progressStore: Writable<UploadProgress[]>) {

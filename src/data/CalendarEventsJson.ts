@@ -12,9 +12,10 @@ export const CALENDAR_EVENT: CalendarEventJson = {
 }
 
 
-export const CALENDAR_EVENT_JSON: CalendarEventJson[] = Array(5).fill(CALENDAR_EVENT)
+export const CALENDAR_EVENTS_JSON: CalendarEventJson[] = Array(5).fill(CALENDAR_EVENT)
     .map((e: CalendarEventJson) => {
         const newObj = Object.assign({}, e)
         newObj.id += 1
         return newObj
     })
+    

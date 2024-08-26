@@ -1,10 +1,10 @@
-import { CALENDAR_EVENT_JSON } from '$data/CalendarEventsJson'
+import { CALENDAR_EVENTS_JSON } from '$data/CalendarEventsJson'
 import { CalendarEvent } from '$lib/domain/CalendarEvent'
 import type { Dayjs } from 'dayjs'
 import { get, writable } from 'svelte/store'
 
 export function createMockCalendarEventStore() {
-    const store = writable<CalendarEvent[]>(CALENDAR_EVENT_JSON.map(CalendarEvent.fromJson))
+    const store = writable<CalendarEvent[]>(CALENDAR_EVENTS_JSON.map(CalendarEvent.fromJson))
     const { subscribe, update } = store
 
     async function createCalendarEvent(newCalendarEvent: CalendarEvent) {

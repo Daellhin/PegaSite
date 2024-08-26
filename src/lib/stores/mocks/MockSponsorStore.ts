@@ -1,8 +1,9 @@
+import { SPONSORS_JSON } from '$data/MockSponsorsStore'
 import { Sponsor } from '$lib/domain/Sponsor'
 import { get, writable } from 'svelte/store'
 
 export function createMockSponsorStore() {
-	const store = writable<(Sponsor)[]>([])
+	const store = writable<(Sponsor)[]>(SPONSORS_JSON.map((e, i) => Sponsor.fromJson(i.toString(), e)))
 	const { subscribe, update } = store
 
 	async function createSponsor(sponsor: Sponsor, _image: File) {
