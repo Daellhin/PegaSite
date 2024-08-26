@@ -1,8 +1,9 @@
+import { ANNOUNCEMENTS_JSON } from '$data/AnnouncementsJson'
 import { Announcement } from '$lib/domain/Announcement'
 import { writable } from 'svelte/store'
 
 export function createMockAnnouncementStore() {
-	const store = writable<(Announcement)[]>([])
+	const store = writable<(Announcement)[]>(ANNOUNCEMENTS_JSON.map((e, i) => Announcement.fromJson(i.toString(), e)))
 	const { subscribe, update } = store
 
 	async function createAnnouncement(announcement: Announcement) {
