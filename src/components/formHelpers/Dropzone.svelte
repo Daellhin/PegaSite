@@ -1,13 +1,13 @@
 <script lang="ts">
   import CloudIcon from "$components/icons/Flowbite/CloudIcon.svelte"
-
   import { FLIP_DURATION } from "$lib/utils/Constants"
   import { PreviewableFile } from "$lib/utils/PreviewableFile"
   import type { UploadProgress } from "$lib/utils/UploadProgress"
   import { getFilesFromDragEvent, ignoreDragOver } from "$lib/utils/Utils"
-  import { faImage } from "@fortawesome/free-solid-svg-icons"
+  import { faImage, faXmark } from "@fortawesome/free-solid-svg-icons"
   import byteSize from "byte-size"
   import { dndzone } from "svelte-dnd-action"
+  import Fa from "svelte-fa"
   import DropzoneFilePreview from "./DropzoneFilePreview.svelte"
 
   export let label: string
@@ -54,6 +54,9 @@
     combinedImages.splice(index, 1)
     combinedImages = combinedImages
   }
+  function removeAll() {
+    combinedImages = []
+  }
 
   // -- Drag and drop --
   let dragDisabled = true
@@ -85,14 +88,27 @@
   class:max-w-sm={size === "sm"}
   class:max-w-xs={size === "xs"}
 >
-  <label class="label" for="dropzone-file">
-    <span class="label-text">
-      {label}
-      {#if required}
-        <span class="text-red-500 font-bold">*</span>
-      {/if}
-    </span>
-  </label>
+  <div class="flex items-center">
+    <label class="label" for="dropzone-file">
+      <span class="label-text">
+        {label}
+        {#if required}
+          <span class="text-red-500 font-bold">*</span>
+        {/if}
+      </span>
+    </label>
+    {#if combinedImages.length > 0}
+      <button
+        class="btn btn-primary btn-xs ml-auto items-center"
+        type="button"
+        on:click={removeAll}
+      >
+        <span class="-mr-0.5">Leegmaken</span>
+        <Fa icon={faXmark} />
+      </button>
+    {/if}
+  </div>
+
   <!-- Dropzone -->
   {#if remainingSpace}
     <label

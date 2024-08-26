@@ -54,6 +54,7 @@
       <button
         class="btn btn-circle btn-xs hover:text-red-500"
         type="button"
+        title="Verwijderen"
         on:click={remove}
       >
         <Fa icon={faXmark} />
@@ -61,10 +62,7 @@
     {:else if progress !== undefined}
       <div class="flex items-center" title={toString(progress)}>
         {#if progress === UploadProgress.CONVERTING || progress === UploadProgress.UPLOADING}
-          <span
-            class="loading loading-ring loading-sm"
-           
-          />
+          <span class="loading loading-ring loading-sm" />
         {:else if progress === UploadProgress.DONE}
           <Fa icon={faCheck} color="green" />
         {/if}
