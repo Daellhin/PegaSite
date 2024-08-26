@@ -2,7 +2,7 @@
   import { announcementStore } from "$lib/stores/AnnouncementStore"
   import { faArrowRightLong } from "@fortawesome/free-solid-svg-icons"
   import Fa from "svelte-fa"
-  import AnnounementComponent from "./AnnounementComponent.svelte"
+  import AnnounementComponent from "./AnnouncementComponent.svelte"
 
   let index = 0
 
@@ -13,7 +13,7 @@
   }
 </script>
 
-{#if $announcementStore}
+{#if $announcementStore && announcements.length > 0}
   <AnnounementComponent annoucement={announcements[index]} />
 
   {#if announcements.length > 1}
