@@ -1,5 +1,5 @@
 import pLimit from "p-limit"
-import { readFileAsPreviewDataURL } from "./Utils"
+import { readFileAsDataURL, readFileAsPreviewDataURL } from "./Utils"
 
 const limit = pLimit(10)
 
@@ -13,18 +13,19 @@ export class PreviewableFile extends File {
 		this.preview = limit(async () => await readFileAsPreviewDataURL(file))
 	}
 
-	static async getFilePreview(file: File) {
+	static async getFilePreview(file: File, compressed: boolean = true) {
 		if (file instanceof PreviewableFile) {
 			return file.preview
 		}
-		return await limit(async () => await readFileAsPreviewDataURL(file))
+		return await limit(async () => await (compressed ? readFileAsPreviewDataURL(file) : readFileAsDataURL(file)))
 	}
 
-	static getMixedFilePreview(file: string | File) {
+	static async getMixedFilePreview(file: string | File, compressed: boolean = true) {
 		if (typeof file === "string") {
 			return file
 		}
-		return this.getFilePreview(file)
+		// TODO improve performance by checking if file is already a PreviewableFile with same compression
+		return await limit(async () => await (compressed ? readFileAsPreviewDataURL(file) : readFileAsDataURL(file)))
 	}
 
 }
