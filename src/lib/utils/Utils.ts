@@ -1,4 +1,6 @@
+import generateImageThumbnail from "$lib/generateImageThumbnail/image-thumbnail"
 import type { Navigation } from "@sveltejs/kit"
+import { WEBP_THUMBNAIL_QUALITY } from "./Constants"
 
 export function clearHTMLTags(string: string) {
 	return string.replace(/<br>/gi, ' ').replace(/(<([^>]+)>)/gi, '').replace(/&nbsp;/gi, ' ')
@@ -53,6 +55,31 @@ export function readFileAsDataURL(file: File) {
 		reader.readAsDataURL(file)
 	})
 }
+
+export function readFileAsPreviewDataURL(file: File) {
+	return new Promise<string>((accept, reject) => {
+		generateImageThumbnail(file, {
+			width: 100,
+			height: 100,
+			maintainAspectRatio: true,
+			type: 'image/webp',
+			quality: WEBP_THUMBNAIL_QUALITY
+		}).then((thumbnail) => {
+			const reader = new FileReader()
+			reader.onload = (event) => {
+				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+				accept(event.target!.result as string)
+			}
+			/// XXX: rejecting with an event is rather unorthodox
+			reader.onabort = reader.onerror = (ev) => {
+				reject(ev)
+			}
+			reader.readAsDataURL(thumbnail)
+		})
+
+	})
+}
+
 
 /**
  * Source: https://stackoverflow.com/a/38935544

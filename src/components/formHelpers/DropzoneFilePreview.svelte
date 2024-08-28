@@ -18,6 +18,13 @@
   export let dragFullyDisabled: boolean
   export let saving = false
   export let progress: UploadProgress | undefined = undefined
+  export let onPreviewFinishedLoading: () => void = () => {}
+
+  async function loadPreview(image: File) {
+    const preview = await PreviewableFile.getFilePreview(image)
+    onPreviewFinishedLoading()
+    return preview
+  }
 </script>
 
 <div
@@ -29,10 +36,12 @@
   {/if}
   {#if image instanceof File}
     <div class="w-10 rounded-sm h-6 overflow-hidden">
-      {#await PreviewableFile.getFilePreview(image)}
+      {#await loadPreview(image)}
         <div class="bg-base-200 w-full h-full" />
+        loading
       {:then src}
         <img class="" alt={image.name} {src} />
+        finished
       {:catch error}
         <div
           class="tooltip tooltip-right"

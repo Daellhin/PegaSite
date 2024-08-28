@@ -49,13 +49,16 @@
       ...combinedImages,
       ...newPreviewableFiles.slice(0, remainingSpace),
     ]
+    amountOfFinishedPreviews = 0
   }
   function remove(index: number) {
     combinedImages.splice(index, 1)
     combinedImages = combinedImages
+    amountOfFinishedPreviews = 0
   }
   function removeAll() {
     combinedImages = []
+    amountOfFinishedPreviews = 0
   }
 
   // -- Drag and drop --
@@ -80,6 +83,13 @@
       return 0
     })
     .reduce((prev, current) => prev + current, 0)
+
+  // -- Previews --
+  let amountOfFinishedPreviews = 0
+
+  function onPreviewFinishedLoading() {
+    amountOfFinishedPreviews++
+  }
 </script>
 
 <div
@@ -144,9 +154,9 @@
     </label>
   {/if}
   {#if combinedImages.length > 0}
-    <div class="opacity-60">
+    <div class="opacity-60 mt-1">
       Afbeeldingen:
-      <span class="font-bold">{combinedImages.length}</span>, totale grootte:
+      <span class="font-bold">{combinedImages.length}</span>, grootte op shijf:
       <span class="font-bold">{byteSize(fileSize)}</span>
     </div>
   {/if}
@@ -155,7 +165,7 @@
   {#if combinedImages.length}
     <div
       class="flex flex-col input-bordered border-2 rounded-lg min-h-[3rem] bg-base-100 justify-center"
-      class:mt-2={remainingSpace}
+      class:mt-1={remainingSpace}
       use:dndzone={{
         items: dragableImages,
         dragDisabled: dragDisabled,
@@ -177,11 +187,18 @@
           isLast={i == combinedImages.length - 1}
           progress={progress?.[i] || undefined}
           {saving}
+          {onPreviewFinishedLoading}
         />
       {/each}
     </div>
   {/if}
 </div>
+{#if !disablePreviews && amountOfFinishedPreviews < combinedImages.length}
+  <div class="flex items-center gap-2">
+    <span class="loading loading-ring" />
+    <span class="opacity-60">Afbeeldingen laden</span>
+  </div>
+{/if}
 
 <style lang="postcss">
   @media (prefers-color-scheme: dark) {
