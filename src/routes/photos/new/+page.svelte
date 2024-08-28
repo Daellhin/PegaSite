@@ -47,7 +47,7 @@
     )
     combinedImages = newPhotoAlbum.imageIds
     pushCreatedToast(`Fotoalbum aangemaakt (${byteSize(size)})`, {
-      gotoUrl: `/photos/#${newPhotoAlbum.id}`,  
+      gotoUrl: `/photos/#${newPhotoAlbum.id}`,
     })
   }
 
@@ -57,8 +57,9 @@
     showPreview = !showPreview
   }
   async function createPreview() {
+    console.info(combinedImages)
     const images = await Promise.all(
-      combinedImages.map(PreviewableFile.getMixedFilePreview),
+      combinedImages.map((e) => PreviewableFile.getMixedFilePreview(e, false)),
     )
     return new PhotoAlbum(
       "PreviewID",
@@ -69,6 +70,7 @@
       title,
       images,
       visible,
+      true,
     )
   }
 

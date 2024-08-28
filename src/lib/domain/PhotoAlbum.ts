@@ -24,7 +24,8 @@ export class PhotoAlbum {
         public authorUrl: string,
         public title: string,
         public imageIds: string[],
-        public visible: boolean
+        public visible: boolean,
+        public preview = false
     ) {
         this.updateSearchableString()
     }
@@ -47,11 +48,11 @@ export class PhotoAlbum {
     }
 
     getImageUrls() {
-        return this.imageIds.map((e) => createFirebaseStorageUrl(StorageFolders.PHOTO_ALBUM_IMAGES, e))
+        return this.preview ? this.imageIds : this.imageIds.map((e) => createFirebaseStorageUrl(StorageFolders.PHOTO_ALBUM_IMAGES, e))
     }
 
     getThumbnailUrls() {
-        return this.imageIds.map((e) => createFirebaseStorageUrl(StorageFolders.PHOTO_ALBUM_THUMBNAILS, e))
+        return this.preview ? this.imageIds : this.imageIds.map((e) => createFirebaseStorageUrl(StorageFolders.PHOTO_ALBUM_THUMBNAILS, e))
     }
 
     static fromJson(id: string, json: PhotoAlbumJson) {

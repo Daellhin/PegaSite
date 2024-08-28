@@ -69,8 +69,8 @@
 <div class="mb-4" id={photoAlbum.id}>
   <!-- Title -->
   <div class="flex">
-    <div class="min-w-fit font-semibold text-xl">
-      <span class="capitalize">{photoAlbum.title}</span>
+    <div class="min-w-fit font-semibold text-2xl">
+      <span class="capitalize">{photoAlbum.title || "Geen titel"}</span>
     </div>
     <hr class="my-auto ml-3 w-full h-[1.5px] bg-gray-200" />
   </div>
@@ -140,9 +140,13 @@
 
   <!-- Images -->
   <div class="mt-2">
+    {#if photoAlbum.imageIds.length > 0}
     <ShowMore startHeightPx={innerWidth < 472 ? 700 : 500}>
       <ImageGallery {thumbnailUrls} id={photoAlbum.id} {imageUrls} />
     </ShowMore>
+    {:else}
+       Geen afbeeldingen
+    {/if}
   </div>
 </div>
 
