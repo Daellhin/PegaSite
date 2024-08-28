@@ -69,7 +69,7 @@
         <Fa icon={faXmark} />
       </button>
     {:else if progress !== undefined}
-      <div class="flex items-center" title={toString(progress)}>
+      <div class="flex items-center justify-center h-full w-full" title={toString(progress)}>
         {#if progress === UploadProgress.CONVERTING || progress === UploadProgress.UPLOADING}
           <span class="loading loading-ring loading-sm" />
         {:else if progress === UploadProgress.DONE}
