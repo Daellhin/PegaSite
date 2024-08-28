@@ -8,6 +8,7 @@ import { v4 as uuidv4 } from "uuid"
 import { blobToWebP } from 'webp-converter-browser'
 import { createMockSponsorStore } from './mocks/MockSponsorStore'
 import { convertStringToBool } from '$lib/utils/Utils'
+import { sortWithOrdering } from '$lib/utils/Stores'
 
 function createSponsorStore() {
 	const store = writable<(Sponsor)[]>(undefined, set => {
@@ -28,7 +29,7 @@ function createSponsorStore() {
 			const orderingSnap = await getDoc(orderingRef)
 			const ordering = orderingSnap.data() as OrderingJson | undefined
 			if (!ordering) throw new Error(`Sort order ${Collections.SPONSORS} not found`)
-			sortSponsors(sponsors, ordering.ids)
+			sortWithOrdering(sponsors, ordering.ids)
 
 			// -- Set store --
 			set(sponsors)
@@ -38,7 +39,7 @@ function createSponsorStore() {
 	const { subscribe, update } = store
 
 	async function createSponsor(sponsor: Sponsor, image: File) {
-		// -- Convert images --
+		// -- Convert image --
 		const convertedImage = await blobToWebP(image, { quality: WEBP_IMAGE_QUALITY })
 
 		// -- Upload image --
@@ -50,7 +51,7 @@ function createSponsorStore() {
 		const uploadedImage = await getDownloadURL(snapshot.ref)
 		sponsor.imageUrl = uploadedImage
 
-		// -- Upload sponsor --
+		// -- Upload document --
 		const { getFirestore, collection, doc, setDoc } = await import('firebase/firestore')
 		const { firebaseApp } = await import('$lib/firebase/Firebase')
 		const firestore = getFirestore(firebaseApp)
@@ -79,7 +80,8 @@ function createSponsorStore() {
 			await uploadBytes(imageRef, convertedImage)
 			newImageUrl = `${sponsor.imageUrl}#${new Date().getTime()}` // Force reload cache
 		}
-		// -- Update sponsor --
+
+		// -- Update document --
 		const { getFirestore, doc, updateDoc } = await import('firebase/firestore')
 		const { firebaseApp } = await import('$lib/firebase/Firebase')
 		const firestore = getFirestore(firebaseApp)
@@ -102,7 +104,7 @@ function createSponsorStore() {
 	}
 
 	async function deleteSponsor(sponsor: Sponsor) {
-		// -- Remove image --
+		// -- Delete image --
 		const { getStorage, ref, deleteObject } = await import('firebase/storage')
 		const storage = getStorage()
 
@@ -114,7 +116,7 @@ function createSponsorStore() {
 			if (error.code !== 'storage/object-not-found') throw error
 		}
 
-		// -- Remove sponsor --
+		// -- Delete document --
 		const { getFirestore, doc, deleteDoc } = await import('firebase/firestore')
 		const { firebaseApp } = await import('$lib/firebase/Firebase')
 		const firestore = getFirestore(firebaseApp)
@@ -122,7 +124,7 @@ function createSponsorStore() {
 		const docRef = doc(firestore, Collections.SPONSORS, sponsor.id)
 		await deleteDoc(docRef)
 
-		// -- Remove from store --
+		// -- Delete from store --
 		update((sponsors) => sponsors.filter((e) => e.id !== sponsor.id))
 
 		// -- Update ordering --
@@ -131,7 +133,7 @@ function createSponsorStore() {
 	}
 
 	async function updateSponsorsOrder(newSortedIds: string[]) {
-		// -- Update ordering --
+		// -- Update document --
 		const { firebaseApp } = await import('$lib/firebase/Firebase')
 		const { getFirestore, doc, updateDoc } = await import('firebase/firestore')
 		const firestore = getFirestore(firebaseApp)
@@ -142,12 +144,12 @@ function createSponsorStore() {
 		})
 
 		// -- Update store --
-		sortSponsors(get(store), newSortedIds)
+		sortWithOrdering(get(store), newSortedIds)
 		update((sponsors) => [...sponsors])
 	}
 
 	async function updateVisibility(sponsor: Sponsor) {
-		// -- Update sponsors --
+		// -- Update document --
 		const { getFirestore, doc, updateDoc } = await import('firebase/firestore')
 		const { firebaseApp } = await import('$lib/firebase/Firebase')
 		const firestore = getFirestore(firebaseApp)
@@ -161,17 +163,6 @@ function createSponsorStore() {
 
 		// -- Update store --
 		update((sponsors) => [...sponsors])
-	}
-
-	function sortSponsors(sponsors: Sponsor[], sortedIds: string[]) {
-		const sortMap = new Map(sortedIds.map((e, i) => [e, i] as [string, number]))
-		sponsors.sort((a, b) => {
-			const first = sortMap.get(a.id)
-			if (first === undefined) throw new Error(`Sponsor ${a.id} not found in sort map`)
-			const second = sortMap.get(b.id)
-			if (second === undefined) throw new Error(`Sponsor ${b.id} not found in sort map`)
-			return first - second
-		})
 	}
 
 	return {

@@ -44,7 +44,6 @@
   </div>
 {/if}
 
-
 {#if $sponsorStore}
   <SponsorsTable {startEdit} />
 {:else}

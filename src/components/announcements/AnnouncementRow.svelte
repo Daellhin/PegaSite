@@ -13,7 +13,6 @@
   export let updateDismissibleHandler: (
     announcement: Announcement,
   ) => Promise<void> | any
-
   export let dragDisabled: boolean
   export let dragFullyDisabled = false
 
@@ -24,6 +23,7 @@
     deleteHandler(announcement)
   }
   function updateVisibilityWrapper() {
+    console.log("updateVisibilityWrapper")
     updateVisibilityHandler(announcement)
   }
   function updateDismissibleWrapper() {
