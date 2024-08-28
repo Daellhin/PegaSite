@@ -76,7 +76,7 @@
     label="Afbeeldingen:"
     bind:combinedImages
     required
-    disablePreviews
+    
     {progress}
     saving={saving || (stopAfterSave && amountSaved >= 1)}
   />

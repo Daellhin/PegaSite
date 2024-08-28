@@ -1,13 +1,13 @@
 <script lang="ts">
   import CloudIcon from "$components/icons/Flowbite/CloudIcon.svelte"
-
   import { FLIP_DURATION } from "$lib/utils/Constants"
   import { PreviewableFile } from "$lib/utils/PreviewableFile"
   import type { UploadProgress } from "$lib/utils/UploadProgress"
   import { getFilesFromDragEvent, ignoreDragOver } from "$lib/utils/Utils"
-  import { faImage } from "@fortawesome/free-solid-svg-icons"
+  import { faImage, faXmark } from "@fortawesome/free-solid-svg-icons"
   import byteSize from "byte-size"
   import { dndzone } from "svelte-dnd-action"
+  import Fa from "svelte-fa"
   import DropzoneFilePreview from "./DropzoneFilePreview.svelte"
 
   export let label: string
@@ -49,10 +49,16 @@
       ...combinedImages,
       ...newPreviewableFiles.slice(0, remainingSpace),
     ]
+    amountOfFinishedPreviews = 0
   }
   function remove(index: number) {
     combinedImages.splice(index, 1)
     combinedImages = combinedImages
+    amountOfFinishedPreviews = 0
+  }
+  function removeAll() {
+    combinedImages = []
+    amountOfFinishedPreviews = 0
   }
 
   // -- Drag and drop --
@@ -77,6 +83,13 @@
       return 0
     })
     .reduce((prev, current) => prev + current, 0)
+
+  // -- Previews --
+  let amountOfFinishedPreviews = 0
+
+  function onPreviewFinishedLoading() {
+    amountOfFinishedPreviews++
+  }
 </script>
 
 <div
@@ -85,14 +98,27 @@
   class:max-w-sm={size === "sm"}
   class:max-w-xs={size === "xs"}
 >
-  <label class="label" for="dropzone-file">
-    <span class="label-text">
-      {label}
-      {#if required}
-        <span class="text-red-500 font-bold">*</span>
-      {/if}
-    </span>
-  </label>
+  <div class="flex items-center">
+    <label class="label" for="dropzone-file">
+      <span class="label-text">
+        {label}
+        {#if required}
+          <span class="text-red-500 font-bold">*</span>
+        {/if}
+      </span>
+    </label>
+    {#if combinedImages.length > 0}
+      <button
+        class="btn btn-primary btn-xs ml-auto items-center"
+        type="button"
+        on:click={removeAll}
+      >
+        <span class="-mr-0.5">Leegmaken</span>
+        <Fa icon={faXmark} />
+      </button>
+    {/if}
+  </div>
+
   <!-- Dropzone -->
   {#if remainingSpace}
     <label
@@ -128,9 +154,9 @@
     </label>
   {/if}
   {#if combinedImages.length > 0}
-    <div class="opacity-60">
+    <div class="opacity-60 mt-1">
       Afbeeldingen:
-      <span class="font-bold">{combinedImages.length}</span>, totale grootte:
+      <span class="font-bold">{combinedImages.length}</span>, grootte op shijf:
       <span class="font-bold">{byteSize(fileSize)}</span>
     </div>
   {/if}
@@ -139,7 +165,7 @@
   {#if combinedImages.length}
     <div
       class="flex flex-col input-bordered border-2 rounded-lg min-h-[3rem] bg-base-100 justify-center"
-      class:mt-2={remainingSpace}
+      class:mt-1={remainingSpace}
       use:dndzone={{
         items: dragableImages,
         dragDisabled: dragDisabled,
@@ -161,11 +187,18 @@
           isLast={i == combinedImages.length - 1}
           progress={progress?.[i] || undefined}
           {saving}
+          {onPreviewFinishedLoading}
         />
       {/each}
     </div>
   {/if}
 </div>
+{#if !disablePreviews && amountOfFinishedPreviews < combinedImages.length}
+  <div class="flex items-center gap-2">
+    <span class="loading loading-ring" />
+    <span class="opacity-60">Afbeeldingen laden</span>
+  </div>
+{/if}
 
 <style lang="postcss">
   @media (prefers-color-scheme: dark) {

@@ -18,6 +18,13 @@
   export let dragFullyDisabled: boolean
   export let saving = false
   export let progress: UploadProgress | undefined = undefined
+  export let onPreviewFinishedLoading: () => void = () => {}
+
+  async function loadPreview(image: File) {
+    const preview = await PreviewableFile.getFilePreview(image)
+    onPreviewFinishedLoading()
+    return preview
+  }
 </script>
 
 <div
@@ -29,10 +36,12 @@
   {/if}
   {#if image instanceof File}
     <div class="w-10 rounded-sm h-6 overflow-hidden">
-      {#await PreviewableFile.getFilePreview(image)}
+      {#await loadPreview(image)}
         <div class="bg-base-200 w-full h-full" />
+        loading
       {:then src}
         <img class="" alt={image.name} {src} />
+        finished
       {:catch error}
         <div
           class="tooltip tooltip-right"
@@ -54,17 +63,15 @@
       <button
         class="btn btn-circle btn-xs hover:text-red-500"
         type="button"
+        title="Verwijderen"
         on:click={remove}
       >
         <Fa icon={faXmark} />
       </button>
     {:else if progress !== undefined}
-      <div class="flex items-center" title={toString(progress)}>
+      <div class="flex items-center justify-center h-full w-full" title={toString(progress)}>
         {#if progress === UploadProgress.CONVERTING || progress === UploadProgress.UPLOADING}
-          <span
-            class="loading loading-ring loading-sm"
-           
-          />
+          <span class="loading loading-ring loading-sm" />
         {:else if progress === UploadProgress.DONE}
           <Fa icon={faCheck} color="green" />
         {/if}

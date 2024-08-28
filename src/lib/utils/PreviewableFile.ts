@@ -1,4 +1,7 @@
-import { readFileAsDataURL } from "./Utils"
+import pLimit from "p-limit"
+import { readFileAsPreviewDataURL } from "./Utils"
+
+const limit = pLimit(10)
 
 export class PreviewableFile extends File {
 	public preview: Promise<string>
@@ -7,17 +10,17 @@ export class PreviewableFile extends File {
 		file: File
 	) {
 		super([file], file.name, {})
-		this.preview = readFileAsDataURL(file)
+		this.preview = limit(async () => await readFileAsPreviewDataURL(file))
 	}
 
-	static getFilePreview(file: File) {
+	static async getFilePreview(file: File) {
 		if (file instanceof PreviewableFile) {
 			return file.preview
 		}
-		return readFileAsDataURL(file)
+		return await limit(async () => await readFileAsPreviewDataURL(file))
 	}
-	
-	static getMixedFilePreview(file: string|File) {
+
+	static getMixedFilePreview(file: string | File) {
 		if (typeof file === "string") {
 			return file
 		}
