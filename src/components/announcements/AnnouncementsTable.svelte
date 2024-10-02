@@ -6,9 +6,10 @@
   import TableHeaderRow from "$components/table/TableHeaderRow.svelte"
   import type { Announcement } from "$lib/domain/Announcement"
   import { announcementStore } from "$lib/stores/AnnouncementStore"
-
+  import { FLIP_DURATION } from "$lib/utils/Constants"
   import { handleFirebaseError } from "$lib/utils/Firebase"
   import { faSearch } from "@fortawesome/free-solid-svg-icons"
+  import { dndzone } from "svelte-dnd-action"
   import AnnouncementRow from "./AnnouncementRow.svelte"
 
   export let startEdit: (announcement: Announcement) => void
@@ -22,21 +23,20 @@
   let dragDisabled = true
   $: dragFullyDisabled = searchString.length > 0
 
-  $: dragableAnnouncements = $announcementStore || []
-  //.map((e) => e.toDragableItem())
+  $: dragableAnnouncements = $announcementStore.map((e) => e.toDragableItem())
 
-  // function handleConsider(event: CustomEvent<DndEvent<any>>) {
-  //   dragableSponsors = event.detail.items
-  //   dragDisabled = true
-  // }
-  // async function handleFinalize(event: CustomEvent<DndEvent<any>>) {
-  //   savingNewOrder = true
-  //   dragableSponsors = event.detail.items
-  //   dragDisabled = true
-  //   const newSortedIds = dragableSponsors.map((e) => e.value.id)
-  //   await announcementStore.updateAnnouncementOrder(newSortedIds)
-  //   savingNewOrder = false
-  // }
+  function handleConsider(event: CustomEvent<DndEvent<any>>) {
+    dragableAnnouncements = event.detail.items
+    dragDisabled = true
+  }
+  async function handleFinalize(event: CustomEvent<DndEvent<any>>) {
+    savingNewOrder = true
+    dragableAnnouncements = event.detail.items
+    dragDisabled = true
+    const newSortedIds = dragableAnnouncements.map((e) => e.value.id)
+    await announcementStore.updateAnnouncementsOrder(newSortedIds)
+    savingNewOrder = false
+  }
 
   // -- Edit articles --
   let showModal = false
@@ -69,12 +69,12 @@
   //   : dragableAnnouncements
   $: filteredDragableAnnouncements = dragableAnnouncements
 
-//   function filterAnnouncements(searchString: string) {
-//     return dragableAnnouncements.filter(
-//       (announcement) => true,
-//       //sponsor.value.matchesSearchString(searchString),
-//     )
-//   }
+  //   function filterAnnouncements(searchString: string) {
+  //     return dragableAnnouncements.filter(
+  //       (announcement) => true,
+  //       //announcement.value.matchesSearchString(searchString),
+  //     )
+  //   }
 
   // -- Util --
   let saving = false
@@ -125,24 +125,23 @@
           ]}
         />
       </thead>
-      <!-- <tbody
-		  use:dndzone={{
-			items: dragableAnnouncements,
-			dragDisabled: dragDisabled,
-			flipDurationMs: FLIP_DURATION,
-			dropTargetStyle: {},
-		  }}
-		  on:consider={handleConsider}
-		  on:finalize={handleFinalize}
-		> -->
-      <tbody>
+      <tbody
+        use:dndzone={{
+          items: dragableAnnouncements,
+          dragDisabled: dragDisabled,
+          flipDurationMs: FLIP_DURATION,
+          dropTargetStyle: {},
+        }}
+        on:consider={handleConsider}
+        on:finalize={handleFinalize}
+      >
         {#each filteredDragableAnnouncements as dragable (dragable.id)}
           <AnnouncementRow
-            announcement={dragable}
+            announcement={dragable.value}
             editHandler={startEdit}
             deleteHandler={startDelete}
             updateVisibilityHandler={updateVisibility}
-            updateDismissibleHandler={() => {}}
+            updateDismissibleHandler={() => {console.error("Not implemented")}}
             bind:dragDisabled
             {dragFullyDisabled}
           />
@@ -150,6 +149,9 @@
       </tbody>
     </table>
   </div>
+  {dragDisabled}
+  {dragFullyDisabled}
+  {filteredDragableAnnouncements.map(e => e.value.title)}
   <TableFooter
     filteredLength={filteredDragableAnnouncements.length}
     fullLength={dragableAnnouncements.length}

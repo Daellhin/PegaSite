@@ -1,11 +1,11 @@
 <script lang="ts">
   import { goto } from "$app/navigation"
   import AnnouncementForm from "$components/announcements/AnnouncementForm.svelte"
-  import AnnouncementTable from "$components/announcements/AnnouncementTable.svelte"
+  import AnnouncementsTable from "$components/announcements/AnnouncementsTable.svelte"
   import { Announcement } from "$lib/domain/Announcement"
+  import { announcementStore } from "$lib/stores/AnnouncementStore"
   import { authStore } from "$lib/stores/AuthStore"
   import { pageHeadStore } from "$lib/stores/PageHeadStore"
-  import { sponsorStore } from "$lib/stores/SponsorStore"
 
   let showForm = false
   let editAnnouncement: Announcement | undefined = undefined
@@ -18,9 +18,9 @@
     showForm = true
     editAnnouncement = undefined
   }
-  function startEdit(sponsor: Announcement) {
+  function startEdit(announcement: Announcement) {
     showForm = true
-    editAnnouncement = sponsor
+    editAnnouncement = announcement
   }
 
   // -- Authguard --
@@ -48,8 +48,8 @@
   </div>
 {/if}
 
-{#if $sponsorStore}
-  <AnnouncementTable {startEdit} />
+{#if $announcementStore}
+  <AnnouncementsTable {startEdit} />
 {:else}
   Loading
 {/if}

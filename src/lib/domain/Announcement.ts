@@ -1,6 +1,7 @@
 import { Timestamp, type FirestoreDataConverter } from "firebase/firestore"
 import type { Dayjs } from "dayjs"
 import dayjs from "dayjs"
+import type { DragableItem } from "$lib/utils/Types"
 
 export interface AnnouncementJson {
 	// id: string // id comes from the firebase Document ID
@@ -41,6 +42,13 @@ export class Announcement {
 			visible: this.visible,
 			dismissible: this.dismissible
 		} as AnnouncementJson
+	}
+
+	toDragableItem() {
+		return {
+			id: this.id,
+			value: this
+		} as DragableItem<Announcement>
 	}
 
 	/**

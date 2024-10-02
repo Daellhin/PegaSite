@@ -2,29 +2,31 @@ import { browser } from '$app/environment'
 import { Announcement, announcementConverter, type AnnouncementJson } from '$lib/domain/Announcement'
 import { Collections } from '$lib/firebase/Firebase'
 import { convertStringToBool } from '$lib/utils/Utils'
-import { writable } from 'svelte/store'
+import { get, writable } from 'svelte/store'
 import { createMockAnnouncementStore } from './mocks/MockAnnouncementStore'
+import type { OrderingJson } from '$lib/domain/Ordering'
+import { sortWithOrdering } from '$lib/utils/Stores'
 
 function createAnnouncementStore() {
 	const store = writable<(Announcement)[]>(undefined, set => {
 		async function init() {
 			if (!browser) return
 
-			// -- Load Announcement --
+			// -- Load Announcements --
 			const { firebaseApp } = await import('$lib/firebase/Firebase')
-			const { getFirestore, getDocs, collection } = await import('firebase/firestore')
+			const { getFirestore, getDocs, getDoc, doc, collection } = await import('firebase/firestore')
 			const firestore = getFirestore(firebaseApp)
 
 			const announcementsRef = collection(firestore, Collections.ANNOUNCEMENTS)
 			const announcementsSnap = await getDocs(announcementsRef)
 			const announcements = announcementsSnap.docs.map(e => Announcement.fromJson(e.id, e.data() as AnnouncementJson))
 
-			// // -- Sort Announcement --
-			// const orderingRef = doc(firestore, Collections.ORDERINGS, Collections.ANNOUNCEMENTS)
-			// const orderingSnap = await getDoc(orderingRef)
-			// const ordering = orderingSnap.data() as OrderingJson | undefined
-			// if (!ordering) throw new Error(`Sort order ${Collections.ANNOUNCEMENTS} not found`)
-			// sortAnnouncements(announcements, ordering.ids)
+			// // -- Sort announcements --
+			const orderingRef = doc(firestore, Collections.ORDERINGS, Collections.ANNOUNCEMENTS)
+			const orderingSnap = await getDoc(orderingRef)
+			const ordering = orderingSnap.data() as OrderingJson | undefined
+			if (!ordering) throw new Error(`Sort order ${Collections.ANNOUNCEMENTS} not found`)
+			sortWithOrdering(announcements, ordering.ids)
 
 			// -- Set store --
 			set(announcements)
@@ -34,7 +36,7 @@ function createAnnouncementStore() {
 	const { subscribe, update } = store
 
 	async function createAnnouncement(announcement: Announcement) {
-		// -- Upload announcement --
+		// -- Upload document --
 		const { getFirestore, collection, doc, setDoc } = await import('firebase/firestore')
 		const { firebaseApp } = await import('$lib/firebase/Firebase')
 		const firestore = getFirestore(firebaseApp)
@@ -44,15 +46,15 @@ function createAnnouncementStore() {
 		announcement.id = newDocRef.id
 
 		// -- Update ordering --
-		// const existingSortedIds = get(store).map((e) => e.id)
-		// await updateAnnouncementOrder([...existingSortedIds, newDocRef.id])
+		const existingSortedIds = get(store).map((e) => e.id)
+		await updateAnnouncementsOrder([...existingSortedIds, newDocRef.id])
 
 		// -- Update store(new item last) --
 		update((anouncements) => ([...anouncements, announcement]))
 	}
 
 	async function updateAnnouncement(newTitle: string, newContent: string, newVisible: boolean, newDismissable: boolean, announcement: Announcement) {
-		// -- Update Announcement --
+		// -- Update document --
 		const { getFirestore, doc, updateDoc } = await import('firebase/firestore')
 		const { firebaseApp } = await import('$lib/firebase/Firebase')
 		const firestore = getFirestore(firebaseApp)
@@ -76,7 +78,7 @@ function createAnnouncementStore() {
 	}
 
 	async function deleteAnnouncement(announcement: Announcement) {
-		// -- Remove announcement --
+		// -- Delete document --
 		const { getFirestore, doc, deleteDoc } = await import('firebase/firestore')
 		const { firebaseApp } = await import('$lib/firebase/Firebase')
 		const firestore = getFirestore(firebaseApp)
@@ -84,31 +86,32 @@ function createAnnouncementStore() {
 		const docRef = doc(firestore, Collections.ANNOUNCEMENTS, announcement.id)
 		await deleteDoc(docRef)
 
-		// -- Remove from store --
+		// -- Delete from store --
 		update((announcements) => announcements.filter((e) => e.id !== announcement.id))
 
 		// -- Update ordering --
-		//const existingSortedIds = get(store).map((e) => e.id)
-		//await updateAnnouncementOrder(existingSortedIds)
+		const existingSortedIds = get(store).map((e) => e.id)
+		await updateAnnouncementsOrder(existingSortedIds)
 	}
 
-	// async function updateAnnouncementOrder(newSortedIds: string[]) {
-	// 	// -- Update ordering --
-	// 	const { firebaseApp } = await import('$lib/firebase/Firebase')
-	// 	const { getFirestore, doc, updateDoc } = await import('firebase/firestore')
-	// 	const firestore = getFirestore(firebaseApp)
+	async function updateAnnouncementsOrder(newSortedIds: string[]) {
+		// -- Update document --
+		const { firebaseApp } = await import('$lib/firebase/Firebase')
+		const { getFirestore, doc, updateDoc } = await import('firebase/firestore')
+		const firestore = getFirestore(firebaseApp)
 
-	// 	const docRef = doc(firestore, Collections.ORDERINGS, Collections.ANNOUNCEMENTS)
-	// 	await updateDoc(docRef, {
-	// 		ids: newSortedIds,
-	// 	})
+		const docRef = doc(firestore, Collections.ORDERINGS, Collections.ANNOUNCEMENTS)
+		await updateDoc(docRef, {
+			ids: newSortedIds,
+		})
 
-	// 	// -- Update store --
-	// 	update((announcements) => [...announcements])
-	// }
+		// -- Update store --
+		sortWithOrdering(get(store), newSortedIds)
+		update((announcements) => [...announcements])
+	}
 
 	async function updateAnnouncementVisibility(announcement: Announcement) {
-		// -- Update announcement --
+		// -- Update document --
 		const { getFirestore, doc, updateDoc } = await import('firebase/firestore')
 		const { firebaseApp } = await import('$lib/firebase/Firebase')
 		const firestore = getFirestore(firebaseApp)
@@ -123,23 +126,12 @@ function createAnnouncementStore() {
 		update((announcements) => [...announcements])
 	}
 
-	// function sortAnnouncements(announcements: Announcement[], sortedIds: string[]) {
-	// 	const sortMap = new Map(sortedIds.map((e, i) => [e, i] as [string, number]))
-	// 	announcements.sort((a, b) => {
-	// 		const first = sortMap.get(a.id)
-	// 		if (first === undefined) throw new Error(`Announcement ${a.id} not found in sort map`)
-	// 		const second = sortMap.get(b.id)
-	// 		if (second === undefined) throw new Error(`Announcement ${b.id} not found in sort map`)
-	// 		return first - second
-	// 	})
-	// }
-
 	return {
 		subscribe,
 		createAnnouncement,
 		updateAnnouncement,
 		deleteAnnouncement,
-		// updateAnnouncementOrder,
+		updateAnnouncementsOrder,
 		updateAnnouncementVisibility
 	}
 }

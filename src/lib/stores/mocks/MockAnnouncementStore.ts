@@ -24,9 +24,9 @@ export function createMockAnnouncementStore() {
 		update((announcements) => announcements.filter((e) => e.id !== announcement.id))
 	}
 
-	// async function updateAnnouncementOrder(_newSortedIds: string[]) {
-	// 	update((announcements) => [...announcements])
-	// }
+	async function updateAnnouncementsOrder(_newSortedIds: string[]) {
+		update((announcements) => [...announcements])
+	}
 
 	async function updateAnnouncementVisibility(announcement: Announcement) {
 		announcement.updateSearchableString()
@@ -38,6 +38,7 @@ export function createMockAnnouncementStore() {
 		subscribe,
 		createAnnouncement,
 		updateAnnouncement,
+		updateAnnouncementsOrder,
 		deleteAnnouncement,
 		updateAnnouncementVisibility
 	}
