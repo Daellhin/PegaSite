@@ -149,9 +149,6 @@
       </tbody>
     </table>
   </div>
-  {dragDisabled}
-  {dragFullyDisabled}
-  {filteredDragableAnnouncements.map(e => e.value.title)}
   <TableFooter
     filteredLength={filteredDragableAnnouncements.length}
     fullLength={dragableAnnouncements.length}
