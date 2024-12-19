@@ -123,6 +123,7 @@
     bind:combinedImages
     bind:tags
     bind:visible
+    newArticle={false}
     submitLabel="Wijzig artikel"
     onSave={updateArticle}
   />

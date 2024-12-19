@@ -8,13 +8,14 @@
   import { handleFirebaseError } from "$lib/utils/Firebase"
 
   export let title = ""
-  export let content = ""
+  export let visible = true
   export let combinedImages: (string | File)[] = []
   export let tags: string[] = []
-  export let visible = true
+  export let content = ""
 
   export let submitLabel: string
   export let onSave: () => Promise<void>
+  export let newArticle: boolean
 
   let saving = false
   let errorMessage = ""
@@ -37,7 +38,7 @@
     type="text"
     label="Titel van bericht:"
     placeholder="Titel"
-    value={title}
+    bind:value={title}
     required
   />
   <Checkbox label="Zichtbaar" bind:value={visible} />
