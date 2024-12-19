@@ -11,7 +11,7 @@
   import dayjs from "dayjs"
 
   let title = ""
-  let visible: boolean
+  let visible: boolean = true
   let uploadedImages: File[] = []
   let tags: string[] = []
   let content = ""
@@ -74,6 +74,7 @@
     bind:combinedImages={uploadedImages}
     bind:tags
     bind:content
+
     submitLabel="Bericht aanmaken"
     onSave={saveArticle}
   />
