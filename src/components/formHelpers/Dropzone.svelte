@@ -21,6 +21,7 @@
   export let sortable = true
   export let dropzoneId = "file-dropzone"
   export let disablePreviews = false
+  export let showDiskSize = false
   export let saving = false
   export let progress: UploadProgress[] | undefined = undefined
 
@@ -155,9 +156,11 @@
   {/if}
   {#if combinedImages.length > 0}
     <div class="opacity-60 mt-1">
-      Afbeeldingen:
-      <span class="font-bold">{combinedImages.length}</span>, grootte op shijf:
-      <span class="font-bold">{byteSize(fileSize)}</span>
+      Afbeeldingen: <span class="font-bold">{combinedImages.length}</span>
+      {#if showDiskSize}
+        , grootte op shijf:
+        <span class="font-bold">{byteSize(fileSize)}</span>
+      {/if}
     </div>
   {/if}
 

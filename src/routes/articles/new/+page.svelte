@@ -74,7 +74,7 @@
     bind:combinedImages={uploadedImages}
     bind:tags
     bind:content
-
+    newArticle={true}
     submitLabel="Bericht aanmaken"
     onSave={saveArticle}
   />

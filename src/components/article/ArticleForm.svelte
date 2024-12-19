@@ -15,6 +15,7 @@
 
   export let submitLabel: string
   export let onSave: () => Promise<void>
+  export let newArticle: boolean
 
   let saving = false
   let errorMessage = ""
