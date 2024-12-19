@@ -52,7 +52,7 @@
 		"daisyui": "^4.12.22",
 		"dayjs": "^1.11.13",
 		"file-saver": "^2.0.5",
-		"firebase": "^10.14.1",
+		"firebase": "^11.1.0",
 		"jszip": "^3.10.1",
 		"p-limit": "^6.1.0",
 		"svelte-collapse": "^0.1.4",
@@ -62,7 +62,7 @@
 		"svelte-select": "^5.8.3",
 		"svelte-vertical-timeline": "^1.0.2",
 		"ts-debounce": "^4.0.0",
-		"uuid": "^10.0.0",
+		"uuid": "^11.0.3",
 		"webp-converter-browser": "^1.0.4"
 	}
 }
