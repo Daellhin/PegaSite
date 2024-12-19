@@ -14,16 +14,15 @@
 
   export let data: PageData
 
-  let lastUpdate: Dayjs
-  let authors: string[]
-  let tags: string[]
   let title: string
-  let combinedImages: (string | File)[] = []
   let visible: boolean
-
+  let combinedImages: (string | File)[] = []
+  let tags: string[]
   let content: string
-  let createdAt: Dayjs
+  let authors: string[]
 
+  let createdAt: Dayjs
+  let lastUpdate: Dayjs
   let article: Article | undefined | null
 
   async function updateArticle() {

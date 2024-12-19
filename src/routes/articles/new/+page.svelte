@@ -11,9 +11,10 @@
   import dayjs from "dayjs"
 
   let title = ""
-  let content = ""
+  let visible: boolean
   let uploadedImages: File[] = []
   let tags: string[] = []
+  let content = ""
 
   async function saveArticle() {
     const article = await createPreviewArticle()
@@ -35,7 +36,8 @@
       tags,
       title,
       await Promise.all(uploadedImages.map(PreviewableFile.getFilePreview)),
-      content
+      content,
+      visible
     )
   }
 
@@ -68,9 +70,10 @@
 
   <ArticleForm
     bind:title
-    bind:content
+    bind:visible
     bind:combinedImages={uploadedImages}
     bind:tags
+    bind:content
     submitLabel="Bericht aanmaken"
     onSave={saveArticle}
   />
