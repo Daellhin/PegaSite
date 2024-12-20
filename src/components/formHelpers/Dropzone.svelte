@@ -108,7 +108,7 @@
         {/if}
       </span>
     </label>
-    {#if combinedImages.length > 0}
+    {#if maxAmount > 1 && combinedImages.length > 0}
       <button
         class="btn btn-primary btn-xs ml-auto items-center"
         type="button"
@@ -119,7 +119,6 @@
       </button>
     {/if}
   </div>
-
   <!-- Dropzone -->
   {#if remainingSpace}
     <label
@@ -154,7 +153,7 @@
       />
     </label>
   {/if}
-  {#if combinedImages.length > 0}
+  {#if maxAmount > 1 && combinedImages.length > 0}
     <div class="opacity-60 mt-1">
       Afbeeldingen: <span class="font-bold">{combinedImages.length}</span>
       {#if showDiskSize}
@@ -163,7 +162,6 @@
       {/if}
     </div>
   {/if}
-
   <!-- SelectedImages viewer -->
   {#if combinedImages.length}
     <div
@@ -171,7 +169,7 @@
       class:mt-1={remainingSpace}
       use:dndzone={{
         items: dragableImages,
-        dragDisabled: dragDisabled,
+        dragDisabled: dragDisabled || !sortable || maxAmount <= 1,
         flipDurationMs: FLIP_DURATION,
         dropTargetStyle: {},
       }}
@@ -186,7 +184,7 @@
             : "Geüpload bestand"}
           remove={() => remove(i)}
           bind:dragDisabled
-          dragFullyDisabled={!sortable}
+          dragFullyDisabled={!sortable || maxAmount <= 1}
           isLast={i == combinedImages.length - 1}
           progress={progress?.[i] || undefined}
           {saving}
@@ -195,13 +193,13 @@
       {/each}
     </div>
   {/if}
+  {#if !disablePreviews && amountOfFinishedPreviews < combinedImages.length}
+    <div class="flex items-center gap-2">
+      <span class="loading loading-ring" />
+      <span class="opacity-60">Afbeeldingen laden</span>
+    </div>
+  {/if}
 </div>
-{#if !disablePreviews && amountOfFinishedPreviews < combinedImages.length}
-  <div class="flex items-center gap-2">
-    <span class="loading loading-ring" />
-    <span class="opacity-60">Afbeeldingen laden</span>
-  </div>
-{/if}
 
 <style lang="postcss">
   @media (prefers-color-scheme: dark) {
