@@ -86,7 +86,7 @@
     .reduce((prev, current) => prev + current, 0)
 
   // -- Previews --
-  let amountOfFinishedPreviews = 0
+  let amountOfFinishedPreviews = combinedImages.length
 
   function onPreviewFinishedLoading() {
     amountOfFinishedPreviews++
