@@ -140,6 +140,7 @@
     bind:author
     bind:authorUrl
     bind:date
+    newPhotoAlbum={false}
     submitLabel="Album wijzigen"
     progress={$progressStore}
     onSave={savePhotoAlbum}
