@@ -20,6 +20,7 @@
   export let progress: UploadProgress[]
   export let stopAfterSave = false
   export let savedMessage = ""
+  export let newPhotoAlbum: boolean
 
   let saving = false
   let errorMessage = ""
@@ -76,7 +77,7 @@
     label="Afbeeldingen:"
     bind:combinedImages
     required
-    
+    showDiskSize={newPhotoAlbum}
     {progress}
     saving={saving || (stopAfterSave && amountSaved >= 1)}
   />

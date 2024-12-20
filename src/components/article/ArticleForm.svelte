@@ -43,7 +43,11 @@
   />
   <Checkbox label="Zichtbaar" bind:value={visible} />
 
-  <Dropzone label="Afbeeldingen:" bind:combinedImages />
+  <Dropzone
+    label="Afbeeldingen:"
+    bind:combinedImages
+    showDiskSize={newArticle}
+  />
   <MultiSelect
     label="Categorieën:"
     bind:values={tags}
