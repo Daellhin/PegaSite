@@ -19,7 +19,7 @@ export function createMockPageStore() {
 		return get(innerStore).find((e) => e.id === id)
 	}
 	async function updatePage(newTitle: string, newContent: string, combinedImages: (string | File)[], page: Page) {
-		const images = await Promise.all(combinedImages.map(PreviewableFile.getMixedFilePreview))
+		const images = await Promise.all(combinedImages.map((e) => PreviewableFile.getMixedFilePreview(e)))
 		page.title = newTitle
 		page.content = newContent
 		page.images = images

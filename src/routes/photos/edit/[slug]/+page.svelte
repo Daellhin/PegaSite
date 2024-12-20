@@ -53,7 +53,7 @@
   }
   async function createPreview() {
     const images = await Promise.all(
-      combinedImages.map(PreviewableFile.getMixedFilePreview),
+      combinedImages.map((e) => PreviewableFile.getMixedFilePreview(e)),
     )
     return new PhotoAlbum(
       "PreviewID",
