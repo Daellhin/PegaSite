@@ -20,8 +20,8 @@
   export let progress: UploadProgress | undefined = undefined
   export let onPreviewFinishedLoading: () => void = () => {}
 
-  async function loadPreview(image: File) {
-    const preview = await PreviewableFile.getFilePreview(image)
+  async function loadPreview(image: File | string | IconDefinition) {
+    const preview = await PreviewableFile.getMixedFilePreview(image)
     onPreviewFinishedLoading()
     return preview
   }
@@ -34,29 +34,30 @@
   {#if !dragFullyDisabled}
     <DndHandle bind:dragDisabled />
   {/if}
-  {#if image instanceof File}
-    <div class="w-10 rounded-sm h-6 overflow-hidden">
-      {#await loadPreview(image)}
-        <div class="bg-base-200 w-full h-full" />
-        loading
-      {:then src}
+  <div class="w-10 rounded-sm h-6 overflow-hidden">
+    {#await loadPreview(image)}
+      <div class="bg-base-200 w-full h-full" />
+      loading
+    {:then src}
+      {#if image instanceof File}
         <img class="" alt={image.name} {src} />
         finished
-      {:catch error}
-        <div
-          class="tooltip tooltip-right"
-          data-tip="Bestand kan niet getoond worden"
-        >
-          <Fa icon={faFileCircleExclamation} />
-          <div class="hidden">{error}</div>
-        </div>
-      {/await}
-    </div>
-  {:else if typeof image === "string"}
-    <img class="w-10 rounded-sm" alt="Upload" src={image} />
-  {:else}
-    <Fa icon={image} />
-  {/if}
+      {:else if typeof image === "string"}
+        <img class="w-10 rounded-sm" alt="Upload" src={image} />
+      {:else}
+        <Fa icon={image} />
+      {/if}
+    {:catch error}
+      <div
+        class="tooltip tooltip-right"
+        data-tip="Bestand kan niet getoond worden"
+      >
+        <Fa icon={faFileCircleExclamation} />
+        <div class="hidden">{error}</div>
+      </div>
+    {/await}
+  </div>
+
   <div class="my-auto font-semibold">{imageName}</div>
   <div class="min-w-6 h-6 ml-auto">
     {#if !saving}
@@ -69,7 +70,10 @@
         <Fa icon={faXmark} />
       </button>
     {:else if progress !== undefined}
-      <div class="flex items-center justify-center h-full w-full" title={toString(progress)}>
+      <div
+        class="flex items-center justify-center h-full w-full"
+        title={toString(progress)}
+      >
         {#if progress === UploadProgress.CONVERTING || progress === UploadProgress.UPLOADING}
           <span class="loading loading-ring loading-sm" />
         {:else if progress === UploadProgress.DONE}
