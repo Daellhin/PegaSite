@@ -2,7 +2,7 @@ import { browser } from '$app/environment'
 import { PhotoAlbum, photoAlbumConverter, type PhotoAlbumJson } from '$lib/domain/PhotoAlbum'
 import { Collections, createFirebaseStorageUrl, StorageFolders } from '$lib/firebase/Firebase'
 import { arrayDifference, arraysContainSameElements } from '$lib/utils/Array'
-import { convertAndUploadImages, UploadProgress } from '$lib/utils/UploadProgress'
+import { convertAndUploadImages, deleteImages, UploadProgress } from '$lib/utils/UploadProgress'
 import { convertStringToBool } from '$lib/utils/Utils'
 import type { Dayjs } from 'dayjs'
 import saveAs from 'file-saver'
@@ -11,23 +11,6 @@ import pLimit from 'p-limit'
 import type { Writable } from 'svelte/store'
 import { writable } from 'svelte/store'
 import { createMockPhotoAlbumStore } from './mocks/MockPhotoAlbumStore'
-
-async function deleteImages(imageUrls: string[], progressStore?: Writable<number>) {
-	const { getStorage, ref, deleteObject } = await import('firebase/storage')
-	const storage = getStorage()
-
-	await Promise.all(imageUrls.map(async (image) => {
-		try {
-			const storageRef = ref(storage, image)
-			await deleteObject(storageRef)
-			progressStore?.update((progress) => progress + 1)
-		} catch (error: any) {
-			// Not existing images can be safely ignored
-			if (error.code !== 'storage/object-not-found')
-				throw error
-		}
-	}))
-}
 
 /**
  * Source: https://www.captaincodeman.com/lazy-loading-and-querying-firestore-with-sveltekit

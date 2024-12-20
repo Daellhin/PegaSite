@@ -1,16 +1,17 @@
 import { browser } from '$app/environment'
 import { Article, articleConverter } from '$lib/domain/Article'
-import { Collections, StorageFolders } from '$lib/firebase/Firebase'
+import { Collections, createFirebaseStorageUrl, StorageFolders } from '$lib/firebase/Firebase'
 import { arrayDifference, arraysContainSameElements } from '$lib/utils/Array'
 import { WEBP_IMAGE_QUALITY } from '$lib/utils/Constants'
 import { convertStringToBool } from '$lib/utils/Utils'
 import type { Dayjs } from 'dayjs'
 import { Timestamp, where, type QueryDocumentSnapshot } from 'firebase/firestore'
-import { get, writable } from 'svelte/store'
+import { get, writable, type Writable } from 'svelte/store'
 import { v4 as uuidv4 } from 'uuid'
 import { blobToWebP } from 'webp-converter-browser'
 import { authStore } from './AuthStore'
 import { createMockArticleStore } from './mocks/MockArticleStore'
+import { convertAndUploadImages, deleteImages, UploadProgress } from '$lib/utils/UploadProgress'
 
 /**
  * Pagination size is used to load articles in batches. 
@@ -78,22 +79,10 @@ function createArticleStore() {
 		update((articles) => ([...(articles || []), ...newArticles]))
 	}
 
-	async function createArticle(newArticle: Article, images: File[]) {
-		// -- Convert images --
-		const convertedImages = await Promise.all(
-			images.map((e) => blobToWebP(e, { quality: WEBP_IMAGE_QUALITY }))
-		)
-
-		// -- Upload images --
-		const { getStorage, ref, uploadBytes, getDownloadURL } = await import('firebase/storage')
-		const storage = getStorage()
-
-		const uploadedImageLinks = await Promise.all(convertedImages.map(async (image) => {
-			const storageRef = ref(storage, `${StorageFolders.ARTICLE_IMAGES}/${uuidv4()}`)
-			const snapshot = await uploadBytes(storageRef, image)
-			return await getDownloadURL(snapshot.ref)
-		}))
-		newArticle.images = uploadedImageLinks
+	async function createArticle(newArticle: Article, images: File[], progressStore: Writable<UploadProgress[]>) {
+		// -- Convert and upload images --
+		const { uploadedImageIds, size } = await convertAndUploadImages(images, StorageFolders.ARTICLE, progressStore)
+		newArticle.images = uploadedImageIds
 
 		// -- Upload article --
 		const { getFirestore, collection, doc, setDoc } = await import('firebase/firestore')
@@ -105,8 +94,8 @@ function createArticleStore() {
 		await setDoc(newDocRef, newArticle)
 
 		// -- Update store --
-		if (get(innerStore))
-			update((articles) => ([newArticle, ...(articles)]))
+		update((articles) => ([newArticle, ...(articles)]))
+		return size
 	}
 
 	async function getArticleById(id: string) {
@@ -126,33 +115,17 @@ function createArticleStore() {
 		return article || null
 	}
 
-	async function updateArticle(newAuthors: string[], newTags: string[], newTitle: string, newContent: string, lastUpdate: Dayjs, combinedImages: (string | File)[], visible: boolean, article: Article) {
-		const { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } = await import('firebase/storage')
-		const storage = getStorage()
-
+	async function updateArticle(newAuthors: string[], newTags: string[], newTitle: string, newContent: string, lastUpdate: Dayjs, combinedImages: (string | File)[], visible: boolean, article: Article, progressStore: Writable<UploadProgress[]>) {
 		// -- Delete images removed by user --
-		const excistingImages = combinedImages.filter((e) => typeof e === 'string') as string[]
-		if (!arraysContainSameElements(article.images, excistingImages)) {
-			const imagesToRemove = arrayDifference(article.images, excistingImages)
-			await Promise.all(imagesToRemove.map(async (image) => {
-				const imageRef = ref(storage, image)
-				await deleteObject(imageRef)
-			}))
+		const existingImageIds = combinedImages.filter((e) => typeof e === 'string') as string[]
+		if (!arraysContainSameElements(article.images, existingImageIds)) {
+			const imageIdsToRemove = arrayDifference(article.images, existingImageIds)
+			await deleteImages(imageIdsToRemove.map((e) => createFirebaseStorageUrl(StorageFolders.ARTICLE.IMAGES, e)))
+			await deleteImages(imageIdsToRemove.map((e) => createFirebaseStorageUrl(StorageFolders.ARTICLE.THUMBNAILS, e)))
 		}
 
-		// -- Upload images, and replace files with urls --
-		const newImages = await Promise.all(combinedImages.map(async (image) => {
-			// -- Keep existing url --
-			if (!(image instanceof File)) return image
-
-			// -- First convert to webp --
-			const convertedImage = blobToWebP(image, { quality: WEBP_IMAGE_QUALITY })
-
-			// -- Next upload and replace with url --
-			const storageRef = ref(storage, `${StorageFolders.ARTICLE_IMAGES}/${uuidv4()}`)
-			const snapshot = await uploadBytes(storageRef, await convertedImage)
-			return getDownloadURL(snapshot.ref)
-		}))
+		// -- Convert and upload images --
+		const { uploadedImageIds, size } = await convertAndUploadImages(combinedImages, StorageFolders.ARTICLE, progressStore)
 
 		// -- Update article --
 		const { getFirestore, doc, updateDoc } = await import('firebase/firestore')
@@ -166,7 +139,7 @@ function createArticleStore() {
 			title: newTitle,
 			content: newContent,
 			lastUpdate: new Timestamp(Math.round(Date.now() / 1000), 0),
-			images: newImages,
+			images: uploadedImageIds,
 			visible: visible
 		})
 
@@ -175,11 +148,12 @@ function createArticleStore() {
 		article.tags = newTags
 		article.title = newTitle
 		article.content = newContent
-		article.images = newImages
+		article.images = uploadedImageIds
 		article.lastUpdate = lastUpdate
 		article.visible = visible
 		article.updateSearchableString()
 		update((articles) => [...articles])
+		return size
 	}
 
 	async function deleteArticle(article: Article) {

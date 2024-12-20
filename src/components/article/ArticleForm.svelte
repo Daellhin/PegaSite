@@ -6,6 +6,7 @@
   import MultiSelect from "$components/formHelpers/MultiSelect.svelte"
   import { CategoryValues } from "$lib/domain/Category"
   import { handleFirebaseError } from "$lib/utils/Firebase"
+  import type { UploadProgress } from "$lib/utils/UploadProgress"
 
   export let title = ""
   export let visible = true
@@ -15,6 +16,7 @@
 
   export let submitLabel: string
   export let onSave: () => Promise<void>
+  export let progress: UploadProgress[]
   export let newArticle: boolean
 
   let saving = false
@@ -47,6 +49,7 @@
     label="Afbeeldingen:"
     bind:combinedImages
     showDiskSize={newArticle}
+    {progress}
   />
   <MultiSelect
     label="Categorieën:"

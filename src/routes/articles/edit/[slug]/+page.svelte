@@ -11,8 +11,12 @@
   import dayjs from "dayjs"
   import type { PageData } from "./$types"
   import { PreviewableFile } from "$lib/utils/PreviewableFile"
+  import type { UploadProgress } from "$lib/utils/UploadProgress"
+  import { writable } from "svelte/store"
 
   export let data: PageData
+
+  const progressStore = writable([] as UploadProgress[])
 
   let title: string
   let visible: boolean
@@ -35,6 +39,7 @@
       combinedImages,
       visible,
       article!,
+      progressStore,
     )
     haveValuesBeenSet = false
     pushCreatedToast("Artikel gewijzigd", {
@@ -126,6 +131,7 @@
     newArticle={false}
     submitLabel="Wijzig artikel"
     onSave={updateArticle}
+    progress={$progressStore}
   />
 {:else}
   <div>"{data.id}": not found</div>

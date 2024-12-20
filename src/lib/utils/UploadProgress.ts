@@ -68,3 +68,20 @@ export async function convertAndUploadImages(combinedImages: (string | File)[], 
 	}))
 	return { uploadedImageIds, size }
 }
+
+export async function deleteImages(imageUrls: string[], progressStore?: Writable<number>) {
+	const { getStorage, ref, deleteObject } = await import('firebase/storage')
+	const storage = getStorage()
+
+	await Promise.all(imageUrls.map(async (image) => {
+		try {
+			const storageRef = ref(storage, image)
+			await deleteObject(storageRef)
+			progressStore?.update((progress) => progress + 1)
+		} catch (error: any) {
+			// Not existing images can be safely ignored
+			if (error.code !== 'storage/object-not-found')
+				throw error
+		}
+	}))
+}

@@ -35,7 +35,10 @@ export type StorageFolder = {
  * Firebase Storage folder names
  */
 export class StorageFolders {
-    static readonly ARTICLE_IMAGES = "article-images"
+    static readonly ARTICLE: StorageFolder = {
+        IMAGES: "article-images",
+        THUMBNAILS: "article-thumbnails"
+    }
     static readonly PHOTO_ALBUM: StorageFolder = {
         IMAGES: "photo-album-images",
         THUMBNAILS: "photo-album-thumbnails"

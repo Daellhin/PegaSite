@@ -28,6 +28,7 @@
   let date: Dayjs
   let createdAt: Dayjs
 
+  // TODO name uniformity
   async function savePhotoAlbum() {
     if (!photoAlbum) return
     await photoAlbumStore.updatePhotoAlbum(
