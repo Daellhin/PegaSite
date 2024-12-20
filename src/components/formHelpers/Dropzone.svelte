@@ -50,12 +50,16 @@
       ...combinedImages,
       ...newPreviewableFiles.slice(0, remainingSpace),
     ]
-    amountOfFinishedPreviews = 0
+    amountOfFinishedPreviews = combinedImages.filter(
+      (e) => typeof e === "string",
+    ).length
   }
   function remove(index: number) {
     combinedImages.splice(index, 1)
     combinedImages = combinedImages
-    amountOfFinishedPreviews = 0
+    amountOfFinishedPreviews = combinedImages.filter(
+      (e) => typeof e === "string",
+    ).length
   }
   function removeAll() {
     combinedImages = []
