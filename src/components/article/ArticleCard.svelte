@@ -15,7 +15,7 @@
 
   $: imageUrl = createFirebaseStorageUrl(
     StorageFolders.ARTICLE.IMAGES,
-    article.images[0],
+    article.imageIds[0],
   )
 </script>
 
@@ -23,7 +23,7 @@
   <div
     class="card w-80 h-full bg-base-100 shadow-xl hover:brightness-90 transition-all duration-200 hover:-translate-y-1"
   >
-    {#if article.images?.length > 0}
+    {#if article.imageIds?.length > 0}
       <figure class="bg-base-200 h-48">
         <img src={imageUrl} alt="Article" />
       </figure>

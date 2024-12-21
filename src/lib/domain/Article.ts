@@ -1,3 +1,5 @@
+
+import { createFirebaseStorageUrl, StorageFolders } from "$lib/firebase/Firebase"
 import dayjs, { type Dayjs } from "dayjs"
 import { Timestamp, type FirestoreDataConverter } from "firebase/firestore"
 
@@ -7,7 +9,7 @@ export interface ArticleJson {
     authors: string[]
     tags: string[]
     title: string
-    images: string[]
+    imageIds: string[]
     content: string
     lastUpdate: Timestamp | undefined
     visible: boolean
@@ -22,7 +24,7 @@ export class Article {
         public authors: string[],
         public tags: string[],
         public title: string,
-        public images: string[],
+        public imageIds: string[],
         public content: string,
         public visible: boolean,
         public lastUpdate?: Dayjs,
@@ -54,7 +56,7 @@ export class Article {
             json.authors,
             json.tags,
             json.title,
-            json.images,
+            json.imageIds,
             json.content,
             json.visible,
             json.lastUpdate ? dayjs(json.lastUpdate.toMillis()) : undefined
@@ -65,7 +67,7 @@ export class Article {
             authors: this.authors,
             content: this.content,
             id: this.id,
-            images: this.images,
+            imageIds: this.imageIds,
             tags: this.tags,
             createdAt: Timestamp.fromDate(this.createdAt.toDate()),
             title: this.title,
@@ -79,11 +81,11 @@ export class Article {
     }
 
     public createCarouselImages() {
-        if (!this.images) return []
-        return this.images.map(async (image) => {
+        if (!this.imageIds) return []
+        return this.imageIds.map(async (e) => {
             return {
                 name: "name",
-                imageUrl: image
+                imageUrl: createFirebaseStorageUrl(StorageFolders.ARTICLE.IMAGES, e)
             }
         })
     }

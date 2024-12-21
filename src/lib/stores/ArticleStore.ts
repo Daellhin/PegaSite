@@ -82,7 +82,7 @@ function createArticleStore() {
 	async function createArticle(newArticle: Article, images: File[], progressStore: Writable<UploadProgress[]>) {
 		// -- Convert and upload images --
 		const { uploadedImageIds, size } = await convertAndUploadImages(images, StorageFolders.ARTICLE, progressStore)
-		newArticle.images = uploadedImageIds
+		newArticle.imageIds = uploadedImageIds
 
 		// -- Upload article --
 		const { getFirestore, collection, doc, setDoc } = await import('firebase/firestore')
@@ -118,8 +118,8 @@ function createArticleStore() {
 	async function updateArticle(newAuthors: string[], newTags: string[], newTitle: string, newContent: string, lastUpdate: Dayjs, combinedImages: (string | File)[], visible: boolean, article: Article, progressStore: Writable<UploadProgress[]>) {
 		// -- Delete images removed by user --
 		const existingImageIds = combinedImages.filter((e) => typeof e === 'string') as string[]
-		if (!arraysContainSameElements(article.images, existingImageIds)) {
-			const imageIdsToRemove = arrayDifference(article.images, existingImageIds)
+		if (!arraysContainSameElements(article.imageIds, existingImageIds)) {
+			const imageIdsToRemove = arrayDifference(article.imageIds, existingImageIds)
 			await deleteImages(imageIdsToRemove.map((e) => createFirebaseStorageUrl(StorageFolders.ARTICLE.IMAGES, e)))
 			await deleteImages(imageIdsToRemove.map((e) => createFirebaseStorageUrl(StorageFolders.ARTICLE.THUMBNAILS, e)))
 		}
@@ -148,7 +148,7 @@ function createArticleStore() {
 		article.tags = newTags
 		article.title = newTitle
 		article.content = newContent
-		article.images = uploadedImageIds
+		article.imageIds = uploadedImageIds
 		article.lastUpdate = lastUpdate
 		article.visible = visible
 		article.updateSearchableString()
@@ -161,7 +161,7 @@ function createArticleStore() {
 		const { getStorage, ref, deleteObject } = await import('firebase/storage')
 		const storage = getStorage()
 
-		await Promise.all(article.images.map(async (image) => {
+		await Promise.all(article.imageIds.map(async (image) => {
 			try {
 				const storageRef = ref(storage, image)
 				await deleteObject(storageRef)

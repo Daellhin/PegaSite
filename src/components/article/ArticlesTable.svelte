@@ -176,7 +176,7 @@
         {#each visibleArticles as article}
           <tr class="border-b border-base-200">
             <td>
-              <img src={article.images[0]} alt="Logo" class="rounded-lg h-20" />
+              <img src={article.imageIds[0]} alt="Logo" class="rounded-lg h-20" />
             </td>
             <td>
               <a href="/articles/{article.id}" class="link">{article.title}</a>
