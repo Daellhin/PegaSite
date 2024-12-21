@@ -23,6 +23,9 @@ export function toString(uploadProgress: UploadProgress) {
 	}
 }
 
+/**
+ * Already uploaded images are skipped
+ */
 export async function convertAndUploadImages(combinedImages: (string | File)[], folder: StorageFolder, progressStore: Writable<UploadProgress[]>) {
 	const { getStorage, ref, uploadBytes } = await import('firebase/storage')
 

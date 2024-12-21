@@ -1,9 +1,10 @@
+import { createFirebaseStorageUrl, StorageFolders } from "$lib/firebase/Firebase"
 import type { DragableItem } from "$lib/utils/Types"
 import type { FirestoreDataConverter } from "firebase/firestore"
 
 
 export interface SponsorJson {
-    // id: string // id comes from the firebase Document ID
+	// id: string // id comes from the firebase Document ID
 	name: string
 	url: string
 	imageUrl: string
@@ -24,7 +25,7 @@ export class Sponsor {
 	}
 
 	updateSearchableString() {
-		this.searchableString = `${this.name.toLowerCase()} ${this.url.toLowerCase()} ${this.visible? "zichtbaar": "verborgen"}`
+		this.searchableString = `${this.name.toLowerCase()} ${this.url.toLowerCase()} ${this.visible ? "zichtbaar" : "verborgen"}`
 	}
 
 	static clone(sponsor: Sponsor) {
@@ -35,6 +36,14 @@ export class Sponsor {
 			sponsor.imageUrl,
 			sponsor.visible
 		)
+	}
+
+	getImageUrl() {
+		return createFirebaseStorageUrl(StorageFolders.SPONSOR.IMAGES, this.imageUrl)
+	}
+
+	getThumbnailUrl() {
+		return createFirebaseStorageUrl(StorageFolders.SPONSOR.THUMBNAILS, this.imageUrl)
 	}
 
 	static fromJson(id: string, json: SponsorJson) {

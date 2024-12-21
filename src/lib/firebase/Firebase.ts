@@ -43,8 +43,11 @@ export class StorageFolders {
         IMAGES: "photo-album-images",
         THUMBNAILS: "photo-album-thumbnails"
     }
-    static readonly SPONSOR_IMAGES = "sponsor-images"
-    static readonly PAGE = {
+    static readonly SPONSOR: StorageFolder = {
+        IMAGES: "sponsor-images",
+        THUMBNAILS: "sponsor-thumbnails"
+    }
+    static readonly PAGE: StorageFolder = {
         IMAGES: "page-images",
         THUMBNAILS: "page-thumbnails"
     }
