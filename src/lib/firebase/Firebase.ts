@@ -44,7 +44,10 @@ export class StorageFolders {
         THUMBNAILS: "photo-album-thumbnails"
     }
     static readonly SPONSOR_IMAGES = "sponsor-images"
-    static readonly PAGE_IMAGES = "page-images"
+    static readonly PAGE = {
+        IMAGES: "page-images",
+        THUMBNAILS: "page-thumbnails"
+    }
 }
 
 export const FIRBASE_STORAGE_URL = "https://firebasestorage.googleapis.com/v0/b/pega-site.appspot.com/o/"

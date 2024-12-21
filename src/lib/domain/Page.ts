@@ -1,3 +1,4 @@
+import { createFirebaseStorageUrl, StorageFolders } from "$lib/firebase/Firebase"
 import dayjs, { type Dayjs } from "dayjs"
 import { Timestamp, type FirestoreDataConverter } from "firebase/firestore"
 import { Link } from "./Link"
@@ -21,6 +22,14 @@ export class Page {
 
     getUrl(edit = false) {
         return Link.normaliseUrl(this.id, edit)
+    }
+
+    getImageUrls() {
+        return this.images.map((e) => createFirebaseStorageUrl(StorageFolders.PAGE.IMAGES, e))
+    }
+
+    getThumbnailUrls() {
+        return this.images.map((e) => createFirebaseStorageUrl(StorageFolders.PAGE.THUMBNAILS, e))
     }
 
     static fromJson(json: PageJson) {

@@ -1,14 +1,12 @@
 import { browser } from '$app/environment'
 import { Page, pageConverter } from '$lib/domain/Page'
-import { Collections, StorageFolders } from '$lib/firebase/Firebase'
+import { Collections, createFirebaseStorageUrl, StorageFolders } from '$lib/firebase/Firebase'
 import { arrayDifference, arraysContainSameElements } from '$lib/utils/Array'
-import { WEBP_IMAGE_QUALITY } from '$lib/utils/Constants'
+import { convertAndUploadImages, deleteImages, UploadProgress } from '$lib/utils/UploadProgress'
 import { convertStringToBool } from '$lib/utils/Utils'
 import dayjs from 'dayjs'
 import { Timestamp } from 'firebase/firestore'
-import { get, writable } from 'svelte/store'
-import { v4 as uuidv4 } from "uuid"
-import { blobToWebP } from 'webp-converter-browser'
+import { get, writable, type Writable } from 'svelte/store'
 import { createMockPageStore } from './mocks/MockPageHeadStore'
 
 function createPageStore() {
@@ -52,33 +50,17 @@ function createPageStore() {
 		return data || null
 	}
 
-	async function updatePage(newTitle: string, newContent: string, combinedImages: (string | File)[], page: Page) {
-		const { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } = await import('firebase/storage')
-		const storage = getStorage()
-
+	async function updatePage(newTitle: string, newContent: string, combinedImages: (string | File)[], page: Page, progressStore: Writable<UploadProgress[]>) {
 		// -- Delete images removed by user --
-		const excistingImages = combinedImages.filter((e) => typeof e === 'string') as string[]
-		if (!arraysContainSameElements(page.images, excistingImages)) {
-			const imagesToRemove = arrayDifference(page.images, excistingImages)
-			await Promise.all(imagesToRemove.map(async (image) => {
-				const imageRef = ref(storage, image)
-				await deleteObject(imageRef)
-			}))
+		const existingImageIds = combinedImages.filter((e) => typeof e === 'string') as string[]
+		if (!arraysContainSameElements(page.images, existingImageIds)) {
+			const imageIdsToRemove = arrayDifference(page.images, existingImageIds)
+			await deleteImages(imageIdsToRemove.map((e) => createFirebaseStorageUrl(StorageFolders.PAGE.IMAGES, e)))
+			await deleteImages(imageIdsToRemove.map((e) => createFirebaseStorageUrl(StorageFolders.PAGE.THUMBNAILS, e)))
 		}
 
-		// -- Upload images, and replace files with urls --
-		const newImages = await Promise.all(combinedImages.map(async (image) => {
-			// -- Keep existing url --
-			if (!(image instanceof File)) return image
-
-			// -- First convert to webp --
-			const convertedImage = blobToWebP(image, { quality: WEBP_IMAGE_QUALITY })
-
-			// -- Next upload and replace with url --
-			const storageRef = ref(storage, `${StorageFolders.PAGE_IMAGES}/${uuidv4()}`)
-			const snapshot = await uploadBytes(storageRef, await convertedImage)
-			return getDownloadURL(snapshot.ref)
-		}))
+		// -- Convert and upload images --
+		const { uploadedImageIds, size } = await convertAndUploadImages(combinedImages, StorageFolders.PAGE, progressStore)
 
 		// -- Update page --
 		const { getFirestore, doc, updateDoc } = await import('firebase/firestore')
@@ -90,14 +72,15 @@ function createPageStore() {
 			title: newTitle,
 			content: newContent,
 			lastEdited: new Timestamp(Math.round(Date.now() / 1000), 0),
-			images: newImages
+			images: uploadedImageIds
 		})
 
 		// -- Update store --
 		page.title = newTitle
 		page.content = newContent
-		page.images = newImages
+		page.images = uploadedImageIds
 		update((pages) => [...pages])
+		return size
 	}
 
 	async function updatePageId(newId: string, oldId: string) {
@@ -108,7 +91,7 @@ function createPageStore() {
 		if (!page) return `No page to update at id:${oldId}`
 
 		// -- Delete page --
-		const deletePagePromise = deletePage(oldId, false)
+		const deletePagePromise = deletePage(oldId, undefined)
 
 		// -- Create page --
 		page.id = newId
@@ -117,20 +100,19 @@ function createPageStore() {
 		await Promise.all([deletePagePromise, createPagePromise])
 	}
 
-	async function deletePage(id: string, deleteImages = true) {
+	/**
+	 * Does not delete images when progressStore is undefined
+	 */
+	async function deletePage(id: string, progressStore: Writable<number> | undefined) {
 		// -- Get page --
 		const page = await getPageById(id)
 		if (!page) return `No page to delete at id:${id}`
 
 		// -- Delete images --
-		if (deleteImages && page.images) {
-			const { getStorage, ref, deleteObject } = await import('firebase/storage')
-			const storage = getStorage()
-
-			await Promise.all(page.images.map(async (image) => {
-				const imageRef = ref(storage, image)
-				await deleteObject(imageRef)
-			}))
+		if (progressStore) {
+			progressStore.set(0)
+			await deleteImages(page.getImageUrls(), progressStore)
+			await deleteImages(page.getThumbnailUrls(), progressStore)
 		}
 
 		// -- Delete page --

@@ -143,8 +143,8 @@
     bind:date
     newPhotoAlbum={false}
     submitLabel="Album wijzigen"
-    progress={$progressStore}
     onSave={savePhotoAlbum}
+    progress={$progressStore}
   />
 {:else}
   <div>"{data.id}": not found</div>

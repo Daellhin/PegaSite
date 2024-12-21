@@ -10,8 +10,12 @@
   import { pushCreatedToast } from "$lib/utils/Toast"
   import dayjs from "dayjs"
   import type { PageData } from "./$types"
+  import { writable } from "svelte/store"
+  import type { UploadProgress } from "$lib/utils/UploadProgress"
 
   export let data: PageData
+
+  const progressStore = writable([] as UploadProgress[])
 
   let title = ""
   let content = ""
@@ -24,7 +28,8 @@
       title,
       content,
       combinedImages,
-      page!
+      page!,
+      progressStore,
     )
     haveValuesBeenSet = false
     pushCreatedToast("Pagina gewijzigd", { gotoUrl: page!.getUrl() })
@@ -37,13 +42,7 @@
   }
   async function createPreviewPage() {
     //const newImages = await Promise.all(uploadedImages.map(readFileAsDataURL))
-    return new Page(
-      "-1",
-      dayjs(),
-      title,
-      [],
-      content
-    )
+    return new Page("-1", dayjs(), title, [], content)
   }
 
   // -- Data loading --
@@ -98,6 +97,7 @@
     bind:combinedImages
     submitLabel="Wijzigingen opslaan"
     onSave={updatePage}
+    progress={$progressStore}
   />
 {:else}
   <div>"{data.id}": not found</div>
