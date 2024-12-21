@@ -18,7 +18,7 @@ export class Sponsor {
 		public id: string,
 		public name: string,
 		public url: string,
-		public imageId: string,
+		public imageUrl: string,
 		public visible: boolean
 	) {
 		this.updateSearchableString()
@@ -33,17 +33,17 @@ export class Sponsor {
 			sponsor.id,
 			sponsor.name,
 			sponsor.url,
-			sponsor.imageId,
+			sponsor.imageUrl,
 			sponsor.visible
 		)
 	}
 
 	getImageUrl() {
-		return createFirebaseStorageUrl(StorageFolders.SPONSOR.IMAGES, this.imageId)
+		return createFirebaseStorageUrl(StorageFolders.SPONSOR.IMAGES, this.imageUrl)
 	}
 
 	getThumbnailUrl() {
-		return createFirebaseStorageUrl(StorageFolders.SPONSOR.THUMBNAILS, this.imageId)
+		return createFirebaseStorageUrl(StorageFolders.SPONSOR.THUMBNAILS, this.imageUrl)
 	}
 
 	static fromJson(id: string, json: SponsorJson) {
@@ -54,7 +54,7 @@ export class Sponsor {
 		return {
 			name: this.name,
 			url: this.url,
-			imageId: this.imageId,
+			imageId: this.imageUrl,
 			visible: this.visible
 		} as SponsorJson
 	}

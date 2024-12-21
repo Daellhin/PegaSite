@@ -46,7 +46,7 @@
     if (editSponsor) {
       name = editSponsor.name
       url = editSponsor.url
-      image = [editSponsor.imageId]
+      image = [editSponsor.imageUrl]
       visible = editSponsor.visible
     } else {
       name = ""

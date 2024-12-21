@@ -37,7 +37,7 @@ export function createMockPhotoAlbumStore() {
 		newPhotoAlbum.imageIds = uploadedImageIds
 
 		update((photoAlbums) => ([newPhotoAlbum, ...(photoAlbums || [])]))
-		return 0
+		return size
 	}
 
 	async function updatePhotoAlbum(newTitle: string, newVisible: boolean, newAuthor: string, newAuthorUrl: string, newDate: Dayjs, combinedImages: (string | File)[], photoAlbum: PhotoAlbum, progressStore: Writable<UploadProgress[]>) {
