@@ -15,12 +15,15 @@
   } from "@fortawesome/free-solid-svg-icons"
   import Fa from "svelte-fa"
   import Time from "svelte-time"
+    import { writable } from "svelte/store"
 
   export let article: Article
   export let isPreview = false
 
+  const deleteProgressStore = writable(0)
+
   async function removeArticle() {
-    await articleStore.deleteArticle(article)
+    await articleStore.deleteArticle(article, deleteProgressStore)
     goto("/")
   }
 </script>

@@ -156,21 +156,11 @@ function createArticleStore() {
 		return size
 	}
 
-	async function deleteArticle(article: Article) {
+	async function deleteArticle(article: Article, progressStore: Writable<number>) {
 		// -- Remove images --
-		const { getStorage, ref, deleteObject } = await import('firebase/storage')
-		const storage = getStorage()
-
-		await Promise.all(article.imageIds.map(async (image) => {
-			try {
-				const storageRef = ref(storage, image)
-				await deleteObject(storageRef)
-			} catch (error: any) {
-				// Not existing images can be safely ignored
-				if (error.code !== 'storage/object-not-found')
-					throw error
-			}
-		}))
+		progressStore.set(0)
+		await deleteImages(article.getImageUrls(), progressStore)
+		await deleteImages(article.getThumbnailUrls(), progressStore)
 
 		// -- Remove article --
 		const { getFirestore, doc, deleteDoc } = await import('firebase/firestore')

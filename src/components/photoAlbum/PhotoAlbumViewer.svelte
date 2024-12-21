@@ -22,6 +22,8 @@
   export let photoAlbum: PhotoAlbum
   export let preview = false
 
+  const deleteProgressStore = writable(0)
+
   let innerWidth: number
 
   $: imageUrls = photoAlbum.getImageUrls()
@@ -37,19 +39,19 @@
   async function deletePhotoAlbum() {
     const title = photoAlbum.title
     showModal = false
-    await photoAlbumStore.deletePhotoAlbum(photoAlbum)
+    await photoAlbumStore.deletePhotoAlbum(photoAlbum, deleteProgressStore)
     pushCreatedToast(`Photoalbum "${title}" verwijderd`)
   }
 
   // -- Download --
   let downloading = false
-  let progressStore = writable(0)
+  const downloadProgressStore = writable(0)
 
   async function downloadHandler() {
     ;(document.activeElement as HTMLElement).blur()
     downloading = true
     try {
-      await photoAlbumStore.downloadZip(photoAlbum, progressStore)
+      await photoAlbumStore.downloadZip(photoAlbum, downloadProgressStore)
     } catch (error) {
       console.error(error)
     }
@@ -110,12 +112,12 @@
       <div class="flex gap-1 items-center shrink-0 h-auto">
         <progress
           class="progress progress-primary w-56 mt-1 ml-2"
-          value={($progressStore / imageUrls.length) * 100}
+          value={($downloadProgressStore / imageUrls.length) * 100}
           max={100}
           title="Downloaden"
         />
         <span class="font-semibold ml-2">
-          {$progressStore} / {imageUrls.length}
+          {$downloadProgressStore} / {imageUrls.length}
         </span>
         Voltooid
       </div>
@@ -141,11 +143,11 @@
   <!-- Images -->
   <div class="mt-2">
     {#if photoAlbum.imageIds.length > 0}
-    <ShowMore startHeightPx={innerWidth < 472 ? 700 : 500}>
-      <ImageGallery {thumbnailUrls} id={photoAlbum.id} {imageUrls} />
-    </ShowMore>
+      <ShowMore startHeightPx={innerWidth < 472 ? 700 : 500}>
+        <ImageGallery {thumbnailUrls} id={photoAlbum.id} {imageUrls} />
+      </ShowMore>
     {:else}
-       Geen afbeeldingen
+      Geen afbeeldingen
     {/if}
   </div>
 </div>
