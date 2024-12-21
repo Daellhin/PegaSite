@@ -23,8 +23,6 @@ function createPageStore() {
 	}
 
 	async function createPageHelper(page: Page) {
-		if (!browser) return
-
 		// -- Create page --
 		const { getFirestore, doc, setDoc } = await import('firebase/firestore')
 		const { firebaseApp } = await import('$lib/firebase/Firebase')
@@ -38,8 +36,6 @@ function createPageStore() {
 	}
 
 	async function getPageById(id: string) {
-		if (!browser) return
-
 		const exsistingPage = get(innerStore).find((e) => e.id === id)
 		if (exsistingPage) return exsistingPage
 
@@ -57,8 +53,6 @@ function createPageStore() {
 	}
 
 	async function updatePage(newTitle: string, newContent: string, combinedImages: (string | File)[], page: Page) {
-		if (!browser) return
-
 		const { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } = await import('firebase/storage')
 		const storage = getStorage()
 
@@ -107,7 +101,6 @@ function createPageStore() {
 	}
 
 	async function updatePageId(newId: string, oldId: string) {
-		if (!browser) return
 		if (newId === oldId) return
 
 		// -- Get page --
@@ -125,8 +118,6 @@ function createPageStore() {
 	}
 
 	async function deletePage(id: string, deleteImages = true) {
-		if (!browser) return
-
 		// -- Get page --
 		const page = await getPageById(id)
 		if (!page) return `No page to delete at id:${id}`
