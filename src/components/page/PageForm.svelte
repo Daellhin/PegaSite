@@ -1,7 +1,8 @@
 <script lang="ts">
-  import Dropzone from "$components/formHelpers/Dropzone.svelte"
   import CLEditor from "$components/formHelpers/CLEditor.svelte"
+  import Dropzone from "$components/formHelpers/Dropzone.svelte"
   import Input from "$components/formHelpers/Input.svelte"
+  import { handleFirebaseError } from "$lib/utils/Firebase"
 
   export let title = ""
   export let content = ""
@@ -11,11 +12,16 @@
   export let onSave: () => Promise<void>
 
   let saving = false
+  let errorMessage = ""
 
   async function onSubmitWrapper(event: SubmitEvent) {
     event.preventDefault()
     saving = true
-    await onSave()
+    try {
+      await onSave()
+    } catch (error) {
+      errorMessage = handleFirebaseError(error)
+    }
     saving = false
   }
 </script>
@@ -41,4 +47,7 @@
       <span class="loading loading-ring" class:hidden={!saving} />
     </button>
   </div>
+  {#if errorMessage}
+    <p class="text-error">{errorMessage}</p>
+  {/if}
 </form>
