@@ -22,7 +22,7 @@ export function createMockArticleStore() {
     }
     async function updateArticle(_newAuthors: string[], _newTags: string[], _newTitle: string, _newContent: string, _lastUpdate: Dayjs, _combinedImages: (string | File)[], _visible: boolean, _article: Article, _progressStore: Writable<UploadProgress[]>) {
     }
-    async function deleteArticle(article: Article) {
+    async function deleteArticle(article: Article, _progressStore: Writable<number>) {
         update((articles) => (articles.filter((e) => e.id !== article.id)))
     }
     function updateVisibility(_article: Article) {
