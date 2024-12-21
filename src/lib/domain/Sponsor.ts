@@ -7,7 +7,7 @@ export interface SponsorJson {
 	// id: string // id comes from the firebase Document ID
 	name: string
 	url: string
-	imageUrl: string
+	imageId: string
 	visible: boolean
 }
 
@@ -18,7 +18,7 @@ export class Sponsor {
 		public id: string,
 		public name: string,
 		public url: string,
-		public imageUrl: string,
+		public imageId: string,
 		public visible: boolean
 	) {
 		this.updateSearchableString()
@@ -33,28 +33,28 @@ export class Sponsor {
 			sponsor.id,
 			sponsor.name,
 			sponsor.url,
-			sponsor.imageUrl,
+			sponsor.imageId,
 			sponsor.visible
 		)
 	}
 
 	getImageUrl() {
-		return createFirebaseStorageUrl(StorageFolders.SPONSOR.IMAGES, this.imageUrl)
+		return createFirebaseStorageUrl(StorageFolders.SPONSOR.IMAGES, this.imageId)
 	}
 
 	getThumbnailUrl() {
-		return createFirebaseStorageUrl(StorageFolders.SPONSOR.THUMBNAILS, this.imageUrl)
+		return createFirebaseStorageUrl(StorageFolders.SPONSOR.THUMBNAILS, this.imageId)
 	}
 
 	static fromJson(id: string, json: SponsorJson) {
-		return new Sponsor(id, json.name, json.url, json.imageUrl, json.visible)
+		return new Sponsor(id, json.name, json.url, json.imageId, json.visible)
 	}
 
 	toJson() {
 		return {
 			name: this.name,
 			url: this.url,
-			imageUrl: this.imageUrl,
+			imageId: this.imageId,
 			visible: this.visible
 		} as SponsorJson
 	}

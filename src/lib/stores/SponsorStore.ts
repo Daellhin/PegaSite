@@ -39,7 +39,7 @@ function createSponsorStore() {
 	async function createSponsor(newSponsor: Sponsor, image: File, progressStore: Writable<UploadProgress[]>) {
 		// -- Convert and upload image --
 		const { uploadedImageIds, size } = await convertAndUploadImages([image], StorageFolders.SPONSOR, progressStore)
-		newSponsor.imageUrl = uploadedImageIds[0]
+		newSponsor.imageId = uploadedImageIds[0]
 
 		// -- Upload document --
 		// TODO comment name uniformity
@@ -62,8 +62,8 @@ function createSponsorStore() {
 
 	async function updateSponsor(newName: string, newUrl: string, combinedImage: string | File, newVisible: boolean, sponsor: Sponsor, progressStore: Writable<UploadProgress[]>) {
 		// -- Upload new image --
-		if (sponsor.imageUrl !== combinedImage) {
-			const imageIdsToRemove = [sponsor.imageUrl]
+		if (sponsor.imageId !== combinedImage) {
+			const imageIdsToRemove = [sponsor.imageId]
 			await deleteImages(imageIdsToRemove.map((e) => createFirebaseStorageUrl(StorageFolders.SPONSOR.IMAGES, e)))
 			await deleteImages(imageIdsToRemove.map((e) => createFirebaseStorageUrl(StorageFolders.SPONSOR.THUMBNAILS, e)))
 		}
@@ -87,7 +87,7 @@ function createSponsorStore() {
 		// -- Update store --
 		sponsor.name = newName
 		sponsor.url = newUrl
-		sponsor.imageUrl = uploadedImageIds[0]
+		sponsor.imageId = uploadedImageIds[0]
 		sponsor.updateSearchableString()
 		update((sponsors) => [...sponsors])
 		return size

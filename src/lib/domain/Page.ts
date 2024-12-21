@@ -7,7 +7,7 @@ export interface PageJson {
     id: string
     lastEdited: Timestamp
     title: string
-    images: string[]
+    imageIds: string[]
     content: string
 }
 
@@ -16,7 +16,7 @@ export class Page {
         public id: string,
         public lastEdited: Dayjs,
         public title: string,
-        public images: string[],
+        public imageIds: string[],
         public content: string
     ) { }
 
@@ -25,11 +25,11 @@ export class Page {
     }
 
     getImageUrls() {
-        return this.images.map((e) => createFirebaseStorageUrl(StorageFolders.PAGE.IMAGES, e))
+        return this.imageIds.map((e) => createFirebaseStorageUrl(StorageFolders.PAGE.IMAGES, e))
     }
 
     getThumbnailUrls() {
-        return this.images.map((e) => createFirebaseStorageUrl(StorageFolders.PAGE.THUMBNAILS, e))
+        return this.imageIds.map((e) => createFirebaseStorageUrl(StorageFolders.PAGE.THUMBNAILS, e))
     }
 
     static fromJson(json: PageJson) {
@@ -37,7 +37,7 @@ export class Page {
             json.id,
             dayjs(json.lastEdited.toMillis()),
             json.title,
-            json.images,
+            json.imageIds,
             json.content
         )
     }
@@ -46,7 +46,7 @@ export class Page {
         return {
             content: this.content,
             id: this.id,
-            images: this.images,
+            imageIds: this.imageIds,
             lastEdited: Timestamp.fromDate(this.lastEdited.toDate()),
             title: this.title
         } as PageJson
@@ -57,8 +57,8 @@ export class Page {
     }
 
     public createCarouselImages() {
-        if (!this.images) return []
-        return this.images.map(async (e) => {
+        if (!this.imageIds) return []
+        return this.imageIds.map(async (e) => {
             return {
                 name: "name",
                 imageUrl: createFirebaseStorageUrl(StorageFolders.PAGE.IMAGES, e)
