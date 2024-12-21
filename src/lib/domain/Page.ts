@@ -58,10 +58,10 @@ export class Page {
 
     public createCarouselImages() {
         if (!this.images) return []
-        return this.images.map(async (image) => {
+        return this.images.map(async (e) => {
             return {
                 name: "name",
-                imageUrl: image
+                imageUrl: createFirebaseStorageUrl(StorageFolders.PAGE.IMAGES, e)
             }
         })
     }

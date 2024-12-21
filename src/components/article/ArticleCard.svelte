@@ -1,9 +1,5 @@
 <script lang="ts">
   import type { Article } from "$lib/domain/Article"
-  import {
-    createFirebaseStorageUrl,
-    StorageFolders,
-  } from "$lib/firebase/Firebase"
   import { clearHTMLTags } from "$lib/utils/Utils"
 
   import { faCalendar } from "@fortawesome/free-regular-svg-icons"
@@ -12,11 +8,6 @@
   import Time from "svelte-time"
 
   export let article: Article
-
-  $: imageUrl = createFirebaseStorageUrl(
-    StorageFolders.ARTICLE.IMAGES,
-    article.imageIds[0],
-  )
 </script>
 
 <a href="/articles/{article.id}">
@@ -25,7 +16,7 @@
   >
     {#if article.imageIds?.length > 0}
       <figure class="bg-base-200 h-48">
-        <img src={imageUrl} alt="Article" />
+        <img src={article.getImageUrls()[0]} alt="Article" />
       </figure>
     {/if}
     <div class="card-body p-5 gap-0">

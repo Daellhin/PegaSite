@@ -49,6 +49,14 @@ export class Article {
             .includes(false)
     }
 
+    getImageUrls() {
+        return this.imageIds.map((e) => createFirebaseStorageUrl(StorageFolders.ARTICLE.IMAGES, e))
+    }
+
+    getThumbnailUrls() {
+        return this.imageIds.map((e) => createFirebaseStorageUrl(StorageFolders.ARTICLE.THUMBNAILS, e))
+    }
+
     static fromJson(json: ArticleJson) {
         return new Article(
             json.id,
