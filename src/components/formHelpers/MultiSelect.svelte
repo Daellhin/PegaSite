@@ -36,9 +36,10 @@
 </div>
 
 <style lang="postcss">
+  @reference "../../app.css";
   /* Integrate svelte-multiselect with Tailwind and dark mode */
   :global(.multiselect) {
-    @apply input input-bordered border-2 h-fit min-h-[3rem] !important;
+    @apply input! border-2! h-fit min-h-12!;
   }
   :global(.multiselect:focus-within) {
     /* Add gray outline */
@@ -67,10 +68,10 @@
     @apply fill-primary;
   }
   :global(.multiselect .options) {
-    @apply bg-base-100 p-2 !important;
+    @apply bg-base-100! p-2!;
   }
   :global(.multiselect .options li) {
-    @apply px-4 py-2 rounded-lg !important;
+    @apply px-4! py-2! rounded-lg!;
   }
   :global(.multiselect .options li:hover) {
     background-color: oklch(var(--bc) / 0.1);

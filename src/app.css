@@ -1,17 +1,19 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+@import "tailwindcss";
+@plugin "daisyui";
 
-.btn {
-  text-transform: capitalize !important;
+@plugin "daisyui/theme" {
+  name: "light";
+  default: true;
+  --color-primary: "#f9984c";
+}
+
+@plugin "daisyui/theme" {
+  name: "dark";
+  prefersdark: true;
+  --color-primary: "#f9984c";
 }
 
 .btn-primary {
   color: white !important;
-}
-
-@media (prefers-color-scheme: light) {
-}
-
-@media (prefers-color-scheme: dark) {
 }

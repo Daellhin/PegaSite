@@ -130,6 +130,6 @@
 
 <style lang="postcss">
   :global(#dnd-action-dragged-el) {
-    @apply border-2 !important;
+    @apply border-2!;
   }
 </style>

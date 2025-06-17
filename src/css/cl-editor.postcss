@@ -2,7 +2,7 @@
 @import "./usercontent.postcss";
 
 :global(.cl) {
-  @apply overflow-hidden shadow-none border-2 !important;
+  @apply overflow-hidden! shadow-none! border-2!;
   :global(.cl-button svg) {
     display: initial !important;
   }
@@ -15,7 +15,7 @@
   @media (prefers-color-scheme: dark) {
     border-color: #434955;
     :global(.cl-content) {
-      @apply bg-base-100 !important;
+      @apply bg-base-100!;
     }
     :global(.cl-button.active),
     :global(.cl-button:hover) {
@@ -26,7 +26,7 @@
     }
   }
   :global(.cl-actionbar) {
-    @apply bg-base-200 !important;
+    @apply bg-base-200!;
   }
 }
 
@@ -44,17 +44,17 @@
   @apply h-48;
 }
 :global(.cl-editor-modal .modal-box), :global(.cl-editor-modal .modal-title) {
-  @apply bg-red-600 border-none !important;
+  @apply bg-red-600! border-none!;
 }
 :global(.cl-editor-modal .modal-button) {
   @apply btn;
 }
 :global(.cl-editor-modal .modal-submit) {
-  @apply btn-primary !important;
+  @apply btn-primary!;
 }
 :global(.cl-editor-modal .modal-reset) {
   @apply btn-secondary
 }
 :global(.cl-editor-modal .modal-label) {
-  @apply input !important;
+  @apply input!;
 } */

@@ -19,7 +19,7 @@
     </div>
   </div>
   <div
-    class="relative h-16 w-full -mt-16 bg-gradient-to-b from-transparent"
+    class="relative h-16 w-full -mt-16 bg-linear-to-b from-transparent"
     class:to-base-100={!showMore && !contentFits}
     class:to-transparent={showMore || contentFits}
   />

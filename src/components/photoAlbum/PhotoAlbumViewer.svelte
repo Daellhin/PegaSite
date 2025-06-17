@@ -161,9 +161,9 @@
 
 <style lang="postcss">
   :global(.bp-wrap img) {
-    @apply object-contain !important;
+    @apply object-contain!;
   }
   :global(.bp-wrap .bp-img) {
-    @apply bg-none !important;
+    @apply bg-none!;
   }
 </style>

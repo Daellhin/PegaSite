@@ -169,7 +169,7 @@
   <!-- SelectedImages viewer -->
   {#if combinedImages.length}
     <div
-      class="flex flex-col input-bordered border-2 rounded-lg min-h-[3rem] bg-base-100 justify-center"
+      class="flex flex-col input-bordered border-2 rounded-lg min-h-12 bg-base-100 justify-center"
       class:mt-1={remainingSpace}
       use:dndzone={{
         items: dragableImages,

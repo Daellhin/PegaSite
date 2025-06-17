@@ -20,4 +20,5 @@
 
 <style lang="postcss">
   @import "../css/usercontent.postcss";
+  @reference "../app.css";
 </style>

@@ -85,7 +85,8 @@
 </div>
 
 <style lang="postcss">
+  @reference "../../app.css";
   :global(#dnd-action-dragged-el) {
-    @apply border-2 rounded-lg bg-base-100 !important;
+    @apply border-2! rounded-lg! bg-base-100!;
   }
 </style>
