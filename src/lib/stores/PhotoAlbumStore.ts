@@ -1,7 +1,7 @@
 import { browser } from '$app/environment'
 import { PhotoAlbum, photoAlbumConverter, type PhotoAlbumJson } from '$lib/domain/PhotoAlbum'
 import { Collections, createFirebaseStorageUrl, StorageFolders } from '$lib/firebase/Firebase'
-import generateImageThumbnail from '$lib/generateImageThumbnail/image-thumbnail'
+import generateImageThumbnail from '$lib/utils/image-thumbnail'
 import { arrayDifference, arraysContainSameElements } from '$lib/utils/Array'
 import { MAX_CONCURRENT_UPLOADS, WEBP_IMAGE_QUALITY, WEBP_THUMBNAIL_QUALITY } from '$lib/utils/Constants'
 import { UploadProgress } from '$lib/utils/UploadProgress'
