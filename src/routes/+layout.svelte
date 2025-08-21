@@ -40,7 +40,7 @@
     <Footer {loginModalID} />
   </div>
   <div class="drawer-side">
-    <label for={drawerID} class="drawer-overlay" />
+    <label for={drawerID} class="drawer-overlay"></label>
     <!-- Sidebar content here -->
     <MenuVertical {drawerID} />
   </div>

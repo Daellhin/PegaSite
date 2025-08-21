@@ -37,6 +37,7 @@
   class:static={positionStatic}
   class:cursor-not-allowed={disabled}
 >
+  <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
   <label
     tabindex="0"
     class="btn btn-ghost gap-2 normal-case flex flex-row text-base"

@@ -14,6 +14,8 @@
         </a>
       {:else}
         <div class="dropdown dropdown-hover">
+          <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+          <!-- svelte-ignore a11y_label_has_associated_control -->
           <label tabindex="0" class="btn text-[1.1em] shadow-none">
             {linkGroup.name}
           </label>

@@ -130,7 +130,7 @@
       $translate = 0
     }}
   >
-    <div class="thumbnail-bp" use:onMount />
+    <div class="thumbnail-bp" use:onMount></div>
     <div
       class="thumbnails"
       transition:fade={{
@@ -159,7 +159,7 @@
               on:keyup={(e) =>
                 e.key === "Enter" &&
                 biggerPictureInstance.setPosition(element.i)}
-            />
+            ></button>
           {/each}
         </div>
       </div>

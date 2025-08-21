@@ -10,6 +10,7 @@
 
 {#if $authStore}
   <div title="Profiel" class="dropdown dropdown-end">
+    <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
     <label tabindex="0" class="btn btn-ghost gap-2 normal-case">
       <Fa icon={faUser} class="text-xl" />
       <Fa icon={faChevronDown} class="text-gray-500" />

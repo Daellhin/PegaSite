@@ -202,7 +202,7 @@
   {/if}
   {#if !disablePreviews && amountOfFinishedPreviews < combinedImages.length}
     <div class="flex items-center gap-2">
-      <span class="loading loading-ring" />
+      <span class="loading loading-ring"></span>
       <span class="opacity-60">Afbeeldingen laden</span>
     </div>
   {/if}

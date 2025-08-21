@@ -113,7 +113,7 @@
           value={($progressStore / imageUrls.length) * 100}
           max={100}
           title="Downloaden"
-        />
+        ></progress>
         <span class="font-semibold ml-2">
           {$progressStore} / {imageUrls.length}
         </span>

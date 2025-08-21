@@ -10,10 +10,12 @@
     <!-- Loop controls -->
     {#if loop}
       <div class="flex justify-between">
-        <hr class="w-full mt-3 border-2 rounded-xl mr-1 border-gray-300 dark:border-gray-600" />
+        <hr
+          class="w-full mt-3 border-2 rounded-xl mr-1 border-gray-300 dark:border-gray-600"
+        />
         <div
           class="h-5 my-1 bg-gray-300 rounded-full dark:bg-gray-600 w-36 mb-1 ml-1"
-        />
+        ></div>
       </div>
     {/if}
     <div
@@ -24,7 +26,7 @@
   </div>
   <!-- Sponsor Info -->
   <div class="flex items-center justify-between mt-4 my-1">
-    <div class="h-5 bg-gray-300 rounded-full dark:bg-gray-600 w-40" />
-    <div class="h-5 bg-gray-300 rounded-full dark:bg-gray-600 w-16" />
+    <div class="h-5 bg-gray-300 rounded-full dark:bg-gray-600 w-40"></div>
+    <div class="h-5 bg-gray-300 rounded-full dark:bg-gray-600 w-16"></div>
   </div>
 </div>

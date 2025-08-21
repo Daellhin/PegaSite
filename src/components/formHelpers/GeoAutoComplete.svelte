@@ -82,8 +82,9 @@
       slot="iconRight"
       class="loading loading-spinner loading-sm"
       class:hidden={!loading}
-    />
+    ></span>
   </Input>
+  <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
   <ul
     tabindex="0"
     class="dropdown-content z-10 menu p-2 shadow-sm bg-base-100 rounded-box w-full"

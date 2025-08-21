@@ -37,7 +37,7 @@
   {#if image instanceof File}
     <div class="w-10 rounded-xs h-6 overflow-hidden">
       {#await loadPreview(image)}
-        <div class="bg-base-200 w-full h-full" />
+        <div class="bg-base-200 w-full h-full"></div>
         loading
       {:then src}
         <img class="" alt={image.name} {src} />
@@ -53,7 +53,7 @@
       {/await}
     </div>
   {:else if typeof image === "string"}
-    <img class="w-10 rounded-xs" alt="Upload" src={image} />
+    <img class="w-10 rounded-xs" alt="Upload" src={image}/>
   {:else}
     <Fa icon={image} />
   {/if}
@@ -71,7 +71,7 @@
     {:else if progress !== undefined}
       <div class="flex items-center justify-center h-full w-full" title={toString(progress)}>
         {#if progress === UploadProgress.CONVERTING || progress === UploadProgress.UPLOADING}
-          <span class="loading loading-ring loading-sm" />
+          <span class="loading loading-ring loading-sm"></span>
         {:else if progress === UploadProgress.DONE}
           <Fa icon={faCheck} color="green" />
         {/if}

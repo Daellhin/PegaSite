@@ -62,7 +62,7 @@
       disabled={saving}
     >
       {submitLabel}
-      <span class="loading loading-ring" class:hidden={!saving} />
+      <span class="loading loading-ring" class:hidden={!saving}></span>
     </button>
   </div>
   {#if errorMessage}
