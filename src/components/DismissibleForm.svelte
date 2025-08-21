@@ -30,7 +30,7 @@
 
 <form
   on:submit={onSubmitWrapper}
-  class="relative mb-3 border-base-300 bg-base-200 rounded-tr-box min-h-[6rem] min-w-[18rem] border bg-cover bg-top p-4 rounded-box overflow-visible"
+  class="relative mb-3 border-base-300 bg-base-200 rounded-tr-box min-h-24 min-w-[18rem] border bg-cover bg-top p-4 rounded-box overflow-visible"
 >
   <button
     class="btn btn-ghost btn-sm absolute right-2 top-2 font-bold btn-square"

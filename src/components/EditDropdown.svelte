@@ -50,7 +50,7 @@
     <Fa icon={faChevronDown} class="text-gray-500 hidden sm:block" />
   </label>
   <ul
-    class={"dropdown-content z-10 menu p-2 shadow bg-base-100 rounded-box " +
+    class={"dropdown-content z-10 menu p-2 shadow-sm bg-base-100 rounded-box " +
       width}
   >
     <li>

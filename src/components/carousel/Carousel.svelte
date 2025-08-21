@@ -77,7 +77,7 @@
   {#if images.length > 1 && !hideButtons}
     <button
       type="button"
-      class="absolute top-0 left-0 z-20 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+      class="absolute top-0 left-0 z-20 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-hidden"
       on:click={previous}
     >
       <span
@@ -92,7 +92,7 @@
     </button>
     <button
       type="button"
-      class="absolute top-0 right-0 z-20 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+      class="absolute top-0 right-0 z-20 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-hidden"
       on:click={next}
     >
       <span

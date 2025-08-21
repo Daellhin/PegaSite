@@ -21,7 +21,7 @@
   <div class="drawer-content flex flex-col h-screen">
     <Navbar {drawerID} {loginModalID} />
     <!-- Page content here -->
-    <section class="mt-1 mb-10 flex-grow">
+    <section class="mt-1 mb-10 grow">
       <div
         class="grid lg:grid-cols-12 gap-4 lg:gap-4 py-0 px-2 xl:px-4 mx-2 h-full"
       >

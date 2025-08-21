@@ -15,7 +15,7 @@
       <Fa icon={faChevronDown} class="text-gray-500" />
     </label>
     <ul
-      class="dropdown-content z-10 menu p-2 shadow bg-base-100 rounded-box w-52"
+      class="dropdown-content z-10 menu p-2 shadow-sm bg-base-100 rounded-box w-52"
     >
       <li class="menu-title">
         <span>{$authStore.displayName || "User"}</span>

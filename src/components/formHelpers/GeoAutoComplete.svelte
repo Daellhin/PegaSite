@@ -86,7 +86,7 @@
   </Input>
   <ul
     tabindex="0"
-    class="dropdown-content z-10 menu p-2 shadow bg-base-100 rounded-box w-full"
+    class="dropdown-content z-10 menu p-2 shadow-sm bg-base-100 rounded-box w-full"
     class:hidden={results.length === 0}
   >
     {#each results as result}

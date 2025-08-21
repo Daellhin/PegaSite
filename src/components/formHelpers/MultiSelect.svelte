@@ -38,7 +38,7 @@
 <style lang="postcss">
   /* Integrate svelte-multiselect with Tailwind and dark mode */
   :global(.multiselect) {
-    @apply input input-bordered border-2 h-fit min-h-[3rem] !important;
+    @apply input input-bordered border-2 h-fit min-h-12 !important;
   }
   :global(.multiselect:focus-within) {
     /* Add gray outline */

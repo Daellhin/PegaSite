@@ -35,7 +35,7 @@
     <DndHandle bind:dragDisabled />
   {/if}
   {#if image instanceof File}
-    <div class="w-10 rounded-sm h-6 overflow-hidden">
+    <div class="w-10 rounded-xs h-6 overflow-hidden">
       {#await loadPreview(image)}
         <div class="bg-base-200 w-full h-full" />
         loading
@@ -53,7 +53,7 @@
       {/await}
     </div>
   {:else if typeof image === "string"}
-    <img class="w-10 rounded-sm" alt="Upload" src={image} />
+    <img class="w-10 rounded-xs" alt="Upload" src={image} />
   {:else}
     <Fa icon={image} />
   {/if}

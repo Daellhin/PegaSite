@@ -27,7 +27,7 @@
     class="bg-base-300 relative overflow-x-auto rounded-2xl [@media(min-width:568px)]:rounded-tl-none"
   >
     <div
-      class="border border-base-300 bg-base-200 min-h-[6rem] min-w-[18rem] overflow-x-hidden p-4"
+      class="border border-base-300 bg-base-200 min-h-24 min-w-[18rem] overflow-x-hidden p-4"
     >
       {#if currentIndex == 0}
         <slot name="0" />
