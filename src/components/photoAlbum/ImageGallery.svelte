@@ -90,7 +90,7 @@
 <svelte:window bind:innerWidth />
 
 <div id={`ID-${id}`} class="mx-auto w-full">
-  <a
+  <div
     class="grid grid-cols-1 min-[425px]:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-8 gap-2 md:gap-4"
   >
     {#each thumbnailUrls as thumbnail, index}
@@ -106,6 +106,7 @@
           loading="lazy"
           src={thumbnail}
           class="absolute inset-0 h-full w-full object-cover object-center"
+          alt="Afbeelding {index+1}"
           bind:naturalWidth={imageWidths[index]}
           bind:naturalHeight={imageHeights[index]}
         />
@@ -116,5 +117,5 @@
         </div>
       </a>
     {/each}
-  </a>
+  </div>
 </div>
