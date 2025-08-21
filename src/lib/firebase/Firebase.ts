@@ -22,20 +22,35 @@ export class Collections {
     static readonly PAGES = "pages"
     static readonly USERS = "users"
     static readonly SPONSORS = "sponsors"
-	static readonly ORDERINGS = "orderings"
+    static readonly ORDERINGS = "orderings"
     static readonly PHOTO_ALBUMS = "photo-albums"
     static readonly ANNOUNCEMENTS = "announcements"
 }
 
+export type StorageFolder = {
+    IMAGES: string,
+    THUMBNAILS: string
+}
 /**
  * Firebase Storage folder names
  */
 export class StorageFolders {
-    static readonly ARTICLE_IMAGES = "article-images"
-    static readonly PHOTO_ALBUM_IMAGES = "photo-album-images"
-    static readonly PHOTO_ALBUM_THUMBNAILS = "photo-album-thumbnails"
-    static readonly SPONSOR_IMAGES = "sponsor-images"
-    static readonly PAGE_IMAGES = "page-images"
+    static readonly ARTICLE: StorageFolder = {
+        IMAGES: "article-images",
+        THUMBNAILS: "article-thumbnails"
+    }
+    static readonly PHOTO_ALBUM: StorageFolder = {
+        IMAGES: "photo-album-images",
+        THUMBNAILS: "photo-album-thumbnails"
+    }
+    static readonly SPONSOR: StorageFolder = {
+        IMAGES: "sponsor-images",
+        THUMBNAILS: "sponsor-thumbnails"
+    }
+    static readonly PAGE: StorageFolder = {
+        IMAGES: "page-images",
+        THUMBNAILS: "page-thumbnails"
+    }
 }
 
 export const FIRBASE_STORAGE_URL = "https://firebasestorage.googleapis.com/v0/b/pega-site.appspot.com/o/"

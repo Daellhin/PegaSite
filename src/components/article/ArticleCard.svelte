@@ -14,9 +14,9 @@
   <div
     class="card w-80 h-full bg-base-100 shadow-xl hover:brightness-90 transition-all duration-200 hover:-translate-y-1"
   >
-    {#if article.images?.length > 0}
+    {#if article.imageIds?.length > 0}
       <figure class="bg-base-200 h-48">
-        <img src={article.images[0]} alt="Article" />
+        <img src={article.getImageUrls()[0]} alt="Article" />
       </figure>
     {/if}
     <div class="card-body p-5 gap-0">

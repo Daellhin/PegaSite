@@ -8,7 +8,11 @@
   import { pageHeadStore } from "$lib/stores/PageHeadStore"
   import { PreviewableFile } from "$lib/utils/PreviewableFile"
   import { pushCreatedToast } from "$lib/utils/Toast"
+    import { UploadProgress } from "$lib/utils/UploadProgress"
   import dayjs from "dayjs"
+    import { writable } from "svelte/store"
+
+  const progressStore = writable([] as UploadProgress[])
 
   let title = ""
   let visible: boolean = true
@@ -17,8 +21,9 @@
   let content = ""
 
   async function saveArticle() {
+    progressStore.set(uploadedImages.map(() => UploadProgress.NOT_STARTED))
     const article = await createPreviewArticle()
-    await articleStore.createArticle(article, uploadedImages)
+    await articleStore.createArticle(article, uploadedImages, progressStore)
     pushCreatedToast("Bericht aangemaakt", { gotoUrl: "/" })
   }
 
@@ -35,9 +40,11 @@
       [$authStore!.displayName || "Admin"],
       tags,
       title,
-      await Promise.all(uploadedImages.map(PreviewableFile.getFilePreview)),
+      await Promise.all(
+        uploadedImages.map((e) => PreviewableFile.getFilePreview(e)),
+      ),
       content,
-      visible
+      visible,
     )
   }
 
@@ -77,5 +84,6 @@
     newArticle={true}
     submitLabel="Bericht aanmaken"
     onSave={saveArticle}
+    progress={$progressStore}
   />
 {/if}

@@ -1,3 +1,4 @@
+import { createFirebaseStorageUrl, StorageFolders } from "$lib/firebase/Firebase"
 import dayjs, { type Dayjs } from "dayjs"
 import { Timestamp, type FirestoreDataConverter } from "firebase/firestore"
 import { Link } from "./Link"
@@ -6,7 +7,7 @@ export interface PageJson {
     id: string
     lastEdited: Timestamp
     title: string
-    images: string[]
+    imageIds: string[]
     content: string
 }
 
@@ -15,7 +16,7 @@ export class Page {
         public id: string,
         public lastEdited: Dayjs,
         public title: string,
-        public images: string[],
+        public imageIds: string[],
         public content: string
     ) { }
 
@@ -23,12 +24,20 @@ export class Page {
         return Link.normaliseUrl(this.id, edit)
     }
 
+    getImageUrls() {
+        return this.imageIds.map((e) => createFirebaseStorageUrl(StorageFolders.PAGE.IMAGES, e))
+    }
+
+    getThumbnailUrls() {
+        return this.imageIds.map((e) => createFirebaseStorageUrl(StorageFolders.PAGE.THUMBNAILS, e))
+    }
+
     static fromJson(json: PageJson) {
         return new Page(
             json.id,
             dayjs(json.lastEdited.toMillis()),
             json.title,
-            json.images,
+            json.imageIds,
             json.content
         )
     }
@@ -37,7 +46,7 @@ export class Page {
         return {
             content: this.content,
             id: this.id,
-            images: this.images,
+            imageIds: this.imageIds,
             lastEdited: Timestamp.fromDate(this.lastEdited.toDate()),
             title: this.title
         } as PageJson
@@ -48,11 +57,11 @@ export class Page {
     }
 
     public createCarouselImages() {
-        if (!this.images) return []
-        return this.images.map(async (image) => {
+        if (!this.imageIds) return []
+        return this.imageIds.map(async (e) => {
             return {
                 name: "name",
-                imageUrl: image
+                imageUrl: createFirebaseStorageUrl(StorageFolders.PAGE.IMAGES, e)
             }
         })
     }

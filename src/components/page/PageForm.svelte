@@ -1,7 +1,9 @@
 <script lang="ts">
-  import Dropzone from "$components/formHelpers/Dropzone.svelte"
   import CLEditor from "$components/formHelpers/CLEditor.svelte"
+  import Dropzone from "$components/formHelpers/Dropzone.svelte"
   import Input from "$components/formHelpers/Input.svelte"
+  import { handleFirebaseError } from "$lib/utils/Firebase"
+  import type { UploadProgress } from "$lib/utils/UploadProgress"
 
   export let title = ""
   export let content = ""
@@ -9,13 +11,19 @@
 
   export let submitLabel: string
   export let onSave: () => Promise<void>
+  export let progress: UploadProgress[]
 
   let saving = false
+  let errorMessage = ""
 
   async function onSubmitWrapper(event: SubmitEvent) {
     event.preventDefault()
     saving = true
-    await onSave()
+    try {
+      await onSave()
+    } catch (error) {
+      errorMessage = handleFirebaseError(error)
+    }
     saving = false
   }
 </script>
@@ -28,7 +36,7 @@
     value={title}
     required
   />
-  <Dropzone label="Afbeeldingen:" bind:combinedImages />
+  <Dropzone label="Afbeeldingen:" bind:combinedImages {progress} />
   <CLEditor label="Inhoud van bericht:" bind:value={content} />
 
   <div class="w-fit" class:hover:cursor-wait={saving}>
@@ -41,4 +49,7 @@
       <span class="loading loading-ring" class:hidden={!saving}></span>
     </button>
   </div>
+  {#if errorMessage}
+    <p class="text-error">{errorMessage}</p>
+  {/if}
 </form>

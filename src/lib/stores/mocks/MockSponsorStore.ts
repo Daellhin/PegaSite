@@ -1,19 +1,20 @@
 import { SPONSORS_JSON } from '$data/MockSponsorsStore'
 import { Sponsor } from '$lib/domain/Sponsor'
-import { get, writable } from 'svelte/store'
+import type { UploadProgress } from '$lib/utils/UploadProgress'
+import { get, writable, type Writable } from 'svelte/store'
 
 export function createMockSponsorStore() {
 	const store = writable<(Sponsor)[]>(SPONSORS_JSON.map((e, i) => Sponsor.fromJson(i.toString(), e)))
 	const { subscribe, update } = store
 
-	async function createSponsor(sponsor: Sponsor, _image: File) {
+	async function createSponsor(newSponsor: Sponsor, _image: File, _progressStore: Writable<UploadProgress[]>) {
 		//const existingSortedIds = get(store).map((e) => e.id)
 		// await updateSponsorsOrder([...existingSortedIds, newDocRef.id])
-
-		update((sponsors) => ([...sponsors, sponsor]))
+		
+		update((sponsors) => ([...sponsors, newSponsor]))
 	}
 
-	async function updateSponsor(newName: string, newUrl: string, newImage: string | File, newVisible: boolean, sponsor: Sponsor) {
+	async function updateSponsor(newName: string, newUrl: string, __combinedImage: string | File, _newVisible: boolean, sponsor: Sponsor, _progressStore: Writable<UploadProgress[]>) {
 		sponsor.name = newName
 		sponsor.url = newUrl
 		//sponsor.imageUrl = sponsor.imageUrl
@@ -22,7 +23,7 @@ export function createMockSponsorStore() {
 		update((sponsors) => [...sponsors])
 	}
 
-	async function deleteSponsor(sponsor: Sponsor) {
+	async function deleteSponsor(sponsor: Sponsor, _progressStore: Writable<number>) {
 		update((sponsors) => sponsors.filter((e) => e.id !== sponsor.id))
 
 		const existingSortedIds = get(store).map((e) => e.id)

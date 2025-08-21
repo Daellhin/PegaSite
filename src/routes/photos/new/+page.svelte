@@ -17,6 +17,7 @@
   const progressStore = writable([] as UploadProgress[])
 
   let title = ""
+  // TODO does this need to be combinedImages?
   let combinedImages: (string | File)[] = []
   let visible = true
   let author = ""

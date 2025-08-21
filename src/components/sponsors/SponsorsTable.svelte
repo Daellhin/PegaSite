@@ -11,8 +11,11 @@
   import { handleFirebaseError } from "$lib/utils/Firebase"
   import { faSearch } from "@fortawesome/free-solid-svg-icons"
   import { dndzone } from "svelte-dnd-action"
+  import { writable } from "svelte/store"
 
   export let startEdit: (sponsor: Sponsor) => void
+
+  const deleteProgressStore = writable(0)
 
   const tooltip =
     "Versleep een sponsor met het icoontje naast de naam om de volgorde te wijzigen"
@@ -47,7 +50,7 @@
     if (!sponsorPendingDelete) return
     const sponsor = sponsorPendingDelete
     saveWrapper(async () => {
-      await sponsorStore.deleteSponsor(sponsor)
+      await sponsorStore.deleteSponsor(sponsor, deleteProgressStore)
     })
     showModal = false
   }

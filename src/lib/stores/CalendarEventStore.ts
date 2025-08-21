@@ -31,8 +31,6 @@ function createCalendarEventStore() {
 	const { subscribe, update } = store
 
 	async function createCalendarEvent(newCalendarEvent: CalendarEvent) {
-		if (!browser) return
-
 		// -- Update event --
 		const { getFirestore, collection, doc, setDoc } = await import('firebase/firestore')
 		const { firebaseApp } = await import('$lib/firebase/Firebase')
@@ -51,16 +49,12 @@ function createCalendarEventStore() {
 	}
 
 	function getCalendarEventById(id: string) {
-		if (!browser) return
-
 		// -- Get calendarEvent --
 		const calendarEvents = get(store)
 		return calendarEvents.find((e) => e.id === id)
 	}
 
 	async function updateCalendarEvent(newTitle: string, newInfo: string, newDate: Dayjs, newDuration: string, newLocation: string, endDate: Dayjs | undefined, calendarEvent: CalendarEvent) {
-		if (!browser) return
-
 		// -- Update calendarEvent --
 		const { getFirestore, doc, updateDoc } = await import('firebase/firestore')
 		const { firebaseApp } = await import('$lib/firebase/Firebase')
@@ -86,8 +80,6 @@ function createCalendarEventStore() {
 	}
 
 	async function deleteCalendarEvent(calendarEvent: CalendarEvent) {
-		if (!browser) return
-
 		// -- Remove calendarEvent --
 		const { getFirestore, doc, deleteDoc } = await import('firebase/firestore')
 		const { firebaseApp } = await import('$lib/firebase/Firebase')

@@ -1,14 +1,12 @@
 import { browser } from '$app/environment'
 import type { OrderingJson } from '$lib/domain/Ordering'
 import { Sponsor, sponsorConverter, type SponsorJson } from '$lib/domain/Sponsor'
-import { Collections, StorageFolders } from '$lib/firebase/Firebase'
-import { WEBP_IMAGE_QUALITY } from '$lib/utils/Constants'
-import { get, writable } from 'svelte/store'
-import { v4 as uuidv4 } from "uuid"
-import { blobToWebP } from 'webp-converter-browser'
-import { createMockSponsorStore } from './mocks/MockSponsorStore'
-import { convertStringToBool } from '$lib/utils/Utils'
+import { Collections, createFirebaseStorageUrl, StorageFolders } from '$lib/firebase/Firebase'
 import { sortWithOrdering } from '$lib/utils/Stores'
+import { convertAndUploadImages, deleteImages, UploadProgress } from '$lib/utils/UploadProgress'
+import { convertStringToBool } from '$lib/utils/Utils'
+import { get, writable, type Writable } from 'svelte/store'
+import { createMockSponsorStore } from './mocks/MockSponsorStore'
 
 function createSponsorStore() {
 	const store = writable<(Sponsor)[]>(undefined, set => {
@@ -38,48 +36,40 @@ function createSponsorStore() {
 	})
 	const { subscribe, update } = store
 
-	async function createSponsor(sponsor: Sponsor, image: File) {
-		// -- Convert image --
-		const convertedImage = await blobToWebP(image, { quality: WEBP_IMAGE_QUALITY })
-
-		// -- Upload image --
-		const { getStorage, ref, uploadBytes, getDownloadURL } = await import('firebase/storage')
-		const storage = getStorage()
-
-		const storageRef = ref(storage, `${StorageFolders.SPONSOR_IMAGES}/${uuidv4()}`)
-		const snapshot = await uploadBytes(storageRef, convertedImage)
-		const uploadedImage = await getDownloadURL(snapshot.ref)
-		sponsor.imageUrl = uploadedImage
+	async function createSponsor(newSponsor: Sponsor, image: File, progressStore: Writable<UploadProgress[]>) {
+		// -- Convert and upload image --
+		const { uploadedImageIds, size } = await convertAndUploadImages([image], StorageFolders.SPONSOR, progressStore)
+		newSponsor.imageUrl = uploadedImageIds[0]
 
 		// -- Upload document --
+		// TODO comment name uniformity
 		const { getFirestore, collection, doc, setDoc } = await import('firebase/firestore')
 		const { firebaseApp } = await import('$lib/firebase/Firebase')
 		const firestore = getFirestore(firebaseApp)
 
 		const newDocRef = doc(collection(firestore, Collections.SPONSORS)).withConverter(sponsorConverter)
-		await setDoc(newDocRef, sponsor)
-		sponsor.id = newDocRef.id
+		await setDoc(newDocRef, newSponsor)
+		newSponsor.id = newDocRef.id
 
 		// -- Update ordering --
 		const existingSortedIds = get(store).map((e) => e.id)
 		await updateSponsorsOrder([...existingSortedIds, newDocRef.id])
 
 		// -- Update store(new item last) --
-		update((sponsors) => ([...sponsors, sponsor]))
+		update((sponsors) => ([...sponsors, newSponsor]))
+		return size
 	}
 
-	async function updateSponsor(newName: string, newUrl: string, newImage: string | File, newVisible: boolean, sponsor: Sponsor) {
+	async function updateSponsor(newName: string, newUrl: string, combinedImage: string | File, newVisible: boolean, sponsor: Sponsor, progressStore: Writable<UploadProgress[]>) {
 		// -- Upload new image --
-		let newImageUrl = ""
-		if (newImage instanceof File) {
-			const { getStorage, ref, uploadBytes } = await import('firebase/storage')
-			const storage = getStorage()
-
-			const convertedImage = await blobToWebP(newImage, { quality: WEBP_IMAGE_QUALITY })
-			const imageRef = ref(storage, sponsor.imageUrl)
-			await uploadBytes(imageRef, convertedImage)
-			newImageUrl = `${sponsor.imageUrl}#${new Date().getTime()}` // Force reload cache
+		if (sponsor.imageUrl !== combinedImage) {
+			const imageIdsToRemove = [sponsor.imageUrl]
+			await deleteImages(imageIdsToRemove.map((e) => createFirebaseStorageUrl(StorageFolders.SPONSOR.IMAGES, e)))
+			await deleteImages(imageIdsToRemove.map((e) => createFirebaseStorageUrl(StorageFolders.SPONSOR.THUMBNAILS, e)))
 		}
+
+		// -- Convert and upload images --
+		const { uploadedImageIds, size } = await convertAndUploadImages([combinedImage], StorageFolders.PHOTO_ALBUM, progressStore)
 
 		// -- Update document --
 		const { getFirestore, doc, updateDoc } = await import('firebase/firestore')
@@ -87,34 +77,27 @@ function createSponsorStore() {
 		const firestore = getFirestore(firebaseApp)
 
 		const docRef = doc(firestore, Collections.SPONSORS, sponsor.id)
-		const updates: any = {
+		await updateDoc(docRef, {
 			name: newName,
 			url: newUrl,
-			visible: newVisible
-		}
-		if (newImageUrl) updates["imageUrl"] = newImageUrl
-		await updateDoc(docRef, updates)
+			visible: newVisible,
+			imageUrl: uploadedImageIds[0]
+		})
 
 		// -- Update store --
 		sponsor.name = newName
 		sponsor.url = newUrl
-		sponsor.imageUrl = newImageUrl || sponsor.imageUrl
+		sponsor.imageUrl = uploadedImageIds[0]
 		sponsor.updateSearchableString()
 		update((sponsors) => [...sponsors])
+		return size
 	}
 
-	async function deleteSponsor(sponsor: Sponsor) {
-		// -- Delete image --
-		const { getStorage, ref, deleteObject } = await import('firebase/storage')
-		const storage = getStorage()
-
-		try {
-			const storageRef = ref(storage, sponsor.imageUrl)
-			await deleteObject(storageRef)
-		} catch (error: any) {
-			// Not existing images can be safely ignored
-			if (error.code !== 'storage/object-not-found') throw error
-		}
+	async function deleteSponsor(sponsor: Sponsor, progressStore: Writable<number>) {
+		// -- Delete images --
+		progressStore.set(0)
+		await deleteImages([sponsor.getImageUrl()], progressStore)
+		await deleteImages([sponsor.getThumbnailUrl()], progressStore)
 
 		// -- Delete document --
 		const { getFirestore, doc, deleteDoc } = await import('firebase/firestore')
@@ -180,3 +163,4 @@ if (useMock) console.warn("Mocking is on for SponsorStore")
 export const sponsorStore = useMock ?
 	createMockSponsorStore() :
 	createSponsorStore()
+// 183 lines

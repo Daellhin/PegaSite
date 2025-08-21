@@ -6,10 +6,14 @@
   import { Sponsor } from "$lib/domain/Sponsor"
   import { sponsorStore } from "$lib/stores/SponsorStore"
   import { pushCreatedToast } from "$lib/utils/Toast"
+  import type { UploadProgress } from "$lib/utils/UploadProgress"
+  import { writable } from "svelte/store"
 
   export let showForm = false
   export let editSponsor: Sponsor | undefined = undefined
   export let onDismiss: () => void = () => {}
+
+  const progressStore = writable([] as UploadProgress[])
 
   let name = ""
   let url = ""
@@ -18,13 +22,20 @@
 
   async function saveSponsor() {
     if (editSponsor) {
-      await sponsorStore.updateSponsor(name, url, image[0], visible, editSponsor)
+      await sponsorStore.updateSponsor(
+        name,
+        url,
+        image[0],
+        visible,
+        editSponsor,
+        progressStore,
+      )
       pushCreatedToast("Sponsor gewijzigd")
     } else {
       if (!(image[0] instanceof File))
         throw new Error("Image must be a file when creating new sponsor")
       const newSponsor = new Sponsor("-1", name, url, "", visible)
-      await sponsorStore.createSponsor(newSponsor, image[0])
+      await sponsorStore.createSponsor(newSponsor, image[0], progressStore)
       pushCreatedToast("Sponsor aangemaakt")
     }
   }
@@ -74,6 +85,7 @@
     sortable={false}
     size="xs"
     required
+    progress={$progressStore}
     maxAmount={1}
   />
   <Checkbox label="Zichtbaar" bind:value={visible} />

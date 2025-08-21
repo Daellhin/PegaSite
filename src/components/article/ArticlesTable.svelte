@@ -13,11 +13,12 @@
   } from "$lib/stores/ArticleStore"
   import { handleFirebaseError } from "$lib/utils/Firebase"
   import { faSearch } from "@fortawesome/free-solid-svg-icons"
+  import { writable } from "svelte/store"
 
   const tooltip = "De zoekfunctie doorzoekt enkel de laatste 100 berichten."
-
   const confirmModalID = "confirm-delete-article"
   const paginationSize = 10
+  const deleteProgressStore = writable(0)
 
   export let articles: Article[]
 
@@ -73,7 +74,7 @@
     if (!articlePendingDelete) return
     const article = articlePendingDelete
     saveWrapper(async () => {
-      await articleStore.deleteArticle(article)
+      await articleStore.deleteArticle(article, deleteProgressStore)
     })
   }
   function startDelete(article: Article) {
@@ -176,9 +177,9 @@
         {#each visibleArticles as article}
           <tr class="border-b border-base-200">
             <td>
-              {#if article.images?.length > 0}
+              {#if article.imageIds?.length > 0}
                 <img
-                  src={article.images[0]}
+                  src={article.imageIds[0]}
                   alt="Logo"
                   class="rounded-lg h-20"
                 />

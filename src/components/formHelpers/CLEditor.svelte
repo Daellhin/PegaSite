@@ -68,4 +68,5 @@
 
 <style lang="postcss">
   @import "../../css/cl-editor.postcss";
+  @reference "../../app.css";
 </style>

@@ -48,11 +48,11 @@ export class PhotoAlbum {
     }
 
     getImageUrls() {
-        return this.preview ? this.imageIds : this.imageIds.map((e) => createFirebaseStorageUrl(StorageFolders.PHOTO_ALBUM_IMAGES, e))
+        return this.preview ? this.imageIds : this.imageIds.map((e) => createFirebaseStorageUrl(StorageFolders.PHOTO_ALBUM.IMAGES, e))
     }
 
     getThumbnailUrls() {
-        return this.preview ? this.imageIds : this.imageIds.map((e) => createFirebaseStorageUrl(StorageFolders.PHOTO_ALBUM_THUMBNAILS, e))
+        return this.preview ? this.imageIds : this.imageIds.map((e) => createFirebaseStorageUrl(StorageFolders.PHOTO_ALBUM.THUMBNAILS, e))
     }
 
     static fromJson(id: string, json: PhotoAlbumJson) {

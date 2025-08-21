@@ -31,7 +31,7 @@
   <td>{sponsor.name}</td>
   <td><a href={sponsor.url} class="link">{sponsor.url}</a></td>
   <td>
-    <img src={sponsor.imageUrl} alt="Logo" class="rounded-lg h-20" />
+    <img src={sponsor.getImageUrl()} alt="Logo" class="rounded-lg h-20" />
   </td>
   <td>
     <Checkbox

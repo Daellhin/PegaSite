@@ -28,6 +28,7 @@
   let date: Dayjs
   let createdAt: Dayjs
 
+  // TODO name uniformity
   async function savePhotoAlbum() {
     if (!photoAlbum) return
     await photoAlbumStore.updatePhotoAlbum(
@@ -53,7 +54,7 @@
   }
   async function createPreview() {
     const images = await Promise.all(
-      combinedImages.map(PreviewableFile.getMixedFilePreview),
+      combinedImages.map((e) => PreviewableFile.getMixedFilePreview(e)),
     )
     return new PhotoAlbum(
       "PreviewID",
@@ -142,8 +143,8 @@
     bind:date
     newPhotoAlbum={false}
     submitLabel="Album wijzigen"
-    progress={$progressStore}
     onSave={savePhotoAlbum}
+    progress={$progressStore}
   />
 {:else}
   <div>"{data.id}": not found</div>

@@ -18,6 +18,7 @@
   export let submitLabel: string
   export let onSave: () => Promise<void>
   export let progress: UploadProgress[]
+  // TODO rethink or apply everywhere
   export let stopAfterSave = false
   export let savedMessage = ""
   export let newPhotoAlbum: boolean
