@@ -72,7 +72,9 @@
 </ConfirmModal>
 
 <style lang="postcss">
+  @reference "tailwindcss";
+
   :global(#dnd-action-dragged-el) {
-    @apply border-2 !important;
+    @apply border-2!;
   }
 </style>

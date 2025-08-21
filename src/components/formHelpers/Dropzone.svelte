@@ -129,10 +129,10 @@
       on:drop={onFileDrop}
       on:dragover={(e) => ignoreDragOver(e, disabled)}
       id={dropzoneId}
-      class="relative cursor-pointer input-bordered border-2 border-dashed rounded-lg bg-base-200"
+      class="relative cursor-pointer input-bordered border-2 border-dashed rounded-lg bg-base-200 border-[#d1d1d1]"
       class:cursor-not-allowed={disabled}
       class:hover:bg-base-300={!disabled}
-      class:custom-dark-hover={!disabled}
+      class:dark:hover:bg-[#313741]={!disabled}
     >
       <div class="flex flex-col items-center pt-5 pb-6">
         <CloudIcon class="text-gray-700 dark:text-gray-400 text-3xl" />
@@ -204,11 +204,3 @@
     </div>
   {/if}
 </div>
-
-<style lang="postcss">
-  @media (prefers-color-scheme: dark) {
-    .custom-dark-hover:hover {
-      background-color: #313741 !important;
-    }
-  }
-</style>

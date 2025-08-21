@@ -48,7 +48,7 @@
 
 <SvelteToast options={{ reversed: true, intro: { y: 192 } }} />
 
-<style>
+<style lang="postcss">
   :root {
     /* Toast formatting */
     --toastBackground: transparent;

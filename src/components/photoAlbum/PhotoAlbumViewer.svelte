@@ -158,10 +158,12 @@
 </ConfirmModal>
 
 <style lang="postcss">
+  @reference "tailwindcss";
+
   :global(.bp-wrap img) {
-    @apply object-contain !important;
+    @apply object-contain!;
   }
   :global(.bp-wrap .bp-img) {
-    @apply bg-none !important;
+    @apply bg-none!;
   }
 </style>

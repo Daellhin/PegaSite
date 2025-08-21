@@ -81,7 +81,10 @@
 </div>
 
 <style lang="postcss">
+  @reference "tailwindcss";
+
   :global(#dnd-action-dragged-el) {
-    @apply border-2 rounded-lg bg-base-100 !important;
+    /* @apply bg-base-100!; */
+    @apply border-2! rounded-lg!;
   }
 </style>

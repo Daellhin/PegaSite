@@ -167,7 +167,7 @@
   </div>
 {/if}
 
-<style>
+<style lang="postcss">
   .thumbnail-wrap :global(.bp-wrap) {
     contain: layout size;
   }

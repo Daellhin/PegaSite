@@ -1,24 +1,20 @@
 @import "tailwindcss";
 @plugin "daisyui";
 
-@config '../tailwind.config.cjs';
+@theme {
+  --breakpoint-xs: 30rem;
+}
 
-/*
-  The default border color has changed to `currentcolor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
+@plugin "daisyui/theme" {
+  name: "light";
+  default: true;
+  --color-primary: "#f9984c";
+}
 
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
-*/
-@layer base {
-  *,
-  ::after,
-  ::before,
-  ::backdrop,
-  ::file-selector-button {
-    border-color: var(--color-gray-200, currentcolor);
-  }
+@plugin "daisyui/theme" {
+  name: "dark";
+  prefersdark: true;
+  --color-primary: "#f9984c";
 }
 
 .btn {
@@ -27,10 +23,4 @@
 
 .btn-primary {
   color: white !important;
-}
-
-@media (prefers-color-scheme: light) {
-}
-
-@media (prefers-color-scheme: dark) {
 }

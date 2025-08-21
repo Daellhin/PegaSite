@@ -36,10 +36,13 @@
   </div>
 </a>
 
-<style>
+<style lang="postcss">
+  @reference "tailwindcss";
+
   @media (prefers-color-scheme: dark) {
-    .custom-dark-hover:hover {
-      background-color: #313741 !important;
+    .custom-dark-hover {
+      @apply bg-[#313741]!;
+
     }
   }
 </style>

@@ -45,7 +45,7 @@
   {/if}
 </div>
 
-<style>
+<style lang="postcss">
   .tick-white {
     --chkfg: white;
   }
