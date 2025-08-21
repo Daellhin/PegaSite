@@ -125,37 +125,40 @@
   </div>
   <!-- Dropzone -->
   {#if remainingSpace}
-    <label
-      on:drop={onFileDrop}
-      on:dragover={(e) => ignoreDragOver(e, disabled)}
-      id={dropzoneId}
-      class="relative cursor-pointer input-bordered border-2 border-dashed rounded-lg bg-base-200 border-[#d1d1d1]"
-      class:cursor-not-allowed={disabled}
-      class:hover:bg-base-300={!disabled}
-      class:dark:hover:bg-[#313741]={!disabled}
-    >
-      <div class="flex flex-col items-center pt-5 pb-6">
-        <CloudIcon class="text-gray-700 dark:text-gray-400 text-3xl" />
-        <p class="mb-2 text-sm font-semibold">
-          Sleep hier of klik om afbeelding<span class:hidden={maxAmount <= 1}
-            >(en)</span
-          > up te loaden
-        </p>
-        <p class="text-xs text-gray-500 dark:text-gray-400">
-          SVG, PNG, JPG, GIF of WEBP
-        </p>
-      </div>
-      <input
-        id={dropzoneId}
-        type="file"
-        on:input={onFileInput}
-        class="absolute top-0 h-full w-full opacity-0 -z-10"
-        {accept}
-        multiple
-        required={required && combinedImages.length < 0}
-        {disabled}
-      />
-    </label>
+		<label
+			on:drop={onFileDrop}
+			on:dragover={(e) => ignoreDragOver(e, disabled)}
+			id={dropzoneId}
+		>
+			<div
+				class="relative cursor-pointer border-2 border-dashed rounded-sm bg-base-200 border-[#d1d1d1]"
+				class:cursor-not-allowed={disabled}
+				class:hover:bg-base-300={!disabled}
+				class:dark:hover:bg-[#313741]={!disabled}
+			>
+				<div class="flex flex-col items-center pt-5 pb-6">
+					<CloudIcon class="text-gray-700 dark:text-gray-400 text-3xl" />
+					<p class="mb-2 text-sm font-semibold">
+						Sleep hier of klik om afbeelding<span class:hidden={maxAmount <= 1}
+							>(en)</span
+						> up te loaden
+					</p>
+					<p class="text-xs text-gray-500 dark:text-gray-400">
+						SVG, PNG, JPG, GIF of WEBP
+					</p>
+				</div>
+				<input
+					id={dropzoneId}
+					type="file"
+					on:input={onFileInput}
+					class="absolute top-0 h-full w-full opacity-0 -z-10"
+					{accept}
+					multiple
+					required={required && combinedImages.length < 0}
+					{disabled}
+				/>
+			</div>
+		</label>
   {/if}
   {#if maxAmount > 1 && combinedImages.length > 0}
     <div class="opacity-60 mt-1">
