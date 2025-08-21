@@ -58,7 +58,7 @@ function createPhotoAlbumStore() {
 	async function updatePhotoAlbum(newTitle: string, newVisible: boolean, newAuthor: string, newAuthorUrl: string, newDate: Dayjs, combinedImages: (string | File)[], photoAlbum: PhotoAlbum, progressStore: Writable<UploadProgress[]>) {
 		// -- Delete images removed by user --
 		const existingImageIds = combinedImages.filter((e) => typeof e === 'string') as string[]
-		if (!arraysContainSameElements(photoAlbum.imageIds, existingImageIds)) {
+		if (!arraysContainSameElements(photoAlbum.imageIds||[], existingImageIds)) {
 			const imageIdsToRemove = arrayDifference(photoAlbum.imageIds, existingImageIds)
 			await deleteImages(imageIdsToRemove.map((e) => createFirebaseStorageUrl(StorageFolders.PHOTO_ALBUM.IMAGES, e)))
 			await deleteImages(imageIdsToRemove.map((e) => createFirebaseStorageUrl(StorageFolders.PHOTO_ALBUM.THUMBNAILS, e)))

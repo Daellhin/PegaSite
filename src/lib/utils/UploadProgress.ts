@@ -1,5 +1,5 @@
 import { type StorageFolder } from '$lib/firebase/Firebase'
-import generateImageThumbnail from '$lib/generateImageThumbnail/image-thumbnail'
+import generateImageThumbnail from '$lib/utils/image-thumbnail'
 import { MAX_CONCURRENT_UPLOADS, WEBP_IMAGE_QUALITY, WEBP_THUMBNAIL_QUALITY } from "$lib/utils/Constants"
 import { updateStoreAtIndex } from "$lib/utils/Svelte"
 import pLimit from 'p-limit'

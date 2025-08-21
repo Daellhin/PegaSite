@@ -4,6 +4,7 @@ export function isArrayNotEmpty(array: any[] | undefined) {
 }
 
 export function arraysContainSameElements<T>(array1: T[], array2: T[]) {
+	
 	if (array1.length !== array2.length) return false
 	return array1.length === array1.filter(e => array2.includes(e)).length
 }
