@@ -37,6 +37,7 @@
   class:static={positionStatic}
   class:cursor-not-allowed={disabled}
 >
+  <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
   <label
     tabindex="0"
     class="btn btn-ghost gap-2 normal-case flex flex-row text-base"
@@ -50,7 +51,7 @@
     <Fa icon={faChevronDown} class="text-gray-500 hidden sm:block" />
   </label>
   <ul
-    class={"dropdown-content z-10 menu p-2 shadow bg-base-100 rounded-box " +
+    class={"dropdown-content z-10 menu p-2 shadow-sm bg-base-100 rounded-box " +
       width}
   >
     <li>

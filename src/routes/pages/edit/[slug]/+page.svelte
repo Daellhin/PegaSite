@@ -56,7 +56,7 @@
   function setValues(page: Page) {
     title = page.title
     content = page.content
-    combinedImages = page.images
+    combinedImages = page.imageIds
     haveValuesBeenSet = true
   }
 

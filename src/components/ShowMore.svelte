@@ -22,7 +22,7 @@
     class="relative h-16 w-full -mt-16 bg-linear-to-b from-transparent"
     class:to-base-100={!showMore && !contentFits}
     class:to-transparent={showMore || contentFits}
-  />
+  ></div>
   {#if !contentFits}
     <button
       class="btn btn-neutral btn-sm mt-3 mx-auto"

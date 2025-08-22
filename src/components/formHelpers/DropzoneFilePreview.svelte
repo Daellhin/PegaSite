@@ -75,7 +75,7 @@
         title={toString(progress)}
       >
         {#if progress === UploadProgress.CONVERTING || progress === UploadProgress.UPLOADING}
-          <span class="loading loading-ring loading-sm" />
+          <span class="loading loading-ring loading-sm"></span>
         {:else if progress === UploadProgress.DONE}
           <Fa icon={faCheck} color="green" />
         {/if}
@@ -85,8 +85,10 @@
 </div>
 
 <style lang="postcss">
-  @reference "../../app.css";
+  @reference "tailwindcss";
+
   :global(#dnd-action-dragged-el) {
-    @apply border-2! rounded-lg! bg-base-100!;
+    /* @apply bg-base-100!; */
+    @apply border-2! rounded-lg!;
   }
 </style>

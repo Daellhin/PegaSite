@@ -115,7 +115,7 @@
           value={($downloadProgressStore / imageUrls.length) * 100}
           max={100}
           title="Downloaden"
-        />
+        ></progress>
         <span class="font-semibold ml-2">
           {$downloadProgressStore} / {imageUrls.length}
         </span>
@@ -160,6 +160,8 @@
 </ConfirmModal>
 
 <style lang="postcss">
+  @reference "tailwindcss";
+
   :global(.bp-wrap img) {
     @apply object-contain!;
   }

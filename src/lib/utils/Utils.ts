@@ -1,4 +1,4 @@
-import generateImageThumbnail from "$lib/generateImageThumbnail/image-thumbnail"
+import generateImageThumbnail from "$lib/utils/image-thumbnail"
 import type { Navigation } from "@sveltejs/kit"
 import { WEBP_THUMBNAIL_QUALITY } from "./Constants"
 

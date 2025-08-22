@@ -1,6 +1,9 @@
-@import 'tailwindcss';
 @import "tailwindcss";
 @plugin "daisyui";
+
+@theme {
+  --breakpoint-xs: 30rem;
+}
 
 @plugin "daisyui/theme" {
   name: "light";
@@ -12,6 +15,10 @@
   name: "dark";
   prefersdark: true;
   --color-primary: "#f9984c";
+}
+
+.btn {
+  text-transform: capitalize !important;
 }
 
 .btn-primary {

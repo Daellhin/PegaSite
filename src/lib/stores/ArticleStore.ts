@@ -118,7 +118,7 @@ function createArticleStore() {
 	async function updateArticle(newAuthors: string[], newTags: string[], newTitle: string, newContent: string, lastUpdate: Dayjs, combinedImages: (string | File)[], visible: boolean, article: Article, progressStore: Writable<UploadProgress[]>) {
 		// -- Delete images removed by user --
 		const existingImageIds = combinedImages.filter((e) => typeof e === 'string') as string[]
-		if (!arraysContainSameElements(article.imageIds, existingImageIds)) {
+		if (!arraysContainSameElements(article.imageIds||[], existingImageIds)) {
 			const imageIdsToRemove = arrayDifference(article.imageIds, existingImageIds)
 			await deleteImages(imageIdsToRemove.map((e) => createFirebaseStorageUrl(StorageFolders.ARTICLE.IMAGES, e)))
 			await deleteImages(imageIdsToRemove.map((e) => createFirebaseStorageUrl(StorageFolders.ARTICLE.THUMBNAILS, e)))
@@ -139,7 +139,7 @@ function createArticleStore() {
 			title: newTitle,
 			content: newContent,
 			lastUpdate: new Timestamp(Math.round(Date.now() / 1000), 0),
-			images: uploadedImageIds,
+			imageIds: uploadedImageIds,
 			visible: visible
 		})
 

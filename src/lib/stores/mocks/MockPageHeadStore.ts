@@ -22,7 +22,7 @@ export function createMockPageStore() {
 		const images = await Promise.all(combinedImages.map((e) => PreviewableFile.getMixedFilePreview(e)))
 		page.title = newTitle
 		page.content = newContent
-		page.images = images
+		page.imageIds = images
 		update((pages) => [...pages])
 	}
 	async function updatePageId(newId: string, oldId: string) {

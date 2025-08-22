@@ -37,7 +37,7 @@
       van
       <span class="font-bold opacity-100">{fullLength}</span>
       {#if saving}
-        <span class="loading loading-circle loading-xs ml-1" />
+        <span class="loading loading-circle loading-xs ml-1"></span>
       {/if}
     </div>
     {#if pagination}

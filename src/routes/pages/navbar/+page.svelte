@@ -74,9 +74,8 @@
   </div>
   {#if savingNewOrder}
     <div class="mt-2 flex items-center gap-1">
-      Herorderingen worden opgeslagen <span
-        class="loading loading-spinner loading-xs"
-      />
+      Herorderingen worden opgeslagen
+      <span class="loading loading-spinner loading-xs"></span>
     </div>
   {/if}
   {#if errorMessage}

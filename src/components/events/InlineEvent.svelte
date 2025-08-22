@@ -80,7 +80,7 @@
           loading="lazy"
           referrerpolicy="no-referrer-when-downgrade"
           title="Google Maps"
-        />
+        ></iframe>
       </Collapse>
     {/if}
   </div>

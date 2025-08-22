@@ -10,12 +10,13 @@
 
 {#if $authStore}
   <div title="Profiel" class="dropdown dropdown-end">
+    <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
     <label tabindex="0" class="btn btn-ghost gap-2 normal-case">
       <Fa icon={faUser} class="text-xl" />
       <Fa icon={faChevronDown} class="text-gray-500" />
     </label>
     <ul
-      class="dropdown-content z-10 menu p-2 shadow bg-base-100 rounded-box w-52"
+      class="dropdown-content z-10 menu p-2 shadow-sm bg-base-100 rounded-box w-52"
     >
       <li class="menu-title">
         <span>{$authStore.displayName || "User"}</span>

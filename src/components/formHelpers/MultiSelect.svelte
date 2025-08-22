@@ -36,10 +36,13 @@
 </div>
 
 <style lang="postcss">
-  @reference "../../app.css";
+  @reference "tailwindcss";
+
   /* Integrate svelte-multiselect with Tailwind and dark mode */
   :global(.multiselect) {
-    @apply input! border-2! h-fit min-h-12!;
+    /* @apply input input-bordered border-2 h-fit min-h-12 !important; */
+    @apply border-2! h-fit! min-h-12!;
+
   }
   :global(.multiselect:focus-within) {
     /* Add gray outline */
@@ -59,16 +62,17 @@
     border-color: #1c64f2 !important;
   }
   :global(.multiselect .selected li) {
-    @apply bg-base-200;
+    /* @apply bg-base-200; */
   }
   :global(.multiselect .selected .remove:is(:hover, :focus) path) {
-    @apply fill-primary;
+    /* @apply fill-primary; */
   }
   :global(.multiselect .remove-all:is(:hover, :focus) path) {
-    @apply fill-primary;
+    /* @apply fill-primary; */
   }
   :global(.multiselect .options) {
-    @apply bg-base-100! p-2!;
+    /* @apply bg-base-100! p-2!; */
+    @apply p-2!;
   }
   :global(.multiselect .options li) {
     @apply px-4! py-2! rounded-lg!;

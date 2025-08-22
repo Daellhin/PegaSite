@@ -87,7 +87,7 @@
     createdAt = article.createdAt
     lastUpdate = dayjs()
     visible = article.visible
-    combinedImages = [...article.imageIds]
+    combinedImages = [...(article.imageIds || [])]
     haveValuesBeenSet = true
   }
 

@@ -53,8 +53,8 @@ function createPageStore() {
 	async function updatePage(newTitle: string, newContent: string, combinedImages: (string | File)[], page: Page, progressStore: Writable<UploadProgress[]>) {
 		// -- Delete images removed by user --
 		const existingImageIds = combinedImages.filter((e) => typeof e === 'string') as string[]
-		if (!arraysContainSameElements(page.images, existingImageIds)) {
-			const imageIdsToRemove = arrayDifference(page.images, existingImageIds)
+		if (!arraysContainSameElements(page.imageIds||[], existingImageIds)) {
+			const imageIdsToRemove = arrayDifference(page.imageIds, existingImageIds)
 			await deleteImages(imageIdsToRemove.map((e) => createFirebaseStorageUrl(StorageFolders.PAGE.IMAGES, e)))
 			await deleteImages(imageIdsToRemove.map((e) => createFirebaseStorageUrl(StorageFolders.PAGE.THUMBNAILS, e)))
 		}
@@ -78,7 +78,7 @@ function createPageStore() {
 		// -- Update store --
 		page.title = newTitle
 		page.content = newContent
-		page.images = uploadedImageIds
+		page.imageIds = uploadedImageIds
 		update((pages) => [...pages])
 		return size
 	}

@@ -1,60 +1,25 @@
 /* Integrate CL editor with Tailwind and dark mode */
-@import "./usercontent.postcss";
+@reference "tailwindcss";
 
 :global(.cl) {
-  @apply overflow-hidden! shadow-none! border-2!;
-  :global(.cl-button svg) {
-    display: initial !important;
-  }
-  @media (prefers-color-scheme: light) {
-    :global(.cl-button.active),
-    :global(.cl-button:hover) {
-      background-color: #dcdedf !important;
-    }
-  }
-  @media (prefers-color-scheme: dark) {
-    border-color: #434955;
-    :global(.cl-content) {
-      @apply bg-base-100!;
-    }
-    :global(.cl-button.active),
-    :global(.cl-button:hover) {
-      background-color: #313641 !important;
-    }
-    :global(.cl-button path) {
-      fill: #a6adbb !important;
-    }
-  }
-  :global(.cl-actionbar) {
-    @apply bg-base-200!;
-  }
-}
+	@apply overflow-hidden! shadow-none! border-2! border-[#d1d1d1]! dark:border-[#464e57]! rounded-lg;
 
-:global(.cl),
-:global(.cl .cl-actionbar) {
-  @apply rounded-t-lg;
+	:global(.cl-button svg) {
+		@apply [display:initial]!;
+	}
+	:global(.cl-button.active),
+	:global(.cl-button:hover) {
+		@apply bg-[#dcdedf]! dark:bg-[#313641]!;
+	}
+	:global(.cl-button path) {
+		@apply dark:fill-[#a6adbb]!;
+	}
+	:global(.cl-content) {
+		/* @apply dark:bg-base-100!; Daisyui styles do not work, so HEX values will have to do */
+		@apply dark:bg-[#1d232a]!;
+	}
+	:global(.cl-actionbar) {
+		/* @apply bg-base-200!; Daisyui styles do not work, so HEX values will have to do */
+		@apply dark:bg-[#191e24]! rounded-t-lg;
+	}
 }
-:global(.cl),
-:global(.cl .cl-content) {
-  @apply rounded-b-lg;
-}
-
-/* styles for modal editor but wil probably be unused */
-/* :global(.cl-editor-modal .modal-box) {
-  @apply h-48;
-}
-:global(.cl-editor-modal .modal-box), :global(.cl-editor-modal .modal-title) {
-  @apply bg-red-600! border-none!;
-}
-:global(.cl-editor-modal .modal-button) {
-  @apply btn;
-}
-:global(.cl-editor-modal .modal-submit) {
-  @apply btn-primary!;
-}
-:global(.cl-editor-modal .modal-reset) {
-  @apply btn-secondary
-}
-:global(.cl-editor-modal .modal-label) {
-  @apply input!;
-} */
