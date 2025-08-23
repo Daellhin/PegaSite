@@ -1,6 +1,6 @@
 import adapter from '@sveltejs/adapter-static'
 import nesting from 'postcss-nesting'
-import preprocess from 'svelte-preprocess'
+import {sveltePreprocess}  from 'svelte-preprocess'
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte'
 
 /** @type {import('@sveltejs/kit').Config} */
@@ -9,22 +9,24 @@ const config = {
 	// for more information about preprocessors
 	preprocess: [
 		vitePreprocess(),
-		preprocess({
+		sveltePreprocess ({
 			postcss: {
 				plugins: [nesting()]
 			}
 		})
 	],
-	onwarn: (warning, handler) => {
-		if (
-			warning.code === "css-unused-selector" ||
-			warning.code === "a11y-no-noninteractive-tabindex" ||
-			warning.code === "a11y-label-has-associated-control" ||
-			warning.filename.match(/^\/node_modules\/cl-editor/) ||
-			warning.filename.match(/^\/node_modules\/svelte-multiselect/) ||
-			warning.filename.match(/^\/node_modules\/svelte-select/)
-		) { return }
-		handler(warning)
+	compilerOptions: {
+		warningFilter: (warning) => {
+			if (
+				warning.code === "css-unused-selector" ||
+				warning.code === "a11y-no-noninteractive-tabindex" ||
+				warning.code === "a11y-label-has-associated-control" ||
+				warning.filename.match(/^\/node_modules\/cl-editor/) ||
+				warning.filename.match(/^\/node_modules\/svelte-multiselect/) ||
+				warning.filename.match(/^\/node_modules\/svelte-select/)
+			) return false
+			return true
+		},
 	},
 	kit: {
 		adapter: adapter({
@@ -39,8 +41,8 @@ const config = {
 			$lib: 'src/lib',
 		},
 		version: {
-            name: process.env.npm_package_version
-        }
+			name: process.env.npm_package_version
+		}
 	},
 }
 
