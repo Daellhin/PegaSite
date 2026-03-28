@@ -1,52 +1,62 @@
 <script lang="ts">
-  import { v4 as uuidv4 } from "uuid"
+	import { v4 as uuidv4 } from "uuid"
 
-  export let label = ""
-  export let value: boolean
-  export let required = false
-  export let disabled = false
-  export let size: "full" | "md" | "sm" | "xs" = "sm"
+	export let label = ""
+	export let value: boolean
+	export let required = false
+	export let disabled = false
+	export let size: "full" | "md" | "sm" | "xs" = "sm"
 
-  export let inputClass = ""
-  let classList = ""
-  export { classList as class }
-  export let id = uuidv4()
-  export let labelClass = ""
-  export let onInput: () => void = () => {}
+	export let inputClass = ""
+	let classList = ""
+	export { classList as class }
+	export let id = ""
+	export let labelClass = ""
+	export let onInput: () => void = () => {}
+
+	$: inputId =
+		id ||
+		label?.replace(/[ :]/g, "").replace(" ", "-").toLowerCase() ||
+		uuidv4()
 </script>
 
 <div
-  class={"form-control w-full flex-row items-center gap-3 text-sm " + classList}
-  class:max-w-md={size === "md"}
-  class:max-w-sm={size === "sm"}
-  class:max-w-xs={size === "xs"}
+	class={"w-full flex flex-row items-center gap-3 text-sm " + classList}
+	class:max-w-md={size === "md"}
+	class:max-w-sm={size === "sm"}
+	class:max-w-xs={size === "xs"}
 >
-  <input
-    {id}
-    type="checkbox"
-    bind:checked={value}
-    on:input={onInput}
-    {required}
-    {disabled}
-    class={"checkbox checkbox-xs !input-bordered checkbox-primary border-2 rounded-md tick-white bg-clip-padding checked:bg-primary disabled:border-0 disabled:bg-base-200 " + inputClass}
-    class:checkbox-md={size === "md"}
-    class:checkbox-sm={size === "sm"}
-    class:checkbox-xs={size === "xs"}
-  />
-  {#if label}
-    <label for={id} class="label p-0" class:opacity-50={disabled}>
-      <span class={"label-text " + labelClass}>
-        {label}
-        {#if required}
-          <span class="text-red-500 font-bold">*</span>
-        {/if}
-      </span>
-    </label>
-  {/if}
+	<input
+		id={inputId}
+		type="checkbox"
+		bind:checked={value}
+		on:input={onInput}
+		{required}
+		{disabled}
+		class={"checkbox checkbox-xs checkbox-primary border-2 rounded-md tick-white bg-clip-padding checked:bg-primary disabled:border-0 disabled:bg-base-200 " +
+			inputClass}
+		class:checkbox-md={size === "md"}
+		class:checkbox-sm={size === "sm" || size === "full"}
+		class:checkbox-xs={size === "xs"}
+	/>
+	{#if label || $$slots.label}
+		<label
+			for={inputId}
+			class="label p-0 flex-1 whitespace-break-spaces"
+			class:opacity-50={disabled}
+		>
+			<span class={labelClass}>
+				<slot name="label">{label}</slot>
+				{#if required}
+					<span class="text-red-500 font-bold">*</span>
+				{/if}
+			</span>
+		</label>
+	{/if}
 </div>
 
-<style lang="postcss">
-  .tick-white {
-    --chkfg: white;
-  }
+<style>
+	.tick-white {
+		--chkfg: white;
+	}
 </style>

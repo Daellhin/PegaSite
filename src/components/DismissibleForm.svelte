@@ -41,7 +41,7 @@
     <Fa icon={faXmark} size="lg" />
   </button>
 
-  <div class="flex flex-wrap gap-2">
+  <div class="flex flex-wrap gap-2 p-1">
     <slot />
   </div>
 

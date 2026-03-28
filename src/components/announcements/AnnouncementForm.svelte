@@ -69,10 +69,10 @@
     label="Titel"
     placeholder="Titel"
     bind:value={title}
-    size="xs"
+    size="full"
     required
   />
-  <Checkbox label="Zichtbaar" bind:value={visible} />
-  <Checkbox label="Minimaliseerbaar" bind:value={dismissible} />
+  <Checkbox  class="max-w-30! pt-2" label="Zichtbaar" bind:value={visible} />
+  <Checkbox  class="max-w-30! pt-2" label="Minimaliseerbaar" bind:value={dismissible} />
   <CLEditor label="Inhoud" bind:value={content} />
 </DismissibleForm>
