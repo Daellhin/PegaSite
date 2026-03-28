@@ -8,6 +8,6 @@
 <InfoCard class="w-full">
   <div>
     <h3 class="font-bold">{annoucement.title}</h3>
-    <div class="text-xs">{annoucement.content}</div>
+    <div class="text-xs">{@html annoucement.content}</div>
   </div>
 </InfoCard>
