@@ -38,18 +38,18 @@
 		"rolldown-vite": "^7.1.4"
 	},
 	"dependencies": {
-		"@fortawesome/free-brands-svg-icons": "^7.0.0",
+		"@fortawesome/free-brands-svg-icons": "^7.2.0",
 		"@fortawesome/free-regular-svg-icons": "^7.0.0",
-		"@fortawesome/free-solid-svg-icons": "^7.0.0",
+		"@fortawesome/free-solid-svg-icons": "^7.2.0",
 		"@popperjs/core": "^2.11.8",
-		"@tailwindcss/vite": "^4.1.12",
+		"@tailwindcss/vite": "^4.2.2",
 		"@zerodevx/svelte-toast": "^0.9.6",
-		"bigger-picture": "^1.1.19",
+		"bigger-picture": "^1.1.20",
 		"byte-size": "^9.0.1",
 		"cl-editor": "^2.3.0",
-		"dayjs": "^1.11.13",
+		"dayjs": "^1.11.20",
 		"file-saver": "^2.0.5",
-		"firebase": "^12.1.0",
+		"firebase": "^12.11.0",
 		"jszip": "^3.10.1",
 		"p-limit": "^7.3.0",
 		"svelte-collapse": "^0.1.4",
@@ -58,7 +58,7 @@
 		"svelte-select": "^5.8.3",
 		"svelte-vertical-timeline": "^2.0.0",
 		"ts-debounce": "^4.0.0",
-		"uuid": "^11.1.0",
+		"uuid": "^13.0.0",
 		"webp-converter-browser": "^1.0.4"
 	}
 }
